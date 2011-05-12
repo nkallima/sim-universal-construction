@@ -61,5 +61,5 @@ bench.sh        A simple shell script for extracting performance numbers
                 for each of the above algorithms. Some algorithms do not
                 need any parameter. Some of them may need backoff 
                 upper/lower bounds as parameters.
-Makefile        It just copiles all the files. In order to run 
+Makefile        It just compiles all the files. In order to run 
                 benchmark, it is better to use bench.sh script.
