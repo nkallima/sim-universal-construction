@@ -131,8 +131,6 @@ Object apply_op(void (*sfunc)(STATE *, Object, int), Object arg, int pid) {
     mod_sp = (HalfObjectState *)&pool[pid * LOCAL_POOL_SIZE + local_index];
     TVEC_ATOMIC_ADD(&a_toggles, toggle);            // toggle pid's bit in a_toggles, Fetch&Add acts as a full write-barrier
     backoff_play(&backoff);
-    //for (b = 0; b < MIN_BAK; b++)
-    //   ;
 
     for (j = 0; j < 2; j++) {
         tmp_sp = sp;                                // read reference to struct ObjectState
@@ -183,7 +181,7 @@ Object apply_op(void (*sfunc)(STATE *, Object, int), Object arg, int pid) {
         mod_dw.seq = ldw.seq + 1;                                // increase timestamp
         mod_dw.index = LOCAL_POOL_SIZE * pid + local_index;      // store in mod_dw.index the index in pool where lsp will be stored
         if (tmp_sp==sp && CAS(&sp, *((int64_t *)&ldw), *((int64_t *)&mod_dw))) { // try to change sp to the value mod_dw
-            local_index = (local_index + 1) % LOCAL_POOL_SIZE;   //if this happens successfully,use next item in pid's pool next time
+            local_index = (local_index + 1) % LOCAL_POOL_SIZE;   // if this happens successfully,use next item in pid's pool next time
             return mod_sp->ret[pid];
         }
     }
