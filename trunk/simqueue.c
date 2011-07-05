@@ -34,7 +34,7 @@ typedef struct pointer_t {
 } pointer_t;
 
 typedef struct HalfEnqState {
-    int64_t seq;
+    int64_t seq2;
     ToggleVector applied;
     Node *link_a;
     Node *link_b;
@@ -55,7 +55,7 @@ typedef struct EnqState {
 #ifdef DEBUG
     int64_t counter;
 #endif
-    int64_t seq2;
+    int64_t seq;
     int32_t pad[PAD_CACHE(sizeof (HalfEnqState))];
 } EnqState;
 
@@ -72,13 +72,13 @@ typedef struct HalfDeqState {
 
 
 typedef struct DeqState {
-    int64_t seq;
+    int64_t seq2;
     ToggleVector applied;
     Node *ptr;
 #ifdef DEBUG
     int64_t counter;
 #endif
-    int64_t seq2;
+    int64_t seq;
     RetVal ret[N_THREADS];
 
     int32_t pad[PAD_CACHE(sizeof (HalfDeqState))];
