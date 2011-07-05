@@ -35,14 +35,14 @@ typedef struct HalfObjectState {
 
 
 typedef struct ObjectState {
-    int64_t seq;
+    int64_t seq2;
     ToggleVector applied;
     STATE state;
 #ifdef DEBUG
     int64_t counter;
     int32_t apps;
 #endif
-    int64_t seq2;
+    int64_t seq;
     Object ret[N_THREADS];
     int32_t pad[PAD_CACHE(sizeof(HalfObjectState))];
 } ObjectState;
