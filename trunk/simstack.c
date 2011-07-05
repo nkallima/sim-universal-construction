@@ -26,25 +26,25 @@ typedef struct Node{
 } Node;
 
 typedef struct HalfObjectState {
-    int64_t seq;
+    int64_t seq2;
     ToggleVector applied;
     Node *head;
 #ifdef DEBUG
     int64_t counter;
 #endif
-    int64_t seq2;
+    int64_t seq;
     RetVal ret[N_THREADS];
 } HalfObjectState;
 
 
 typedef struct ObjectState {
-    int64_t seq;
+    int64_t seq2;
     ToggleVector applied;
     Node *head;
 #ifdef DEBUG
     int64_t counter;
 #endif
-    int64_t seq2;
+    int64_t seq;
     RetVal ret[N_THREADS];
     int32_t pad[PAD_CACHE(sizeof(HalfObjectState))];
 } ObjectState;
