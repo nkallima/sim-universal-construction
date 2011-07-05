@@ -28,7 +28,7 @@
 // Try not to use big values (avoiding slow contention)
 // or not to use small values (avoiding long runs and
 // unrelistic cache misses ratios).
-#define MAX_WORK                   64
+#define MAX_WORK                   512
 
 // definition: RUNS
 // ----------------
