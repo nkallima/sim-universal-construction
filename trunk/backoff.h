@@ -74,7 +74,7 @@ inline static void backoff_play(BackoffStruct *b) {
 #else
     volatile unsigned i;
 
-    pthread_yield();
+    sched_yield();
     for (i=0; i < b->backoff; i++)
         ;
 #endif
