@@ -341,7 +341,7 @@ inline void Execute(void* Arg) {
     long rnum;
     volatile int j = 0;
 
-    // Synchronization point
+    _thread_pin(id);
     simSRandom(id + 1);
     SHARED_OBJECT_INIT(id);
     if (id == 0) {
