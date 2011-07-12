@@ -199,6 +199,7 @@ inline static void Execute(void* Arg) {
     volatile long j;
 
     SHARED_OBJECT_INIT(id);
+    _thread_pin(id);
     simSRandom((unsigned long)id + 1L);
     if (id == N_THREADS - 1)
         d1 = getTimeMillis();
