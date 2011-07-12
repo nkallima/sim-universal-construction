@@ -226,6 +226,7 @@ inline void Execute(void* Arg) {
     long rnum;
     volatile long j;
 
+    _thread_pin(id);
     simSRandom(id + 1);
     SHARED_OBJECT_INIT(id);
     if (id == N_THREADS - 1)
