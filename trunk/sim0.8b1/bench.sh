@@ -5,7 +5,7 @@ rm -f a.out res.txt;
 echo "Apropriate script use: bench.sh FILE N_THREADS LOWER_BACKOFF UPPER_BACKOFF";
 echo "This script runs FILE 10 times using N_THREADS and calulates average exection time";
 
-gcc $1 -O3 -msse3 -ftree-vectorize -ftree-vectorizer-verbose=0 -finline-functions -lpthread -march=native -mtune=native -DN_THREADS=$2 -DUSE_CPUS=$3 -D_GNU_SOURCE -pipe #-I/home/nkallima/papi/include -L/home/nkallima/papi/lib -lpapi
+gcc $1 -O3 -msse3 -ftree-vectorize -ftree-vectorizer-verbose=0 -finline-functions -lpthread -march=native -mtune=native -DN_THREADS=$2 -DUSE_CPUS=$3 -D_GNU_SOURCE -pipe
 
 for a in {1..10};do
     ./a.out $4 $5 >> res.txt;
