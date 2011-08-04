@@ -124,19 +124,5 @@ inline static void backoffCalculate(BackoffStruct *b, int active) {
 #endif
 }
 
-inline static void backoffReCalc(BackoffStruct *b, bool c1, bool c2, int help) {
-    const int help_factor = 0.2 * N_THREADS;
-
-    if (c1) {
-        backoff_reduce(b);
-    } else if (c2) {
-        if (help < help_factor)
-            backoff_increase(b);
-        else backoff_reduce(b);
-    } else {
-        reset_backoff(b);
-    }
-}
-
 #endif
 
