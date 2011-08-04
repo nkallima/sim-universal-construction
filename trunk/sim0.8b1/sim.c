@@ -112,7 +112,7 @@ Object apply_op(void (*sfunc)(HalfObjectState *, volatile Object, int), Object a
     int i, j, prefix, mybank, help;
 
     announce[pid] = arg;                            // announce the operation
-	mybank = TVEC_GET_BANK_OF_BIT(pid);
+	  mybank = TVEC_GET_BANK_OF_BIT(pid);
     TVEC_REVERSE_BIT(&my_bit, pid);
     TVEC_NEGATIVE_BANK(&toggle, &toggle, mybank);
     mod_sp = (HalfObjectState *)&pool[pid * LOCAL_POOL_SIZE + local_index];
@@ -132,7 +132,6 @@ Object apply_op(void (*sfunc)(HalfObjectState *, volatile Object, int), Object a
         FullFence();
         l_toggles = a_toggles;                      // This is an atomic read, since a_toogles is volatile
         if (tmp_sp != sp) {
-            //if (j==0) backoffReCalc(&backoff, true, false, 0);
             continue;
         }
         diffs = TVEC_XOR(mod_sp->applied, l_toggles);
@@ -158,10 +157,8 @@ Object apply_op(void (*sfunc)(HalfObjectState *, volatile Object, int), Object a
         mod_dw.index = LOCAL_POOL_SIZE * pid + local_index;      // store in mod_dw.index the index in pool where lsp will be stored
         if (tmp_sp==sp && CAS64(&sp, *((int64_t *)&ldw), *((int64_t *)&mod_dw))) { // try to change sp to the value mod_dw
             local_index = (local_index + 1) % LOCAL_POOL_SIZE;   //if this happens successfully,use next item in pid's pool next time
-            //if (j==0) backoffReCalc(&backoff, false, true, help);
             return mod_sp->ret[pid];
         }
-        //if (j==0)backoffReCalc(&backoff, false, false, 0);
     }
     LoadFence();
     tmp_sp = sp;                                                 // after two unsuccessful efforts, read current value of sp
