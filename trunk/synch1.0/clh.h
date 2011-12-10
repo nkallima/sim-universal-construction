@@ -45,7 +45,9 @@ inline static void clhLock(CLHLockStruct *l, int pid) {
     l->MyNode[pid]->locked = true;
     l->MyPred[pid] = (CLHLockNode *)SWAP(&l->Tail, (void *)l->MyNode[pid]);
     while (l->MyPred[pid]->locked == true) {
-#if N_THREADS > USE_CPUS
+#ifdef _HSYNCH_H_
+        ;
+#elif N_THREADS > USE_CPUS
         sched_yield();
 #else
         ;
