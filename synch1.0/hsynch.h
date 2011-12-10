@@ -88,12 +88,12 @@ inline static RetVal applyOp(HSynchStruct *l, RetVal (*sfunc)(ArgVal, int), HSyn
         ;
 #endif
     }
-#if defined(__sun) || defined(sun)
-    schedctl_start(st_thread->schedule_control);
-#endif
     p = cur;                                // I am not been helped
     if (cur->completed)                     // I have been helped
         return cur->arg_ret;
+#if defined(__sun) || defined(sun)
+    schedctl_start(st_thread->schedule_control);
+#endif
     clhLock(l->central_lock, pid);
 #ifdef DEBUG
     l->rounds++;

@@ -13,7 +13,7 @@
 #include "types.h"
 #include "system.h"
 //#define _EMULATE_FAA_
-
+//#define _EMULATE_SWAP_
 
 inline static void *getMemory(size_t size) {
     void *p = malloc(size);
@@ -235,11 +235,29 @@ inline static bool _CASPTR(void *A, void *B, void *C) {
 
 #define SWAP(A, B) _SWAP((void *)A, (void *)B)
 inline static void *_SWAP(void *A, void *B) {
+#if defined(_EMULATE_SWAP_)
+#    warning SWAP instructions are simulated!
+    void *old_val;
+    void *new_val;
+
+    while (true) {
+        old_val = (void *)*((volatile long *)A);
+        new_val = B;
+        if(((void *)*((volatile long *)A)) == old_val && CASPTR(A, old_val, new_val) == true)
+            break;
+    }
+#   ifdef DEBUG
+    __executed_swap[__stats_thread_id].v++;
+#   endif
+    return old_val;
+
+#else
 #ifdef DEBUG
     __executed_swap[__stats_thread_id].v++;
     return (void *)__SWAP(A, B);
 #else
     return (void *)__SWAP(A, B);
+#endif
 #endif
 }
 
