@@ -43,7 +43,7 @@
 // This way of debugging is deprecated. It is better to
 // compile your code with debug option.
 // See Readme for more details.
-#define DEBUG
+//#define DEBUG
 
 // Definition OBJECT_SIZE
 // ----------------------
