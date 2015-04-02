@@ -73,7 +73,7 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
 
 
 inline static void applyEnqueue(QueueCCSynchStruct *object_struct, QueueThreadState *lobject_struct, ArgVal arg, int pid) {
-     applyOp(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, (ArgVal) pid, pid);
+     applyOp(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, arg, pid);
 }
 
 inline static RetVal applyDequeue(QueueCCSynchStruct *object_struct, QueueThreadState *lobject_struct, int pid) {
