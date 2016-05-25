@@ -360,12 +360,12 @@ inline void Execute(void* Arg) {
         exit(EXIT_FAILURE);
     }
     start_cpu_counters(id);
-    for (i = 0; i < RUNS; i++) {
-        enqueue(id, id);
+    for (i = 1; i < RUNS; i++) {
+        enqueue(i, id);
         rnum = simRandomRange(1, MAX_WORK);
         for (j = 0; j < rnum; j++)
             ;
-        dequeue(id);
+        printf("id=%d  dequeue()=%d\n", id, dequeue(id));
         rnum = simRandomRange(1, MAX_WORK);
         for (j = 0; j < rnum; j++)
             ;
