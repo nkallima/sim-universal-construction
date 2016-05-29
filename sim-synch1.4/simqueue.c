@@ -304,7 +304,7 @@ RetVal dequeue(int pid) {
                 mod_sp->counter += 1;
 #endif
                 if (next != null) {
-                    mod_sp->ret[i] = next->obj;
+                    mod_sp->ret[proc_id] = next->obj;
                     mod_sp->ptr = next;
                 } else {
                     connectQueue();
