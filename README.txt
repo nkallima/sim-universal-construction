@@ -93,12 +93,12 @@ REFERENCES
 [2] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "A highly-efficient wait-free universal construction."
     Proceedings of the twenty-third annual ACM symposium on Parallelism in algorithms and architectures. ACM, 2011.
 
-[3] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "Lock Oscillation: Boosting the Performance of Concurrent Data Structures."
-    Proceedings of the 21st International Conference on Principles of Distributed Systems. 2017.
+[3] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "Lock Oscillation: Boosting the Performance of Concurrent Data 
+    Structures." Proceedings of the 21st International Conference on Principles of Distributed Systems. 2017.
 
 [4] Oyama, Yoshihiro, Kenjiro Taura, and Akinori Yonezawa. "Executing parallel programs with synchronization bottlenecks
-    efficiently." Proceedings of the International Workshop on Parallel and Distributed Computing for Symbolic and Irregular
-    Applications. Vol. 16. 1999.
+    efficiently." Proceedings of the International Workshop on Parallel and Distributed Computing for Symbolic and 
+    Irregular Applications. Vol. 16. 1999.
 
 [5] T. S. Craig. Building FIFO and priority-queueing spin locks from atomic swap. 
     Technical Report TR 93-02-02, Department of Computer Science, University of Washington, February 1993
