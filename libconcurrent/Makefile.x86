@@ -1,0 +1,54 @@
+CC         = cc
+AR         = gcc-ar
+LDLIBS	   = -lpthread -lm -lnuma
+
+GCCFLAGS   = -Wall -std=gnu89 -Wno-unused-but-set-variable -Ofast -fPIC -flto -msse3 -ftree-vectorize -ftree-vectorizer-verbose=0 -finline-functions -march=native -mtune=native -D_GNU_SOURCE
+
+CFLAGS     = $(GCCFLAGS)
+
+ARGS       =
+ARGCORES=
+
+ifeq ($(strip $(ARGCORES)),)
+ARGCORES=-DUSE_CPUS=$(shell nproc)
+endif
+
+# define any directories containing header files other than /usr/include
+INCLUDES   = -Iincludes
+
+# define the output directory
+BINDIR     = bin
+
+LIBDIR     = lib
+
+LIBNAME    = libsimsynch.a
+
+# define the C source files
+PRIMITIVES = $(wildcard primitives/*.c)
+CONCURRENT = $(wildcard concurrent/*.c)
+BENCHMARKS = $(wildcard benchmarks/*bench.c)
+SRCS       = $(PRIMITIVES) $(CONCURRENT) 
+
+# define the C object files 
+OBJECTS    = $(SRCS:.c=.o)
+OBJEXECS   = $(BENCHMARKS:.c=.o)
+
+# define the .run executable files
+EXECS      = $(BENCHMARKS:.c=.run)
+
+.PHONY: all clean
+
+all: $(EXECS) libbuild
+
+$(EXECS): %.run : %.o $(OBJECTS)
+	$(CC) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $< -o $(BINDIR)/$(notdir $@) $(OBJECTS) $(LDLIBS)
+
+.c.o:
+	$(CC) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) -c $< -o $@
+
+libbuild: $(OBJECTS)
+	$(AR) rcs $(LIBDIR)/$(LIBNAME) $(OBJECTS)
+
+clean: $(SRCS)
+	rm -f $(OBJECTS) $(OBJEXECS) $(BINDIR)/*.run $(LIBDIR)/*.a res.txt *.log
+
