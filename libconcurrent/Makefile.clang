@@ -21,7 +21,7 @@ BINDIR     = bin
 
 LIBDIR     = lib
 
-LIBNAME    = libsimsynch.a
+LIBNAME    = libconcurrent.a
 
 # define the C source files
 PRIMITIVES = $(wildcard primitives/*.c)
