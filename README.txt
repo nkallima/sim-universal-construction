@@ -20,7 +20,7 @@ The following options are available:
     -b, --backoff  set a backoff value (only for simbench, simstack and simqueue benchmarks)
     -r, --repeat   set the number of times that the benchmark should be executed, default is 10 times
     -l, --list     displays the list of the available benchmarks
-    -h, --help     display help and exits
+    -h, --help     displays help and exits
 
 The current version of this library provides the following concurrent object implementations/benchmarks:
 
