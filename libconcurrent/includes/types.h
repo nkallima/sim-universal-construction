@@ -2,7 +2,9 @@
 #define _TYPES_H_
 
 #include <system.h>
+#include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef union int_aligned32_t {
    int32_t v CACHE_ALIGN;
@@ -19,9 +21,6 @@ typedef union ptr_aligned_t {
    char pad[CACHE_LINE_SIZE];
 }  ptr_aligned_t;
 
-#define null                           NULL
-#define bool                           int32_t
-#define true                           1
-#define false                          0
+#define null                          NULL
 
 #endif

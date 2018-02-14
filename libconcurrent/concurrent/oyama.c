@@ -62,7 +62,7 @@ RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal 
             StoreFence();
             return mynode->arg_ret;
         } else {
-            while (*((volatile int32_t *)&mynode->completed) == false && 
+            while (*((volatile bool *)&mynode->completed) == false && 
 			       *((volatile int32_t *)&l->lock) == LOCKED) {
                 ;
             }
