@@ -113,7 +113,7 @@ else
 fi
 
 echo -e "\e[92mBuilding Library... \t\t\t\t\t done"
-echo -e "\e[36mRunning the benchmark 10 times"
+echo -e "\e[36mRunning the benchmark $REPEATS times"
 echo -e "\e[39m"
 
 for (( i=1; i<=$REPEATS; i++ ));do
