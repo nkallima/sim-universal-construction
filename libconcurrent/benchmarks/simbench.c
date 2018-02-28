@@ -29,13 +29,13 @@ inline static void *Execute(void* Arg) {
 
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimThreadState));
 	SimThreadStateInit(th_state, id);
-    fastRandomSetSeed((unsigned long)id + 1L);
+    fastRandomSetSeed((unsigned long)id + 1);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
     for (i = 0; i < RUNS; i++) {
-        SimApplyOp(sim_struct, th_state, fetchAndMultiply, (Object) (id + 1L), id);
+        SimApplyOp(sim_struct, th_state, fetchAndMultiply, (Object) (id + 1), id);
         rnum = fastRandomRange(1, MAX_WORK);
         for (j = 0; j < rnum; j++)
             ;

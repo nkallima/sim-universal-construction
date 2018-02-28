@@ -120,10 +120,10 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
 
                 pos = bitSearchFirst(diffs.cell[i]);
                 proc_id = prefix + pos;
-                diffs.cell[i] ^= 1L << pos;
+                diffs.cell[i] ^= ((bitword_t)1) << pos;
                 tmp_arg = stack->announce[proc_id];
                 if (tmp_arg == POP) {
-                    pops.cell[i] |= 1L << pos;
+                    pops.cell[i] |= ((bitword_t)1) << pos;
                 } else {
                     serialPush(lsp_data, th_state, tmp_arg);
                     push_counter++;
@@ -137,7 +137,7 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
 
                 pos = bitSearchFirst(pops.cell[i]);
                 proc_id = prefix + pos;
-                pops.cell[i] ^= 1L << pos;
+                pops.cell[i] ^= ((bitword_t)1) << pos;
                 serialPop(lsp_data, proc_id);
             }
         }

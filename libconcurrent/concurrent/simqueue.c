@@ -136,7 +136,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
                 node = (Node *)node->next;
                 node->next = null;
                 node->val = queue->announce[proc_id];
-                diffs.cell[i] ^= 1L << pos;
+                diffs.cell[i] ^= ((bitword_t)1) << pos;
             }
         }
 
@@ -225,7 +225,7 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
                         mod_sp->ptr = (Node *)next;
                     }
                 }
-                diffs.cell[i] ^= 1L << pos;
+                diffs.cell[i] ^= ((bitword_t)1) << pos;
             }
         }
         mod_sp->applied = l_toggles;

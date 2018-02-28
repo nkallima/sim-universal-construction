@@ -51,7 +51,7 @@ inline static void *Execute(void* Arg) {
 #ifdef sun
     schedule_control = schedctl_init();
 #endif
-    fastRandomSetSeed(id + 1L);
+    fastRandomSetSeed(id + 1);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();

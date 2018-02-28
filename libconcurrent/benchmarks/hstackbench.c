@@ -21,7 +21,7 @@ inline static void *Execute(void* Arg) {
     volatile int j;
     long id = (long) Arg;
 
-    fastRandomSetSeed(id + 1L);
+    fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(HStackThreadState));
     HStackThreadStateInit(&object_struct, th_state, (int)id);
     BarrierWait(&bar);

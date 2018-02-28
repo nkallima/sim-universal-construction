@@ -90,9 +90,9 @@ static inline void TVEC_REVERSE_BIT(ToggleVector *tv1, int bit) {
 
     i = bit >> _TVEC_DIVISION_SHIFT_BITS_;
     offset = bit & _TVEC_MODULO_BITS_;
-    tv1->cell[i] ^= 1L << offset;
+    tv1->cell[i] ^= ((bitword_t)1) << offset;
 #else
-    tv1->cell[0] ^= 1L << bit;
+    tv1->cell[0] ^= ((bitword_t)1) << bit;
 #endif
 }
 
@@ -103,9 +103,9 @@ static inline void TVEC_SET_BIT(ToggleVector *tv1, int bit) {
 
     i = bit >> _TVEC_DIVISION_SHIFT_BITS_;
     offset = bit & _TVEC_MODULO_BITS_;
-    tv1->cell[i] |= 1L << offset;
+    tv1->cell[i] |= ((bitword_t)1) << offset;
 #else
-    tv1->cell[0] |= 1L << bit;
+    tv1->cell[0] |= ((bitword_t)1) << bit;
 #endif
 }
 
@@ -124,12 +124,12 @@ static inline bool TVEC_IS_SET(ToggleVector tv1, int pid) {
     i = pid >> _TVEC_DIVISION_SHIFT_BITS_;
     offset = pid & _TVEC_MODULO_BITS_;
     // Commented code is optimized to avoid branches
-    // if ( (tv1.cell[i] & (1L << offset)) ==  0) return false;
+    // if ( (tv1.cell[i] & (1 << offset)) ==  0) return false;
     // else return true;
     return (tv1.cell[i] >> offset) & 1;
 #else
     // Commented code is optimized to avoid branches
-    // if ( (tv1.cell[i] & (1L << offset)) ==  0) return false;
+    // if ( (tv1.cell[i] & (1 << offset)) ==  0) return false;
     // else return true;
     return (tv1.cell[0] >> pid) & 1;
 #endif

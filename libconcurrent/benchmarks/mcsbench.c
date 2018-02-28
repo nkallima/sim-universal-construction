@@ -54,7 +54,7 @@ inline static void *Execute(void* Arg) {
     schedule_control = schedctl_init();
 #endif
     MCSThreadStateInit(&st_thread, id);
-    fastRandomSetSeed(id + 1L);
+    fastRandomSetSeed(id + 1);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();

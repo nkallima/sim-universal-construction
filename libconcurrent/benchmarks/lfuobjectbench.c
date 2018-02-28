@@ -31,7 +31,7 @@ inline static void *Execute(void* Arg) {
     volatile long j;
     long id = (long) Arg;
 
-    fastRandomSetSeed(id + 1L);
+    fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(LFUObjectThreadState));
     LFUObjectThreadStateInit(th_state, MIN_BAK, MAX_BAK);
     BarrierWait(&bar);
@@ -39,7 +39,7 @@ inline static void *Execute(void* Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < RUNS; i++) {
-        LFUObjectApplyOp(&lfobject, th_state, fetchAndMultiply, (Object) (id + 1L), id);
+        LFUObjectApplyOp(&lfobject, th_state, fetchAndMultiply, (Object) (id + 1), id);
         rnum = fastRandomRange(1, MAX_WORK);
         for (j = 0; j < rnum; j++)
             ;

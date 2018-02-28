@@ -87,7 +87,7 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
 
                 pos = bitSearchFirst(diffs.cell[i]);
                 proc_id = prefix + pos;
-                diffs.cell[i] ^= 1L << pos;
+                diffs.cell[i] ^= ((bitword_t)1) << pos;
                 lsp_data->ret[proc_id] = sfunc(lsp_data, sim_struct->announce[proc_id], proc_id);
             }
         }
