@@ -1,13 +1,9 @@
-CC         = cc
+COMPILER   = cc
 AR         = gcc-ar
-LDLIBS	   = -lpthread -lm -lnuma
-
-GCCFLAGS   = -Wall -std=gnu89 -Wno-unused-but-set-variable -Ofast -fPIC -flto -msse3 -ftree-vectorize -ftree-vectorizer-verbose=0 -finline-functions -march=native -mtune=native -D_GNU_SOURCE
-
-CFLAGS     = $(GCCFLAGS)
-
+LDLIBS     = -lpthread -lm
+CFLAGS     =
 ARGS       =
-ARGCORES=
+ARGCORES   =
 
 ifeq ($(strip $(ARGCORES)),)
 ARGCORES=-DUSE_CPUS=$(shell nproc)
@@ -41,10 +37,10 @@ EXECS      = $(BENCHMARKS:.c=.run)
 all: $(EXECS) libbuild
 
 $(EXECS): %.run : %.o $(OBJECTS)
-	$(CC) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $< -o $(BINDIR)/$(notdir $@) $(OBJECTS) $(LDLIBS)
+	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $< -o $(BINDIR)/$(notdir $@) $(OBJECTS) $(LDLIBS)
 
 .c.o:
-	$(CC) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) -c $< -o $@
+	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) -c $< -o $@
 
 libbuild: $(OBJECTS)
 	$(AR) rcs $(LIBDIR)/$(LIBNAME) $(OBJECTS)

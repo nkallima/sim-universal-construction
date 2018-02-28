@@ -1,23 +1,23 @@
-ARCH := $(shell uname -p)
-NPROC := $(shell nproc)
+ARCH  = $(shell uname -p)
+NPROC = $(shell nproc)
 
 all:
 	make $(ARCH)
 
 x86_64:
-	make -f Makefile.x86 -j $(NPROC)
+	make -f Makefile.generic -j $(NPROC) COMPILER=$(CC) CFLAGS='-Wall -std=gnu89 -Wno-unused-but-set-variable -Ofast -fPIC -flto -msse3 -ftree-vectorize -ftree-vectorizer-verbose=0 -finline-functions -march=native -mtune=native -D_GNU_SOURCE'
 
 x86:
-	make -f Makefile.x86 -j $(NPROC)
+	make -f Makefile.generic -j $(NPROC) COMPILER=$(CC) CFLAGS='-Wall -std=gnu89 -Wno-unused-but-set-variable -Ofast -fPIC -flto -msse3 -ftree-vectorize -ftree-vectorizer-verbose=0 -finline-functions -march=native -mtune=native -D_GNU_SOURCE'
 
 sparc:
-	make -f Makefile.sparc -j $(NPROC)
+	make -f Makefile.generic -j $(NPROC) COMPILER=$(CC) CFLAGS='-pipe -O3 -mtune=niagara2 -m32 -lrt -finline-functions -D_GNU_SOURCE'
 
 icc:
-	make -f Makefile.icc -j $(NPROC)
+	make -f Makefile.generic -j $(NPROC) COMPILER=icc CFLAGS='-static -gcc -Ofast -pthread -D_GNU_SOURCE'
 
-clang:
-	make -f Makefile.clang -j $(NPROC)
+unknown:
+	make -f Makefile.generic -j $(NPROC) COMPILER=$(CC) CFLAGS='-std=gnu89 -Ofast -fPIC -flto -D_GNU_SOURCE'
 
 clean:
-	make -f Makefile.x86 clean -j $(NPROC)
+	make -f Makefile.generic clean -j $(NPROC)

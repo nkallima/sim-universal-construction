@@ -19,6 +19,7 @@ The following options are available:
     -c, --cores    set the number of cores to be used by the benchmark
     -b, --backoff  set a backoff value (only for simbench, simstack and simqueue benchmarks)
     -r, --repeat   set the number of times that the benchmark should be executed, default is 10 times
+    -w, --workload set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64
     -l, --list     displays the list of the available benchmarks
     -h, --help     displays help and exits
 
@@ -28,7 +29,7 @@ A) COMBINING TECHNIQUES
 =========================
 ccsynchbench.c           // A blocking Fetch&Multiply object based on the CC-Synch algorithm [1].
 dsmsynchbench.c          // A blocking Fetch&Multiply object based on the DSM-Synch algorithm [1].
-hsynchbench.c            // A blocking Fetch&Multiply object based on the H-Synch algorithm [1] suitable for Numa machines.
+hsynchbench.c            // A blocking Fetch&Multiply object based on the H-Synch algorithm [1].
 simbench.c               // A wait-free Fetch&Multiply object based on the PSim algorithm [2].
 oscibench.c              // A blocking Fetch&Multiply object based on the OSCI algorithm [3].
 oyamabench.c             // A blocking Fetch&Multiply object based on the Oyama's algorithm [4].
@@ -38,7 +39,7 @@ B) CONCURRENT QUEUES
 =========================
 ccqueuebench.c           // A blocking concurrent queue implementation based on the CC-Synch algorithm [1].
 dsmqueuebench.c          // A blocking concurrent queue implementation based on the DSM-Synch algorithm [1].
-hqueuebench.c            // A blocking concurrent queue implementation based on the H-Synch algorithm [1] for Numa machines.
+hqueuebench.c            // A blocking concurrent queue implementation based on the H-Synch algorithm [1].
 simqueuebench.c          // A wait-free concurrent queue implementation based on the SimQueue algorithm [2].
 osciqueue.c              // A blocking concurrent queue implementation based on the OSCI algorithm [3].
 clhqueuebench.c          // A blocking concurrent queue implementation based on CLH locks [5, 6].
@@ -49,7 +50,7 @@ C) CONCURRENT STACKS
 =========================
 ccstackbench.c           // A blocking concurrent stack implementation based on the CC-Synch algorithm [1].
 dsmstackbench.c          // A blocking concurrent stack implementation based on the DSM-Synch algorithm [1].
-hstackbench.c            // A blocking concurrent stack implementation based on the H-Synch algorithm [1] for Numa machines.
+hstackbench.c            // A blocking concurrent stack implementation based on the H-Synch algorithm [1].
 simstackbench.c          // A blocking concurrent stack implementation based on the SimStack algorithm [2].
 oscistack.c              // A blocking concurrent stack implementation based on the OSCI algorithm [3].
 lfstackbench.c           // A lock-free concurrent stack implementation based on the algorithm presented in [8].
@@ -72,18 +73,15 @@ COMPILING THE LIBRARY
 =========================
 
 In case that you just want to compile the library that provides all the implemented concurrent algorithms
-execute one of the commands. This step is not necessary in case that you want to run benchmarks.
+execute one of the following make commands. This step is not necessary in case that you want to run benchmarks.
 
-Make x86                 // Compiles the library/benchmarks for the x86 architecture using the gcc compiler. 
+make                     // Auto-detects the current machine architecture and compiles the library/benchmarks for it.
 
-Make sparc               // Compiles the library/benchmarks for the SPARC architecture using 
-                         // the gcc compiler (under testingi for this version).
+make CC=cc ARCH=arch     // Compiles the library/benchmarks for the arch machine architecture using the cc compiler
 
-Make icc                 // Compiles the library/benchmarks using the icc compiler. 
+make icc                 // Compiles the library/benchmarks using the icc compiler on some x86/x86_64 machine. 
 
-Make clang               // Compiles the library/benchmarks using the clang compiler.
-
-Make clean               // Cleans all the binary files.
+make clean               // Cleaning-up all binary files.
 
 
 REFERENCES

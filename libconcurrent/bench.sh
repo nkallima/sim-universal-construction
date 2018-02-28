@@ -11,6 +11,7 @@ function usage()
     echo -e "-c, --cores   \t set the number of cores to be used by the benchmark"
     echo -e "-b, --backoff \t set a backoff value (only for simbench, simstack and simqueue benchmarks)"
     echo -e "-r, --repeat  \t set the number of times that the benchmark should be executed, default is 10 times"
+    echo -e "-w, --workload\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64"
     echo -e "-l, --list    \t displays the list of the available benchmarks"
     echo -e "--compiler    \t set the compiler for building the binaries of the benchmark suite, default is the gcc compiler"
     echo -e ""
@@ -24,6 +25,7 @@ FIBERS="";
 BACKOFF=0;
 REPEATS=10;
 LIST=0;
+WORKLOAD=64;
 COMPILER=gcc;
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
@@ -62,6 +64,9 @@ while [ "$1" != "" ]; do
             ;;
         -r | --repeat)
             REPEATS=$VALUE;
+            ;;
+        -w | --workload)
+            WORKLOAD=$VALUE;
             ;;
         --compiler)
             COMPILER=$VALUE;
@@ -106,11 +111,7 @@ echo -e "\e[36mNumber of running threads: " $NTHREADS
 echo -e "\e[36mNumber of available processing cores: " $NCORES
 
 
-if [ $COMPILER = "gcc" ]; then
-    make clean > built.log && make ARGS="-DN_THREADS=${NTHREADS} -DFIBERS_PER_THREAD=${FIBERS}" ARGCORES="-DUSE_CPUS=${NCORES}" > built.log
-else
-    make clean > built.log && make $COMPILER ARGS="-DN_THREADS=${NTHREADS} -DFIBERS_PER_THREAD=${FIBERS}" ARGCORES="-DUSE_CPUS=${NCORES}" > built.log
-fi
+make clean > built.log && make CC=$COMPILER ARGS="-DN_THREADS=${NTHREADS} -DFIBERS_PER_THREAD=${FIBERS} -DMAX_WORK=${WORKLOAD}" ARGCORES="-DUSE_CPUS=${NCORES}" > built.log
 
 echo -e "\e[92mBuilding Library... \t\t\t\t\t done"
 echo -e "\e[36mRunning the benchmark $REPEATS times"
