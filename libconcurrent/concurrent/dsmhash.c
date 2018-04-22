@@ -133,3 +133,4 @@ inline void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t k
     hash->announce[pid] = args;
     DSMSynchApplyOp(&hash->synch[args.bucket], &th_state->th_state[args.bucket], serialOperations, (void *)hash, 0, pid);
 }
+

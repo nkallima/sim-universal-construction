@@ -40,3 +40,4 @@ inline void DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t k
 inline void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid);
 
 #endif
+

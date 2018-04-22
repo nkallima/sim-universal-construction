@@ -8,6 +8,7 @@ For compiling, it is highly recommended to use gcc of version 4.3.0 or greater.
 For getting the best performance, changes in Makefile may be needed (compiler flags etc).
 Important parameters for the benchmarks and/or library are set in the config.h file..
 
+
 RUNNING BENCHMARKS
 =========================
 For running benchmarks use the bench.sh script file that is provided in the main directory of this source tree.
@@ -19,7 +20,7 @@ The following options are available:
     -c, --cores    set the number of cores to be used by the benchmark
     -b, --backoff  set a backoff value (only for simbench, simstack and simqueue benchmarks)
     -r, --repeat   set the number of times that the benchmark should be executed, default is 10 times
-    -w, --workload set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64
+    -w, --workload set the amount of workload (i.e. dummy loop iterations between two consecutive operations of the benchmarked object), default is 64
     -l, --list     displays the list of the available benchmarks
     -h, --help     displays help and exits
 
@@ -43,7 +44,7 @@ hqueuebench.c            // A blocking concurrent queue implementation based on 
 simqueuebench.c          // A wait-free concurrent queue implementation based on the SimQueue algorithm [2].
 osciqueue.c              // A blocking concurrent queue implementation based on the OSCI algorithm [3].
 clhqueuebench.c          // A blocking concurrent queue implementation based on CLH locks [5, 6].
-msqueuebench.c           // A lock-free concurrent queue implementation based on the lock-free algorithm presented in [7].
+msqueuebench.c           // A lock-free concurrent queue implementation based on the algorithm of [7].
 
 
 C) CONCURRENT STACKS
@@ -62,12 +63,17 @@ D) LOCKS
 clhbench.c               // A blocking Fetch&Multiply object based on the CLH locks [5, 6].
 mcsbench.c               // A blocking Fetch&Multiply object based on the MCS locks [9].
 
+E) HASH-TABLES
+=========================
+clhhashbench.c           // A hash-table implementation based on CLH locks [5, 6].
+dsmhashbench.c           // A hash-table implementation based on MCS locks [9].
 
-E) OTHER BENCHMARKS
+F) OTHER BENCHMARKS
 =========================
 lfuobjectbench.c         // A simple, lock-free Fetch&Multiply object implementation.
-fadbench.c               // A benchmark that measures the throughput of Fetch&Add instructions on a multi-core machine.
+fadbench.c               // A benchmark that measures the throughput of Fetch&Add instructions.
 activesetbench.c         // A simple implementation of an active-set.
+pthreadsbench.c          // A benchmark for measuring the performance os spin-locks of pthreads library.
 
 COMPILING THE LIBRARY
 =========================
@@ -75,9 +81,9 @@ COMPILING THE LIBRARY
 In case that you just want to compile the library that provides all the implemented concurrent algorithms
 execute one of the following make commands. This step is not necessary in case that you want to run benchmarks.
 
-make                     // Auto-detects the current machine architecture and compiles the library/benchmarks for it.
+make                     // Auto-detects the current architecture and compiles the library/benchmarks for it.
 
-make CC=cc ARCH=arch     // Compiles the library/benchmarks for the arch machine architecture using the cc compiler
+make CC=cc ARCH=arch     // Compiles the library/benchmarks for the current architecture using the cc compiler
 
 make icc                 // Compiles the library/benchmarks using the icc compiler on some x86/x86_64 machine. 
 
@@ -87,17 +93,19 @@ make clean               // Cleaning-up all binary files.
 REFERENCES
 =========================
 [1] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "Revisiting the combining synchronization technique." 
-    ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, 2012.
+    ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012.
 
 [2] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "A highly-efficient wait-free universal construction."
-    Proceedings of the twenty-third annual ACM symposium on Parallelism in algorithms and architectures. ACM, 2011.
+    Proceedings of the twenty-third annual ACM symposium on Parallelism in algorithms and architectures.
+    SPAA, 2011.
 
 [3] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "Lock Oscillation: Boosting the Performance of Concurrent 
-    Data Structures." Proceedings of the 21st International Conference on Principles of Distributed Systems. 2017.
+    Data Structures." Proceedings of the 21st International Conference on Principles of Distributed Systems.
+    Opodis 2017.
 
 [4] Oyama, Yoshihiro, Kenjiro Taura, and Akinori Yonezawa. "Executing parallel programs with synchronization 
-    bottlenecks efficiently." Proceedings of the International Workshop on Parallel and Distributed Computing for 
-    Symbolic and Irregular Applications. Vol. 16. 1999.
+    bottlenecks efficiently." Proceedings of the International Workshop on Parallel and Distributed Computing
+    for Symbolic and Irregular Applications. Vol. 16. 1999.
 
 [5] T. S. Craig. Building FIFO and priority-queueing spin locks from atomic swap. 
     Technical Report TR 93-02-02, Department of Computer Science, University of Washington, February 1993
@@ -106,8 +114,8 @@ REFERENCES
     Parallel Processing Symposium, 1994. Proceedings., Eighth International. IEEE, 1994
     
 [7] Michael, Maged M., and Michael L. Scott. "Simple, fast, and practical non-blocking and blocking concurrent
-    queue algorithms." Proceedings of the fifteenth annual ACM symposium on Principles of distributed computing. 
-    ACM, 1996.
+    queue algorithms." Proceedings of the fifteenth annual ACM symposium on Principles of distributed 
+    computing. ACM, 1996.
     
 [8] Treiber, R. Kent. "Systems programming: Coping with parallelism."
     International Business Machines Incorporated, Thomas J. Watson Research Center, 1986.

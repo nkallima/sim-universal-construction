@@ -39,3 +39,4 @@ inline void CLHHashSearch(CLHHash *hash, CLHHashThreadState *th_state, int64_t k
 inline void CLHHashDelete(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int pid);
 
 #endif
+

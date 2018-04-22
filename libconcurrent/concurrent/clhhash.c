@@ -137,3 +137,4 @@ inline void CLHHashDelete(CLHHash *hash, CLHHashThreadState *th_state, int64_t k
     serialOperations((void *)hash, 0, pid);
     CLHUnlock(hash->synch[args.bucket], pid);
 }
+
