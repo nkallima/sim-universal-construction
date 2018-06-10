@@ -15,7 +15,7 @@ function usage()
     echo -e "-l, --list    \t displays the list of the available benchmarks"
     echo -e "--compiler    \t set the compiler for building the binaries of the benchmark suite, default is the gcc compiler"
     echo -e ""
-    echo -e "-h, --help    \t display this help and exit;"
+    echo -e "-h, --help    \t displays this help and exits"
     echo -e ""
 }
 
@@ -28,19 +28,10 @@ LIST=0;
 WORKLOAD=64;
 COMPILER=gcc;
 
-if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+if [ "$#" = "0" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     usage;
     exit;
 fi
-
-if [ $1 = "-l" ] || [ $1 = "--list" ]; then
-   cd benchmarks;
-   ls -lafr *.c
-   exit;
-fi
-
-FILE=$1;
-shift;
 
 while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
@@ -74,24 +65,29 @@ while [ "$1" != "" ]; do
         -l | --list)
             LIST=1;
             ;;
-        *)
+        -*)
             echo "ERROR: unknown parameter \"$PARAM\""
             usage
             exit 1
             ;;
+	*)
+	    FILE=$PARAM;
+	    ;;
     esac
     shift
 done
 
 if [ $LIST = "1" ]; then
-   ls -lafr ./benchmarks/*.c
-   exit;
+   cd benchmarks;
+   ls -lafr *.c
+   exit -1;
 fi
 
 if [ ! -e benchmarks/$FILE ]; then
    echo -e "\n" $FILE "is not available for benchmarking.\n"
-   echo -e " Available files for benchmarking: "
-   ls -lafr ./benchmarks/*.c;
+   echo -e "Available files for benchmarking: "
+   cd benchmarks;
+   ls -lafr *.c;
    exit -1;
 fi
 
