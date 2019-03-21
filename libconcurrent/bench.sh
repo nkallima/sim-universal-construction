@@ -9,11 +9,12 @@ function usage()
     echo -e "-t, --threads \t set the number of threads (fiber threads also included, if any) to be used in the benchmark"
     echo -e "-f, --fibers  \t set the number of user-level threads per posix thread"
     echo -e "-c, --cores   \t set the number of cores to be used by the benchmark"
-    echo -e "-b, --backoff \t set a backoff value (only for simbench, simstack and simqueue benchmarks)"
     echo -e "-r, --repeat  \t set the number of times that the benchmark should be executed, default is 10 times"
     echo -e "-w, --workload\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64"
     echo -e "-l, --list    \t displays the list of the available benchmarks"
     echo -e "--compiler    \t set the compiler for building the binaries of the benchmark suite, default is the gcc compiler"
+    echo -e "-b, --backoff, --lower_backoff \t set a backoff value (only for msqueue, lfstack, simbench, simstack and simqueue benchmarks)"
+    echo -e "-b2, --upper_backoff           \t set a backoff value (only for msqueue and lfstack benchmarks)"
     echo -e ""
     echo -e "-h, --help    \t displays this help and exits"
     echo -e ""
@@ -23,6 +24,7 @@ NCORES=0;
 NTHREADS=0;
 FIBERS="";
 BACKOFF=0;
+UPPER_BACKOFF=0;
 REPEATS=10;
 LIST=0;
 WORKLOAD=64;
@@ -50,8 +52,11 @@ while [ "$1" != "" ]; do
         -f | --fibers)
             FIBERS=$VALUE;
             ;;
-        -b | --backoff)
+        -b | --backoff | --lower_backoff)
             BACKOFF=$VALUE;
+            ;;
+        -b2 | --upper_backoff)
+            UPPER_BACKOFF=$VALUE;
             ;;
         -r | --repeat)
             REPEATS=$VALUE;
@@ -114,7 +119,7 @@ echo -e "\e[36mRunning the benchmark $REPEATS times"
 echo -e "\e[39m"
 
 for (( i=1; i<=$REPEATS; i++ ));do
-    ./bin/${FILE%.c}.run $BACKOFF >> res.txt;
+    ./bin/${FILE%.c}.run $BACKOFF $UPPER_BACKOFF >> res.txt;
     tail -1 res.txt;
 done;
 
