@@ -14,15 +14,18 @@ RUNNING BENCHMARKS
 For running benchmarks use the bench.sh script file that is provided in the main directory of this source tree.
 Example usage: ./bench.sh FILE.c OPTION1=NUM1  OPTION2=NUM2 ...
 
-The following options are available:
-    -t, --threads  set the number of threads (fiber threads also included, if any) to be used in the benchmark
-    -f, --fibers   set the number of user-level threads per posix thread
-    -c, --cores    set the number of cores to be used by the benchmark
-    -b, --backoff  set a backoff value (only for simbench, simstack and simqueue benchmarks)
-    -r, --repeat   set the number of times that the benchmark should be executed, default is 10 times
-    -w, --workload set the amount of workload (i.e. dummy loop iterations between two consecutive operations of the benchmarked object), default is 64
-    -l, --list     displays the list of the available benchmarks
-    -h, --help     displays help and exits
+The following options are available.
+  -t, --threads    set the number of threads (fiber threads also included, if any) to be used in the benchmark
+  -f, --fibers     set the number of user-level threads per posix thread
+  -c, --cores      set the number of cores to be used by the benchmark
+  -r, --repeat     set the number of times that the benchmark should be executed, default is 10 times
+  -w, --workload   set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64
+  -l, --list       displays the list of the available benchmarks
+  --compiler       set the compiler for building the binaries of the benchmark suite, default is the gcc compiler
+  -b, --backoff, --lower_backoff   set a backoff value (only for msqueue, lfstack, simbench, simstack and simqueue benchmarks)
+  -b2, --upper_backoff             set a backoff value (only for msqueue and lfstack benchmarks)
+
+-h, --help       displays this help and exits
 
 The current version of this library provides the following concurrent object implementations/benchmarks:
 
