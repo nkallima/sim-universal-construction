@@ -11,7 +11,7 @@
 #   undef USE_CPUS
 #endif
 #ifndef USE_CPUS
-#    define USE_CPUS               80
+#    define USE_CPUS               128
 #endif
 
 // Definition: N_THREADS
@@ -20,7 +20,7 @@
 // experiments. In case N_THREADS > USE_CPUS, two or more threads 
 // may run in the same processing core.
 #ifndef N_THREADS
-#    define N_THREADS              80
+#    define N_THREADS              128
 #endif
 
 
@@ -75,8 +75,7 @@
 // and luobject.c experiments. In any other case it is
 // ignored. Its default value is 1. It is used for simulating
 // of an atomic array of Fetch&Multiply objects with
-// OBJECT_SIZE elements. All elements are updated 
-// simultaneously.
+// OBJECT_SIZE elements. All elements are updated simultaneously.
 #ifndef OBJECT_SIZE
 #    define OBJECT_SIZE            1
 #endif
@@ -99,9 +98,8 @@
 // read/write this type.
 // If this type is of 32 or 64 bits could be atomically 
 // read or written by most machine architectures.
-// However, a value of 128 bits or more may not be
-// supported (in most cases i.e. x86_64 supports
-// types of 128 bits but no more).
+// However, a value of 128 bits or more may not be supported
+// (in most cases i.e. x86_64 supports types of 128 bits).
 #define RetVal                     int64_t
 
 // Definition: ArgVal
@@ -118,8 +116,8 @@
 // Important definition for HSynch family of algorithms.
 // This should be moved in system.h in future.
 #ifdef sparc   // This is the case for a multiprocessor with 2 T2 processors.
-#    define CPU_AMOUNT_OF_CORES    80
-#else          // Some other case for a machine with 4 NUMA nodes
+#    define CPU_AMOUNT_OF_CORES    64
+#else          // Some other case for a machine 4 cores per NUMA node.
 #    define CPU_AMOUNT_OF_CORES    4
 #endif
 
@@ -134,3 +132,4 @@
 //#define _EMULATE_SWAP_
 
 #endif
+
