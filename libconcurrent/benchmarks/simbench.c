@@ -44,7 +44,7 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
+    if (argc < 2) {
         fprintf(stderr, "ERROR: Please set an upper bound for the backoff!\n");
         exit(EXIT_SUCCESS);
     } else {
