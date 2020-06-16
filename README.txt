@@ -1,9 +1,9 @@
 This version of the code is optimized for x86_64 machine architectures. 
 Some of the benchmarks run much better in machine architectures that natively
 support Fetch&Add instructions(e.g., x86_64, etc.).
+However, some of the benchmarks have successfully tested in other machine architectures,
+such as SPARC, ARM-V8 and RISC-V.
 As a compiler, gcc is supported, but you may also try to use icc or clang.
-The provided code is mostly developed and tested in x86_64 machine architectures 
-(i.e., both Intel and Amd multiprocessors).
 For compiling, it is highly recommended to use gcc of version 4.3.0 or greater. 
 For getting the best performance, changes in Makefile may be needed (compiler flags etc).
 Important parameters for the benchmarks and/or library are set in the config.h file..
@@ -95,36 +95,37 @@ make clean               // Cleaning-up all binary files.
 
 REFERENCES
 =========================
-[1] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "Revisiting the combining synchronization technique." 
+[1] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "Revisiting the combining synchronization technique".
     ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012.
 
-[2] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "A highly-efficient wait-free universal construction."
+[2] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "A highly-efficient wait-free universal construction".
     Proceedings of the twenty-third annual ACM symposium on Parallelism in algorithms and architectures.
     SPAA, 2011.
 
 [3] Fatourou, Panagiota, and Nikolaos D. Kallimanis. "Lock Oscillation: Boosting the Performance of Concurrent 
-    Data Structures." Proceedings of the 21st International Conference on Principles of Distributed Systems.
+    Data Structures". Proceedings of the 21st International Conference on Principles of Distributed Systems.
     Opodis 2017.
 
 [4] Oyama, Yoshihiro, Kenjiro Taura, and Akinori Yonezawa. "Executing parallel programs with synchronization 
-    bottlenecks efficiently." Proceedings of the International Workshop on Parallel and Distributed Computing
+    bottlenecks efficiently". Proceedings of the International Workshop on Parallel and Distributed Computing
     for Symbolic and Irregular Applications. Vol. 16. 1999.
 
-[5] T. S. Craig. Building FIFO and priority-queueing spin locks from atomic swap. 
+[5] T. S. Craig. "Building FIFO and priority-queueing spin locks from atomic swap". 
     Technical Report TR 93-02-02, Department of Computer Science, University of Washington, February 1993
 
-[6] Magnusson, Peter, Anders Landin, and Erik Hagersten. "Queue locks on cache coherent multiprocessors."
+[6] Magnusson, Peter, Anders Landin, and Erik Hagersten. "Queue locks on cache coherent multiprocessors".
     Parallel Processing Symposium, 1994. Proceedings., Eighth International. IEEE, 1994
     
 [7] Michael, Maged M., and Michael L. Scott. "Simple, fast, and practical non-blocking and blocking concurrent
-    queue algorithms." Proceedings of the fifteenth annual ACM symposium on Principles of distributed 
+    queue algorithms". Proceedings of the fifteenth annual ACM symposium on Principles of distributed 
     computing. ACM, 1996.
     
-[8] Treiber, R. Kent. "Systems programming: Coping with parallelism."
+[8] Treiber, R. Kent. "Systems programming: Coping with parallelism".
     International Business Machines Incorporated, Thomas J. Watson Research Center, 1986.
 
 [9] Mellor-Crummey, John M., and Michael L. Scott. "Algorithms for scalable synchronization on shared-memory 
-    multiprocessors." ACM Transactions on Computer Systems (TOCS) 9.1 (1991): 21-65.
+    multiprocessors". ACM Transactions on Computer Systems (TOCS) 9.1 (1991): 21-65.
 
 For any further information, please do not hesitate to
 send an email at nkallima (at) ics.forth.gr. Feedback is always valuable.
+
