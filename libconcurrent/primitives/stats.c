@@ -21,6 +21,8 @@ volatile int64_t __total_executed_faa = 0;
 
 #ifdef _TRACK_CPU_COUNTERS
 #include <system.h>
+#include <stdlib.h>
+#include <pthread.h>
 #include <papi.h>
 
 int __cpu_events[USE_CPUS] CACHE_ALIGN;
@@ -62,20 +64,16 @@ void start_cpu_counters(int id) {
         exit(EXIT_FAILURE);
     }
     if (PAPI_add_event(__cpu_events[id], PAPI_L1_DCM) != PAPI_OK) {
-        fprintf(stderr, "PAPI ERROR: unable to create event for L1 data cache misses\n");
-        exit(EXIT_FAILURE);
+        if (id == 0) fprintf(stderr, "PAPI WARNING: unable to create event for L1 data cache misses\n");
     }
     if (PAPI_add_event(__cpu_events[id], PAPI_L2_DCM) != PAPI_OK) {
-        fprintf(stderr, "PAPI ERROR: unable to create event for L2 data cache misses\n");
-        exit(EXIT_FAILURE);
+        if (id == 0) fprintf(stderr, "PAPI WARNING: unable to create event for L2 data cache misses\n");
     }
     if (PAPI_add_event(__cpu_events[id], PAPI_BR_MSP) != PAPI_OK) {
-        fprintf(stderr, "PAPI ERROR: unable to create event for branch mis-predictions\n");
-        exit(EXIT_FAILURE);
+        if (id == 0) fprintf(stderr, "PAPI WARNING: unable to create event for branch mis-predictions\n");
     }
     if (PAPI_add_event(__cpu_events[id], PAPI_RES_STL) != PAPI_OK) {
-        fprintf(stderr, "PAPI ERROR: unable to create event for cpu stalls\n");
-        exit(EXIT_FAILURE);
+        if (id == 0) fprintf(stderr, "PAPI WARNING: unable to create event for cpu stalls\n");
     }
     if (PAPI_start(__cpu_events[id]) != PAPI_OK) {
         fprintf(stderr, "PAPI ERROR: unable to start performance counters\n");
