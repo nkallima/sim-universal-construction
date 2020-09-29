@@ -63,12 +63,6 @@
 // See README.txt for more details.
 //#define DEBUG
 
-// Definition: LIGHT_DEBUG
-// -----------------------
-// This LIGHT_DEBUG mode provides less statics but with less overheads.
-// Please be warn that only a few algorithms support this mode.
-//#define LIGHT_DEBUG
-
 // Definition OBJECT_SIZE
 // ----------------------
 // This definition is only used in lfobject.c, simopt.c
