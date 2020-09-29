@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     printStats(N_THREADS);
 
 #ifdef DEBUG
-    fprintf(stderr, "Object state debug counter: %lld\n", (long long int)stack->pool[stack->sp.struct_data.index].counter);
+    fprintf(stderr, "DEBUG: Object state debug counter: %lld\n", (long long int)stack->pool[stack->sp.struct_data.index].counter);
 #endif
 
     return 0;

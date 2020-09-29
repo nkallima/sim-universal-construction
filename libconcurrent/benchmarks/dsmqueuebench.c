@@ -56,8 +56,8 @@ int main(void) {
     printStats(N_THREADS);
 
 #ifdef DEBUG
-    fprintf(stderr, "enqueue state:    counter: %d rounds: %d\n", queue_object.enqueue_struct.counter, queue_object.enqueue_struct.rounds);
-    fprintf(stderr, "dequeue state:    counter: %d rounds: %d\n\n", queue_object.dequeue_struct.counter, queue_object.dequeue_struct.rounds);
+    fprintf(stderr, "DEBUG: enqueue state: counter: %d rounds: %d\n", queue_object.enqueue_struct.counter, queue_object.enqueue_struct.rounds);
+    fprintf(stderr, "DEBUG: dequeue state: counter: %d rounds: %d\n\n", queue_object.dequeue_struct.counter, queue_object.dequeue_struct.rounds);
 #endif
 
     return 0;

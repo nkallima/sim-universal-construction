@@ -57,9 +57,9 @@ int main(void) {
     printStats(N_THREADS);
 
 #ifdef DEBUG
-    fprintf(stderr, "object counter: %d\n", object_lock.counter);
-    fprintf(stderr, "rounds: %d\n", object_lock.rounds);
-    fprintf(stderr, "Average helping: %f\n", (float)object_lock.counter/object_lock.rounds);
+    fprintf(stderr, "DEBUG: object counter: %d\n", object_lock.counter);
+    fprintf(stderr, "DEBUG: rounds: %d\n", object_lock.rounds);
+    fprintf(stderr, "DEBUG: Average helping: %f\n", (float)object_lock.counter/object_lock.rounds);
 #endif
 
     return 0;

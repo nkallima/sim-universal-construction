@@ -42,7 +42,7 @@ void init_cpu_counters(void) {
     if ((hwinfo = PAPI_get_hardware_info()) == NULL)
         exit(1);
 
-    fprintf(stderr, "\n\n%d CPU’s at %f MHz.\n", hwinfo->totalcpus, hwinfo->mhz);
+    fprintf(stderr, "\n\n%d CPUs at %f MHz.\n", hwinfo->totalcpus, hwinfo->mhz);
 #endif
 }
  
@@ -107,6 +107,7 @@ void stop_cpu_counters(int id) {
 
 void printStats(int nthreads) {
 #ifdef DEBUG
+    printf("DEBUG: ");
     printf("failed_CAS_per_op: %f\t", (float)__total_failed_cas/(nthreads * RUNS));
     printf("executed_CAS: %ld\t", __total_executed_cas);
     printf("successful_CAS: %ld\t", __total_executed_cas - __total_failed_cas);
@@ -130,7 +131,7 @@ void printStats(int nthreads) {
     }
 
 
-    fprintf(stderr, "L1 data cache misses: %.2lf\t"
+    fprintf(stderr, "DEBUG: L1 data cache misses: %.2lf\t"
             "L2 data cache misses: %.2lf\t"
             "Branch mis-predictions: %.2lf\t"
             "CPU stalls: %.2lf\t total operations: %ld\n",

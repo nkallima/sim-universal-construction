@@ -125,7 +125,8 @@ done;
 
 
 echo -e "\e[36m"
-awk 'BEGIN {time = 0;
+awk 'BEGIN {debug_prefix="";
+            time = 0;
             throughput = 0;
             failed_cas = 0;
             executed_cas = 0;
@@ -137,26 +138,29 @@ awk 'BEGIN {time = 0;
             ops_per_cas = 0;
             i = 0}
             {time += $2;
-            throughput += $5
-            failed_cas += $9; 
-            executed_cas += $11;
-            successful_cas += $13;
-            executed_swap += $15;
-            executed_faa += $17;
-            atomics += $19;
-            atomics_per_op += $21;
-            ops_per_cas += $23;
+            throughput += $5;
+            debug_prefix = $8;
+            failed_cas += $10; 
+            executed_cas += $12;
+            successful_cas += $14;
+            executed_swap += $16;
+            executed_faa += $18;
+            atomics += $20;
+            atomics_per_op += $22;
+            ops_per_cas += $24;
             i += 1} 
-     END {time = time/i;             print "\naverage time: \t", time, "";
+     END {  time = time/i; print "\naverage time: \t", time, "";
             throughput = throughput/i; print "throughput: \t", throughput, "";
-            failed_cas = failed_cas/i; print "failed cas: \t", failed_cas, "";
-            executed_cas =executed_cas/i; print "executed cas: \t", executed_cas, "";
-            successful_cas = successful_cas/i; print "successful cas: ", successful_cas, "";
-            executed_swap = executed_swap/i; print "executed swap: \t", executed_swap, "";
-            executed_faa = executed_faa/i; print "executed faa: \t", executed_faa, "";
-            atomics = atomics/i; print "atomics: \t", atomics, "";
-            atomics_per_op = atomics_per_op/i; print "atomics per op: ", atomics_per_op, "";
-            ops_per_cas = ops_per_cas/i; print "operations per cas: ", ops_per_cas, "\n";
+            if (debug_prefix == "DEBUG:") {
+                failed_cas = failed_cas/i; print "failed cas: \t", failed_cas, "";
+                executed_cas =executed_cas/i; print "executed cas: \t", executed_cas, "";
+                successful_cas = successful_cas/i; print "successful cas: ", successful_cas, "";
+                executed_swap = executed_swap/i; print "executed swap: \t", executed_swap, "";
+                executed_faa = executed_faa/i; print "executed faa: \t", executed_faa, "";
+                atomics = atomics/i; print "atomics: \t", atomics, "";
+                atomics_per_op = atomics_per_op/i; print "atomics per op: ", atomics_per_op, "";
+                ops_per_cas = ops_per_cas/i; print "operations per cas: ", ops_per_cas, "\n";
+            }
          }' res.txt
 
  echo -e "\e[39m"

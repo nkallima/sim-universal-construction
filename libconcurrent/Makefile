@@ -5,7 +5,7 @@ all:
 	make $(ARCH)
 
 x86_64:
-	make -f Makefile.generic -j $(NPROC) COMPILER=$(CC) CFLAGS='-Wall -std=gnu89 -Wno-unused-but-set-variable -Ofast -fPIC -flto -mavx -ftree-vectorize -finline-functions -march=native -mtune=native -D_GNU_SOURCE'
+	make -f Makefile.generic -j $(NPROC) COMPILER=$(CC) CFLAGS='-Wall -std=gnu89 -Wno-unused-but-set-variable -Ofast -fPIC -flto -ftree-vectorize -finline-functions -march=native -mtune=native -D_GNU_SOURCE'
 
 sparc:
 	make -f Makefile.generic -j $(NPROC) COMPILER=$(CC) CFLAGS='-pipe -O3 -mtune=niagara2 -m32 -lrt -finline-functions -D_GNU_SOURCE'

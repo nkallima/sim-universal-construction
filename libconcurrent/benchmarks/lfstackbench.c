@@ -18,7 +18,7 @@ inline static void *Execute(void* Arg) {
     long rnum;
     volatile long j;
 
-	setThreadId(id);
+    setThreadId(id);
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof (LFStackThreadState));
     LFStackThreadStateInit(th_state, MIN_BAK, MAX_BAK);
@@ -54,17 +54,17 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(N_THREADS);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2*RUNS*N_THREADS/(1000.0*(d2 - d1)));
-    printStats(N_THREADS);    
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2 * RUNS * N_THREADS / (1000.0 * (d2 - d1)));
+    printStats(N_THREADS);
 #ifdef DEBUG
     int counter = 0;
 
-    while(stack.top != null) {
+    while (stack.top != null) {
         counter++;
         stack.top = stack.top->next;
     }
 
-    fprintf(stderr, "%d nodes were left in the stack!\n", counter);
+    fprintf(stderr, "DEBUG: %d nodes were left in the stack!\n", counter);
 #endif
 
     return 0;

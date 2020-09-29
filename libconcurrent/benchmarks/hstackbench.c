@@ -54,7 +54,7 @@ int main(void) {
     printStats(N_THREADS);
 
 #ifdef DEBUG
-    fprintf(stderr, "object state:    counter: %d rounds: %d\n", object_struct.object_struct.counter, object_struct.object_struct.rounds);
+    fprintf(stderr, "DEBUG: object state: counter: %d rounds: %d\n", object_struct.object_struct.counter, object_struct.object_struct.rounds);
 #endif
 
     return 0;

@@ -63,10 +63,10 @@ int main(int argc, char *argv[]) {
     
 #ifdef DEBUG
     SimObjectState *l = (SimObjectState *)&sim_struct->pool[((pointer_t*)&sim_struct->sp)->struct_data.index];
-    fprintf(stderr, "Object state long value: %d\n", l->counter);
-    fprintf(stderr, "object counter: %d\n", l->counter);
-    fprintf(stderr, "rounds: %d\n", l->rounds);
-    fprintf(stderr, "Average helping: %f\n", (float)l->counter/l->rounds);
+    fprintf(stderr, "DEBUG: Object state long value: %d\n", l->counter);
+    fprintf(stderr, "DEBUG: object counter: %d\n", l->counter);
+    fprintf(stderr, "DEBUG: rounds: %d\n", l->rounds);
+    fprintf(stderr, "DEBUG: Average helping: %f\n", (float)l->counter/l->rounds);
     fprintf(stderr, "\n");
 #endif
 

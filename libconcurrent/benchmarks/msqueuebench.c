@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
         queue.head = queue.head->next;
         counter++;
     }
-    fprintf(stderr, "%d nodes were left in the queue!\n", counter - 1);
+    fprintf(stderr, "DEBUG: %d nodes were left in the queue!\n", counter - 1);
 #endif
 
     return 0;
