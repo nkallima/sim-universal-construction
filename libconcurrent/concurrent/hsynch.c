@@ -85,9 +85,7 @@ void HSynchStructInit(HSynchStruct *l) {
     int numa_regions = 1, i;
 
 #ifdef NUMA_SUPPORT
-    numa_regions = numa_max_node();
-    // The next line is only usefull for non-NUMA machines
-    if (numa_regions == 0) numa_regions = 1;
+    numa_regions = numa_max_node() + 1;
 #endif
 
     HSYNCH_CLUSTER_SIZE = N_THREADS/numa_regions + N_THREADS%numa_regions;

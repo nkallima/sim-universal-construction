@@ -4,6 +4,10 @@
 #include <uthreads.h>
 #include <barrier.h>
 
+#ifdef NUMA_SUPPORT
+#   include <numa.h>
+#endif
+
 inline static void *uthreadWrapper(void *arg);
 inline static void *kthreadWrapper(void *arg);
 
@@ -52,11 +56,21 @@ int threadPin(int32_t cpu_id) {
     unsigned int len = sizeof(mask);
 
     CPU_ZERO(&mask);
-    CPU_SET(cpu_id % USE_CPUS, &mask);
-    //if (cpu_id % 2 == 0)
-    //    CPU_SET(cpu_id % USE_CPUS, &mask);
-    //else 
-    ///    CPU_SET((cpu_id + USE_CPUS/2)% USE_CPUS, &mask);
+#ifdef DEBUG
+    fprintf(stderr, "DEBUG: thread: %d -- numa_nodes: %d -- cur_numa_node: %d\n", cpu_id,numa_max_node() + 1, numa_node_of_cpu(cpu_id));
+    fprintf(stderr, "DEBUG: node cpu 0: %d -- node of cpu %d: %d\n", numa_node_of_cpu(0), N_THREADS/2, numa_node_of_cpu(N_THREADS/2-1));
+#endif
+    if (numa_node_of_cpu(0) == numa_node_of_cpu(N_THREADS/2)) {
+#ifdef DEBUG
+        fprintf(stderr, "DEBUG: This machine seems to support more than one threads per core\n");
+#endif
+        if (cpu_id % 2 == 0)
+            CPU_SET(cpu_id % USE_CPUS, &mask);
+        else 
+            CPU_SET((cpu_id + USE_CPUS/2)% USE_CPUS, &mask);
+    } else {
+        CPU_SET(cpu_id % USE_CPUS, &mask);
+    }
     ret = sched_setaffinity(0, len, &mask);
     if (ret == -1)
         perror("sched_setaffinity");
