@@ -6,7 +6,7 @@
 
 
 static const int HSYNCH_HELP_BOUND = 10 * N_THREADS;
-static const int HSYNCH_CLUSTER_SIZE = N_THREADS/CPU_AMOUNT_OF_CORES + N_THREADS%CPU_AMOUNT_OF_CORES;
+static int HSYNCH_CLUSTER_SIZE = 1;
 
 RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     volatile HSynchNode *p;
@@ -82,10 +82,18 @@ void HSynchThreadStateInit(HSynchThreadState *st_thread, int pid) {
 }
 
 void HSynchStructInit(HSynchStruct *l) {
-    int i;
+    int numa_regions = 1, i;
 
+#ifdef NUMA_SUPPORT
+    numa_regions = numa_max_node();
+    // The next line is only usefull for non-NUMA machines
+    if (numa_regions == 0) numa_regions = 1;
+#endif
+
+    HSYNCH_CLUSTER_SIZE = N_THREADS/numa_regions + N_THREADS%numa_regions;
     l->central_lock = CLHLockInit();
-    for (i = 0; i < CPU_AMOUNT_OF_CORES; i++) {
+    l->Tail = getAlignedMemory(CACHE_LINE_SIZE, numa_regions * sizeof(HSynchNodePtr));
+    for (i = 0; i < numa_regions; i++) {
         l->Tail[i].ptr = getAlignedMemory(CACHE_LINE_SIZE, sizeof(HSynchNode));
         l->Tail[i].ptr->next = null;
         l->Tail[i].ptr->locked = false;

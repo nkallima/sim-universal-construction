@@ -106,15 +106,6 @@
 
 #define NUMA_SUPPORT
 
-// Define how many cores per processor the target machine has.
-// Important definition for HSynch family of algorithms.
-// This should be moved in system.h in future.
-#ifdef sparc   // This is the case for a multiprocessor with 2 T2 processors.
-#    define CPU_AMOUNT_OF_CORES    64
-#else          // Some other case for a machine 4 cores per NUMA node.
-#    define CPU_AMOUNT_OF_CORES    4
-#endif
-
 // Definition: _TRACK_CPU_COUNTERS
 // -------------------------------
 // By enabling this definition, the Performance Application Programming Interface (PAPI)

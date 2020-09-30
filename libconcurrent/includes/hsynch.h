@@ -42,7 +42,7 @@ typedef struct HSynchThreadState {
 
 typedef struct HSynchStruct {
     CLHLockStruct *central_lock CACHE_ALIGN;
-    volatile HSynchNodePtr Tail[CPU_AMOUNT_OF_CORES] CACHE_ALIGN;
+    volatile HSynchNodePtr *Tail CACHE_ALIGN;
 #ifdef DEBUG
     volatile int rounds CACHE_ALIGN;
     volatile int counter;
