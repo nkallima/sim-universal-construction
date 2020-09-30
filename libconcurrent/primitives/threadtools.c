@@ -61,9 +61,6 @@ int threadPin(int32_t cpu_id) {
     fprintf(stderr, "DEBUG: node cpu 0: %d -- node of cpu %d: %d\n", numa_node_of_cpu(0), N_THREADS/2, numa_node_of_cpu(N_THREADS/2-1));
 #endif
     if (numa_node_of_cpu(0) == numa_node_of_cpu(N_THREADS/2)) {
-#ifdef DEBUG
-        fprintf(stderr, "DEBUG: This machine seems to support more than one threads per core\n");
-#endif
         if (cpu_id % 2 == 0)
             CPU_SET(cpu_id % USE_CPUS, &mask);
         else 
