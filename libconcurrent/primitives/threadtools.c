@@ -16,8 +16,9 @@ static __thread int32_t __thread_id = -1;
 static __thread int32_t __unjoined_threads = 0;
 
 static void *(*__func)(void *) CACHE_ALIGN = null;
-static int32_t __uthreads = 0;
-static bool    __uthread_sched CACHE_ALIGN = false;
+static uint32_t __uthreads = 0;
+static uint32_t __nthreads = 0;
+static bool __uthread_sched CACHE_ALIGN = false;
 static Barrier bar CACHE_ALIGN;
 
 void setThreadId(int32_t id) {
@@ -60,10 +61,10 @@ int threadPin(int32_t cpu_id) {
 #ifdef NUMA_SUPPORT
 #   ifdef DEBUG
     fprintf(stderr, "DEBUG: thread: %d -- numa_nodes: %d -- cur_numa_node: %d\n", cpu_id,numa_max_node() + 1, numa_node_of_cpu(cpu_id));
-    fprintf(stderr, "DEBUG: node cpu 0: %d -- node of cpu %d: %d\n", numa_node_of_cpu(0), N_THREADS/2, numa_node_of_cpu(N_THREADS/2-1));
+    fprintf(stderr, "DEBUG: node cpu 0: %d -- node of cpu %d: %d\n", numa_node_of_cpu(0), __nthreads/2, numa_node_of_cpu(__nthreads/2-1));
 #   endif
 
-    if (numa_node_of_cpu(0) == numa_node_of_cpu(N_THREADS/2)) {
+    if (numa_node_of_cpu(0) == numa_node_of_cpu(__nthreads/2)) {
         if (cpu_id % 2 == 0)
             CPU_SET(cpu_id % USE_CPUS, &mask);
         else 
@@ -107,6 +108,7 @@ int StartThreadsN(int nthreads, void *(*func)(void *), int mode) {
     int last_thread_id;
 
     init_cpu_counters();
+    __nthreads = nthreads;
     __threads = getMemory(nthreads * sizeof(pthread_t));
     __func = func;
     StoreFence(); 
@@ -153,12 +155,12 @@ int32_t getThreadId(void) {
 void resched(void) {
     if (__uthread_sched)
         fiberYield();
-    else if (N_THREADS <= USE_CPUS)
+    else if (__nthreads <= USE_CPUS)
         ;
     else sched_yield();
 }
 
 bool isSystemOversubscribed(void) {
-    if (N_THREADS > USE_CPUS) return true;
+    if (__nthreads > USE_CPUS) return true;
     else return false;
 }
