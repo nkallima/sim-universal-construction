@@ -11,45 +11,54 @@
 
 typedef struct HalfObjectState {
     ToggleVector applied;
+    Object *ret;
     Node *head;
-    Object ret[N_THREADS];
-    #ifdef DEBUG
+#ifdef DEBUG
     int counter;
-    #endif
+#endif
+    uint64_t __flex[1];
 } HalfObjectState;
 
 
 typedef struct ObjectState {
     ToggleVector applied;
+    Object *ret;
     Node *head;
-    Object ret[N_THREADS];
-    #ifdef DEBUG
+#ifdef DEBUG
     int counter;
-    #endif
-    int32_t pad[PAD_CACHE(sizeof(HalfObjectState))];
+#endif
+    uint64_t __flex[1];
+    char pad[PAD_CACHE(sizeof(HalfObjectState))];
 } ObjectState;
+
+#define ObjectStateSize(nthreads)        (sizeof(ObjectState) + _TVEC_VECTOR_SIZE(nthreads) + nthreads * sizeof(Object))
+
 
 typedef struct SimStackThreadState {
     PoolStruct pool;
-    ToggleVector mask CACHE_ALIGN;
+    ToggleVector mask;
     ToggleVector toggle;
     ToggleVector my_bit;
+    ToggleVector diffs;
+    ToggleVector l_toggles;
+    ToggleVector pops;
     int local_index;
     int backoff;
 } SimStackThreadState;
 
 
 typedef struct SimStackStruct {
+    ArgVal *announce;
+    ObjectState **pool;
+    uint32_t nthreads;
+    int MAX_BACK;
     volatile Node *head CACHE_ALIGN;
     volatile pointer_t sp CACHE_ALIGN;
     volatile ToggleVector a_toggles CACHE_ALIGN;
-    volatile ArgVal announce[N_THREADS] CACHE_ALIGN;
-    volatile ObjectState pool[N_THREADS * _SIM_LOCAL_POOL_SIZE_ + 1] CACHE_ALIGN;
-    int MAX_BACK CACHE_ALIGN;
 } SimStackStruct;
 
-void SimStackThreadStateInit(SimStackThreadState *th_state, int pid);
-void SimStackInit(SimStackStruct *stack, int max_backoff);
+void SimStackInit(SimStackStruct *stack, uint32_t nthreads, int max_backoff);
+void SimStackThreadStateInit(SimStackThreadState *th_state, uint32_t nthreads, int pid);
 void SimStackPush(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid);
 RetVal SimStackPop(SimStackStruct *stack, SimStackThreadState *th_state, int pid);
 

@@ -13,11 +13,7 @@ void MCSLock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
     }
     
     while (thread_state->MyNode->locked == true) {
-#if N_THREADS > USE_CPUS
         resched();
-#else
-        ;
-#endif
     }
 }
 
@@ -27,11 +23,7 @@ void MCSUnlock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
             return;
 
         while (thread_state->MyNode->next == NULL) {
-#if N_THREADS > USE_CPUS
             resched();
-#else
-            ;
-#endif
         }
     }
     thread_state->MyNode->next->locked = false;

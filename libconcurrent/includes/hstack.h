@@ -17,7 +17,7 @@ typedef struct HStackThreadState {
     HSynchThreadState th_state;
 } HStackThreadState;
 
-void HStackInit(HStackStruct *stack_object_struct);
+void HStackInit(HStackStruct *stack_object_struct, uint32_t nthreads);
 void HStackThreadStateInit(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid);
 void HStackPush(HStackStruct *object_struct, HStackThreadState *lobject_struct, ArgVal arg, int pid);
 RetVal HStackPop(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid);

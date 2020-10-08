@@ -16,7 +16,7 @@ SimQueueStruct *queue;
 int64_t d1, d2;
 Barrier bar;
 
-inline static void *Execute(void* Arg) {
+static void *Execute(void* Arg) {
     SimQueueThreadState *th_state;
     long i = 0;
     long id = (long) Arg;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
         sscanf(argv[1], "%d", &backoff);
     }
     queue = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimQueueStruct));
-    SimQueueInit(queue, backoff);
+    SimQueueInit(queue, N_THREADS, backoff);
 
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
@@ -66,11 +66,11 @@ int main(int argc, char *argv[]) {
     printStats(N_THREADS);
 
 #ifdef DEBUG
-    Node *link_a = queue->enq_pool[queue->enq_sp.struct_data.index].link_a;
-    Node *link_b = queue->enq_pool[queue->enq_sp.struct_data.index].link_b;
+    Node *link_a = queue->enq_pool[queue->enq_sp.struct_data.index]->link_a;
+    Node *link_b = queue->enq_pool[queue->enq_sp.struct_data.index]->link_b;
     CASPTR(&link_a->next, null, link_b);
-    fprintf(stderr, "DEBUG: State value: %ld\n", (long)queue->enq_pool[queue->enq_sp.struct_data.index].counter);
-    volatile Node *cur = queue->deq_pool[queue->deq_sp.struct_data.index].ptr;
+    fprintf(stderr, "DEBUG: State value: %ld\n", (long)queue->enq_pool[queue->enq_sp.struct_data.index]->counter);
+    volatile Node *cur = queue->deq_pool[queue->deq_sp.struct_data.index]->ptr;
     long counter = 0;
     while (cur != null) {
         cur = cur->next;

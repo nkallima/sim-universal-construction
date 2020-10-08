@@ -10,31 +10,41 @@
 
 #define _SIM_LOCAL_POOL_SIZE_            4
 
+#if _SIM_LOCAL_POOL_SIZE_ < 2
+#   error SIM universal construction is mproperily configured
+#endif
 
-typedef struct _SIM_STATE{
-    volatile Object obj CACHE_ALIGN;
+
+typedef struct _SIM_STATE {
+    volatile Object obj;
 } _SIM_STATE;
 
+
 typedef struct HalfSimObjectState {
+    RetVal *ret;
     ToggleVector applied;
-    _SIM_STATE state;
-    RetVal ret[N_THREADS];
+    _SIM_STATE state CACHE_ALIGN;
 #ifdef DEBUG
     int counter;
-    int rounds CACHE_ALIGN;
+    int rounds;
 #endif
+    uint64_t __flex[1];
 } HalfSimObjectState;
 
 typedef struct SimObjectState {
+    RetVal *ret;
     ToggleVector applied;
-    _SIM_STATE state;
-    RetVal ret[N_THREADS];
+    _SIM_STATE state CACHE_ALIGN;
 #ifdef DEBUG
     int counter;
-    int rounds CACHE_ALIGN;
+    int rounds;
 #endif
-    int32_t pad[PAD_CACHE(sizeof(HalfSimObjectState))];
+    uint64_t __flex[1];
+    char pad[PAD_CACHE(sizeof(HalfSimObjectState))];
 } SimObjectState;
+
+#define SimObjectStateSize(nthreads)        (sizeof(SimObjectState) + _TVEC_VECTOR_SIZE(nthreads) + (nthreads) * sizeof(RetVal))
+
 
 typedef union pointer_t {
     struct StructData{
@@ -48,25 +58,28 @@ typedef struct SimThreadState {
     ToggleVector mask;
     ToggleVector toggle;
     ToggleVector my_bit;
+    ToggleVector diffs;
+    ToggleVector l_toggles;
     int local_index;
     int backoff;
 } SimThreadState;
 
 typedef struct SimStruct {
+    volatile pointer_t sp;
+ 
+    // Pointers toi shared data
+    ToggleVector a_toggles CACHE_ALIGN;
+    SimObjectState ** volatile pool;
+    ArgVal * volatile announce;
+
+    // Some constants
+    uint32_t nthreads;
     int MAX_BACK;
-    // Shared variables
-    volatile pointer_t sp CACHE_ALIGN;
-    // Try to place a_toggles and announce to 
-    // the same cache line
-    volatile ToggleVector a_toggles CACHE_ALIGN;
-    // _TVEC_BIWORD_SIZE_ is a performance workaround for 
-    // array announce. Size N_THREADS is algorithmically enough.
-    volatile ArgVal announce[N_THREADS + _TVEC_BIWORD_SIZE_] CACHE_ALIGN;
-    volatile SimObjectState pool[_SIM_LOCAL_POOL_SIZE_ * N_THREADS + 1] CACHE_ALIGN;
 } SimStruct;
 
-void SimInit(SimStruct *sim_struct, int max_backoff);
-void SimThreadStateInit(SimThreadState *th_state, int pid);
+
+void SimInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff);
+void SimThreadStateInit(SimThreadState *th_state, uint32_t nthreads, int pid);
 Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfunc)(HalfSimObjectState *, ArgVal, int), Object arg, int pid);
 
 #endif

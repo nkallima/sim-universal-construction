@@ -5,7 +5,7 @@
 #endif
 
 
-static const int HSYNCH_HELP_BOUND = 10 * N_THREADS;
+static const int HSYNCH_HELP_FACTOR = 10;
 static int HSYNCH_CLUSTER_SIZE = 1;
 
 RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
@@ -13,6 +13,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     volatile HSynchNode *cur;
     register HSynchNode *next_node, *tmp_next;
     register int counter = 0;
+    int help_bound = HSYNCH_HELP_FACTOR * l->nthreads;
 
     next_node = st_thread->next_node;
     next_node->next = null;
@@ -31,16 +32,18 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     st_thread->next_node = (HSynchNode *)cur;
 
     while (cur->locked) {                   // spinning
-#if N_THREADS > USE_CPUS
-        resched();
-#elif defined(sparc)
-        Pause();
-        Pause();
-        Pause();
-        Pause();
+        if (l->nthreads > USE_CPUS)
+            resched();
+        else {
+#if defined(__sun) || defined(sun)
+            Pause();
+            Pause();
+            Pause();
+            Pause();
 #else
-        ;
+            Pause();
 #endif
+        }
     }
 #if defined(__sun) || defined(sun)
     schedctl_start(st_thread->schedule_control);
@@ -52,7 +55,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
 #ifdef DEBUG
     l->rounds++;
 #endif
-    while (p->next != null && counter < HSYNCH_HELP_BOUND) {
+    while (p->next != null && counter < help_bound) {
         ReadPrefetch(p->next);
         counter++;
 #ifdef DEBUG
@@ -81,15 +84,16 @@ void HSynchThreadStateInit(HSynchThreadState *st_thread, int pid) {
 #endif
 }
 
-void HSynchStructInit(HSynchStruct *l) {
+void HSynchStructInit(HSynchStruct *l, uint32_t nthreads) {
     int numa_regions = 1, i;
 
 #ifdef NUMA_SUPPORT
     numa_regions = numa_max_node() + 1;
 #endif
 
-    HSYNCH_CLUSTER_SIZE = N_THREADS/numa_regions + N_THREADS%numa_regions;
-    l->central_lock = CLHLockInit();
+    l->nthreads = nthreads;
+    HSYNCH_CLUSTER_SIZE = nthreads/numa_regions + nthreads%numa_regions;
+    l->central_lock = CLHLockInit(nthreads);
     l->Tail = getAlignedMemory(CACHE_LINE_SIZE, numa_regions * sizeof(HSynchNodePtr));
     for (i = 0; i < numa_regions; i++) {
         l->Tail[i].ptr = getAlignedMemory(CACHE_LINE_SIZE, sizeof(HSynchNode));

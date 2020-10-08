@@ -47,10 +47,11 @@ typedef struct HSynchStruct {
     volatile int rounds CACHE_ALIGN;
     volatile int counter;
 #endif
+    uint32_t nthreads CACHE_ALIGN;
 } HSynchStruct;
 
 
 RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid);
 void HSynchThreadStateInit(HSynchThreadState *st_thread, int pid);
-void HSynchStructInit(HSynchStruct *l);
+void HSynchStructInit(HSynchStruct *l, uint32_t nthreads);
 #endif

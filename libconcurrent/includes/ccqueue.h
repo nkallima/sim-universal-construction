@@ -24,7 +24,7 @@ typedef struct CCQueueThreadState {
 } CCQueueThreadState;
 
 
-void CCQueueStructInit(CCQueueStruct *queue_object_struct);
+void CCQueueStructInit(CCQueueStruct *queue_object_struct, uint32_t nthreads);
 void CCQueueThreadStateInit(CCQueueStruct *object_struct, CCQueueThreadState *lobject_struct, int pid);
 void CCQueueApplyEnqueue(CCQueueStruct *object_struct, CCQueueThreadState *lobject_struct, ArgVal arg, int pid);
 RetVal CCQueueApplyDequeue(CCQueueStruct *object_struct, CCQueueThreadState *lobject_struct, int pid);

@@ -13,15 +13,11 @@
 #include <barrier.h>
 
 
-volatile Object object CACHE_ALIGN;
+volatile Object object CACHE_ALIGN = 1;
 OsciStruct object_lock CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar;
 
-void SHARED_OBJECT_INIT(void) {
-    object = 1;
-    OsciInit(&object_lock);   
-}
 
 inline static RetVal fetchAndMultiply(void *state, ArgVal arg, int pid) {
     Object *st = (Object *)state;
@@ -52,7 +48,7 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(void) {
-    SHARED_OBJECT_INIT();
+    OsciInit(&object_lock, N_THREADS);
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
     JoinThreadsN(N_THREADS - 1);

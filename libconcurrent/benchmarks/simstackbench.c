@@ -25,7 +25,7 @@ inline static void *Execute(void* Arg) {
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStackThreadState));
-    SimStackThreadStateInit(th_state, id);
+    SimStackThreadStateInit(th_state, N_THREADS, id);
     BarrierWait(&bar);
     if (id == 0) {
         d1 = getTimeMillis();
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
         sscanf(argv[1], "%d", &backoff);
     }
     stack = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStackStruct));
-    SimStackInit(stack, backoff);
+    SimStackInit(stack, N_THREADS, backoff);
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
     JoinThreadsN(N_THREADS);
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     printStats(N_THREADS);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: Object state debug counter: %lld\n", (long long int)stack->pool[stack->sp.struct_data.index].counter);
+    fprintf(stderr, "DEBUG: Object state debug counter: %lld\n", (long long int)stack->pool[stack->sp.struct_data.index]->counter);
 #endif
 
     return 0;

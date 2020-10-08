@@ -18,13 +18,13 @@ typedef union CLHLockNode {
 
 typedef struct CLHLockStruct {
     volatile CLHLockNode *Tail CACHE_ALIGN;
-    volatile CLHLockNode *MyNode[N_THREADS] CACHE_ALIGN;
-    volatile CLHLockNode *MyPred[N_THREADS] CACHE_ALIGN;
+    volatile CLHLockNode **MyNode CACHE_ALIGN;
+    volatile CLHLockNode **MyPred;
 } CLHLockStruct;
 
 
 void CLHLock(CLHLockStruct *l, int pid);
 void CLHUnlock(CLHLockStruct *l, int pid);
-CLHLockStruct *CLHLockInit(void);
+CLHLockStruct *CLHLockInit(uint32_t nthreads);
 
 #endif

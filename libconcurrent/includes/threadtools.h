@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #if defined (__sun)
 #    include <sys/pset.h>  // P_PID, processor_bind()
@@ -28,4 +29,6 @@ void JoinThreadsN(int nthreads);
 
 int32_t getThreadId(void);
 void resched(void);
+bool isSystemOversubscribed(void);
+
 #endif

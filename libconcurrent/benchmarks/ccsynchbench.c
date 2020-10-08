@@ -47,7 +47,7 @@ inline static void *Execute(void* Arg) {
 
 int main(void) {
     object = 1;
-    CCSynchStructInit(&object_lock);
+    CCSynchStructInit(&object_lock, N_THREADS);
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
     JoinThreadsN(N_THREADS);

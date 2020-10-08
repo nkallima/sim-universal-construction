@@ -5,9 +5,9 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 
 static const int GUARD = INT_MIN;
 
-void OsciQueueInit(OsciQueueStruct *queue_object_struct) {
-    OsciInit(&(queue_object_struct->enqueue_struct));
-    OsciInit(&queue_object_struct->dequeue_struct);
+void OsciQueueInit(OsciQueueStruct *queue_object_struct, uint32_t nthreads) {
+    OsciInit(&(queue_object_struct->enqueue_struct), nthreads);
+    OsciInit(&queue_object_struct->dequeue_struct, nthreads);
     queue_object_struct->guard.val = GUARD;
     queue_object_struct->guard.next = null;
     queue_object_struct->first = &queue_object_struct->guard;

@@ -24,7 +24,7 @@ typedef struct CCSynchNode {
     int32_t pid;
     int32_t locked;
     int32_t completed;
-    int32_t align[PAD_CACHE(sizeof(HalfCCSynchNode))];
+    char align[PAD_CACHE(sizeof(HalfCCSynchNode))];
 } CCSynchNode;
 
 typedef struct CCSynchThreadState {
@@ -37,15 +37,16 @@ typedef struct CCSynchThreadState {
 
 typedef struct CCSynchStruct {
     volatile CCSynchNode *Tail CACHE_ALIGN;
+    uint32_t nthreads CACHE_ALIGN;
 #ifdef DEBUG
+    int *combiner_counter;
     volatile int rounds CACHE_ALIGN;
     volatile int counter;
-    volatile int combiner_counter[N_THREADS];
 #endif
 } CCSynchStruct;
 
+void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads);
 void CCSynchThreadStateInit(CCSynchThreadState *st_thread, int pid);
 RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid);
-void CCSynchStructInit(CCSynchStruct *l);
 
 #endif

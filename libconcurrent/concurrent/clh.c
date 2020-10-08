@@ -4,11 +4,7 @@ void CLHLock(CLHLockStruct *l, int pid) {
     l->MyNode[pid]->locked = true;
     l->MyPred[pid] = (CLHLockNode *)SWAP(&l->Tail, (void *)l->MyNode[pid]);
     while (l->MyPred[pid]->locked == true) {
-#if N_THREADS > USE_CPUS
         resched();
-#else
-        ;
-#endif
     }
 }
 
@@ -18,15 +14,9 @@ void CLHUnlock(CLHLockStruct *l, int pid) {
 #ifdef sparc
     StoreFence();
 #endif
-
-#if N_THREADS > USE_CPUS
-    resched();
-#else
-    ;
-#endif
 }
 
-CLHLockStruct *CLHLockInit(void) {
+CLHLockStruct *CLHLockInit(uint32_t nthreads) {
     CLHLockStruct *l;
     int j;
 
@@ -34,7 +24,9 @@ CLHLockStruct *CLHLockInit(void) {
     l->Tail = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode));
     l->Tail->locked = false;
 
-    for (j = 0; j < N_THREADS; j++) {
+    l->MyNode = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode *));
+    l->MyPred = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode *));
+    for (j = 0; j < nthreads; j++) {
         l->MyNode[j] = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode));
         l->MyPred[j] = null;
     }

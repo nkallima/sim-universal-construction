@@ -6,9 +6,9 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 static const int GUARD = INT_MIN;
 static __thread PoolStruct pool_node CACHE_ALIGN;
 
-void CCQueueStructInit(CCQueueStruct *queue_object_struct) {
-    CCSynchStructInit(&queue_object_struct->enqueue_struct);
-    CCSynchStructInit(&queue_object_struct->dequeue_struct);
+void CCQueueStructInit(CCQueueStruct *queue_object_struct, uint32_t nthreads) {
+    CCSynchStructInit(&queue_object_struct->enqueue_struct, nthreads);
+    CCSynchStructInit(&queue_object_struct->dequeue_struct, nthreads);
     queue_object_struct->guard.val = GUARD;
     queue_object_struct->guard.next = null;
     queue_object_struct->first = &queue_object_struct->guard;

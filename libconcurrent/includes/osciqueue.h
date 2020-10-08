@@ -26,7 +26,7 @@ typedef struct OsciQueueThreadState {
 } OsciQueueThreadState;
 
 
-void OsciQueueInit(OsciQueueStruct *queue_object_struct);
+void OsciQueueInit(OsciQueueStruct *queue_object_struct, uint32_t nthreads);
 void OsciQueueThreadStateInit(OsciQueueStruct *object_struct, OsciQueueThreadState *lobject_struct, int pid);
 void OsciQueueApplyEnqueue(OsciQueueStruct *object_struct, OsciQueueThreadState *lobject_struct, ArgVal arg, int pid);
 RetVal OsciQueueApplyDequeue(OsciQueueStruct *object_struct, OsciQueueThreadState *lobject_struct, int pid);

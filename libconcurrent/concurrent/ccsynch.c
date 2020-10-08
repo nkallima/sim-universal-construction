@@ -1,12 +1,13 @@
 #include <ccsynch.h>
 
-static const int CCSYNCH_HELP_BOUND = 10 * N_THREADS;
+static const int CCSYNCH_HELP_FACTOR = 10;
 
 
 RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     volatile CCSynchNode *p;
     volatile CCSynchNode *cur;
     CCSynchNode *next_node, *tmp_next;
+    int help_bound = CCSYNCH_HELP_FACTOR * l->nthreads;
     int counter = 0;
 
     next_node = st_thread->next;
@@ -26,16 +27,7 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
 #endif
 
     while (cur->locked) {                   // spinning
-#if N_THREADS > USE_CPUS
-        resched();
-#elif defined(sparc)
-        Pause();
-        Pause();
-        Pause();
-        Pause();
-#else
-        Pause();
-#endif
+            resched();
     }
     if (cur->completed)                     // I have been helped
         return cur->arg_ret;
@@ -47,7 +39,7 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
     l->combiner_counter[pid] += 1;
 #endif
     p = cur;                                // I am not been helped
-    while (p->next != null && counter < CCSYNCH_HELP_BOUND) {
+    while (p->next != null && counter < help_bound) {
         StorePrefetch(p->next);
         counter++;
 #ifdef DEBUG
@@ -69,15 +61,16 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
     return cur->arg_ret;
 }
 
-void CCSynchStructInit(CCSynchStruct *l) {
+void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
+    l->nthreads = nthreads;
 #ifdef DEBUG
     int i;
 
     l->rounds = l->counter =0;
-    for (i=0; i < N_THREADS; i++)
+    l->combiner_counter = getAlignedMemory(CACHE_LINE_SIZE, sizeof(int));
+    for (i=0; i < nthreads; i++)
         l->combiner_counter[i] += 1;
 #endif
-
     l->Tail = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchNode));
     l->Tail->next = null;
     l->Tail->locked = false;

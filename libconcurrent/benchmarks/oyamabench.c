@@ -12,17 +12,13 @@
 #include <oyama.h>
 #include <barrier.h>
 
-volatile Object object CACHE_ALIGN;
+volatile Object object CACHE_ALIGN = 1;
 volatile OyamaStruct object_lock CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar;
 
 inline static RetVal fetchAndMultiply(ArgVal arg, int pid);
 
-void SHARED_OBJECT_INIT(void) {
-    object = 1;
-    OyamaInit((OyamaStruct *)&object_lock);   
-}
 
 inline static RetVal fetchAndMultiply(ArgVal arg, int pid) {
     Object old_val;
@@ -40,7 +36,7 @@ inline static void *Execute(void* Arg) {
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(OyamaThreadState));
-	OyamaThreadStateInit(th_state);
+    OyamaThreadStateInit(th_state);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
@@ -56,7 +52,7 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(void) {
-    SHARED_OBJECT_INIT();
+    OyamaInit((OyamaStruct *)&object_lock, N_THREADS);
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
     JoinThreadsN(N_THREADS);

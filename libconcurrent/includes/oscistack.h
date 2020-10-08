@@ -24,7 +24,7 @@ typedef struct OsciStackThreadState {
 } OsciStackThreadState;
 
 
-void OsciStackInit(OsciStackStruct *stack_object_struct);
+void OsciStackInit(OsciStackStruct *stack_object_struct, uint32_t nthreads);
 void OsciStackThreadStateInit(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, int pid);
 void OsciStackApplyPush(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, ArgVal arg, int pid);
 void OsciStackApplyPop(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, int pid);

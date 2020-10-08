@@ -6,7 +6,7 @@ such as SPARC, ARM-V8 and RISC-V.
 As a compiler, gcc is supported, but you may also try to use icc or clang.
 For compiling, it is highly recommended to use gcc of version 4.3.0 or greater. 
 For getting the best performance, changes in Makefile may be needed (compiler flags etc).
-Important parameters for the benchmarks and/or library are set in the config.h file..
+Important parameters for the benchmarks and/or library are set in the config.h file.
 
 
 RUNNING BENCHMARKS

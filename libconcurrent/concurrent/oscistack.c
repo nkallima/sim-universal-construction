@@ -4,8 +4,8 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
 static const int POP_OP = INT_MIN;
 
-void OsciStackInit(OsciStackStruct *stack_object_struct) {
-    OsciInit(&(stack_object_struct->object_struct));
+void OsciStackInit(OsciStackStruct *stack_object_struct, uint32_t nthreads) {
+    OsciInit(&(stack_object_struct->object_struct), nthreads);
     stack_object_struct->head = null;
 }
 

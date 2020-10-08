@@ -1,13 +1,14 @@
 #include <dsmsynch.h>
 
 
-static const int DSMSIM_HELP_BOUND = 10 * N_THREADS;
+static const int DSMSIM_HELP_FACTOR = 10;
 
 RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     volatile DSMSynchNode *mynode;
     DSMSynchNode *mypred;
     volatile DSMSynchNode *p;
     register int counter;
+    int help_bound = DSMSIM_HELP_FACTOR * l->nthreads;
 
     st_thread->toggle = 1 - st_thread->toggle;
     mynode = st_thread->MyNodes[st_thread->toggle];
@@ -29,17 +30,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
         schedctl_stop(st_thread->schedule_control);
 #endif
         while (mynode->locked) {
-#if N_THREADS > USE_CPUS
             resched();
-#elif defined(sparc)
-            Pause();
-            Pause();
-            Pause();
-            Pause();
-#else
-            Pause();
-            Pause();
-#endif
         }
         if (mynode->completed) // operation has already applied
             return mynode->ret;
@@ -61,7 +52,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
         p->ret = sfunc(state, p->arg, p->pid);
         p->completed = true;
         p->locked = false;
-        if (p->next == null || p->next->next == null || counter >= DSMSIM_HELP_BOUND)
+        if (p->next == null || p->next->next == null || counter >= help_bound)
             break;
         p = p->next;
     } while(true);
@@ -81,7 +72,8 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     return mynode->ret;
 }
 
-void DSMSynchStructInit(DSMSynchStruct *l) {
+void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
+    l->nthreads = nthreads;
     l->Tail = null;
 #ifdef DEBUG
     l->counter = 0;

@@ -1,4 +1,5 @@
 #include <backoff.h>
+#include <threadtools.h>
 
 void init_backoff(BackoffStruct *b, unsigned base_bits, unsigned cap_bits, unsigned shift_bits) {
     b->backoff_base_bits = base_bits;
@@ -16,28 +17,30 @@ void reset_backoff(BackoffStruct *b) {
 
 
 void backoff_delay(BackoffStruct *b) {
-#if N_THREADS > USE_CPUS
+    if (isSystemOversubscribed()) {
 #   ifdef sparc
-    sched_yield();
-    sched_yield();
-    sched_yield();
-    sched_yield();
-    sched_yield();
+        sched_yield();
+        sched_yield();
+        sched_yield();
+        sched_yield();
+        sched_yield();
 #   else
-    sched_yield();
+        sched_yield();
 #   endif
-#elif defined(DISABLE_BACKOFF)
-    ;
+    } else {
+#ifndef DISABLE_BACKOFF
+        volatile unsigned i;
+
+        for (i = 0; i < b->backoff; i++)
+            ;
+
+        b->backoff <<= b->backoff_shift_bits;
+        b->backoff += b->backoff_addend;
+        b->backoff &= b->backoff_cap;
 #else
-    volatile unsigned i;
-
-    for (i = 0; i < b->backoff; i++)
         ;
-
-    b->backoff <<= b->backoff_shift_bits;
-    b->backoff += b->backoff_addend;
-    b->backoff &= b->backoff_cap;
 #endif
+    }
 }
 
 

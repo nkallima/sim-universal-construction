@@ -18,7 +18,7 @@ typedef struct DSMStackThreadState {
 } DSMStackThreadState;
 
 
-void DSMSStackInit(DSMStackStruct *stack_object_struct);
+void DSMSStackInit(DSMStackStruct *stack_object_struct, uint32_t nthreads);
 void DSMStackThreadStateInit(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, int pid);
 void DSMStackPush(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, ArgVal arg, int pid);
 void DSMStackPop(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, int pid);

@@ -83,8 +83,8 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(void) {
-    ltail = CLHLockInit();
-    lhead = CLHLockInit();
+    ltail = CLHLockInit(N_THREADS);
+    lhead = CLHLockInit(N_THREADS);
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
     JoinThreadsN(N_THREADS);

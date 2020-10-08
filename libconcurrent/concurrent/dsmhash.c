@@ -13,7 +13,7 @@ inline void DSMHashInit(DSMHash *hash, int hash_size, int nthreads) {
     hash->synch = getAlignedMemory(CACHE_LINE_SIZE, hash_size * sizeof (DSMSynchStruct));
     hash->buckets = getAlignedMemory(CACHE_LINE_SIZE, hash_size * sizeof (ptr_aligned_t));
     for(i = 0; i < hash_size; i++) {
-        DSMSynchStructInit(&hash->synch[i]);   
+        DSMSynchStructInit(&hash->synch[i], nthreads);   
         hash->buckets[i].ptr = null;
     }
 }

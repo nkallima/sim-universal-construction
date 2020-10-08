@@ -28,9 +28,9 @@ inline static void *Execute(void* Arg) {
         d1 = getTimeMillis();
     TVEC_SET_ZERO(&mystate);
     TVEC_SET_BIT(&mystate, id);
-    mybank = TVEC_GET_BANK_OF_BIT(id);
+    mybank = TVEC_GET_BANK_OF_BIT(id, N_THREADS);
     for (i = 0; i < RUNS; i++) {
-        mystate = TVEC_NEGATIVE(mystate);
+        TVEC_NEGATIVE(&mystate, &mystate);
         TVEC_ATOMIC_ADD_BANK(&active_set, &mystate, mybank);
         rnum = fastRandomRange(1, MAX_WORK);
         for (j = 0; j < rnum; j++)

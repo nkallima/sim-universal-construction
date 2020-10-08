@@ -1,6 +1,6 @@
 #include <osci.h>
 
-static const int OSCI_HELP_BOUND = 10 * N_THREADS;
+static const int OSCI_HELP_FACTOR = 10;
 
 enum {_OSCI_DOOR_INIT, _OSCI_DOOR_OPENED, _OSCI_DOOR_LOCKED};
 
@@ -28,6 +28,7 @@ void OsciThreadStateInit(OsciThreadState *st_thread, int pid) {
 RetVal OsciApplyOp(OsciStruct *l, OsciThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     volatile OsciNode *p, *pred, *cur, *mynode;
     int counter = 0, i;
+    int help_bound = OSCI_HELP_FACTOR * l->nthreads;
     int group = pid/FIBERS_PER_THREAD;
     int offset_id = pid % FIBERS_PER_THREAD;
 
@@ -96,7 +97,7 @@ osci_start:
         }
         WeakFence();
         counter += i;
-        if (p->next==null || p->next->next==null || counter >= OSCI_HELP_BOUND)
+        if (p->next==null || p->next->next==null || counter >= help_bound)
             break;
         p = p->next;
     } while (true);
@@ -122,8 +123,10 @@ osci_start:
 }
 
 
-void OsciInit(OsciStruct *l) {
+void OsciInit(OsciStruct *l, uint32_t nthreads) {
     int i;
+    
+    l->nthreads = nthreads;
 #ifdef DEBUG
     l->rounds = l->counter = 0;
 #endif

@@ -45,7 +45,7 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(void) {
-    OsciQueueInit(&queue_object);
+    OsciQueueInit(&queue_object, N_THREADS);
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);    JoinThreadsN(N_THREADS);
     d2 = getTimeMillis();

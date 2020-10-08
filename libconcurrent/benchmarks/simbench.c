@@ -6,36 +6,37 @@
 #include <sim.h>
 #include <barrier.h>
 
-SimStruct *sim_struct CACHE_ALIGN = NULL;
+SimStruct sim_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-int MAX_BACK;
-Barrier bar;
+Barrier bar CACHE_ALIGN;
+int MAX_BACK CACHE_ALIGN;
+
 
 inline static RetVal fetchAndMultiply(HalfSimObjectState *lsp_data, ArgVal arg, int pid);
 
 inline static RetVal fetchAndMultiply(HalfSimObjectState *lsp_data, ArgVal arg, int pid) {
 #ifdef DEBUG
-    lsp_data->counter++;
+    lsp_data->counter += 1;
 #endif
     lsp_data->state.obj += 1;
+
     return lsp_data->state.obj;
 }
 
 inline static void *Execute(void* Arg) {
-    SimThreadState *th_state;
+    SimThreadState th_state;
     long i, rnum;
     long id = (long) Arg;
     volatile long j;
 
-    th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimThreadState));
-	SimThreadStateInit(th_state, id);
+    SimThreadStateInit(&th_state, N_THREADS, id);
     fastRandomSetSeed((unsigned long)id + 1);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
     for (i = 0; i < RUNS; i++) {
-        SimApplyOp(sim_struct, th_state, fetchAndMultiply, (Object) (id + 1), id);
+        SimApplyOp(&sim_struct, &th_state, fetchAndMultiply, (Object) (id + 1), id);
         rnum = fastRandomRange(1, MAX_WORK);
         for (j = 0; j < rnum; j++)
             ;
@@ -51,8 +52,7 @@ int main(int argc, char *argv[]) {
         sscanf(argv[1], "%d", &MAX_BACK);
     }
 
-    sim_struct = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStruct));
-    SimInit(sim_struct, MAX_BACK);
+    SimInit(&sim_struct, N_THREADS, MAX_BACK);
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
     JoinThreadsN(N_THREADS);
@@ -62,8 +62,8 @@ int main(int argc, char *argv[]) {
     printStats(N_THREADS);
     
 #ifdef DEBUG
-    SimObjectState *l = (SimObjectState *)&sim_struct->pool[((pointer_t*)&sim_struct->sp)->struct_data.index];
-    fprintf(stderr, "DEBUG: Object state long value: %d\n", l->counter);
+    SimObjectState *l = (SimObjectState *)sim_struct.pool[((pointer_t*)&sim_struct.sp)->struct_data.index];
+    fprintf(stderr, "DEBUG: Object state long value: %ld\n", l->state.obj);
     fprintf(stderr, "DEBUG: object counter: %d\n", l->counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", l->rounds);
     fprintf(stderr, "DEBUG: Average helping: %f\n", (float)l->counter/l->rounds);

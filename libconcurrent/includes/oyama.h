@@ -25,6 +25,7 @@ typedef struct OyamaAnnounceNode {
 typedef struct OyamaStruct {
     volatile int32_t lock CACHE_ALIGN;
     volatile OyamaAnnounceNode *tail CACHE_ALIGN;
+    uint32_t nthreads CACHE_ALIGN;
 #ifdef DEBUG
     volatile int rounds CACHE_ALIGN;
     volatile int counter;
@@ -37,6 +38,6 @@ typedef struct OyamaThreadState {
 
 RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal (*sfunc)(ArgVal, int), ArgVal arg, int pid);
 void OyamaThreadStateInit(OyamaThreadState *th_state);
-void OyamaInit(OyamaStruct *l);
+void OyamaInit(OyamaStruct *l, uint32_t nthreads);
 
 #endif

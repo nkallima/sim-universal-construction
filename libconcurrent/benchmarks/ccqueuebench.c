@@ -47,7 +47,7 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(void) {
-    CCQueueStructInit(&queue_object);   
+    CCQueueStructInit(&queue_object, N_THREADS);   
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
     JoinThreadsN(N_THREADS);

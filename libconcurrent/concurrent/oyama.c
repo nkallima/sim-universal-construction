@@ -4,21 +4,10 @@ inline static void OyamaWait(void);
 
 const int LOCKED = 1;
 const int UNLOCKED = 0;
-const int OYAMA_HELP_BOUND = 10 * N_THREADS;
+const int OYAMA_HELP_FACTOR = 10;
 
 static void OyamaWait(void) {
-#if N_THREADS > USE_CPUS
     resched();
-#elif defined(sparc)
-    resched();
-    //resched();
-    //resched();
-    //resched();
-    //resched();
-    //resched();
-#else
-    ;
-#endif
 }
 
 
@@ -26,6 +15,7 @@ RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal 
     volatile OyamaAnnounceNode *mynode = &th_state->my_node;
     volatile OyamaAnnounceNode *p;
     register OyamaAnnounceNode *tmp_next;
+    int help_bound = OYAMA_HELP_FACTOR * l->nthreads;
   
     // Initializing node
     mynode->arg_ret = arg;
@@ -43,8 +33,7 @@ RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal 
 #ifdef DEBUG
             l->rounds++;
 #endif
-            while (counter < OYAMA_HELP_BOUND &&
-                   (p = (OyamaAnnounceNode *) SWAP(&l->tail, null)) != null) {
+            while (counter < help_bound && (p = (OyamaAnnounceNode *) SWAP(&l->tail, null)) != null) {
                 // Start helping all the active processes
                 while (p != null) {
                     counter++;
@@ -63,7 +52,7 @@ RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal 
             return mynode->arg_ret;
         } else {
             while (*((volatile bool *)&mynode->completed) == false && 
-			       *((volatile int32_t *)&l->lock) == LOCKED) {
+                   *((volatile int32_t *)&l->lock) == LOCKED) {
                 ;
             }
             if (mynode->completed)
@@ -76,7 +65,8 @@ void OyamaThreadStateInit(OyamaThreadState *th_state) {
     ;
 }
 
-void OyamaInit(OyamaStruct *l) {
+void OyamaInit(OyamaStruct *l, uint32_t nthreads) {
+    l->nthreads = nthreads;
     l->lock = UNLOCKED;
     l->tail = null;
 #ifdef DEBUG

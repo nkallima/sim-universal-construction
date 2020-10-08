@@ -18,7 +18,7 @@ typedef struct CCStackThreadState {
 } CCStackThreadState;
 
 
-void CCStackInit(StackCCSynchStruct *stack_object_struct);
+void CCStackInit(StackCCSynchStruct *stack_object_struct, uint32_t nthreads);
 void CCStackThreadStateInit(StackCCSynchStruct *object_struct, CCStackThreadState *lobject_struct, int pid);
 void CCStackPush(StackCCSynchStruct *object_struct, CCStackThreadState *lobject_struct, ArgVal arg, int pid);
 RetVal CCStackPop(StackCCSynchStruct *object_struct, CCStackThreadState *lobject_struct, int pid);

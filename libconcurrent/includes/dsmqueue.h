@@ -23,7 +23,7 @@ typedef struct DSMQueueThreadState {
 } DSMQueueThreadState;
 
 
-void DSMQueueStructInit(DSMQueueStruct *queue_object_struct);
+void DSMQueueStructInit(DSMQueueStruct *queue_object_struct, uint32_t nthreads);
 void DSMQueueThreadStateInit(DSMQueueStruct *object_struct, DSMQueueThreadState *lobject_struct, int pid);
 void DSMQueueApplyEnqueue(DSMQueueStruct *object_struct, DSMQueueThreadState *lobject_struct, ArgVal arg, int pid);
 RetVal DSMQueueApplyDequeue(DSMQueueStruct *object_struct, DSMQueueThreadState *lobject_struct, int pid);

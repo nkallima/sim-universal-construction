@@ -56,10 +56,13 @@ int threadPin(int32_t cpu_id) {
     unsigned int len = sizeof(mask);
 
     CPU_ZERO(&mask);
-#ifdef DEBUG
+
+#ifdef NUMA_SUPPORT
+#   ifdef DEBUG
     fprintf(stderr, "DEBUG: thread: %d -- numa_nodes: %d -- cur_numa_node: %d\n", cpu_id,numa_max_node() + 1, numa_node_of_cpu(cpu_id));
     fprintf(stderr, "DEBUG: node cpu 0: %d -- node of cpu %d: %d\n", numa_node_of_cpu(0), N_THREADS/2, numa_node_of_cpu(N_THREADS/2-1));
-#endif
+#   endif
+
     if (numa_node_of_cpu(0) == numa_node_of_cpu(N_THREADS/2)) {
         if (cpu_id % 2 == 0)
             CPU_SET(cpu_id % USE_CPUS, &mask);
@@ -68,6 +71,9 @@ int threadPin(int32_t cpu_id) {
     } else {
         CPU_SET(cpu_id % USE_CPUS, &mask);
     }
+#else
+    CPU_SET(cpu_id % USE_CPUS, &mask);
+#endif
     ret = sched_setaffinity(0, len, &mask);
     if (ret == -1)
         perror("sched_setaffinity");
@@ -150,4 +156,9 @@ void resched(void) {
     else if (N_THREADS <= USE_CPUS)
         ;
     else sched_yield();
+}
+
+bool isSystemOversubscribed(void) {
+    if (N_THREADS > USE_CPUS) return true;
+    else return false;
 }
