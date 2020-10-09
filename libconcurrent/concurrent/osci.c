@@ -10,6 +10,7 @@ void OsciThreadStateInit(OsciThreadState *st_thread, int pid) {
 
     st_thread->toggle = 0;
     for (i = 0; i < 2; i++) {
+        st_thread->next_node[i].rec = getMemory(FIBERS_PER_THREAD * sizeof(OsciFiberRec));
         for (j=0; j < FIBERS_PER_THREAD ; j++) {
             st_thread->next_node[i].rec[j].arg_ret = 0;
             st_thread->next_node[i].rec[j].pid = -1;

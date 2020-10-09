@@ -28,7 +28,9 @@ int StartThreadsN(int nthreads, void *(*func)(void *), int mode);
 void JoinThreadsN(int nthreads);
 
 int32_t getThreadId(void);
+int32_t getPreferedCore(void);
 void resched(void);
 bool isSystemOversubscribed(void);
+
 
 #endif

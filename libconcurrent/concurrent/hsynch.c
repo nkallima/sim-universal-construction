@@ -8,6 +8,8 @@
 static const int HSYNCH_HELP_FACTOR = 10;
 static int HSYNCH_CLUSTER_SIZE = 1;
 
+static __thread int node_of_thread = 0;
+
 RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     volatile HSynchNode *p;
     volatile HSynchNode *cur;
@@ -23,7 +25,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
 #if defined(__sun) || defined(sun)
     schedctl_start(st_thread->schedule_control);
 #endif
-    cur = (volatile HSynchNode *)SWAP(&l->Tail[pid / HSYNCH_CLUSTER_SIZE].ptr, next_node);
+    cur = (volatile HSynchNode *)SWAP(&l->Tail[node_of_thread].ptr, next_node);
     cur->arg_ret = arg;
     cur->next = (HSynchNode *)next_node;
 #if defined(__sun) || defined(sun)
@@ -82,6 +84,14 @@ void HSynchThreadStateInit(HSynchThreadState *st_thread, int pid) {
 #ifdef sun
     st_thread->schedule_control = schedctl_init();
 #endif
+
+#ifdef NUMA_SUPPORT
+    if (getPreferedCore() != -1)
+        node_of_thread = numa_node_of_cpu(getPreferedCore());
+#else
+    node_of_thread = pid / HSYNCH_CLUSTER_SIZE;
+#endif
+
 }
 
 void HSynchStructInit(HSynchStruct *l, uint32_t nthreads) {

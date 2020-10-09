@@ -18,19 +18,11 @@ typedef struct OsciFiberRec {
     volatile int16_t completed;
 } OsciFiberRec;
 
-typedef struct HalfOsciNode {
-    volatile struct HalfOsciNode *next;
-    volatile int32_t toggle;
-    volatile int32_t door;
-    volatile OsciFiberRec rec[FIBERS_PER_THREAD];
-} HalfOsciNode;
-
 typedef struct OsciNode {
     volatile struct OsciNode *next;
     volatile int32_t toggle;
     volatile int32_t door;
-    volatile OsciFiberRec rec[FIBERS_PER_THREAD];
-    char pad[PAD_CACHE(sizeof(HalfOsciNode))];
+    volatile OsciFiberRec *rec;
 } OsciNode;
 
 typedef struct OsciThreadState {

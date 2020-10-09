@@ -13,6 +13,7 @@ inline static void *kthreadWrapper(void *arg);
 
 static __thread pthread_t *__threads;
 static __thread int32_t __thread_id = -1;
+static __thread int32_t __prefered_core = -1;
 static __thread int32_t __unjoined_threads = 0;
 
 static void *(*__func)(void *) CACHE_ALIGN = null;
@@ -23,6 +24,10 @@ static Barrier bar CACHE_ALIGN;
 
 void setThreadId(int32_t id) {
     __thread_id = id;
+}
+
+int32_t getPreferedCore(void) {
+    return __prefered_core;
 }
 
 inline static void *kthreadWrapper(void *arg) {
@@ -59,19 +64,22 @@ int threadPin(int32_t cpu_id) {
     CPU_ZERO(&mask);
 
 #ifdef NUMA_SUPPORT
+    int ncpus = numa_num_configured_cpus();
+    int nodes = numa_max_node() + 1;
+    int node_size = ncpus / nodes;
+
+    if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus/2)) {
+        __prefered_core = ((cpu_id % node_size) * nodes + (cpu_id/node_size))% USE_CPUS;
+        CPU_SET(__prefered_core, &mask);
+    } else {
+        __prefered_core = ((cpu_id % nodes) * node_size)% USE_CPUS;
+        CPU_SET(__prefered_core, &mask);
+    }
+
 #   ifdef DEBUG
-    fprintf(stderr, "DEBUG: thread: %d -- numa_nodes: %d -- cur_numa_node: %d\n", cpu_id,numa_max_node() + 1, numa_node_of_cpu(cpu_id));
-    fprintf(stderr, "DEBUG: node cpu 0: %d -- node of cpu %d: %d\n", numa_node_of_cpu(0), __nthreads/2, numa_node_of_cpu(__nthreads/2-1));
+    fprintf(stderr, "DEBUG: thread: %d -- numa_node: %d -- core: %d -- nodes: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core, nodes);
 #   endif
 
-    if (numa_node_of_cpu(0) == numa_node_of_cpu(__nthreads/2)) {
-        if (cpu_id % 2 == 0)
-            CPU_SET(cpu_id % USE_CPUS, &mask);
-        else 
-            CPU_SET((cpu_id + USE_CPUS/2)% USE_CPUS, &mask);
-    } else {
-        CPU_SET(cpu_id % USE_CPUS, &mask);
-    }
 #else
     CPU_SET(cpu_id % USE_CPUS, &mask);
 #endif
