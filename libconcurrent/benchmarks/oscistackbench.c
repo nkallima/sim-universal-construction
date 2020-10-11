@@ -45,7 +45,7 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(void) {
-    OsciStackInit(&object_struct, N_THREADS);
+    OsciStackInit(&object_struct, N_THREADS, N_THREADS/getNCores());
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
     JoinThreadsN(N_THREADS);

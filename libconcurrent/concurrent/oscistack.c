@@ -4,13 +4,14 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
 static const int POP_OP = INT_MIN;
 
-void OsciStackInit(OsciStackStruct *stack_object_struct, uint32_t nthreads) {
-    OsciInit(&(stack_object_struct->object_struct), nthreads);
+void OsciStackInit(OsciStackStruct *stack_object_struct, uint32_t nthreads, uint32_t fibers_per_thread) {
+    OsciInit(&(stack_object_struct->object_struct), nthreads, fibers_per_thread);
+    stack_object_struct->pool_node = getAlignedMemory(CACHE_LINE_SIZE, stack_object_struct->object_struct.groups_of_fibers * sizeof(PoolStruct));
     stack_object_struct->head = null;
 }
 
 void OsciStackThreadStateInit(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, int pid) {
-    OsciThreadStateInit(&(lobject_struct->th_state), (int)pid);
+    OsciThreadStateInit(&(lobject_struct->th_state), &object_struct->object_struct, (int)pid);
     init_pool(&(object_struct->pool_node[getThreadId()]), sizeof(Node));
 }
 

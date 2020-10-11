@@ -34,17 +34,19 @@ typedef struct OsciThreadState {
 } OsciThreadState;
 
 typedef struct OsciStruct {
-    volatile ptr_aligned_t current_node[FIBERS_GROUP] CACHE_ALIGN;
     volatile OsciNode *Tail CACHE_ALIGN;
     uint32_t nthreads CACHE_ALIGN;
+    uint32_t fibers_per_thread;
+    uint32_t groups_of_fibers;
+    ptr_aligned_t *current_node;
 #ifdef DEBUG
     volatile int rounds CACHE_ALIGN;
     volatile int counter;
 #endif
 } OsciStruct;
 
-void OsciInit(OsciStruct *l, uint32_t nthreads);
-void OsciThreadStateInit(OsciThreadState *st_thread, int pid);
+void OsciInit(OsciStruct *l, uint32_t nthreads, uint32_t fibers_per_thread);
+void OsciThreadStateInit(OsciThreadState *st_thread, OsciStruct *l, int pid);
 RetVal OsciApplyOp(OsciStruct *l, OsciThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid);
 
 #endif

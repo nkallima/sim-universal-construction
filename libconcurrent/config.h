@@ -3,17 +3,6 @@
 
 #include <unistd.h>
 
-// Definition: USE_CPUS
-// --------------------
-// Define the number of processing cores that your computation
-// system offers or the maximum number of cores that you want to use.
-#if (USE_CPUS + 0) == 0
-#   undef USE_CPUS
-#endif
-#ifndef USE_CPUS
-#    define USE_CPUS               128
-#endif
-
 // Definition: N_THREADS
 // ---------------------
 // Define the number of threads that you like to run the provided 
@@ -21,19 +10,6 @@
 // may run in the same processing core.
 #ifndef N_THREADS
 #    define N_THREADS              128
-#endif
-
-
-#if (FIBERS_PER_THREAD + 0) == 0
-#   undef FIBERS_PER_THREAD
-#endif
-
-#ifndef FIBERS_PER_THREAD
-#   if N_THREADS < USE_CPUS
-#       define FIBERS_PER_THREAD   1
-#   else
-#       define FIBERS_PER_THREAD   (N_THREADS/USE_CPUS)
-#   endif
 #endif
 
 // Definition: MAX_WORK
@@ -53,7 +29,7 @@
 // ----------------
 // Define the total number of the calls of object's 
 // operations that will be executed.
-#define RUNS                       (100000000 / N_THREADS)
+#define RUNS                       (10000000 / N_THREADS)
 
 // Definition: DEBUG
 // -----------------
@@ -80,7 +56,6 @@
 // is disabled. Be careful, upper an lower bounds must be
 // used in benchmark scripts, but they are ignored.
 //#define DISABLE_BACKOFF
-
 
 #define Object                     int64_t
 

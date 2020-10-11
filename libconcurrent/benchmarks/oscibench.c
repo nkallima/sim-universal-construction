@@ -33,7 +33,7 @@ inline static void *Execute(void* Arg) {
 
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(OsciThreadState));
     fastRandomSetSeed(pid);
-    OsciThreadStateInit(th_state, pid);
+    OsciThreadStateInit(th_state, &object_lock, pid);
     BarrierWait(&bar);
     if (pid == 0)
         d1 = getTimeMillis();
@@ -48,7 +48,7 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(void) {
-    OsciInit(&object_lock, N_THREADS);
+    OsciInit(&object_lock, N_THREADS, N_THREADS/getNCores());
     BarrierInit(&bar, N_THREADS);
     StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
     JoinThreadsN(N_THREADS - 1);

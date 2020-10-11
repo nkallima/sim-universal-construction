@@ -12,8 +12,6 @@
 
 #define FIBER_STACK                              65536
 
-#define FIBERS_GROUP                             (N_THREADS/FIBERS_PER_THREAD)
-
 
 typedef struct Fiber {
     ucontext_t context; /* Stores the current context */

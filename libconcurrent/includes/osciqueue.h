@@ -16,7 +16,7 @@ typedef struct OsciQueueStruct {
     volatile Node *last CACHE_ALIGN;
     volatile Node *first CACHE_ALIGN;
     Node guard CACHE_ALIGN;
-    PoolStruct pool_node[FIBERS_GROUP] CACHE_ALIGN;
+    PoolStruct *pool_node CACHE_ALIGN;
 } OsciQueueStruct;
 
 
@@ -26,7 +26,7 @@ typedef struct OsciQueueThreadState {
 } OsciQueueThreadState;
 
 
-void OsciQueueInit(OsciQueueStruct *queue_object_struct, uint32_t nthreads);
+void OsciQueueInit(OsciQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t fibers_per_thread);
 void OsciQueueThreadStateInit(OsciQueueStruct *object_struct, OsciQueueThreadState *lobject_struct, int pid);
 void OsciQueueApplyEnqueue(OsciQueueStruct *object_struct, OsciQueueThreadState *lobject_struct, ArgVal arg, int pid);
 RetVal OsciQueueApplyDequeue(OsciQueueStruct *object_struct, OsciQueueThreadState *lobject_struct, int pid);

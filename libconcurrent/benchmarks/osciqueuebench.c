@@ -45,9 +45,10 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(void) {
-    OsciQueueInit(&queue_object, N_THREADS);
+    OsciQueueInit(&queue_object, N_THREADS, N_THREADS/getNCores());
     BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);    JoinThreadsN(N_THREADS);
+    StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
+    JoinThreadsN(N_THREADS);
     d2 = getTimeMillis();
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2*RUNS*N_THREADS/(1000.0*(d2 - d1)));
     printStats(N_THREADS);

@@ -5,13 +5,13 @@ static const int OSCI_HELP_FACTOR = 10;
 enum {_OSCI_DOOR_INIT, _OSCI_DOOR_OPENED, _OSCI_DOOR_LOCKED};
 
 
-void OsciThreadStateInit(OsciThreadState *st_thread, int pid) {
+void OsciThreadStateInit(OsciThreadState *st_thread, OsciStruct *l, int pid) {
     int i, j;
 
     st_thread->toggle = 0;
     for (i = 0; i < 2; i++) {
-        st_thread->next_node[i].rec = getMemory(FIBERS_PER_THREAD * sizeof(OsciFiberRec));
-        for (j=0; j < FIBERS_PER_THREAD ; j++) {
+        st_thread->next_node[i].rec = getMemory(l->fibers_per_thread * sizeof(OsciFiberRec));
+        for (j=0; j < l->fibers_per_thread; j++) {
             st_thread->next_node[i].rec[j].arg_ret = 0;
             st_thread->next_node[i].rec[j].pid = -1;
             st_thread->next_node[i].rec[j].completed = true;
@@ -30,8 +30,8 @@ RetVal OsciApplyOp(OsciStruct *l, OsciThreadState *st_thread, RetVal (*sfunc)(vo
     volatile OsciNode *p, *pred, *cur, *mynode;
     int counter = 0, i;
     int help_bound = OSCI_HELP_FACTOR * l->nthreads;
-    int group = pid/FIBERS_PER_THREAD;
-    int offset_id = pid % FIBERS_PER_THREAD;
+    int group = pid/l->fibers_per_thread;
+    int offset_id = pid % l->fibers_per_thread;
 
     mynode = &st_thread->next_node[st_thread->toggle];
 osci_start:
@@ -86,7 +86,7 @@ osci_start:
     p = cur;
     do {
         StorePrefetch(p->next);
-        for (i = 0; i < FIBERS_PER_THREAD; i++) {
+        for (i = 0; i < l->fibers_per_thread; i++) {
             if (p->rec[i].completed == false) {
                 p->rec[i].arg_ret = sfunc(state, p->rec[i].arg_ret, p->rec[i].pid);
                 p->rec[i].completed = true;
@@ -111,7 +111,7 @@ osci_start:
         }
     }
     i = 0;
-    while (i < FIBERS_PER_THREAD) {
+    while (i < l->fibers_per_thread) {
         if (p->next->rec[i].completed == false) {
             p->next->rec[i].locked = false;                      // Unlock the next one
             break;
@@ -124,14 +124,19 @@ osci_start:
 }
 
 
-void OsciInit(OsciStruct *l, uint32_t nthreads) {
+void OsciInit(OsciStruct *l, uint32_t nthreads, uint32_t fibers_per_thread) {
     int i;
     
     l->nthreads = nthreads;
+    if (fibers_per_thread < nthreads)
+        l->fibers_per_thread = fibers_per_thread;
+    else l->fibers_per_thread = 1;
+    l->groups_of_fibers = (nthreads / fibers_per_thread) + (nthreads % fibers_per_thread != 0 ? 1 : 0);
 #ifdef DEBUG
     l->rounds = l->counter = 0;
 #endif
-    for (i = 0; i < FIBERS_GROUP; i++)
+    l->current_node = getAlignedMemory(CACHE_LINE_SIZE, l->groups_of_fibers * sizeof(ptr_aligned_t));
+    for (i = 0; i < l->groups_of_fibers; i++)
         l->current_node[i].ptr = null;
     l->Tail = null;
     StoreFence();

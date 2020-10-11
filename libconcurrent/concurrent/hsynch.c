@@ -34,7 +34,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     st_thread->next_node = (HSynchNode *)cur;
 
     while (cur->locked) {                   // spinning
-        if (l->nthreads > USE_CPUS)
+        if (isSystemOversubscribed())
             resched();
         else {
 #if defined(__sun) || defined(sun)

@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stats.h>
+#include <primitives.h>
+#include <threadtools.h>
+
 
 #ifdef DEBUG
 #include <types.h>
 #include <system.h>
-
-#include <primitives.h>
 
 __thread int64_t __failed_cas CACHE_ALIGN  = 0;
 __thread int64_t __executed_cas CACHE_ALIGN = 0;
@@ -25,15 +26,26 @@ volatile int64_t __total_executed_faa = 0;
 #include <pthread.h>
 #include <papi.h>
 
-int __cpu_events[USE_CPUS] CACHE_ALIGN;
-long long __cpu_values[USE_CPUS][4] CACHE_ALIGN;
+static int *__cpu_events = NULL;
+static long long *__cpu_values[4] = {NULL, NULL, NULL, NULL};
 #endif
 
 void init_cpu_counters(void) {
 #ifdef _TRACK_CPU_COUNTERS
     const PAPI_hw_info_t *hwinfo = NULL;
-    int ret;
+    int ret, i;
 
+    while (__cpu_events == NULL) {
+        void *ptr = getAlignedMemory(CACHE_LINE_SIZE, getNCores() * sizeof(int));
+        CASPTR(&__cpu_events, NULL, ptr);
+    }
+
+    for (i = 0; i < 4; i++) {
+        while (__cpu_values[i] == NULL) {
+            void *ptr = getAlignedMemory(CACHE_LINE_SIZE, sizeof(long long));
+            CASPTR(&__cpu_values[i], NULL, ptr);
+        }
+    }
     if ((ret = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT && ret > 0) {
        fprintf(stderr, "PAPI ERROR: unable to initialize PAPI library\n");
        exit(EXIT_FAILURE);
@@ -91,11 +103,11 @@ void stop_cpu_counters(int id) {
 #endif
 
 #ifdef _TRACK_CPU_COUNTERS
-    if (PAPI_read(__cpu_events[id], &__cpu_values[id][0]) != PAPI_OK) {
+    if (PAPI_read(__cpu_events[id], &__cpu_values[0][id]) != PAPI_OK) {
         fprintf(stderr, "PAPI ERROR: unable to read counters\n");
         exit(EXIT_FAILURE);
     }
-    if (PAPI_stop(__cpu_events[id], &__cpu_values[id][0]) != PAPI_OK) {
+    if (PAPI_stop(__cpu_events[id], &__cpu_values[0][id]) != PAPI_OK) {
         fprintf(stderr, "PAPI ERROR: unable to stop counters\n");
         exit(EXIT_FAILURE);
     }
@@ -124,8 +136,8 @@ void printStats(int nthreads) {
 
     for (j = 0; j < 4; j++) {
         __total_cpu_values[j] = 0;
-        for (k = 0; k < USE_CPUS; k++)
-            __total_cpu_values[j] += __cpu_values[k][j];
+        for (k = 0; k < getNCores(); k++)
+            __total_cpu_values[j] += __cpu_values[j][k];
     }
 
 

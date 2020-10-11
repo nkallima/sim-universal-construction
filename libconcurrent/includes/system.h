@@ -21,13 +21,4 @@
 
 #define PAD_CACHE(A)                  ((CACHE_LINE_SIZE - (A % CACHE_LINE_SIZE))/sizeof(char))
 
-
-#ifndef USE_CPUS
-#    if defined(linux)
-#        define USE_CPUS               sysconf(_SC_NPROCESSORS_ONLN)
-#    else
-#        define USE_CPUS               1
-#    endif
-#endif
-
 #endif

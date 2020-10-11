@@ -19,6 +19,7 @@ static __thread int32_t __unjoined_threads = 0;
 static void *(*__func)(void *) CACHE_ALIGN = null;
 static uint32_t __uthreads = 0;
 static uint32_t __nthreads = 0;
+static uint32_t __ncores = 0;
 static bool __uthread_sched CACHE_ALIGN = false;
 static Barrier bar CACHE_ALIGN;
 
@@ -30,11 +31,18 @@ int32_t getPreferedCore(void) {
     return __prefered_core;
 }
 
+uint32_t getNCores(void) {
+    if (__ncores == 0)
+        __ncores = sysconf(_SC_NPROCESSORS_ONLN);
+
+    return __ncores;
+}
+
 inline static void *kthreadWrapper(void *arg) {
     int cpu_id;
     long pid = (long)arg;
 
-    cpu_id = pid % USE_CPUS;
+    cpu_id = pid % getNCores();
     threadPin(cpu_id);
     setThreadId(pid);
     start_cpu_counters(pid);
@@ -45,12 +53,12 @@ inline static void *kthreadWrapper(void *arg) {
 }
 
 int threadPin(int32_t cpu_id) {
-    pthread_setconcurrency(USE_CPUS);
+    pthread_setconcurrency(getNCores());
 
 #if defined(__sun) || defined(sun)
     int ret;
 
-    ret = processor_bind(P_LWPID, cpu_id + 1, (cpu_id + 1)%USE_CPUS, null);
+    ret = processor_bind(P_LWPID, cpu_id + 1, (cpu_id + 1)%getNCores(), null);
     if (ret == -1)
         perror("processor_bind");
         
@@ -69,10 +77,10 @@ int threadPin(int32_t cpu_id) {
     int node_size = ncpus / nodes;
 
     if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus/2)) {
-        __prefered_core = ((cpu_id % node_size) * nodes + (cpu_id/node_size))% USE_CPUS;
+        __prefered_core = ((cpu_id % node_size) * nodes + (cpu_id/node_size))% getNCores();
         CPU_SET(__prefered_core, &mask);
     } else {
-        __prefered_core = ((cpu_id % nodes) * node_size)% USE_CPUS;
+        __prefered_core = ((cpu_id % nodes) * node_size) % getNCores();
         CPU_SET(__prefered_core, &mask);
     }
 
@@ -81,7 +89,7 @@ int threadPin(int32_t cpu_id) {
 #   endif
 
 #else
-    CPU_SET(cpu_id % USE_CPUS, &mask);
+    CPU_SET(cpu_id % getNCores(), &mask);
 #endif
     ret = sched_setaffinity(0, len, &mask);
     if (ret == -1)
@@ -95,7 +103,7 @@ inline static void *uthreadWrapper(void *arg) {
     int i, kernel_id;
     long pid = (long)arg;
 
-    kernel_id = (pid / __uthreads) % USE_CPUS;
+    kernel_id = (pid / __uthreads) % getNCores();
     threadPin(kernel_id);
     setThreadId(kernel_id);
     start_cpu_counters(kernel_id);
@@ -120,8 +128,8 @@ int StartThreadsN(int nthreads, void *(*func)(void *), int mode) {
     __threads = getMemory(nthreads * sizeof(pthread_t));
     __func = func;
     StoreFence(); 
-    if (mode == _USE_UTHREADS_ && FIBERS_PER_THREAD > 1) {
-        long uthreads = FIBERS_PER_THREAD;
+    if (mode == _USE_UTHREADS_ && nthreads/getNCores() > 1) {
+        long uthreads = nthreads/getNCores();
 
         __uthreads = uthreads;
         __uthread_sched = true;
@@ -163,12 +171,12 @@ int32_t getThreadId(void) {
 void resched(void) {
     if (__uthread_sched)
         fiberYield();
-    else if (__nthreads <= USE_CPUS)
+    else if (isSystemOversubscribed())
         ;
     else sched_yield();
 }
 
 bool isSystemOversubscribed(void) {
-    if (__nthreads > USE_CPUS) return true;
+    if (__nthreads > getNCores()) return true;
     else return false;
 }

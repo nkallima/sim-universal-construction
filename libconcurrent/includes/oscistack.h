@@ -15,7 +15,7 @@
 typedef struct OsciStackStruct {
     OsciStruct object_struct CACHE_ALIGN;
     volatile Node *head CACHE_ALIGN;
-    PoolStruct pool_node[FIBERS_GROUP] CACHE_ALIGN;
+    PoolStruct *pool_node CACHE_ALIGN;
 } OsciStackStruct;
 
 
@@ -24,7 +24,7 @@ typedef struct OsciStackThreadState {
 } OsciStackThreadState;
 
 
-void OsciStackInit(OsciStackStruct *stack_object_struct, uint32_t nthreads);
+void OsciStackInit(OsciStackStruct *stack_object_struct, uint32_t nthreads, uint32_t fibers_per_thread);
 void OsciStackThreadStateInit(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, int pid);
 void OsciStackApplyPush(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, ArgVal arg, int pid);
 void OsciStackApplyPop(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, int pid);

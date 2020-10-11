@@ -5,10 +5,6 @@ CFLAGS     =
 ARGS       =
 ARGCORES   =
 
-ifeq ($(strip $(ARGCORES)),)
-ARGCORES=-DUSE_CPUS=$(shell nproc)
-endif
-
 # define any directories containing header files other than /usr/include
 INCLUDES   = -Iincludes
 
