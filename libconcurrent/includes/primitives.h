@@ -101,6 +101,8 @@ inline uint32_t bitSearchFirst(uint64_t v) ;
 
 inline void *getMemory(size_t size);
 inline void *getAlignedMemory(size_t align, size_t size);
+inline void freeMemory(void *ptr, size_t size);
+
 inline int64_t getTimeMillis(void);
 inline int WeakFence(void);
 

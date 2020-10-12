@@ -160,7 +160,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
 
 void JoinThreadsN(uint32_t nthreads) {
     BarrierWait(&bar);
-    free(__threads);
+    freeMemory(__threads, nthreads * sizeof(pthread_t));
 }
 
 int32_t getThreadId(void) {

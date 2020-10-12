@@ -41,7 +41,7 @@ void fiberYield(void) {
     } while (FIBER_LIST[currentFiber].active == false);
     switch_to_fiber(&FIBER_LIST[prev_fiber], &FIBER_LIST[currentFiber]);
     if (FIBER_RECYCLE != null) {
-        free(FIBER_RECYCLE);
+        freeMemory(FIBER_RECYCLE, sizeof(Fiber));
         FIBER_RECYCLE = null;
     }
 }

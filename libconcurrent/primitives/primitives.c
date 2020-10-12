@@ -113,10 +113,15 @@ inline uint64_t nonZeroBits(uint64_t v) {
 #endif
 
 inline void *getMemory(size_t size) {
-    void *p = malloc(size);
+    void *p;
 
+#ifdef NUMA_SUPPORT
+    p = numa_alloc_local(size);
+#else
+    p = malloc(size);
+#endif
     if (p == null) {
-        perror("malloc failed");
+        perror("memory allocation fail");
         exit(EXIT_FAILURE);
     } else return p;
 }
@@ -135,9 +140,18 @@ inline void *getAlignedMemory(size_t align, size_t size) {
 #endif
 
     if (p == null) {
-        perror("memalign");
+        perror("memory allocation fail");
         exit(EXIT_FAILURE);
     } else return p;
+}
+
+
+inline void freeMemory(void *ptr, size_t size) {
+#ifdef NUMA_SUPPORT
+    numa_free(ptr, size);
+#else
+    free(ptr);
+#endif
 }
 
 inline int64_t getTimeMillis(void) {
