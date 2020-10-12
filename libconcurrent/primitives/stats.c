@@ -26,8 +26,10 @@ volatile int64_t __total_executed_faa = 0;
 #include <pthread.h>
 #include <papi.h>
 
-static int *__cpu_events = NULL;
-static long long *__cpu_values[4] = {NULL, NULL, NULL, NULL};
+#define N_CPU_COUNTERS              4
+
+static volatile int *__cpu_events = NULL;
+static volatile long long **__cpu_values = NULL;
 #endif
 
 void init_cpu_counters(void) {
@@ -37,13 +39,21 @@ void init_cpu_counters(void) {
 
     while (__cpu_events == NULL) {
         void *ptr = getAlignedMemory(CACHE_LINE_SIZE, getNCores() * sizeof(int));
-        CASPTR(&__cpu_events, NULL, ptr);
+        if (CASPTR(&__cpu_events, NULL, ptr) == false)
+            freeMemory(ptr, getNCores() * sizeof(int));
     }
 
-    for (i = 0; i < 4; i++) {
+    while (__cpu_values == NULL) {
+        void *ptr = getAlignedMemory(CACHE_LINE_SIZE, getNCores() * sizeof(long long *));
+        if (CASPTR(&__cpu_values, NULL, ptr) == false)
+            freeMemory(ptr, getNCores() * sizeof(long long *));
+    }
+
+    for (i = 0; i < getNCores(); i++) {
         while (__cpu_values[i] == NULL) {
-            void *ptr = getAlignedMemory(CACHE_LINE_SIZE, sizeof(long long));
-            CASPTR(&__cpu_values[i], NULL, ptr);
+            void *ptr = getAlignedMemory(CACHE_LINE_SIZE, N_CPU_COUNTERS * sizeof(long long));
+            if (CASPTR(&__cpu_values[i], NULL, ptr) == false)
+                freeMemory(ptr, N_CPU_COUNTERS * sizeof(long long));
         }
     }
     if ((ret = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT && ret > 0) {
@@ -71,7 +81,7 @@ void start_cpu_counters(int id) {
 #ifdef _TRACK_CPU_COUNTERS
     __cpu_events[id] = PAPI_NULL;
  
-    if (PAPI_create_eventset(&__cpu_events[id]) != PAPI_OK) {
+    if (PAPI_create_eventset((int *)&__cpu_events[id]) != PAPI_OK) {
         fprintf(stderr, "PAPI ERROR: unable to initialize performance counters\n");
         exit(EXIT_FAILURE);
     }
@@ -103,11 +113,11 @@ void stop_cpu_counters(int id) {
 #endif
 
 #ifdef _TRACK_CPU_COUNTERS
-    if (PAPI_read(__cpu_events[id], &__cpu_values[0][id]) != PAPI_OK) {
+    if (PAPI_read(__cpu_events[id], (long long *) __cpu_values[id]) != PAPI_OK) {
         fprintf(stderr, "PAPI ERROR: unable to read counters\n");
         exit(EXIT_FAILURE);
     }
-    if (PAPI_stop(__cpu_events[id], &__cpu_values[0][id]) != PAPI_OK) {
+    if (PAPI_stop(__cpu_events[id], (long long *) __cpu_values[id]) != PAPI_OK) {
         fprintf(stderr, "PAPI ERROR: unable to stop counters\n");
         exit(EXIT_FAILURE);
     }
@@ -130,16 +140,15 @@ void printStats(int nthreads) {
     printf("\n");
 
 #ifdef _TRACK_CPU_COUNTERS
-    long long __total_cpu_values[4];
+    long long __total_cpu_values[N_CPU_COUNTERS];
     int k, j;
     double ops = RUNS * nthreads;
 
-    for (j = 0; j < 4; j++) {
+    for (j = 0; j < N_CPU_COUNTERS; j++)  {
         __total_cpu_values[j] = 0;
         for (k = 0; k < getNCores(); k++)
-            __total_cpu_values[j] += __cpu_values[j][k];
+            __total_cpu_values[j] += __cpu_values[k][j];
     }
-
 
     fprintf(stderr, "DEBUG: L1 data cache misses: %.2lf\t"
             "L2 data cache misses: %.2lf\t"
