@@ -119,7 +119,7 @@ inline static void *uthreadWrapper(void *arg) {
     return null;
 }
 
-int StartThreadsN(int nthreads, void *(*func)(void *), int mode) {
+int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
     long i;
     int last_thread_id;
 
@@ -128,8 +128,7 @@ int StartThreadsN(int nthreads, void *(*func)(void *), int mode) {
     __threads = getMemory(nthreads * sizeof(pthread_t));
     __func = func;
     StoreFence(); 
-    if (mode == _USE_UTHREADS_ && nthreads/getNCores() > 1) {
-        long uthreads = nthreads/getNCores();
+    if (uthreads != _DONT_USE_UTHREADS_ && uthreads > 1) {
 
         __uthreads = uthreads;
         __uthread_sched = true;
@@ -159,7 +158,7 @@ int StartThreadsN(int nthreads, void *(*func)(void *), int mode) {
     return last_thread_id;
 }
 
-void JoinThreadsN(int nthreads) {
+void JoinThreadsN(uint32_t nthreads) {
     BarrierWait(&bar);
     free(__threads);
 }

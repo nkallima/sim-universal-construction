@@ -47,7 +47,7 @@ inline static void *Execute(void* Arg) {
 int main(void) {
     OsciStackInit(&object_struct, N_THREADS, N_THREADS/getNCores());
     BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
+    StartThreadsN(N_THREADS, Execute, N_THREADS/getNCores());
     JoinThreadsN(N_THREADS);
     d2 = getTimeMillis();
 

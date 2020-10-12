@@ -50,7 +50,7 @@ inline static void *Execute(void* Arg) {
 int main(void) {
     OsciInit(&object_lock, N_THREADS, N_THREADS/getNCores());
     BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
+    StartThreadsN(N_THREADS, Execute, N_THREADS/getNCores());
     JoinThreadsN(N_THREADS - 1);
     d2 = getTimeMillis();
 

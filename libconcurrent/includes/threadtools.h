@@ -19,13 +19,12 @@
 #include <config.h>
 #include <system.h>
 
-#define _USE_UTHREADS_              1
 #define _DONT_USE_UTHREADS_         0
 
 void setThreadId(int32_t id);
 int threadPin(int32_t cpu_id);
-int StartThreadsN(int nthreads, void *(*func)(void *), int mode);
-void JoinThreadsN(int nthreads);
+int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads);
+void JoinThreadsN(uint32_t nthreads);
 
 int32_t getThreadId(void);
 int32_t getPreferedCore(void);

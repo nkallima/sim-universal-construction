@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     SimQueueInit(queue, N_THREADS, backoff);
 
     BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
+    StartThreadsN(N_THREADS, Execute, N_THREADS/getNCores());
     JoinThreadsN(N_THREADS);
     d2 = getTimeMillis();
 

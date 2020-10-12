@@ -49,7 +49,7 @@ inline static void *Execute(void* Arg) {
 int main(void) {
     HSynchStructInit(&object_lock, N_THREADS); 
     BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
+    StartThreadsN(N_THREADS, Execute, N_THREADS/getNCores());
     JoinThreadsN(N_THREADS);
     d2 = getTimeMillis();
 

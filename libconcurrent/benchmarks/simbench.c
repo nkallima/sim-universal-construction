@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 
     SimInit(&sim_struct, N_THREADS, MAX_BACK);
     BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _USE_UTHREADS_);
+    StartThreadsN(N_THREADS, Execute, N_THREADS/getNCores());
     JoinThreadsN(N_THREADS);
     d2 = getTimeMillis();
 
