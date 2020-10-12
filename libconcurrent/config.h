@@ -6,8 +6,7 @@
 // Definition: N_THREADS
 // ---------------------
 // Define the number of threads that you like to run the provided 
-// experiments. In case N_THREADS > USE_CPUS, two or more threads 
-// may run in the same processing core.
+// experiments.
 #ifndef N_THREADS
 #    define N_THREADS              128
 #endif
@@ -87,7 +86,7 @@
 // is used for getting performance counters during the execution of benchmarks.
 // In this case, the PAPI library should be install and appropriately configured.
 // IF ENABLE, DO NOT FORGET TO ADD -lpapi OPTION in LDLIBS VARIABLE IN Makefile.generic!
-//#define _TRACK_CPU_COUNTERS
+#define _TRACK_CPU_COUNTERS
 
 //#define _EMULATE_FAA_
 //#define _EMULATE_SWAP_

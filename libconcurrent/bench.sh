@@ -112,7 +112,7 @@ echo -e "\e[36mNumber of running threads: " $NTHREADS
 echo -e "\e[36mNumber of available processing cores: " $NCORES
 
 
-make clean > built.log && make CC=$COMPILER ARGS="-DN_THREADS=${NTHREADS} -DFIBERS_PER_THREAD=${FIBERS} -DMAX_WORK=${WORKLOAD}" > built.log
+make clean > built.log && make CC=$COMPILER ARGS="-DN_THREADS=${NTHREADS} -DMAX_WORK=${WORKLOAD}" > built.log
 
 echo -e "\e[92mBuilding Library... \t\t\t\t\t done"
 echo -e "\e[36mRunning the benchmark $REPEATS times"
