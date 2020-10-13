@@ -2,14 +2,14 @@
 
 function usage()
 {
-    echo -e "Usage: ./bench.sh FILE.c OPTION=NUM ...";
-    echo -e "This script runs the algorithm of FILE.c 10 times and calculates the average throughput (operations/second)";
+    echo -e "Usage: ./bench.sh FILE.run OPTION=NUM ...";
+    echo -e "This script runs the algorithm of FILE.run 10 times and calculates the average throughput (operations/second)";
     echo -e " "
     echo -e "The following options are available."
     echo -e "-t, --threads \t set the number of threads (fiber threads also included, if any) to be used in the benchmark"
     echo -e "-f, --fibers  \t set the number of user-level threads per posix thread"
     echo -e "-i, --iterations \t set the number of times that the benchmark should be executed, default is 10 times"
-    echo -e "-r, --runs     \t set the number of runs that the benchmarked operation should be executed"
+    echo -e "-r, --runs    \t set the number of runs that the benchmarked operation should be executed"
     echo -e "-w, --max_work\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64"
     echo -e "-l, --list    \t displays the list of the available benchmarks"
     echo -e "--compiler    \t set the compiler for building the binaries of the benchmark suite, default is the gcc compiler"
@@ -80,7 +80,7 @@ done
 
 if [ $LIST = "1" ]; then
    cd bin;
-   ls -lafr *.c
+   ls -lafr *.run
    exit -1;
 fi
 
@@ -88,7 +88,7 @@ if [ ! -e bin/$FILE ]; then
    echo -e "\n" $FILE "is not available for benchmarking.\n"
    echo -e "Available files for benchmarking: "
    cd bin;
-   ls -lafr *.c;
+   ls -lafr *.run
    exit -1;
 fi
 
