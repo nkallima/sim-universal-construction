@@ -32,9 +32,6 @@ int32_t getPreferedCore(void) {
 }
 
 uint32_t getNCores(void) {
-    if (__ncores == 0)
-        __ncores = sysconf(_SC_NPROCESSORS_ONLN);
-
     return __ncores;
 }
 
@@ -124,6 +121,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
     int last_thread_id;
 
     init_cpu_counters();
+    __ncores = sysconf(_SC_NPROCESSORS_ONLN);
     __nthreads = nthreads;
     __threads = getMemory(nthreads * sizeof(pthread_t));
     __func = func;
@@ -176,6 +174,6 @@ void resched(void) {
 }
 
 bool isSystemOversubscribed(void) {
-    if (__nthreads > getNCores()) return true;
+    if (__nthreads > __ncores) return true;
     else return false;
 }
