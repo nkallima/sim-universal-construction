@@ -10,12 +10,13 @@
 #include <hsynch.h>
 #include <threadtools.h>
 #include <barrier.h>
+#include <bench_args.h>
 
 volatile Object object CACHE_ALIGN = 1;
 HSynchStruct object_lock CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-Barrier bar;
-
+Barrier bar CACHE_ALIGN;
+BenchArgs bench_args CACHE_ALIGN;
 
 inline static RetVal fetchAndMultiply(void *state, ArgVal arg, int pid) {
     Object *st = (Object *)state;
@@ -36,25 +37,27 @@ inline static void *Execute(void* Arg) {
     if (id == 0)
         d1 = getTimeMillis();
 
-    for (i = 0; i < RUNS; i++) {
+    for (i = 0; i < bench_args.runs; i++) {
         // perform a fetchAndMultiply operation
         HSynchApplyOp(&object_lock, th_state, fetchAndMultiply, (void *)&object, (ArgVal) id, id);
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ; 
     }
     return NULL;
 }
 
-int main(void) {
-    HSynchStructInit(&object_lock, N_THREADS); 
-    BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, N_THREADS/getNCores());
-    JoinThreadsN(N_THREADS);
+int main(int argc, char *argv[]) {
+    parseArguments(&bench_args, argc, argv);
+
+    HSynchStructInit(&object_lock, bench_args.nthreads); 
+    BarrierInit(&bar, bench_args.nthreads);
+    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), RUNS*N_THREADS/(1000.0*(d2 - d1)));
-    printStats(N_THREADS);
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printStats(bench_args.nthreads);
 
 #ifdef DEBUG
     fprintf(stderr, "object state:    counter: %d rounds: %d\n", object_lock.counter, object_lock.rounds);

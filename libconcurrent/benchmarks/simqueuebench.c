@@ -11,10 +11,12 @@
 #include <threadtools.h>
 #include <simqueue.h>
 #include <barrier.h>
+#include <bench_args.h>
 
 SimQueueStruct *queue;
 int64_t d1, d2;
-Barrier bar;
+Barrier bar CACHE_ALIGN;
+BenchArgs bench_args CACHE_ALIGN;
 
 static void *Execute(void* Arg) {
     SimQueueThreadState *th_state;
@@ -32,13 +34,13 @@ static void *Execute(void* Arg) {
         d1 = getTimeMillis();
     }
 
-    for (i = 0; i < RUNS; i++) {
+    for (i = 0; i < bench_args.runs; i++) {
         SimQueueEnqueue(queue, th_state, id, id);
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
         SimQueueDequeue(queue, th_state, id);
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
@@ -46,24 +48,17 @@ static void *Execute(void* Arg) {
 }
 
 int main(int argc, char *argv[]) {
-    int backoff;
-
-    if (argc < 2) {
-        fprintf(stderr, "ERROR: Please set an upper bound for the backoff!\n");
-        exit(EXIT_SUCCESS);
-    } else {
-        sscanf(argv[1], "%d", &backoff);
-    }
+    parseArguments(&bench_args, argc, argv);
     queue = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimQueueStruct));
-    SimQueueInit(queue, N_THREADS, backoff);
+    SimQueueInit(queue, bench_args.nthreads, bench_args.backoff_high);
 
-    BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, N_THREADS/getNCores());
-    JoinThreadsN(N_THREADS);
+    BarrierInit(&bar, bench_args.nthreads);
+    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2.0*RUNS*N_THREADS/(1000.0*(d2 - d1)));
-    printStats(N_THREADS);
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2 * bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printStats(bench_args.nthreads);
 
 #ifdef DEBUG
     Node *link_a = queue->enq_pool[queue->enq_sp.struct_data.index]->link_a;

@@ -11,11 +11,13 @@
 #include <threadtools.h>
 #include <lfuobject.h>
 #include <barrier.h>
+#include <bench_args.h>
 
 LFUObject lfobject CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 int MIN_BAK, MAX_BAK;
-Barrier bar;
+Barrier bar CACHE_ALIGN;
+BenchArgs bench_args CACHE_ALIGN;
 
 inline static RetVal fetchAndMultiply(Object mod_sp, Object arg, int pid);
 
@@ -33,14 +35,14 @@ inline static void *Execute(void* Arg) {
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(LFUObjectThreadState));
-    LFUObjectThreadStateInit(th_state, MIN_BAK, MAX_BAK);
+    LFUObjectThreadStateInit(th_state, bench_args.backoff_low, bench_args.backoff_high);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
-    for (i = 0; i < RUNS; i++) {
+    for (i = 0; i < bench_args.runs; i++) {
         LFUObjectApplyOp(&lfobject, th_state, fetchAndMultiply, (Object) (id + 1), id);
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
@@ -48,22 +50,17 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        fprintf(stderr, "Please set upper and lower bound for backoff!\n");
-        exit(EXIT_SUCCESS);
-    } else {
-        sscanf(argv[1], "%d", &MIN_BAK);
-        sscanf(argv[2], "%d", &MAX_BAK);
-    }
+    parseArguments(&bench_args, argc, argv);
 
     LFUObjectInit(&lfobject, (ArgVal)1);
-    BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
-    JoinThreadsN(N_THREADS);
+    BarrierInit(&bar, bench_args.nthreads);
+    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), RUNS*N_THREADS/(1000.0*(d2 - d1)));
-    printStats(N_THREADS);
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printStats(bench_args.nthreads);
+
     return 0;
 }
 

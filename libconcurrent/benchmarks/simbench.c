@@ -5,10 +5,12 @@
 
 #include <sim.h>
 #include <barrier.h>
+#include <bench_args.h>
 
 SimStruct sim_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
+BenchArgs bench_args CACHE_ALIGN;
 int MAX_BACK CACHE_ALIGN;
 
 
@@ -29,15 +31,15 @@ inline static void *Execute(void* Arg) {
     long id = (long) Arg;
     volatile long j;
 
-    SimThreadStateInit(&th_state, N_THREADS, id);
+    SimThreadStateInit(&th_state, bench_args.nthreads, id);
     fastRandomSetSeed((unsigned long)id + 1);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
-    for (i = 0; i < RUNS; i++) {
+    for (i = 0; i < bench_args.runs; i++) {
         SimApplyOp(&sim_struct, &th_state, fetchAndMultiply, (Object) (id + 1), id);
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
@@ -45,21 +47,17 @@ inline static void *Execute(void* Arg) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        fprintf(stderr, "ERROR: Please set an upper bound for the backoff!\n");
-        exit(EXIT_SUCCESS);
-    } else {
-        sscanf(argv[1], "%d", &MAX_BACK);
-    }
+    parseArguments(&bench_args, argc, argv);
 
-    SimInit(&sim_struct, N_THREADS, MAX_BACK);
-    BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, N_THREADS/getNCores());
-    JoinThreadsN(N_THREADS);
+    SimInit(&sim_struct, bench_args.nthreads, bench_args.backoff_high);
+    BarrierInit(&bar, bench_args.nthreads);
+    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), RUNS*N_THREADS/(1000.0*(d2 - d1)));
-    printStats(N_THREADS);
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printStats(bench_args.nthreads);
+
     
 #ifdef DEBUG
     SimObjectState *l = (SimObjectState *)sim_struct.pool[((pointer_t*)&sim_struct.sp)->struct_data.index];

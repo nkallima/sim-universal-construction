@@ -12,10 +12,12 @@
 #include <threadtools.h>
 #include <hqueue.h>
 #include <barrier.h>
+#include <bench_args.h>
 
 HQueueStruct queue_object CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-Barrier bar;
+Barrier bar CACHE_ALIGN;
+BenchArgs bench_args CACHE_ALIGN;
 
 inline static void *Execute(void* Arg) {
     HQueueThreadState *th_state;
@@ -29,30 +31,32 @@ inline static void *Execute(void* Arg) {
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
-    for (i = 0; i < RUNS; i++) {
+    for (i = 0; i < bench_args.runs; i++) {
         // perform an enqueue operation
         HQueueApplyEnqueue(&queue_object, th_state, (ArgVal) id, id);
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ; 
         // perform a dequeue operation
         HQueueApplyDequeue(&queue_object, th_state, id);
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
     return NULL;
 }
 
-int main(void) {
-    HQueueInit(&queue_object, N_THREADS);   
-    BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
-    JoinThreadsN(N_THREADS);
+int main(int argc, char *argv[]) {
+    parseArguments(&bench_args, argc, argv);
+    HQueueInit(&queue_object, bench_args.nthreads);
+
+    BarrierInit(&bar, bench_args.nthreads);
+    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2*RUNS*N_THREADS/(1000.0*(d2 - d1)));
-    printStats(N_THREADS);
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2 * bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printStats(bench_args.nthreads);
 
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: enqueue state: counter: %d rounds: %d\n", queue_object.enqueue_struct.counter, queue_object.enqueue_struct.rounds);

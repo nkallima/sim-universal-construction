@@ -19,7 +19,7 @@
 #include <config.h>
 #include <system.h>
 
-#define _DONT_USE_UTHREADS_         0
+#define _DONT_USE_UTHREADS_         1
 
 void setThreadId(int32_t id);
 int threadPin(int32_t cpu_id);

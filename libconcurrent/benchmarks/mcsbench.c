@@ -10,6 +10,7 @@
 #include <mcs.h>
 #include <threadtools.h>
 #include <barrier.h>
+#include <bench_args.h>
 
 typedef struct ObjectState {
     long long state;
@@ -23,7 +24,8 @@ typedef union CRStruct {
 MCSLockStruct *object_lock CACHE_ALIGN;
 CRStruct Critical[OBJECT_SIZE] CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-Barrier bar;
+Barrier bar CACHE_ALIGN;
+BenchArgs bench_args CACHE_ALIGN;
 
 __thread MCSThreadState st_thread;
 
@@ -59,7 +61,7 @@ inline static void *Execute(void* Arg) {
     if (id == 0)
         d1 = getTimeMillis();
 
-    for (i = 0; i < RUNS; i++) {
+    for (i = 0; i < bench_args.runs; i++) {
 #if defined(__sun) || defined(sun)
         schedctl_start(schedule_control);
 #endif
@@ -67,22 +69,24 @@ inline static void *Execute(void* Arg) {
 #if defined(__sun) || defined(sun)
         schedctl_stop(schedule_control);
 #endif
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
     return NULL;
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
+    parseArguments(&bench_args, argc, argv);
+
     object_lock = MCSLockInit();
-    BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
-    JoinThreadsN(N_THREADS);
+    BarrierInit(&bar, bench_args.nthreads);
+    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), RUNS*N_THREADS/(1000.0*(d2 - d1)));
-    printStats(N_THREADS);
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printStats(bench_args.nthreads);
 
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: shared counter: %ld\n", Critical[0].obj);

@@ -11,10 +11,12 @@
 #include <uthreads.h>
 #include <oscistack.h>
 #include <barrier.h>
+#include <bench_args.h>
 
 OsciStackStruct object_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-Barrier bar;
+Barrier bar CACHE_ALIGN;
+BenchArgs bench_args CACHE_ALIGN;
 
 inline static void *Execute(void* Arg) {
     OsciStackThreadState *th_state;
@@ -29,30 +31,32 @@ inline static void *Execute(void* Arg) {
     }
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(OsciStackThreadState));
     OsciStackThreadStateInit(&object_struct, th_state, pid);
-    for (i = 0; i < RUNS; i++) {
+    for (i = 0; i < bench_args.runs; i++) {
         // perform a push operation
         OsciStackApplyPush(&object_struct, th_state, pid, pid);
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
         // perform a pop operation
         OsciStackApplyPop(&object_struct, th_state, pid);
-        rnum = fastRandomRange(1, MAX_WORK);
+        rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
     return NULL;
 }
 
-int main(void) {
-    OsciStackInit(&object_struct, N_THREADS, N_THREADS/getNCores());
-    BarrierInit(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, N_THREADS/getNCores());
-    JoinThreadsN(N_THREADS);
+int main(int argc, char *argv[]) {
+    parseArguments(&bench_args, argc, argv);
+
+    OsciStackInit(&object_struct, bench_args.nthreads, bench_args.fibers_per_thread);
+    BarrierInit(&bar, bench_args.nthreads);
+    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2*RUNS*N_THREADS/(1000.0*(d2 - d1)));
-    printStats(N_THREADS);
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2 * bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printStats(bench_args.nthreads);
 
 #ifdef DEBUG
     volatile Node *head = object_struct.head;

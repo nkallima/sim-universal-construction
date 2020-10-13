@@ -3,14 +3,6 @@
 
 #include <unistd.h>
 
-// Definition: N_THREADS
-// ---------------------
-// Define the number of threads that you like to run the provided 
-// experiments.
-#ifndef N_THREADS
-#    define N_THREADS              128
-#endif
-
 // Definition: MAX_WORK
 // --------------------
 // Define the maximum local work that each thread executes 
@@ -21,14 +13,14 @@
 // or not to use small values (avoiding long runs and
 // unrealistic cache misses ratios).
 #ifndef MAX_WORK
-#    define MAX_WORK               512
+#    define MAX_WORK               64
 #endif
 
 // definition: RUNS
 // ----------------
 // Define the total number of the calls of object's 
 // operations that will be executed.
-#define RUNS                       (10000000 / N_THREADS)
+#define RUNS                       1000000
 
 // Definition: DEBUG
 // -----------------
