@@ -6,6 +6,16 @@
 #include <config.h>
 
 static void printHelp(void) {
+    fprintf(stderr, "Usage: ./BENCHMARK.run OPTION1 NUM1  OPTION2 NUM2...\n"
+            "The following options are available:\n"
+            "-t,  --threads    \t set the number of threads (fiber threads also included, if any) to be used in the benchmark\n"
+            "-f,  --fibers     \t set the number of user-level threads per posix thread\n"
+            "-r,  --runs       \t set the number of runs that the benchmarked operation should be executed\n"
+            "-w,  --max_work   \t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64\n"
+            "-b,  --backoff, --backoff_high \t set a backoff value (only for msqueue, lfstack, simbench, simstack and simqueue benchmarks)\n"
+            "-l,  --backoff_low\t set a backoff value (only for msqueue and lfstack benchmarks)\n"
+            "\n"
+            "-h, --help        \t displays this help and exits\n");
 }
 
 void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
@@ -17,7 +27,8 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
         {"runs",         required_argument, 0,  'r' },
         {"max_work",     required_argument, 0,  'w' },
         {"backoff_low",  required_argument, 0,  'l' },
-        {"backoff_high", required_argument, 0,  'h' },
+        {"backoff_high", required_argument, 0,  'b' },
+        {"help",         no_argument,       0,  'h' },
         {0,              0,                 0,   0  }
     };
     
@@ -29,7 +40,7 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
     bench_args->backoff_high = 0;
     bench_args->backoff_low = 0;
 
-    while((opt = getopt_long(argc, argv, "t:f:r:w:h:l:",long_options, &long_index)) != -1) {
+    while((opt = getopt_long(argc, argv, "t:f:r:w:b:l:h",long_options, &long_index)) != -1) {
         switch(opt) {
             case 't':
                 bench_args->nthreads = atoi(optarg);
@@ -43,12 +54,16 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
             case 'w':  
                 bench_args->max_work = atoi(optarg);  
                 break;
-            case 'h':  
+            case 'b':  
                 bench_args->backoff_high = atoi(optarg);  
                 break;
             case 'l':  
                 bench_args->backoff_low = atoi(optarg);  
                 break;   
+            case 'h':
+                printHelp();
+                exit(EXIT_SUCCESS);
+                break;
             case ':':
                 printHelp();
                 exit(EXIT_FAILURE);
