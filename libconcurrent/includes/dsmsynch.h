@@ -24,7 +24,7 @@ typedef struct DSMSynchNode {
     int32_t pid;
     int32_t locked;
     int32_t completed;
-    int32_t align[PAD_CACHE(sizeof(HalfDSMSynchNode))];
+    char align[PAD_CACHE(sizeof(HalfDSMSynchNode))];
 } DSMSynchNode;
 
 typedef struct DSMSynchThreadState {

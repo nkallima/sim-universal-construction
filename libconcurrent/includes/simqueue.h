@@ -30,7 +30,7 @@ typedef struct EnqState {
     int32_t counter;
 #endif
     uint64_t __flex[1];
-    int32_t pad[PAD_CACHE(sizeof (HalfEnqState))];
+    char pad[PAD_CACHE(sizeof (HalfEnqState))];
 } EnqState;
 
 #define EnqStateSize(N)                       (sizeof(EnqState) + _TVEC_VECTOR_SIZE(N))
@@ -55,7 +55,7 @@ typedef struct DeqState {
 #ifdef DEBUG
     int32_t counter;
 #endif
-    int32_t pad[PAD_CACHE(sizeof (HalfDeqState))];
+    char pad[PAD_CACHE(sizeof (HalfDeqState))];
 } DeqState;
 
 #define DeqStateSize(N)                       (sizeof(DeqState) + _TVEC_VECTOR_SIZE(N) + (N) * sizeof(RetVal))

@@ -25,7 +25,7 @@ typedef struct HSynchNode {
     int32_t pid;
     int32_t locked;
     int32_t completed;
-    int32_t align[PAD_CACHE(sizeof(HalfHSynchNode))];
+    char align[PAD_CACHE(sizeof(HalfHSynchNode))];
 } HSynchNode;
 
 typedef union HSynchNodePtr {
