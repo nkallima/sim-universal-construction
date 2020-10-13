@@ -25,6 +25,7 @@ FIBERS="";
 BACKOFF="";
 MIN_BACKOFF="";
 ITERATIONS=10;
+RUNS=""
 LIST=0;
 WORKLOAD="";
 COMPILER=gcc;
@@ -59,6 +60,9 @@ while [ "$1" != "" ]; do
             ;;
         -w | --max_work)
             WORKLOAD="-w $VALUE";
+            ;;
+        -r | --runs)
+            RUNS="-r $VALUE";
             ;;
         --compiler)
             COMPILER=$VALUE;
@@ -99,7 +103,7 @@ echo -e "\e[36mRunning the benchmark $ITERATIONS times"
 echo -e "\e[39m"
 
 for (( i=1; i<=$ITERATIONS; i++ ));do
-    ./bin/$FILE $NTHREADS $WORKLOAD $FIBERS $BACKOFF $MIN_BACKOFF >> res.txt;
+    ./bin/$FILE $NTHREADS $WORKLOAD $FIBERS $RUNS $BACKOFF $MIN_BACKOFF >> res.txt;
     tail -1 res.txt;
 done;
 
