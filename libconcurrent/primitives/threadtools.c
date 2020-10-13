@@ -32,6 +32,8 @@ int32_t getPreferedCore(void) {
 }
 
 uint32_t getNCores(void) {
+    if (__ncores == 0)
+        __ncores = sysconf(_SC_NPROCESSORS_ONLN);
     return __ncores;
 }
 
@@ -165,7 +167,7 @@ int32_t getThreadId(void) {
     return __thread_id;
 }
 
-void resched(void) {
+inline void resched(void) {
     if (__uthread_sched)
         fiberYield();
     else if (isSystemOversubscribed())
