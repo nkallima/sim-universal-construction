@@ -14,6 +14,7 @@ BINDIR     = bin
 LIBDIR     = lib
 
 LIBNAME    = libconcurrent.a
+LIBNAMESO  = libconcurrent.so
 
 # define the C source files
 PRIMITIVES = $(wildcard primitives/*.c)
@@ -39,8 +40,9 @@ $(EXECS): %.run : %.o $(OBJECTS)
 	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) -c $< -o $@
 
 libbuild: $(OBJECTS)
+	$(CC) -shared -o $(LIBDIR)/$(LIBNAMESO) $(OBJECTS)
 	$(AR) rcs $(LIBDIR)/$(LIBNAME) $(OBJECTS)
 
 clean: $(SRCS)
-	rm -f $(OBJECTS) $(OBJEXECS) $(BINDIR)/*.run $(LIBDIR)/*.a res.txt *.log
+	rm -f $(OBJECTS) $(OBJEXECS) $(BINDIR)/*.run $(LIBDIR)/*.a $(LIBDIR)/*.so res.txt *.log
 

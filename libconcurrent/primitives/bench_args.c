@@ -5,8 +5,8 @@
 #include <primitives.h>
 #include <config.h>
 
-static void printHelp(void) {
-    fprintf(stderr, "Usage: ./BENCHMARK.run OPTION1 NUM1  OPTION2 NUM2...\n"
+static void printHelp(const char *exec_name) {
+    fprintf(stderr, "Usage: %s OPTION1 NUM1  OPTION2 NUM2...\n"
             "The following options are available:\n"
             "-t,  --threads    \t set the number of threads (fiber threads also included, if any) to be used in the benchmark\n"
             "-f,  --fibers     \t set the number of user-level threads per posix thread\n"
@@ -15,7 +15,7 @@ static void printHelp(void) {
             "-b,  --backoff, --backoff_high \t set a backoff value (only for msqueue, lfstack, simbench, simstack and simqueue benchmarks)\n"
             "-l,  --backoff_low\t set a backoff value (only for msqueue and lfstack benchmarks)\n"
             "\n"
-            "-h, --help        \t displays this help and exits\n");
+            "-h, --help        \t displays this help and exits\n", exec_name);
 }
 
 void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
@@ -61,15 +61,15 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
                 bench_args->backoff_low = atoi(optarg);  
                 break;   
             case 'h':
-                printHelp();
+                printHelp(argv[0]);
                 exit(EXIT_SUCCESS);
                 break;
             case ':':
-                printHelp();
+                printHelp(argv[0]);
                 exit(EXIT_FAILURE);
                 break;
             case '?':
-                printHelp();
+                printHelp(argv[0]);
                 exit(EXIT_FAILURE);
                 break;  
         }  
