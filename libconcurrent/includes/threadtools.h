@@ -26,11 +26,11 @@ int threadPin(int32_t cpu_id);
 int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads);
 void JoinThreadsN(uint32_t nthreads);
 
-int32_t getThreadId(void);
-int32_t getPreferedCore(void);
-uint32_t getNCores(void);
+inline int32_t getThreadId(void);
+inline int32_t getPreferedCore(void);
+inline uint32_t getNCores(void);
 inline void resched(void);
-bool isSystemOversubscribed(void);
+inline bool isSystemOversubscribed(void);
 
 
 #endif

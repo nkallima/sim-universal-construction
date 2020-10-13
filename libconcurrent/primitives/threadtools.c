@@ -20,18 +20,20 @@ static void *(*__func)(void *) CACHE_ALIGN = null;
 static uint32_t __uthreads = 0;
 static uint32_t __nthreads = 0;
 static uint32_t __ncores = 0;
-static bool __uthread_sched CACHE_ALIGN = false;
+static bool __uthread_sched = false;
+static bool __system_oversubscription = false;
+static bool __noop_resched = false;
 static Barrier bar CACHE_ALIGN;
 
 void setThreadId(int32_t id) {
     __thread_id = id;
 }
 
-int32_t getPreferedCore(void) {
+inline int32_t getPreferedCore(void) {
     return __prefered_core;
 }
 
-uint32_t getNCores(void) {
+inline uint32_t getNCores(void) {
     if (__ncores == 0)
         __ncores = sysconf(_SC_NPROCESSORS_ONLN);
     return __ncores;
@@ -129,9 +131,10 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
     __func = func;
     StoreFence(); 
     if (uthreads != _DONT_USE_UTHREADS_ && uthreads > 1) {
-
         __uthreads = uthreads;
         __uthread_sched = true;
+        if (nthreads/uthreads > __ncores)
+            __system_oversubscription = true;
         BarrierInit(&bar, nthreads/uthreads + 1);
         for (i = 0; i < (nthreads/uthreads)-1; i++) {
             last_thread_id = pthread_create(&__threads[i], null, uthreadWrapper, (void *)(i*uthreads));
@@ -144,6 +147,8 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
         uthreadWrapper((void *)(i*uthreads));
     } else {
         __uthread_sched = false;
+        if (__nthreads > __ncores) __system_oversubscription = true;
+        else __noop_resched = true;
         BarrierInit(&bar, nthreads + 1);
         for (i = 0; i < nthreads-1; i++) {
             last_thread_id = pthread_create(&__threads[i], null, kthreadWrapper, (void *)i);
@@ -163,19 +168,18 @@ void JoinThreadsN(uint32_t nthreads) {
     freeMemory(__threads, nthreads * sizeof(pthread_t));
 }
 
-int32_t getThreadId(void) {
+inline int32_t getThreadId(void) {
     return __thread_id;
 }
 
 inline void resched(void) {
-    if (__uthread_sched)
+    if (__noop_resched)
+        return;
+    else if (__uthread_sched)
         fiberYield();
-    else if (isSystemOversubscribed())
-        ;
     else sched_yield();
 }
 
-bool isSystemOversubscribed(void) {
-    if (__nthreads > __ncores) return true;
-    else return false;
+inline bool isSystemOversubscribed(void) {
+   return __system_oversubscription;
 }
