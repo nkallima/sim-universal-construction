@@ -104,7 +104,6 @@ inline void *getAlignedMemory(size_t align, size_t size);
 inline void freeMemory(void *ptr, size_t size);
 
 inline int64_t getTimeMillis(void);
-inline int WeakFence(void);
 
 #define CAS32(A, B, C) _CAS32((uint32_t *)A, (uint32_t)B, (uint32_t)C)
 inline  bool _CAS32(uint32_t *A, uint32_t B, uint32_t C);

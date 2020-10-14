@@ -96,7 +96,6 @@ osci_start:
 #endif
             }
         }
-        WeakFence();
         counter += i;
         if (p->next==null || p->next->next==null || counter >= help_bound)
             break;

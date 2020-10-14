@@ -189,13 +189,6 @@ inline bool _CAS64(uint64_t *A, uint64_t B, uint64_t C) {
 #endif
 }
 
-inline int WeakFence(void) {
-    volatile int __fence_var;
-
-    __fence_var = 0;
-    return __fence_var;
-}
-
 inline bool _CASPTR(void *A, void *B, void *C) {
 #ifdef DEBUG
     int res;

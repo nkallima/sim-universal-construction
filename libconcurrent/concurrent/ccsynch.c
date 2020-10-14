@@ -49,7 +49,6 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
         p->arg_ret = sfunc(state, p->arg_ret, p->pid);
         p->completed = true;
         p->locked = false;
-        WeakFence();
         p = tmp_next;
     }
     p->locked = false;                      // Unlock the next one
