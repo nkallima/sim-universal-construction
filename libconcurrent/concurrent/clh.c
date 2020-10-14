@@ -24,8 +24,8 @@ CLHLockStruct *CLHLockInit(uint32_t nthreads) {
     l->Tail = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode));
     l->Tail->locked = false;
 
-    l->MyNode = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode *));
-    l->MyPred = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode *));
+    l->MyNode = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(CLHLockNode *));
+    l->MyPred = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(CLHLockNode *));
     for (j = 0; j < nthreads; j++) {
         l->MyNode[j] = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode));
         l->MyPred[j] = null;

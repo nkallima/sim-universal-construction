@@ -6,7 +6,7 @@
 
 
 static const int HSYNCH_HELP_FACTOR = 10;
-static int HSYNCH_CLUSTER_SIZE = 1;
+static int HSYNCH_CLUSTER_SIZE = 8;
 
 static __thread int node_of_thread = 0;
 
@@ -98,10 +98,12 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads) {
 
 #ifdef NUMA_SUPPORT
     numa_regions = numa_max_node() + 1;
+#else 
+    numa_regions = nthreads/HSYNCH_CLUSTER_SIZE;
 #endif
 
     l->nthreads = nthreads;
-    HSYNCH_CLUSTER_SIZE = nthreads/numa_regions + nthreads%numa_regions;
+    HSYNCH_CLUSTER_SIZE = nthreads/numa_regions + (nthreads%numa_regions > 0) ? 1 : 0;
     l->central_lock = CLHLockInit(nthreads);
     l->Tail = getAlignedMemory(CACHE_LINE_SIZE, numa_regions * sizeof(HSynchNodePtr));
     for (i = 0; i < numa_regions; i++) {
