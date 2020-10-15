@@ -23,7 +23,7 @@ inline static RetVal fetchAndMultiply(Object mod_sp, Object arg, int pid);
 
 
 inline static RetVal fetchAndMultiply(Object mod_sp, Object arg, int pid) {
-     mod_sp +=1;//*= arg;
+     mod_sp += arg;//*= arg;
      return (RetVal)mod_sp;
 }
 
@@ -41,7 +41,7 @@ inline static void *Execute(void* Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        LFUObjectApplyOp(&lfobject, th_state, fetchAndMultiply, (Object) (id + 1), id);
+        LFUObjectApplyOp(&lfobject, th_state, fetchAndMultiply, 1, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -52,7 +52,7 @@ inline static void *Execute(void* Arg) {
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
 
-    LFUObjectInit(&lfobject, (ArgVal)1);
+    LFUObjectInit(&lfobject, (ArgVal)0);
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
@@ -60,6 +60,10 @@ int main(int argc, char *argv[]) {
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
     printStats(bench_args.nthreads);
+
+#ifdef DEBUG
+    fprintf(stderr, "DEBUG: Object state: %ld\n", lfobject.val);
+#endif
 
     return 0;
 }

@@ -99,8 +99,10 @@ fi
 set -e 
 
 echo -e "\e[36mNumber of available processing cores: " $(nproc);
-echo -e "\e[36mRunning the benchmark $ITERATIONS times"
+echo -e "\e[36mRunning $FILE benchmark $ITERATIONS times"
 echo -e "\e[39m"
+
+rm -rf res.txt;
 
 for (( i=1; i<=$ITERATIONS; i++ ));do
     ./bin/$FILE $NTHREADS $WORKLOAD $FIBERS $RUNS $BACKOFF $MIN_BACKOFF >> res.txt;
@@ -134,7 +136,7 @@ awk 'BEGIN {debug_prefix="";
             ops_per_cas += $24;
             i += 1} 
      END {  time = time/i; print "\naverage time: \t", time, "";
-            throughput = throughput/i; print "throughput: \t", throughput, "";
+            throughput = throughput/i; print "average throughput: \t", throughput, "";
             if (debug_prefix == "DEBUG:") {
                 failed_cas = failed_cas/i; print "failed cas: \t", failed_cas, "";
                 executed_cas =executed_cas/i; print "executed cas: \t", executed_cas, "";

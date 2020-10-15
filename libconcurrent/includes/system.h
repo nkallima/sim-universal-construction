@@ -4,7 +4,7 @@
 #include <config.h>
 
 #ifndef CACHE_LINE_SIZE
-#    define CACHE_LINE_SIZE            128
+#    define CACHE_LINE_SIZE            64
 #endif
 
 #ifdef __GNUC__

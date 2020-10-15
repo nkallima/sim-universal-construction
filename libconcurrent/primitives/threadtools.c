@@ -78,7 +78,17 @@ int threadPin(int32_t cpu_id) {
     int node_size = ncpus / nodes;
 
     if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus/2)) {
-        __prefered_core = ((cpu_id % node_size) * nodes + (cpu_id/node_size))% getNCores();
+        int half_node_size = node_size/2;
+        int offset = 0;
+        uint32_t half_cpu_id = cpu_id;
+
+        if (cpu_id >= ncpus/2) {
+            half_cpu_id = cpu_id - ncpus/2;
+            offset = ncpus/2;
+        }
+        __prefered_core = (half_cpu_id % nodes) * half_node_size + half_cpu_id / nodes;
+        __prefered_core += offset; 
+        __prefered_core %= getNCores();
         CPU_SET(__prefered_core, &mask);
     } else {
         __prefered_core = ((cpu_id % nodes) * node_size) % getNCores();
