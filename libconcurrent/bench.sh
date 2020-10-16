@@ -12,7 +12,6 @@ function usage()
     echo -e "-r, --runs    \t set the number of runs that the benchmarked operation should be executed"
     echo -e "-w, --max_work\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64"
     echo -e "-l, --list    \t displays the list of the available benchmarks"
-    echo -e "--compiler    \t set the compiler for building the binaries of the benchmark suite, default is the gcc compiler"
     echo -e "-b, --backoff, --backoff_high \t set a backoff value (only for msqueue, lfstack, simbench, simstack and simqueue benchmarks)"
     echo -e "-bl, --backoff_low            \t set a backoff value (only for msqueue and lfstack benchmarks)"
     echo -e ""
@@ -28,7 +27,6 @@ ITERATIONS=10;
 RUNS=""
 LIST=0;
 WORKLOAD="";
-COMPILER=gcc;
 
 if [ "$#" = "0" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     usage;
@@ -63,9 +61,6 @@ while [ "$1" != "" ]; do
             ;;
         -r | --runs)
             RUNS="-r $VALUE";
-            ;;
-        --compiler)
-            COMPILER=$VALUE;
             ;;
         -l | --list)
             LIST=1;

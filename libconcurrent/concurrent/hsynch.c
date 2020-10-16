@@ -103,7 +103,7 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads) {
 #endif
 
     l->nthreads = nthreads;
-    HSYNCH_CLUSTER_SIZE = nthreads/numa_regions + (nthreads%numa_regions > 0) ? 1 : 0;
+    HSYNCH_CLUSTER_SIZE = nthreads/numa_regions + ((nthreads%numa_regions > 0) ? 1 : 0);
     l->central_lock = CLHLockInit(nthreads);
     l->Tail = getAlignedMemory(CACHE_LINE_SIZE, numa_regions * sizeof(HSynchNodePtr));
     for (i = 0; i < numa_regions; i++) {
