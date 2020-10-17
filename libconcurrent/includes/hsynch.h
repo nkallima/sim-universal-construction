@@ -1,10 +1,6 @@
 #ifndef _HSYNCH_H_
 #define _HSYNCH_H_
 
-#if defined(sun) || defined(_sun)
-#    include <schedctl.h>
-#endif
-
 #include <system.h>
 #include <config.h>
 #include <primitives.h>
@@ -35,9 +31,6 @@ typedef union HSynchNodePtr {
 
 typedef struct HSynchThreadState {
     HSynchNode *next_node;
-#if defined(__sun) || defined(sun)
-    schedctl_t *schedule_control;    
-#endif
 } HSynchThreadState;
 
 typedef struct HSynchStruct {

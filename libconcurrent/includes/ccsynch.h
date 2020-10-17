@@ -1,10 +1,6 @@
 #ifndef _CCSYNCH_H_
 #define _CCSYNCH_H_
 
-#if defined(sun) || defined(_sun)
-#    include <schedctl.h>
-#endif
-
 #include <config.h>
 #include <primitives.h>
 #include <fastrand.h>
@@ -30,9 +26,6 @@ typedef struct CCSynchNode {
 typedef struct CCSynchThreadState {
     CCSynchNode *next;
     int toggle;
-#if defined(__sun) || defined(sun)
-    schedctl_t *schedule_control;    
-#endif
 } CCSynchThreadState;
 
 typedef struct CCSynchStruct {

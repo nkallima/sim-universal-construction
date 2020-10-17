@@ -1,9 +1,6 @@
 #ifndef _DSMSYNCH_H_
 #define _DSMSYNCH_H_
 
-#if defined(sun) || defined(_sun)
-#    include <schedctl.h>
-#endif
 #include <config.h>
 
 #include <primitives.h>
@@ -30,9 +27,6 @@ typedef struct DSMSynchNode {
 typedef struct DSMSynchThreadState {
     DSMSynchNode *MyNodes[2];
     int toggle;
-#if defined(__sun) || defined(sun)
-    schedctl_t *schedule_control;    
-#endif
 } DSMSynchThreadState;
 
 typedef struct DSMSynchStruct {

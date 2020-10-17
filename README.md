@@ -6,7 +6,7 @@ Some of the benchmarks run much better in machine architectures that natively su
 instructions(e.g., x86_64, etc.).
 
 However, some of the benchmarks have successfully tested in other machine architectures,
-such as SPARC, ARM-V8 and RISC-V.
+such as ARM-V8 and RISC-V.
 
 As a compiler, gcc is supported, but you may also try to use icc or clang.
 For compiling, it is highly recommended to use gcc of version 4.3.0 or greater. 
@@ -18,7 +18,10 @@ Important parameters for the benchmarks and/or library are set in the config.h f
 
 For running benchmarks use the bench.sh script file that is provided in the main directory of this source tree.
 
-Example usage: `./bench.sh FILE.c OPTION1=NUM1  OPTION2=NUM2 ...`
+Example usage: `./bench.sh FILE.run OPTION1=NUM1  OPTION2=NUM2 ...`
+
+To perform smoke test: `./run_all.sh`. This will quickly run all available benchmarks with default options
+and store the results  in the file `results.txt`.
 
 The following options are available:
 

@@ -22,34 +22,15 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     next_node->locked = true;
     next_node->completed = false;
 
-#if defined(__sun) || defined(sun)
-    schedctl_start(st_thread->schedule_control);
-#endif
     cur = (volatile HSynchNode *)SWAP(&l->Tail[node_of_thread].ptr, next_node);
     cur->arg_ret = arg;
     cur->next = (HSynchNode *)next_node;
-#if defined(__sun) || defined(sun)
-    schedctl_stop(st_thread->schedule_control);
-#endif
+
     st_thread->next_node = (HSynchNode *)cur;
 
-    while (cur->locked) {                   // spinning
-        if (isSystemOversubscribed())
-            resched();
-        else {
-#if defined(__sun) || defined(sun)
-            Pause();
-            Pause();
-            Pause();
-            Pause();
-#else
-            Pause();
-#endif
-        }
-    }
-#if defined(__sun) || defined(sun)
-    schedctl_start(st_thread->schedule_control);
-#endif
+    while (cur->locked)                     // spinning
+        resched();
+
     p = cur;                                // I am not been helped
     if (cur->completed)                     // I have been helped
         return cur->arg_ret;
@@ -71,18 +52,12 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     }
     p->locked = false;                      // Unlock the next one
     CLHUnlock(l->central_lock, pid);
-#if defined(__sun) || defined(sun)
-    schedctl_stop(st_thread->schedule_control);
-#endif
 
     return cur->arg_ret;
 }
 
 void HSynchThreadStateInit(HSynchThreadState *st_thread, int pid) {
     st_thread->next_node = getAlignedMemory(CACHE_LINE_SIZE, sizeof(HSynchNode));
-#ifdef sun
-    st_thread->schedule_control = schedctl_init();
-#endif
 
 #ifdef NUMA_SUPPORT
     if (getPreferedCore() != -1)

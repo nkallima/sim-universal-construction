@@ -46,26 +46,13 @@ inline static void *Execute(void* Arg) {
     volatile long j;
     long id = (long) Arg;
     
-#if defined(__sun) || defined(sun)
-    schedctl_t *schedule_control;    
-#endif
-
-#ifdef sun
-    schedule_control = schedctl_init();
-#endif
     fastRandomSetSeed(id + 1);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-#if defined(__sun) || defined(sun)
-        schedctl_start(schedule_control);
-#endif
         apply_op(fetchAndMultiply, (ArgVal) i, (int)id);
-#if defined(__sun) || defined(sun)
-        schedctl_stop(schedule_control);
-#endif
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;

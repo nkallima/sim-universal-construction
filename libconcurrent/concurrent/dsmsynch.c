@@ -19,25 +19,19 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     mynode->locked = true;
     mynode->completed = false;
     mynode->pid = pid;
-#if defined(__sun) || defined(sun)
-    schedctl_start(st_thread->schedule_control);
-#endif
+
     mypred = (DSMSynchNode *)SWAP(&l->Tail, mynode);
     if (mypred != null) {
         mypred->next = (DSMSynchNode *)mynode;
         FullFence();
-#if defined(__sun) || defined(sun)
-        schedctl_stop(st_thread->schedule_control);
-#endif
+
         while (mynode->locked) {
             resched();
         }
         if (mynode->completed) // operation has already applied
             return mynode->ret;
     }
-#if defined(__sun) || defined(sun)
-    schedctl_start(st_thread->schedule_control);
-#endif
+
 #ifdef DEBUG
     l->rounds += 1;
 #endif
@@ -66,9 +60,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     }
     p->next->locked = false;
     FullFence();
-#if defined(__sun) || defined(sun)
-    schedctl_stop(st_thread->schedule_control);
-#endif
+
     return mynode->ret;
 }
 
@@ -85,7 +77,4 @@ void DSMSynchThreadStateInit(DSMSynchThreadState *st_thread, int pid) {
     st_thread->MyNodes[0] = getAlignedMemory(CACHE_LINE_SIZE, sizeof(DSMSynchNode));
     st_thread->MyNodes[1] = getAlignedMemory(CACHE_LINE_SIZE, sizeof(DSMSynchNode));
     st_thread->toggle = 0;
-#ifdef sun
-    st_thread->schedule_control = schedctl_init();
-#endif
 }

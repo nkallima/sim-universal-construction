@@ -49,42 +49,9 @@
 #    define                            __OLD_GCC_X86__
 inline int bitSearchFirst(uint64_t B);
 inline uint64_t nonZeroBits(uint64_t v);
-
-#elif defined(sun) && defined(sparc) && defined(__SUNPRO_C)
-#    warning Experimental support!
-
-#    include <atomic.h>
-#    include <sun_prefetch.h>
-
-     extern void MEMBAR_ALL(void);
-     extern void MEMBAR_STORE(void);
-     extern void MEMBAR_LOAD(void);
-     extern void *CASPO(void volatile*, void *);
-     extern void *SWAPPO(void volatile*, void *);
-     extern int32_t POPC(int32_t x);
-     extern void NOP(void);
-
-#    define __CASPTR(A, B, C)          (atomic_cas_ptr(A, B, C) == B)
-#    define __CAS32(A, B, C)           (atomic_cas_32(A, B, C) == B)
-#    define __CAS64(A, B, C)           (atomic_cas_64(A, B, C) == B)
-#    define __SWAP(A, B)               SWAPPO(A, B)
-#    define __FAA32(A, B)              atomic_add_32_nv((volatile uint32_t *)A, (int32_t)B)
-#    define __FAA64(A, B)              atomic_add_64_nv((volatile uint64_t *)A, (int64_t)B)
-#    define nonZeroBits(A)             (POPC((int32_t)A)+POPC((int32_t)(A>>32)))
-#    define LoadFence()                MEMBAR_LOAD()
-#    define StoreFence()               MEMBAR_STORE()
-#    define FullFence()                MEMBAR_ALL()
-#    define ReadPrefetch(A)            sparc_prefetch_read_many((void *)A)
-#    define StorePrefetch(A)           sparc_prefetch_write_many((void *)A)
-
-#    define                            __NO_GCC_SPARC__
-inline uint32_t bitSearchFirst(uint64_t v) ;
-
 #else
 #    error Current machine architecture and compiler are not supported yet!
 #endif
-
-
 
 #if defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
 #    define Pause()                    {int __i; for (__i = 0; __i < 16; __i++) {\

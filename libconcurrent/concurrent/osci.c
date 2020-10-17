@@ -21,9 +21,6 @@ void OsciThreadStateInit(OsciThreadState *st_thread, OsciStruct *l, int pid) {
         st_thread->next_node[i].toggle = 0;
         st_thread->next_node[i].door = _OSCI_DOOR_INIT;
     }
-#ifdef sun
-    st_thread->schedule_control = schedctl_init();
-#endif
 }
 
 RetVal OsciApplyOp(OsciStruct *l, OsciThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {

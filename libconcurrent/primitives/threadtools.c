@@ -56,23 +56,14 @@ inline static void *kthreadWrapper(void *arg) {
 int threadPin(int32_t cpu_id) {
     pthread_setconcurrency(getNCores());
 
-#if defined(__sun) || defined(sun)
-    int ret;
-
-    ret = processor_bind(P_LWPID, cpu_id + 1, (cpu_id + 1)%getNCores(), null);
-    if (ret == -1)
-        perror("processor_bind");
-        
-    return ret;
-    
-#elif defined (__gnu_linux__) || defined (__gnu__linux) || defined (__linux__)
+#if defined (__gnu_linux__) || defined (__gnu__linux) || defined (__linux__)
     int ret = 0;
     cpu_set_t mask;  
     unsigned int len = sizeof(mask);
 
     CPU_ZERO(&mask);
 
-#ifdef NUMA_SUPPORT
+#   ifdef NUMA_SUPPORT
     int ncpus = numa_num_configured_cpus();
     int nodes = numa_max_node() + 1;
     int node_size = ncpus / nodes;
@@ -95,18 +86,20 @@ int threadPin(int32_t cpu_id) {
         CPU_SET(__prefered_core, &mask);
     }
 
-#   ifdef DEBUG
+#      ifdef DEBUG
     fprintf(stderr, "DEBUG: thread: %d -- numa_node: %d -- core: %d -- nodes: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core, nodes);
-#   endif
+#      endif
 
-#else
+#   else
     CPU_SET(cpu_id % getNCores(), &mask);
-#endif
+#   endif
     ret = sched_setaffinity(0, len, &mask);
     if (ret == -1)
         perror("sched_setaffinity");
 
     return ret;
+#else
+#    error Current machine architecture is not supported yet!
 #endif
 }
 
