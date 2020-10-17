@@ -15,8 +15,8 @@
 
 typedef struct ListNode {
     volatile struct ListNode *next;  // in the queue where Head and Tail point to.
-    int32_t value;		             // initially, there is a sentinel node 
-} ListNode;	
+    int32_t value;                   // initially, there is a sentinel node 
+} ListNode;
 
 CLHLockStruct *lhead, *ltail;
 ListNode guard CACHE_ALIGN = {null, 0};

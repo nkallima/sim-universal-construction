@@ -8,12 +8,12 @@
 static void printHelp(const char *exec_name) {
     fprintf(stderr, "Usage: %s OPTION1 NUM1  OPTION2 NUM2...\n"
             "The following options are available:\n"
-            "-t,  --threads    \t set the number of threads (fiber threads also included, if any) to be used in the benchmark\n"
+            "-t,  --threads    \t set the number of threads to be used in the benchmark (fiber threads also included)\n"
             "-f,  --fibers     \t set the number of user-level threads per posix thread\n"
             "-r,  --runs       \t set the number of runs that the benchmarked operation should be executed\n"
             "-w,  --max_work   \t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64\n"
-            "-b,  --backoff, --backoff_high \t set a backoff value (only for msqueue, lfstack, simbench, simstack and simqueue benchmarks)\n"
-            "-l,  --backoff_low\t set a backoff value (only for msqueue and lfstack benchmarks)\n"
+            "-b,  --backoff, --backoff_high \t sset an upper backoff bound\n"
+            "-l,  --backoff_low\t set a lower backoff bound\n"
             "\n"
             "-h, --help        \t displays this help and exits\n", exec_name);
 }

@@ -30,9 +30,8 @@ The following options are available:
 |  `-r`, `--repeat`   |  set the number of times that the benchmark should be executed, default is 10 times |
 |  `-w`, `--workload` |  set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the  |benchmarked object), default is 64
 |  `-l`, `--list`     |  displays the list of the available benchmarks |
-|  `--compiler`       |  set the compiler for building the binaries of the benchmark suite, default is the gcc compiler |
-|  `-b`, `--backoff`, `--lower_backoff` |  set a backoff value (only for msqueue, lfstack, simbench, simstack and simqueue benchmarks) |
-|  `-b2`, `--upper_backoff`  |  set a backoff value (only for msqueue and lfstack benchmarks) |
+|  `-b`, `--backoff`, `--backoff_high` |  set an upper backoff bound for lock-free and Sim-based algorithms |
+|  `-bl`, `--backoff_low`  |  set a lower backoff bound (only for msqueue, lfstack and lfuobject benchmarks) |
 |  `-h`, `--help`     |  displays this help and exits |
 
 
