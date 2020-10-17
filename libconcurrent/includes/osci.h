@@ -1,10 +1,6 @@
 #ifndef __OSCI_H_
 #define __OSCI_H_
 
-#if defined(sun) || defined(_sun)
-#    include <schedctl.h>
-#endif
-
 #include <config.h>
 #include <primitives.h>
 #include <fastrand.h>
@@ -28,9 +24,6 @@ typedef struct OsciNode {
 typedef struct OsciThreadState {
     volatile OsciNode next_node[2];
     int toggle CACHE_ALIGN;
-#if defined(__sun) || defined(sun)
-    schedctl_t *schedule_control;    
-#endif
 } OsciThreadState;
 
 typedef struct OsciStruct {

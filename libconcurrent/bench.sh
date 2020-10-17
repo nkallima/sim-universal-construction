@@ -130,7 +130,7 @@ awk 'BEGIN {debug_prefix="";
             atomics_per_op += $22;
             ops_per_cas += $24;
             i += 1} 
-     END {  time = time/i; print "\naverage time: \t", time, "";
+     END {  time = time/i; print "\naverage time: \t\t", time, "";
             throughput = throughput/i; print "average throughput: \t", throughput, "";
             if (debug_prefix == "DEBUG:") {
                 failed_cas = failed_cas/i; print "failed cas: \t", failed_cas, "";

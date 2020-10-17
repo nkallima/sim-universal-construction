@@ -4,10 +4,6 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-#if defined(sun) || defined(_sun)
-#    include <schedctl.h>
-#endif
-
 #include <primitives.h>
 #include <config.h>
 
