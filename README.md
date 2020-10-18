@@ -9,10 +9,10 @@ However, some of the benchmarks have successfully tested in other machine archit
 such as ARM-V8 and RISC-V.
 
 As a compiler, gcc is supported, but you may also try to use icc or clang.
-For compiling, it is highly recommended to use gcc of version 4.3.0 or greater. 
+For compiling, it is highly recommended to use gcc of version 4.3.0 or greater.
+Building requires the `libnuma` development package.
 For getting the best performance, changes in Makefile may be needed (compiler flags etc).
 Important parameters for the benchmarks and/or library are set in the config.h file.
-
 
 # Running Benchmarks
 
@@ -153,3 +153,9 @@ execute one of the following make commands. This step is not necessary in case t
 
 For any further information, please do not hesitate to
 send an email at nkallima (at) ics.forth.gr. Feedback is always valuable.
+
+# Contribution
+
+If you wish to contribute to the project:
+- Install `clang-format` package 
+- After cloning the repository you need to run `git config --local core.hooksPath .git_hooks` to enable recommended code style checkes (placed in .clang_format file) during git commit. If the tool discovers incosistencies, it will create a patch file. Please follow the instructions to apply the patch before opening a pull request.

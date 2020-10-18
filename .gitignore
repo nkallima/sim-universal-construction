@@ -1,0 +1,40 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Dependency Files
+*.d
+
+# Compiled Dynamic libraries
+*.so
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# generated directories
+libconcurrent/bin
+
+# auto backup and program swap files
+*~
+*.lyx#
+*kate-swp
+
+# back files
+*.bak
+*.orig
+
+# VIM
+## Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+## Session
+Session.vim
+
+.vscode
