@@ -80,7 +80,7 @@ void SimQueueInit(SimQueueStruct *queue, uint32_t nthreads, int max_backoff) {
         TVEC_INIT_AT(&queue->enq_pool[i]->applied, nthreads, queue->enq_pool[i]->__flex);
         TVEC_INIT_AT(&queue->deq_pool[i]->applied, nthreads, queue->deq_pool[i]->__flex);
 
-        queue->deq_pool[i]->ret = ((void*)&queue->deq_pool[i]->__flex) + DeqStateSize(nthreads);
+        queue->deq_pool[i]->ret = ((void*)&queue->deq_pool[i]->__flex) + _TVEC_VECTOR_SIZE(nthreads);
     }
 
     // Initializing queue's state
