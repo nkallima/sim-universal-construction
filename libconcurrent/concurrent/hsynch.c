@@ -75,7 +75,6 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads) {
     numa_regions = numa_max_node() + 1;
 #else 
     numa_regions = nthreads/HSYNCH_CLUSTER_SIZE;
-    if (numa_regions == 0) numa_regions = 1;
 #endif
 
     l->nthreads = nthreads;
