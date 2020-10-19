@@ -8,7 +8,7 @@ static const int GUARD = INT_MIN;
 void OsciQueueInit(OsciQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t fibers_per_thread) {
     OsciInit(&(queue_object_struct->enqueue_struct), nthreads, fibers_per_thread);
     OsciInit(&queue_object_struct->dequeue_struct, nthreads, fibers_per_thread);
-    queue_object_struct->pool_node = getAlignedMemory(CACHE_LINE_SIZE, fibers_per_thread * sizeof(PoolStruct));
+    queue_object_struct->pool_node = getAlignedMemory(CACHE_LINE_SIZE, queue_object_struct->enqueue_struct.groups_of_fibers * sizeof(PoolStruct));
     queue_object_struct->guard.val = GUARD;
     queue_object_struct->guard.next = null;
     queue_object_struct->first = &queue_object_struct->guard;
