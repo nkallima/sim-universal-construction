@@ -60,12 +60,14 @@ void HSynchThreadStateInit(HSynchThreadState *st_thread, int pid) {
     st_thread->next_node = getAlignedMemory(CACHE_LINE_SIZE, sizeof(HSynchNode));
 
 #ifdef NUMA_SUPPORT
-    if (getPreferedCore() != -1)
+    if (getPreferedCore() != -1) {
         node_of_thread = numa_node_of_cpu(getPreferedCore());
+	if (node_of_thread == -1) 
+            node_of_thread = pid / HSYNCH_CLUSTER_SIZE;
+    }
 #else
     node_of_thread = pid / HSYNCH_CLUSTER_SIZE;
 #endif
-
 }
 
 void HSynchStructInit(HSynchStruct *l, uint32_t nthreads) {
