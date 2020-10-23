@@ -5,13 +5,13 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 static const int POP_OP = INT_MIN;
 static __thread PoolStruct pool_node CACHE_ALIGN;
 
-void HStackInit(HStackStruct *stack_object_struct, uint32_t nthreads) {
-    HSynchStructInit(&stack_object_struct->object_struct, nthreads);
+void HStackInit(HStackStruct *stack_object_struct, uint32_t nthreads, uint32_t numa_nodes) {
+    HSynchStructInit(&stack_object_struct->object_struct, nthreads, numa_nodes);
     stack_object_struct->head = null;
 }
 
 void HStackThreadStateInit(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid) {
-    HSynchThreadStateInit(&lobject_struct->th_state, (int)pid);
+    HSynchThreadStateInit(&object_struct->object_struct, &lobject_struct->th_state, (int)pid);
     init_pool(&pool_node, sizeof(Node));
 }
 

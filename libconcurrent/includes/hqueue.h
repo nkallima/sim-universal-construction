@@ -24,7 +24,7 @@ typedef struct HQueueThreadState {
 } HQueueThreadState;
 
 
-void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads);
+void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t numa_nodes);
 void HQueueThreadStateInit(HQueueStruct *object_struct, HQueueThreadState *lobject_struct, int pid);
 void HQueueApplyEnqueue(HQueueStruct *object_struct, HQueueThreadState *lobject_struct, ArgVal arg, int pid);
 RetVal HQueueApplyDequeue(HQueueStruct *object_struct, HQueueThreadState *lobject_struct, int pid);

@@ -48,7 +48,7 @@ inline static void *Execute(void* Arg) {
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
 
-    HStackInit(&object_struct, bench_args.nthreads);
+    HStackInit(&object_struct, bench_args.nthreads, bench_args.numa_nodes);
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);

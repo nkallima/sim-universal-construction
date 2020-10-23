@@ -6,9 +6,9 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 static const int GUARD = INT_MIN;
 static __thread PoolStruct pool_node CACHE_ALIGN;
 
-void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads) {
-    HSynchStructInit(&queue_object_struct->enqueue_struct, nthreads);
-    HSynchStructInit(&queue_object_struct->dequeue_struct, nthreads);
+void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t numa_nodes) {
+    HSynchStructInit(&queue_object_struct->enqueue_struct, nthreads, numa_nodes);
+    HSynchStructInit(&queue_object_struct->dequeue_struct, nthreads, numa_nodes);
     queue_object_struct->guard.val = GUARD;
     queue_object_struct->guard.next = null;
     queue_object_struct->first = &queue_object_struct->guard;
@@ -16,8 +16,8 @@ void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads) {
 }
 
 void HQueueThreadStateInit(HQueueStruct *object_struct, HQueueThreadState *lobject_struct, int pid) {
-    HSynchThreadStateInit(&lobject_struct->enqueue_thread_state, (int)pid);
-    HSynchThreadStateInit(&lobject_struct->dequeue_thread_state, (int)pid);
+    HSynchThreadStateInit(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, (int)pid);
+    HSynchThreadStateInit(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, (int)pid);
     init_pool(&pool_node, sizeof(Node));
 }
 

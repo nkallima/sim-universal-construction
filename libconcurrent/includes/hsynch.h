@@ -7,6 +7,8 @@
 #include <clh.h>
 #include <fastrand.h>
 
+#define HSYNCH_DEFAULT_NUMA_POLICY                               0
+
 typedef struct HalfHSynchNode {
     struct HalfHSynchNode *next;
     ArgVal arg_ret;
@@ -41,10 +43,12 @@ typedef struct HSynchStruct {
     volatile int counter;
 #endif
     uint32_t nthreads CACHE_ALIGN;
+    uint32_t numa_node_size;
+    uint32_t numa_nodes; 
+    bool numa_policy;
 } HSynchStruct;
 
-
+void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions);
+void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pid);
 RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid);
-void HSynchThreadStateInit(HSynchThreadState *st_thread, int pid);
-void HSynchStructInit(HSynchStruct *l, uint32_t nthreads);
 #endif
