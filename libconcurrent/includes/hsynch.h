@@ -42,7 +42,9 @@ typedef struct HSynchStruct {
     volatile int rounds CACHE_ALIGN;
     volatile int counter;
 #endif
-    uint32_t nthreads CACHE_ALIGN;
+    HSynchNode **nodes CACHE_ALIGN;
+    int32_t *node_indexes;
+    uint32_t nthreads;
     uint32_t numa_node_size;
     uint32_t numa_nodes; 
     bool numa_policy;

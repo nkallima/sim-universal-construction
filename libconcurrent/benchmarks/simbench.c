@@ -6,24 +6,13 @@
 #include <sim.h>
 #include <barrier.h>
 #include <bench_args.h>
+#include <fam.h>
 
 SimStruct sim_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 int MAX_BACK CACHE_ALIGN;
-
-
-inline static RetVal fetchAndMultiply(HalfSimObjectState *lsp_data, ArgVal arg, int pid);
-
-inline static RetVal fetchAndMultiply(HalfSimObjectState *lsp_data, ArgVal arg, int pid) {
-#ifdef DEBUG
-    lsp_data->counter += 1;
-#endif
-    lsp_data->state.obj += 1;
-
-    return lsp_data->state.obj;
-}
 
 inline static void *Execute(void* Arg) {
     SimThreadState th_state;
@@ -61,7 +50,7 @@ int main(int argc, char *argv[]) {
     
 #ifdef DEBUG
     SimObjectState *l = (SimObjectState *)sim_struct.pool[((pointer_t*)&sim_struct.sp)->struct_data.index];
-    fprintf(stderr, "DEBUG: Object state long value: %ld\n", l->state.obj);
+    fprintf(stderr, "DEBUG: Object state long value: %f\n", l->state.state_f);
     fprintf(stderr, "DEBUG: object counter: %d\n", l->counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", l->rounds);
     fprintf(stderr, "DEBUG: Average helping: %f\n", (float)l->counter/l->rounds);

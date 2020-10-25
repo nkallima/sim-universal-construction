@@ -7,6 +7,7 @@
 #include <tvec.h>
 #include <fastrand.h>
 #include <threadtools.h>
+#include <fam.h>
 
 #define _SIM_LOCAL_POOL_SIZE_            4
 
@@ -14,16 +15,10 @@
 #   error SIM universal construction is mproperily configured
 #endif
 
-
-typedef struct _SIM_STATE {
-    volatile Object obj;
-} _SIM_STATE;
-
-
 typedef struct HalfSimObjectState {
     RetVal *ret;
     ToggleVector applied;
-    _SIM_STATE state CACHE_ALIGN;
+    ObjectState state CACHE_ALIGN;
 #ifdef DEBUG
     int counter;
     int rounds;
@@ -34,7 +29,7 @@ typedef struct HalfSimObjectState {
 typedef struct SimObjectState {
     RetVal *ret;
     ToggleVector applied;
-    _SIM_STATE state CACHE_ALIGN;
+    ObjectState state CACHE_ALIGN;
 #ifdef DEBUG
     int counter;
     int rounds;
@@ -80,6 +75,6 @@ typedef struct SimStruct {
 
 void SimInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff);
 void SimThreadStateInit(SimThreadState *th_state, uint32_t nthreads, int pid);
-Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfunc)(HalfSimObjectState *, ArgVal, int), Object arg, int pid);
+Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfunc)(void *, ArgVal, int), Object arg, int pid);
 
 #endif

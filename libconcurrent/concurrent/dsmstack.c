@@ -11,7 +11,7 @@ void DSMSStackInit(DSMStackStruct *stack_object_struct, uint32_t nthreads) {
 }
 
 void DSMStackThreadStateInit(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, int pid) {
-    DSMSynchThreadStateInit(&lobject_struct->th_state, (int)pid);
+    DSMSynchThreadStateInit(&object_struct->object_struct, &lobject_struct->th_state, (int)pid);
     init_pool(&pool_node, sizeof(Node));
 }
 

@@ -50,6 +50,7 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
 
 void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
+    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, (nthreads + 1) * sizeof(CCSynchNode));
 #ifdef DEBUG
     int i;
 
@@ -58,7 +59,7 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     for (i=0; i < nthreads; i++)
         l->combiner_counter[i] += 1;
 #endif
-    l->Tail = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchNode));
+    l->Tail = &l->nodes[nthreads];
     l->Tail->next = null;
     l->Tail->locked = false;
     l->Tail->completed = false;
@@ -66,6 +67,6 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     StoreFence();
 }
 
-void CCSynchThreadStateInit(CCSynchThreadState *st_thread, int pid) {
-    st_thread->next = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchNode));
+void CCSynchThreadStateInit(CCSynchStruct *l, CCSynchThreadState *st_thread, int pid) {
+    st_thread->next = &l->nodes[pid];
 }

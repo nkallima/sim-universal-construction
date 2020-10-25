@@ -66,6 +66,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
 
 void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
+    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
     l->Tail = null;
 #ifdef DEBUG
     l->counter = 0;
@@ -73,8 +74,8 @@ void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
     FullFence();
 }
 
-void DSMSynchThreadStateInit(DSMSynchThreadState *st_thread, int pid) {
-    st_thread->MyNodes[0] = getAlignedMemory(CACHE_LINE_SIZE, sizeof(DSMSynchNode));
-    st_thread->MyNodes[1] = getAlignedMemory(CACHE_LINE_SIZE, sizeof(DSMSynchNode));
+void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, int pid) {
+    st_thread->MyNodes[0] = &l->nodes[pid];
+    st_thread->MyNodes[1] = &l->nodes[l->nthreads + pid];
     st_thread->toggle = 0;
 }

@@ -9,7 +9,7 @@
 #include <uthreads.h>
 
 
-typedef struct HalfObjectState {
+typedef struct HalfSimStackState {
     ToggleVector applied;
     Object *ret;
     Node *head;
@@ -17,10 +17,10 @@ typedef struct HalfObjectState {
     int counter;
 #endif
     uint64_t __flex[1];
-} HalfObjectState;
+} HalfSimStackState;
 
 
-typedef struct ObjectState {
+typedef struct SimStackState {
     ToggleVector applied;
     Object *ret;
     Node *head;
@@ -28,10 +28,10 @@ typedef struct ObjectState {
     int counter;
 #endif
     uint64_t __flex[1];
-    char pad[PAD_CACHE(sizeof(HalfObjectState))];
-} ObjectState;
+    char pad[PAD_CACHE(sizeof(HalfSimStackState))];
+} SimStackState;
 
-#define ObjectStateSize(nthreads)        (sizeof(ObjectState) + _TVEC_VECTOR_SIZE(nthreads) + nthreads * sizeof(Object))
+#define SimStackStateSize(nthreads)        (sizeof(SimStackState) + _TVEC_VECTOR_SIZE(nthreads) + nthreads * sizeof(Object))
 
 
 typedef struct SimStackThreadState {
@@ -49,7 +49,7 @@ typedef struct SimStackThreadState {
 
 typedef struct SimStackStruct {
     ArgVal *announce;
-    ObjectState **pool;
+    SimStackState **pool;
     uint32_t nthreads;
     int MAX_BACK;
     volatile Node *head CACHE_ALIGN;

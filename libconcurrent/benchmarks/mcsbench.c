@@ -11,35 +11,21 @@
 #include <threadtools.h>
 #include <barrier.h>
 #include <bench_args.h>
+#include <fam.h>
 
-typedef struct ObjectState {
-    long long state;
-} ObjectState;
-
-typedef union CRStruct {
-    volatile Object obj;
-    char pad[CACHE_LINE_SIZE];
-} CRStruct;
 
 MCSLockStruct *object_lock CACHE_ALIGN;
-CRStruct Critical[OBJECT_SIZE] CACHE_ALIGN;
+ObjectState object CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
 __thread MCSThreadState st_thread;
 
-inline RetVal fetchAndMultiply(ArgVal arg, int pid) {
-    int i;
 
-    for (i = 0; i < OBJECT_SIZE; i++)
-        Critical[i].obj += 1;
-    return Critical[0].obj;
-}
-
-inline void apply_op(RetVal (*sfunc)(ArgVal, int), ArgVal arg, int pid) {
+inline void apply_op(RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     MCSLock(object_lock, &st_thread, pid);
-    sfunc(arg, pid);
+    sfunc(state, arg, pid);
     MCSUnlock(object_lock, &st_thread, pid);
 }
 
@@ -55,7 +41,7 @@ inline static void *Execute(void* Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        apply_op(fetchAndMultiply, (ArgVal) i, (int)id);
+        apply_op(fetchAndMultiply, &object, (ArgVal) i, (int)id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -65,7 +51,7 @@ inline static void *Execute(void* Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-
+    object.state_f = 1.0;
     object_lock = MCSLockInit();
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
@@ -76,7 +62,7 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: shared counter: %ld\n", Critical[0].obj);
+    fprintf(stderr, "DEBUG: shared state: %f\n", object.state_f);
 #endif
 
     return 0;

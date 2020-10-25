@@ -13,7 +13,7 @@ void CCStackInit(StackCCSynchStruct *stack_object_struct, uint32_t nthreads) {
 }
 
 void CCStackThreadStateInit(StackCCSynchStruct *object_struct, CCStackThreadState *lobject_struct, int pid) {
-    CCSynchThreadStateInit(&lobject_struct->th_state, (int)pid);
+    CCSynchThreadStateInit(&object_struct->object_struct, &lobject_struct->th_state, (int)pid);
     init_pool(&pool_node, sizeof(Node));
 }
 

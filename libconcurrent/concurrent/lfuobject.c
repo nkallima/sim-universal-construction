@@ -1,7 +1,7 @@
 #include <lfuobject.h>
 
 void LFUObjectInit(LFUObject *l, ArgVal value) {
-    l->val = value;
+    l->state.state = value;
     FullFence();
 }
 
@@ -9,17 +9,20 @@ void LFUObjectThreadStateInit(LFUObjectThreadState *th_state, int min_back, int 
     init_backoff(&th_state->backoff, min_back, max_back, 1);
 }
 
-RetVal LFUObjectApplyOp(LFUObject *l, LFUObjectThreadState *th_state, RetVal (*sfunc)(Object, ArgVal, int), ArgVal arg, int pid) {
-    RetVal old_val = arg, new_val;
+RetVal LFUObjectApplyOp(LFUObject *l, LFUObjectThreadState *th_state, RetVal (*sfunc)(void *, ArgVal, int), ArgVal arg, int pid) {
+    ObjectState new_state, old_state, ret_state;
 
     reset_backoff(&th_state->backoff);
     do {
-        old_val = l->val;   // val is volatile
-        new_val = sfunc(old_val, arg, pid);
-        if (CAS64(&l->val, old_val, new_val) == true)
+        old_state.state = l->state.state;
+        new_state.state = old_state.state;
+        ret_state.state = sfunc(&new_state.state, arg, pid);
+
+        if (CAS64(&l->state.state, old_state.state, new_state.state) == true) {
             break;
+        }
         else backoff_delay(&th_state->backoff);
     } while(true);
 
-    return old_val;
+    return old_state.state;
 }

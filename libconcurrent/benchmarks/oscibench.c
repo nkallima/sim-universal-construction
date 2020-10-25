@@ -11,19 +11,13 @@
 #include <osci.h>
 #include <barrier.h>
 #include <bench_args.h>
+#include <fam.h>
 
-volatile Object object CACHE_ALIGN = 1;
+volatile ObjectState object CACHE_ALIGN;
 OsciStruct object_lock CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
-
-
-inline static RetVal fetchAndMultiply(void *state, ArgVal arg, int pid) {
-    Object *st = (Object *)state;
-    (*st) *= arg;
-    return *st;
-}
 
 inline static void *Execute(void* Arg) {
     OsciThreadState *th_state;
@@ -49,7 +43,7 @@ inline static void *Execute(void* Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-
+    object.state_f = 1.0;
     OsciInit(&object_lock, bench_args.nthreads, bench_args.fibers_per_thread);
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
@@ -60,6 +54,7 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
+    fprintf(stderr, "DEBUG: object state: %f\n", object.state_f);
     fprintf(stderr, "DEBUG: object counter: %d\n", object_lock.counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", object_lock.rounds);
     fprintf(stderr, "DEBUG: Average helping: %f\n", (float)object_lock.counter/object_lock.rounds);

@@ -24,7 +24,7 @@ inline void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, 
     th_state->th_state = getMemory(hash_size * sizeof(DSMSynchThreadState));
     init_pool(&th_state->pool, sizeof(HashNode));
     for (i = 0; i < hash_size; i++)
-        DSMSynchThreadStateInit(&th_state->th_state[i], pid);
+        DSMSynchThreadStateInit(&hash->synch[i], &th_state->th_state[i], pid);
 }
 
 static inline int64_t hash_func(DSMHash *hash, int64_t key) {

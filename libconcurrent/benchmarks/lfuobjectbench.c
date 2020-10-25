@@ -12,20 +12,13 @@
 #include <lfuobject.h>
 #include <barrier.h>
 #include <bench_args.h>
+#include <fam.h>
 
 LFUObject lfobject CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 int MIN_BAK, MAX_BAK;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
-
-inline static RetVal fetchAndMultiply(Object mod_sp, Object arg, int pid);
-
-
-inline static RetVal fetchAndMultiply(Object mod_sp, Object arg, int pid) {
-     mod_sp += arg;//*= arg;
-     return (RetVal)mod_sp;
-}
 
 inline static void *Execute(void* Arg) {
     LFUObjectThreadState *th_state;
@@ -51,8 +44,8 @@ inline static void *Execute(void* Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-
-    LFUObjectInit(&lfobject, (ArgVal)0);
+    lfobject.state.state_f = 1.0;
+    LFUObjectInit(&lfobject, (ArgVal)lfobject.state.state);
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
@@ -62,7 +55,7 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: Object state: %ld\n", lfobject.val);
+    fprintf(stderr, "DEBUG: Object state: %f\n", lfobject.state.state_f);
 #endif
 
     return 0;
