@@ -122,7 +122,7 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
 
     l->central_lock = CLHLockInit(nthreads);
     l->nodes = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNode *));
-    l->Tail = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNode *));
+    l->Tail = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNodePtr));
     l->node_indexes = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(uint32_t));
     for (i = 0; i < l->numa_nodes; i++) {
         l->node_indexes[i] = 0;
