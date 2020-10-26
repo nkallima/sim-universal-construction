@@ -50,7 +50,15 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
 
 void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
-    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, (nthreads + 1) * sizeof(CCSynchNode));
+
+#ifdef SYNCH_COMPACT_ALLOCATION
+    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(CCSynchNode));
+    l->Tail = &l->nodes[nthreads];
+#else
+    l->nodes = NULL;
+    l->Tail = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchNode));
+#endif
+
 #ifdef DEBUG
     int i;
 
@@ -59,7 +67,7 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     for (i=0; i < nthreads; i++)
         l->combiner_counter[i] += 1;
 #endif
-    l->Tail = &l->nodes[nthreads];
+
     l->Tail->next = null;
     l->Tail->locked = false;
     l->Tail->completed = false;
@@ -68,5 +76,9 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
 }
 
 void CCSynchThreadStateInit(CCSynchStruct *l, CCSynchThreadState *st_thread, int pid) {
+#ifdef SYNCH_COMPACT_ALLOCATION
     st_thread->next = &l->nodes[pid];
+#else
+    st_thread->next = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchStruct));
+#endif
 }

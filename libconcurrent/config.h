@@ -61,6 +61,13 @@
 
 #define NUMA_SUPPORT
 
+// Definition: SYNCH_COMPACT_ALLOCATION
+// ------------------------------------
+// This definition enables some experimental code on memory allocation that 
+// seems to greately improve the performance on AMD Epyc multiprocessors.
+// This flag seems to double the performance in CC-Synch and H-Synch algorithms.
+//#define SYNCH_COMPACT_ALLOCATION
+
 // Definition: _TRACK_CPU_COUNTERS
 // -------------------------------
 // By enabling this definition, the Performance Application Programming Interface (PAPI)
