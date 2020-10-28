@@ -15,7 +15,6 @@ void reset_backoff(BackoffStruct *b) {
     b->backoff = b->backoff_base;
 }
 
-
 void backoff_delay(BackoffStruct *b) {
     if (isSystemOversubscribed()) {
 #ifdef sparc
@@ -42,8 +41,6 @@ void backoff_delay(BackoffStruct *b) {
 #endif
     }
 }
-
-
 
 void backoff_reduce(BackoffStruct *b) {
     b->backoff >>= b->backoff_shift_bits;

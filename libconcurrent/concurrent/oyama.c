@@ -10,30 +10,29 @@ static void OyamaWait(void) {
     resched();
 }
 
-
 RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal (*sfunc)(ArgVal, int), ArgVal arg, int pid) {
     volatile OyamaAnnounceNode *mynode = &th_state->my_node;
     volatile OyamaAnnounceNode *p;
     register OyamaAnnounceNode *tmp_next;
     int help_bound = OYAMA_HELP_FACTOR * l->nthreads;
-  
+
     // Initializing node
     mynode->arg_ret = arg;
     mynode->pid = pid;
     mynode->completed = false;
     mynode->next = l->tail;
-    while (!CASPTR(&l->tail, mynode->next, mynode)) {  // try to insert node to the announce list
+    while (!CASPTR(&l->tail, mynode->next, mynode)) { // try to insert node to the announce list
         OyamaWait();
         mynode->next = l->tail;
-    } 
+    }
 
     do {
         if (l->lock == UNLOCKED && CAS32(&l->lock, UNLOCKED, LOCKED)) {
-            int counter =0;
+            int counter = 0;
 #ifdef DEBUG
             l->rounds++;
 #endif
-            while (counter < help_bound && (p = (OyamaAnnounceNode *) SWAP(&l->tail, null)) != null) {
+            while (counter < help_bound && (p = (OyamaAnnounceNode *)SWAP(&l->tail, null)) != null) {
                 // Start helping all the active processes
                 while (p != null) {
                     counter++;
@@ -51,14 +50,13 @@ RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal 
             StoreFence();
             return mynode->arg_ret;
         } else {
-            while (*((volatile bool *)&mynode->completed) == false && 
-                   *((volatile int32_t *)&l->lock) == LOCKED) {
+            while (*((volatile bool *)&mynode->completed) == false && *((volatile int32_t *)&l->lock) == LOCKED) {
                 ;
             }
             if (mynode->completed)
                 return mynode->arg_ret;
         }
-    } while (true); 
+    } while (true);
 }
 
 void OyamaThreadStateInit(OyamaThreadState *th_state) {

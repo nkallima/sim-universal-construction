@@ -14,9 +14,9 @@
 #include <bench_args.h>
 
 typedef struct ListNode {
-    Object value;		             // initially, there is a sentinel node 
-    volatile struct ListNode *next;  // in the queue where Head and Tail point to.
-} ListNode;	
+    Object value;                   // initially, there is a sentinel node
+    volatile struct ListNode *next; // in the queue where Head and Tail point to.
+} ListNode;
 
 CLHLockStruct *lhead CACHE_ALIGN;
 int counter = 0;
@@ -31,7 +31,7 @@ __thread PoolStruct pool_node;
 inline static void push(Object arg, int pid) {
     volatile ListNode *n = alloc_obj(&pool_node);
     n->value = (Object)arg;
-    CLHLock(lhead, pid);   // Critical section
+    CLHLock(lhead, pid); // Critical section
     n->next = Head;
     Head = n;
     CLHUnlock(lhead, pid);
@@ -41,7 +41,7 @@ inline static Object pop(int pid) {
     Object result;
 
     CLHLock(lhead, pid);
-    if (Head->next == null) 
+    if (Head->next == null)
         result = -1;
     else {
         result = Head->next->value;
@@ -52,10 +52,10 @@ inline static Object pop(int pid) {
     return result;
 }
 
-inline static void *Execute(void* Arg) {
+inline static void *Execute(void *Arg) {
     long i;
     long rnum;
-    long id = (long) Arg;
+    long id = (long)Arg;
     volatile int j;
 
     fastRandomSetSeed(id + 1);
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2 * bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
     return 0;
 }

@@ -21,7 +21,6 @@ typedef struct OyamaAnnounceNode {
     char align[PAD_CACHE(sizeof(HalfOyamaAnnounceNode))];
 } OyamaAnnounceNode;
 
-
 typedef struct OyamaStruct {
     volatile int32_t lock CACHE_ALIGN;
     volatile OyamaAnnounceNode *tail CACHE_ALIGN;

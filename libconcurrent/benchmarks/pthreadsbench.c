@@ -22,10 +22,10 @@ void SHARED_OBJECT_INIT(void) {
     object = 1;
 }
 
-inline static void *Execute(void* Arg) {
+inline static void *Execute(void *Arg) {
     long i, rnum;
     volatile int j;
-    long id = (long) Arg;
+    long id = (long)Arg;
 
     fastRandomSetSeed(id + 1);
     BarrierWait(&bar);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
 
     return 0;

@@ -11,7 +11,7 @@ void init_pool(PoolStruct *pool, int obj_size) {
 void *alloc_obj(PoolStruct *pool) {
     int offset;
 
-    if (pool->index == POOL_SIZE-1) {
+    if (pool->index == POOL_SIZE - 1) {
         int size = pool->obj_size;
         init_pool(pool, size);
     }

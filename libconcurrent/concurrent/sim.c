@@ -6,7 +6,7 @@ static inline void SimObjectStateCopy(SimObjectState *dest, SimObjectState *src)
     // copy everything except 'applied' and 'ret' fields
     RetVal *tmp_ret;
     ToggleVector tmp_applied;
-    
+
     tmp_ret = dest->ret;
     tmp_applied = dest->applied;
     memcpy(dest, src, SimObjectStateSize(dest->applied.nthreads));
@@ -27,7 +27,7 @@ void SimInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff) {
         TVEC_INIT_AT(&sim_struct->pool[i]->applied, nthreads, (void *)sim_struct->pool[i]->__flex);
         sim_struct->pool[i]->ret = ((void *)sim_struct->pool[i]->__flex) + _TVEC_VECTOR_SIZE(nthreads);
     }
- 
+
     sim_struct->sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * nthreads;
     sim_struct->sp.struct_data.seq = 0;
 
@@ -62,18 +62,18 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
     HalfSimObjectState *sp_data, *lsp_data;
     int i, j, prefix, mybank;
 
-    sim_struct->announce[pid] = arg;                                                     // sim_struct->announce the operation
+    sim_struct->announce[pid] = arg; // sim_struct->announce the operation
     mybank = TVEC_GET_BANK_OF_BIT(pid, sim_struct->nthreads);
     TVEC_REVERSE_BIT(&th_state->my_bit, pid);
     TVEC_NEGATIVE_BANK(&th_state->toggle, &th_state->toggle, mybank);
     lsp_data = (HalfSimObjectState *)sim_struct->pool[pid * _SIM_LOCAL_POOL_SIZE_ + th_state->local_index];
-    TVEC_ATOMIC_ADD_BANK(&sim_struct->a_toggles, &th_state->toggle, mybank);             // toggle pid's bit in sim_struct->a_toggles, Fetch&Add acts as a full write-barrier
+    TVEC_ATOMIC_ADD_BANK(&sim_struct->a_toggles, &th_state->toggle, mybank); // toggle pid's bit in sim_struct->a_toggles, Fetch&Add acts as a full write-barrier
 
     if (!isSystemOversubscribed()) {
         volatile int k;
         int backoff_limit;
 
-        if (fastRandomRange(1, sim_struct->nthreads) > 1) { 
+        if (fastRandomRange(1, sim_struct->nthreads) > 1) {
             backoff_limit = th_state->backoff;
             for (k = 0; k < backoff_limit; k++)
                 ;
@@ -84,15 +84,15 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
     }
 
     for (j = 0; j < 2; j++) {
-        old_sp = sim_struct->sp;                                                         // read reference to struct ObjectState
-        sp_data = (HalfSimObjectState *)sim_struct->pool[old_sp.struct_data.index];      // read reference of struct ObjectState in a local variable lsim_struct->sp
+        old_sp = sim_struct->sp;                                                    // read reference to struct ObjectState
+        sp_data = (HalfSimObjectState *)sim_struct->pool[old_sp.struct_data.index]; // read reference of struct ObjectState in a local variable lsim_struct->sp
         TVEC_ATOMIC_COPY_BANKS(diffs, &sp_data->applied, mybank);
-        TVEC_XOR_BANKS(diffs, diffs, &th_state->my_bit, mybank);   // determine the set of active processes
-        if (TVEC_IS_SET(diffs, pid))                                           // if the operation has already been applied return
+        TVEC_XOR_BANKS(diffs, diffs, &th_state->my_bit, mybank); // determine the set of active processes
+        if (TVEC_IS_SET(diffs, pid))                             // if the operation has already been applied return
             break;
         SimObjectStateCopy((SimObjectState *)lsp_data, (SimObjectState *)sp_data);
-        TVEC_COPY(l_toggles, (ToggleVector *)&sim_struct->a_toggles);                           // This is an atomic read, since a_toogles is volatile
-       if (old_sp.raw_data != sim_struct->sp.raw_data)
+        TVEC_COPY(l_toggles, (ToggleVector *)&sim_struct->a_toggles); // This is an atomic read, since a_toogles is volatile
+        if (old_sp.raw_data != sim_struct->sp.raw_data)
             continue;
         TVEC_XOR(diffs, &lsp_data->applied, l_toggles);
 #ifdef DEBUG
@@ -115,15 +115,15 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
                 lsp_data->ret[proc_id] = sfunc(lsp_data, sim_struct->announce[proc_id], proc_id);
             }
         }
-        TVEC_COPY(&lsp_data->applied, l_toggles);                               // change applied to be equal to what was read in sim_struct->a_toggles
-        new_sp.struct_data.seq = old_sp.struct_data.seq + 1;                             // increase timestamp
-        new_sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * pid + th_state->local_index;  // store in mod_dw.index the index in sim_struct->pool where lsim_struct->sp will be stored
-        if (old_sp.raw_data==sim_struct->sp.raw_data && 
-            CAS64(&sim_struct->sp, old_sp.raw_data, new_sp.raw_data)) {                  // try to change sim_struct->sp to the value mod_dw
-            th_state->local_index = (th_state->local_index + 1) % _SIM_LOCAL_POOL_SIZE_; // if this happens successfully,use next item in pid's sim_struct->pool next time
+        TVEC_COPY(&lsp_data->applied, l_toggles);                                       // change applied to be equal to what was read in sim_struct->a_toggles
+        new_sp.struct_data.seq = old_sp.struct_data.seq + 1;                            // increase timestamp
+        new_sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * pid + th_state->local_index; // store in mod_dw.index the index in sim_struct->pool where lsim_struct->sp will be stored
+        if (old_sp.raw_data == sim_struct->sp.raw_data && CAS64(&sim_struct->sp, old_sp.raw_data, new_sp.raw_data)) { // try to change sim_struct->sp to the value mod_dw
+            th_state->local_index = (th_state->local_index + 1) % _SIM_LOCAL_POOL_SIZE_;                              // if this happens successfully,use next item in pid's sim_struct->pool next time
             th_state->backoff = (th_state->backoff >> 1) | 1;
             return lsp_data->ret[pid];
-        } else if (th_state->backoff < sim_struct->MAX_BACK) th_state->backoff <<= 1;
+        } else if (th_state->backoff < sim_struct->MAX_BACK)
+            th_state->backoff <<= 1;
     }
-    return sim_struct->pool[sim_struct->sp.struct_data.index]->ret[pid];                  // return the value found in the record stored there
+    return sim_struct->pool[sim_struct->sp.struct_data.index]->ret[pid]; // return the value found in the record stored there
 }

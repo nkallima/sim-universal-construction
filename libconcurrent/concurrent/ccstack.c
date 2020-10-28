@@ -17,7 +17,6 @@ void CCStackThreadStateInit(StackCCSynchStruct *object_struct, CCStackThreadStat
     init_pool(&pool_node, sizeof(Node));
 }
 
-
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile StackCCSynchStruct *st = (StackCCSynchStruct *)state;
@@ -26,7 +25,8 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         if (st->head != null) {
             st->head = st->head->next;
             return node->val;
-        } else return -1;
+        } else
+            return -1;
     } else {
         StackCCSynchStruct *st = (StackCCSynchStruct *)state;
         Node *node;
@@ -35,15 +35,15 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->next = st->head;
         node->val = arg;
         st->head = node;
- 
+
         return 0;
     }
 }
 
 void CCStackPush(StackCCSynchStruct *object_struct, CCStackThreadState *lobject_struct, ArgVal arg, int pid) {
-    CCSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal) arg, pid);
+    CCSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal)arg, pid);
 }
 
 RetVal CCStackPop(StackCCSynchStruct *object_struct, CCStackThreadState *lobject_struct, int pid) {
-    return CCSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal) POP_OP, pid);
+    return CCSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal)POP_OP, pid);
 }

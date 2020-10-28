@@ -18,14 +18,13 @@ int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-
 inline static RetVal fetchAndMultiply(void *state, ArgVal arg, int pid) {
     Object *st = (Object *)state;
     (*st) *= arg;
     return *st;
 }
 
-inline static void *Execute(void* Arg) {
+inline static void *Execute(void *Arg) {
     OsciThreadState *th_state;
     long i, rnum;
     volatile int j;
@@ -39,10 +38,10 @@ inline static void *Execute(void* Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        OsciApplyOp(&object_lock, th_state, fetchAndMultiply, (void *)&object, (ArgVal) pid, pid);
+        OsciApplyOp(&object_lock, th_state, fetchAndMultiply, (void *)&object, (ArgVal)pid, pid);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
-            ; 
+            ;
     }
     return NULL;
 }
@@ -56,13 +55,13 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: object counter: %d\n", object_lock.counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", object_lock.rounds);
-    fprintf(stderr, "DEBUG: Average helping: %f\n", (float)object_lock.counter/object_lock.rounds);
+    fprintf(stderr, "DEBUG: Average helping: %f\n", (float)object_lock.counter / object_lock.rounds);
     fprintf(stderr, "\n");
 #endif
 

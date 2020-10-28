@@ -9,7 +9,6 @@ typedef struct HalfPoolStruct {
     int obj_size;
 } HalfPoolStruct;
 
-
 typedef struct PoolStruct {
     char *heap;
     int index;

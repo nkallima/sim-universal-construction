@@ -15,38 +15,37 @@
 #include <threadtools.h>
 #include <stats.h>
 
-
-#if defined(__GNUC__) && (__GNUC__*10000 + __GNUC_MINOR__*100) >= 40100
-#    define __CASPTR(A, B, C)          __sync_bool_compare_and_swap((long *)A, (long)B, (long)C)
-#    define __CAS64(A, B, C)           __sync_bool_compare_and_swap(A, B, C)
-#    define __CAS32(A, B, C)           __sync_bool_compare_and_swap(A, B, C)
-#    define __SWAP(A, B)               __sync_lock_test_and_set((long *)A, (long)B)
-#    define __FAA64(A, B)              __sync_fetch_and_add(A, B)
-#    define __FAA32(A, B)              __sync_fetch_and_add(A, B)
-#    define ReadPrefetch(A)            __builtin_prefetch((const void *)A, 0, 3);
-#    define StorePrefetch(A)           __builtin_prefetch((const void *)A, 1, 3);
-#    define bitSearchFirst(A)          __builtin_ctzll(A)
-#    define nonZeroBits(A)             __builtin_popcountll(A)
+#if defined(__GNUC__) && (__GNUC__ * 10000 + __GNUC_MINOR__ * 100) >= 40100
+#    define __CASPTR(A, B, C) __sync_bool_compare_and_swap((long *)A, (long)B, (long)C)
+#    define __CAS64(A, B, C) __sync_bool_compare_and_swap(A, B, C)
+#    define __CAS32(A, B, C) __sync_bool_compare_and_swap(A, B, C)
+#    define __SWAP(A, B) __sync_lock_test_and_set((long *)A, (long)B)
+#    define __FAA64(A, B) __sync_fetch_and_add(A, B)
+#    define __FAA32(A, B) __sync_fetch_and_add(A, B)
+#    define ReadPrefetch(A) __builtin_prefetch((const void *)A, 0, 3);
+#    define StorePrefetch(A) __builtin_prefetch((const void *)A, 1, 3);
+#    define bitSearchFirst(A) __builtin_ctzll(A)
+#    define nonZeroBits(A) __builtin_popcountll(A)
 #    if defined(__amd64__) || defined(__x86_64__)
-#        define LoadFence()            asm volatile ("lfence":::"memory")
-#        define StoreFence()           asm volatile ("sfence":::"memory")
-#        define FullFence()            asm volatile ("mfence":::"memory")
+#        define LoadFence() asm volatile("lfence" ::: "memory")
+#        define StoreFence() asm volatile("sfence" ::: "memory")
+#        define FullFence() asm volatile("mfence" ::: "memory")
 #    else
-#        define LoadFence()            __sync_synchronize()
-#        define StoreFence()           __sync_synchronize()
-#        define FullFence()            __sync_synchronize()
+#        define LoadFence() __sync_synchronize()
+#        define StoreFence() __sync_synchronize()
+#        define FullFence() __sync_synchronize()
 #    endif
 
 #elif defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
 #    warning A newer version of GCC compiler is recommended!
-#    define LoadFence()                asm volatile ("lfence":::"memory") 
-#    define StoreFence()               asm volatile ("sfence":::"memory") 
-#    define FullFence()                asm volatile ("mfence":::"memory") 
-#    define ReadPrefetch(A)            asm volatile ("prefetchnta %0"::"m"(*((const int *)A)))
-#    define StorePrefetch(A)           asm volatile ("prefetchnta %0"::"m"(*((const int *)A)))
+#    define LoadFence() asm volatile("lfence" ::: "memory")
+#    define StoreFence() asm volatile("sfence" ::: "memory")
+#    define FullFence() asm volatile("mfence" ::: "memory")
+#    define ReadPrefetch(A) asm volatile("prefetchnta %0" ::"m"(*((const int *)A)))
+#    define StorePrefetch(A) asm volatile("prefetchnta %0" ::"m"(*((const int *)A)))
 
 //   in this case where gcc is too old, implement atomic primitives in primitives.c
-#    define                            __OLD_GCC_X86__
+#    define __OLD_GCC_X86__
 inline int bitSearchFirst(uint64_t B);
 inline uint64_t nonZeroBits(uint64_t v);
 #else
@@ -54,16 +53,21 @@ inline uint64_t nonZeroBits(uint64_t v);
 #endif
 
 #if defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
-#    define Pause()                    {int __i; for (__i = 0; __i < 16; __i++) {\
-                                                     asm volatile ("pause");\
-                                                     asm volatile ("pause");\
-                                                     asm volatile ("pause");\
-                                                     asm volatile ("pause");}}
+#    define Pause()                                                                                                                                                                                    \
+        {                                                                                                                                                                                              \
+            int __i;                                                                                                                                                                                   \
+            for (__i = 0; __i < 16; __i++) {                                                                                                                                                           \
+                asm volatile("pause");                                                                                                                                                                 \
+                asm volatile("pause");                                                                                                                                                                 \
+                asm volatile("pause");                                                                                                                                                                 \
+                asm volatile("pause");                                                                                                                                                                 \
+            }                                                                                                                                                                                          \
+        }
 
 #elif defined(sparc)
-#    define Pause()                    FullFence()
+#    define Pause() FullFence()
 #else
-#    define Pause()                      
+#    define Pause()
 #endif
 
 inline void *getMemory(size_t size);
@@ -73,7 +77,7 @@ inline void freeMemory(void *ptr, size_t size);
 inline int64_t getTimeMillis(void);
 
 #define CAS32(A, B, C) _CAS32((uint32_t *)A, (uint32_t)B, (uint32_t)C)
-inline  bool _CAS32(uint32_t *A, uint32_t B, uint32_t C);
+inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C);
 
 #define CAS64(A, B, C) _CAS64((uint64_t *)A, (uint64_t)B, (uint64_t)C)
 inline bool _CAS64(uint64_t *A, uint64_t B, uint64_t C);

@@ -24,7 +24,7 @@ void CCQueueThreadStateInit(CCQueueStruct *object_struct, CCQueueThreadState *lo
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     CCQueueStruct *st = (CCQueueStruct *)state;
     Node *node;
-    
+
     node = alloc_obj(&pool_node);
     node->next = null;
     node->val = arg;
@@ -36,8 +36,8 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     CCQueueStruct *st = (CCQueueStruct *)state;
     Node *node = (Node *)st->first;
-    
-    if (st->first->next != null){
+
+    if (st->first->next != null) {
         st->first = st->first->next;
         return node->val;
     } else {
@@ -46,9 +46,9 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
 }
 
 void CCQueueApplyEnqueue(CCQueueStruct *object_struct, CCQueueThreadState *lobject_struct, ArgVal arg, int pid) {
-    CCSynchApplyOp(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, (ArgVal) pid, pid);
+    CCSynchApplyOp(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, (ArgVal)pid, pid);
 }
 
 RetVal CCQueueApplyDequeue(CCQueueStruct *object_struct, CCQueueThreadState *lobject_struct, int pid) {
-     return CCSynchApplyOp(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, serialDequeue, object_struct, (ArgVal) pid, pid);
+    return CCSynchApplyOp(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, serialDequeue, object_struct, (ArgVal)pid, pid);
 }

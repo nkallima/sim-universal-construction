@@ -5,7 +5,6 @@
 #include <primitives.h>
 #include <fastrand.h>
 
-
 typedef struct HalfCCSynchNode {
     struct HalfCCSynchNode *next;
     ArgVal arg_ret;

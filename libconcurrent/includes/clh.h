@@ -18,7 +18,6 @@ typedef struct CLHLockStruct {
     volatile CLHLockNode **MyPred;
 } CLHLockStruct;
 
-
 void CLHLock(CLHLockStruct *l, int pid);
 void CLHUnlock(CLHLockStruct *l, int pid);
 CLHLockStruct *CLHLockInit(uint32_t nthreads);

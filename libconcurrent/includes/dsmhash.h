@@ -29,8 +29,8 @@ typedef struct DSMHash {
 } DSMHash;
 
 typedef struct DSMHashThreadState {
-   DSMSynchThreadState *th_state;
-   PoolStruct pool;
+    DSMSynchThreadState *th_state;
+    PoolStruct pool;
 } DSMHashThreadState;
 
 inline void DSMHashInit(DSMHash *hash, int hash_size, int nthreads);
@@ -40,4 +40,3 @@ inline void DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t k
 inline void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid);
 
 #endif
-

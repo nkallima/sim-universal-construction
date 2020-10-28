@@ -12,12 +12,11 @@ typedef struct HStackStruct {
     volatile Node *head CACHE_ALIGN;
 } HStackStruct;
 
-
 typedef struct HStackThreadState {
     HSynchThreadState th_state;
 } HStackThreadState;
 
-void HStackInit(HStackStruct *stack_object_struct, uint32_t nthreads);
+void HStackInit(HStackStruct *stack_object_struct, uint32_t nthreads, uint32_t numa_nodes);
 void HStackThreadStateInit(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid);
 void HStackPush(HStackStruct *object_struct, HStackThreadState *lobject_struct, ArgVal arg, int pid);
 RetVal HStackPop(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid);

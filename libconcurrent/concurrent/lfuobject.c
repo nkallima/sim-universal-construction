@@ -14,12 +14,13 @@ RetVal LFUObjectApplyOp(LFUObject *l, LFUObjectThreadState *th_state, RetVal (*s
 
     reset_backoff(&th_state->backoff);
     do {
-        old_val = l->val;   // val is volatile
+        old_val = l->val; // val is volatile
         new_val = sfunc(old_val, arg, pid);
         if (CAS64(&l->val, old_val, new_val) == true)
             break;
-        else backoff_delay(&th_state->backoff);
-    } while(true);
+        else
+            backoff_delay(&th_state->backoff);
+    } while (true);
 
     return old_val;
 }

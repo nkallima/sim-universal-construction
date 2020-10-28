@@ -10,7 +10,7 @@
 
 typedef union LFUObject {
     volatile Object val;
-	char pad[CACHE_LINE_SIZE];
+    char pad[CACHE_LINE_SIZE];
 } LFUObject;
 
 typedef struct LFUObjectThreadState {

@@ -16,12 +16,10 @@ typedef struct DSMQueueStruct {
     Node guard CACHE_ALIGN;
 } DSMQueueStruct;
 
-
 typedef struct DSMQueueThreadState {
     DSMSynchThreadState enqueue_thread_state;
     DSMSynchThreadState dequeue_thread_state;
 } DSMQueueThreadState;
-
 
 void DSMQueueStructInit(DSMQueueStruct *queue_object_struct, uint32_t nthreads);
 void DSMQueueThreadStateInit(DSMQueueStruct *object_struct, DSMQueueThreadState *lobject_struct, int pid);

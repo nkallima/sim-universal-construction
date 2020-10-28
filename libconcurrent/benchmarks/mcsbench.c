@@ -43,11 +43,11 @@ inline void apply_op(RetVal (*sfunc)(ArgVal, int), ArgVal arg, int pid) {
     MCSUnlock(object_lock, &st_thread, pid);
 }
 
-inline static void *Execute(void* Arg) {
+inline static void *Execute(void *Arg) {
     long i, rnum;
     volatile long j;
-    long id = (long) Arg;
-    
+    long id = (long)Arg;
+
     MCSThreadStateInit(&st_thread, id);
     fastRandomSetSeed(id + 1);
     BarrierWait(&bar);
@@ -55,7 +55,7 @@ inline static void *Execute(void* Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        apply_op(fetchAndMultiply, (ArgVal) i, (int)id);
+        apply_op(fetchAndMultiply, (ArgVal)i, (int)id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG

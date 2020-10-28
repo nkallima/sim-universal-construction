@@ -30,11 +30,10 @@ typedef struct EnqState {
     int32_t counter;
 #endif
     uint64_t __flex[1];
-    char pad[PAD_CACHE(sizeof (HalfEnqState))];
+    char pad[PAD_CACHE(sizeof(HalfEnqState))];
 } EnqState;
 
-#define EnqStateSize(N)                       (sizeof(EnqState) + _TVEC_VECTOR_SIZE(N))
-
+#define EnqStateSize(N) (sizeof(EnqState) + _TVEC_VECTOR_SIZE(N))
 
 typedef struct HalfDeqState {
     ToggleVector applied;
@@ -46,7 +45,6 @@ typedef struct HalfDeqState {
 #endif
 } HalfDeqState;
 
-
 typedef struct DeqState {
     ToggleVector applied;
     Node *ptr;
@@ -55,10 +53,10 @@ typedef struct DeqState {
 #ifdef DEBUG
     int32_t counter;
 #endif
-    char pad[PAD_CACHE(sizeof (HalfDeqState))];
+    char pad[PAD_CACHE(sizeof(HalfDeqState))];
 } DeqState;
 
-#define DeqStateSize(N)                       (sizeof(DeqState) + _TVEC_VECTOR_SIZE(N) + (N) * sizeof(RetVal))
+#define DeqStateSize(N) (sizeof(DeqState) + _TVEC_VECTOR_SIZE(N) + (N) * sizeof(RetVal))
 
 // Each thread owns a private copy of the following variables
 typedef struct SimQueueThreadState {

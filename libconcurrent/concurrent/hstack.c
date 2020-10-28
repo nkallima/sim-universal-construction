@@ -5,13 +5,13 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 static const int POP_OP = INT_MIN;
 static __thread PoolStruct pool_node CACHE_ALIGN;
 
-void HStackInit(HStackStruct *stack_object_struct, uint32_t nthreads) {
-    HSynchStructInit(&stack_object_struct->object_struct, nthreads);
+void HStackInit(HStackStruct *stack_object_struct, uint32_t nthreads, uint32_t numa_nodes) {
+    HSynchStructInit(&stack_object_struct->object_struct, nthreads, numa_nodes);
     stack_object_struct->head = null;
 }
 
 void HStackThreadStateInit(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid) {
-    HSynchThreadStateInit(&lobject_struct->th_state, (int)pid);
+    HSynchThreadStateInit(&object_struct->object_struct, &lobject_struct->th_state, (int)pid);
     init_pool(&pool_node, sizeof(Node));
 }
 
@@ -24,7 +24,7 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->next = st->head;
         node->val = arg;
         st->head = node;
- 
+
         return 0;
     } else {
         volatile HStackStruct *st = (HStackStruct *)state;
@@ -32,7 +32,7 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
 
         if (st->head == null) {
             return -1;
-        } else { 
+        } else {
             st->head = st->head->next;
             return node->val;
         }
@@ -41,9 +41,9 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
 }
 
 void HStackPush(HStackStruct *object_struct, HStackThreadState *lobject_struct, ArgVal arg, int pid) {
-    HSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal) arg, pid);
+    HSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal)arg, pid);
 }
 
 RetVal HStackPop(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid) {
-    return HSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal) POP_OP, pid);
+    return HSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal)POP_OP, pid);
 }

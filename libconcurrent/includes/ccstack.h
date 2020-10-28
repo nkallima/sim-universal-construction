@@ -9,14 +9,12 @@
 
 typedef struct StackCCSynchStruct {
     CCSynchStruct object_struct CACHE_ALIGN;
-    volatile Node * volatile head CACHE_ALIGN;
+    volatile Node *volatile head CACHE_ALIGN;
 } StackCCSynchStruct;
-
 
 typedef struct CCStackThreadState {
     CCSynchThreadState th_state;
 } CCStackThreadState;
-
 
 void CCStackInit(StackCCSynchStruct *stack_object_struct, uint32_t nthreads);
 void CCStackThreadStateInit(StackCCSynchStruct *object_struct, CCStackThreadState *lobject_struct, int pid);

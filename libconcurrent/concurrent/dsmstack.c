@@ -15,7 +15,6 @@ void DSMStackThreadStateInit(DSMStackStruct *object_struct, DSMStackThreadState 
     init_pool(&pool_node, sizeof(Node));
 }
 
-
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile DSMStackStruct *st = (DSMStackStruct *)state;
@@ -34,15 +33,15 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->next = st->head;
         node->val = arg;
         st->head = node;
- 
+
         return 0;
     }
 }
 
 void DSMStackPush(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, ArgVal arg, int pid) {
-    DSMSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal) arg, pid);
+    DSMSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal)arg, pid);
 }
 
 void DSMStackPop(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, int pid) {
-    DSMSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal) POP_OP, pid);
+    DSMSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal)POP_OP, pid);
 }

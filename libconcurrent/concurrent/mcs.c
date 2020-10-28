@@ -2,16 +2,16 @@
 
 void MCSLock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
     volatile MCSLockNode *prev;
-    
+
     thread_state->MyNode->next = NULL;
     prev = SWAP(&l->Tail, (void *)thread_state->MyNode);
-    
+
     if (prev != NULL) {
         l->Tail->locked = true;
         thread_state->MyNode->locked = true;
         prev->next = thread_state->MyNode;
     }
-    
+
     while (thread_state->MyNode->locked == true) {
         resched();
     }
