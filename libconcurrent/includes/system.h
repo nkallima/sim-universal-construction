@@ -3,13 +3,17 @@
 
 #include <config.h>
 
+#ifndef S_CACHE_LINE_SIZE
+#    define S_CACHE_LINE_SIZE          256
+#endif
+
 // For Intel Xeon multiprocessors, it seems that choosing sizes of cache-line greater 
 // or equal to 128 bytes give much better performance.
 // In contrast to Intel machines, Amd multiprocessors behave well with cache-line sizes 
 // of 64 bytes. Thus, a safe choice id 128. In any case, perform some experiments 
 // in order to find out the best value for cache-line size.
 #ifndef CACHE_LINE_SIZE
-#    define CACHE_LINE_SIZE            128
+#    define CACHE_LINE_SIZE            64
 #endif
 
 #ifdef __GNUC__

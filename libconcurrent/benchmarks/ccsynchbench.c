@@ -13,9 +13,9 @@
 #include <bench_args.h>
 #include <fam.h>
 
-volatile ObjectState object CACHE_ALIGN;
-CCSynchStruct object_combiner CACHE_ALIGN;
-int64_t d1 CACHE_ALIGN, d2;
+ObjectState *object CACHE_ALIGN;
+CCSynchStruct *object_combiner;
+int64_t d1, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
@@ -27,14 +27,14 @@ inline static void *Execute(void* Arg) {
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchThreadState));
-    CCSynchThreadStateInit(&object_combiner, th_state, (int)id);
+    CCSynchThreadStateInit(object_combiner, th_state, (int)id);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
         // perform a fetchAndMultiply operation
-        CCSynchApplyOp(&object_combiner, th_state, fetchAndMultiply, (void *)&object, (ArgVal) id, id);
+        CCSynchApplyOp(object_combiner, th_state, fetchAndMultiply, (void *)object, (ArgVal) id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -44,8 +44,10 @@ inline static void *Execute(void* Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-    object.state_f = 1.0;
-    CCSynchStructInit(&object_combiner, bench_args.nthreads);
+    object_combiner = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(CCSynchStruct));
+    object = getAlignedMemory(CACHE_LINE_SIZE, sizeof(ObjectState));
+    object->state_f = 1.0;
+    CCSynchStructInit(object_combiner, bench_args.nthreads);
 
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
@@ -56,10 +58,10 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: object state: %f\n", object.state_f);
-    fprintf(stderr, "DEBUG: object counter: %d\n", object_combiner.counter);
-    fprintf(stderr, "DEBUG: rounds: %d\n", object_combiner.rounds);
-    fprintf(stderr, "DEBUG: Average helping: %.2f\n", (float)object_combiner.counter/object_combiner.rounds);
+    fprintf(stderr, "DEBUG: object state: %f\n", object->state_f);
+    fprintf(stderr, "DEBUG: object counter: %d\n", object_combiner->counter);
+    fprintf(stderr, "DEBUG: rounds: %d\n", object_combiner->rounds);
+    fprintf(stderr, "DEBUG: Average helping: %.2f\n", (float)object_combiner->counter/object_combiner->rounds);
     fprintf(stderr, "\n");
 #endif
 

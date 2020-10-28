@@ -16,8 +16,7 @@ typedef struct HalfDSMSynchNode {
 
 typedef struct DSMSynchNode {
     struct DSMSynchNode *next;
-    ArgVal arg;
-    RetVal ret;
+    ArgVal arg_ret;
     uint32_t pid;
     volatile uint32_t locked;
     volatile uint32_t completed;

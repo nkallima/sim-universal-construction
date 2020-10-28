@@ -14,7 +14,7 @@
 #include <barrier.h>
 #include <bench_args.h>
 
-DSMQueueStruct queue_object CACHE_ALIGN;
+DSMQueueStruct *queue_object CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
@@ -27,19 +27,19 @@ inline static void *Execute(void* Arg) {
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(DSMQueueThreadState));
-    DSMQueueThreadStateInit(&queue_object, th_state, (int)id);
+    DSMQueueThreadStateInit(queue_object, th_state, (int)id);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
         // perform an enqueue operation
-        DSMQueueApplyEnqueue(&queue_object, th_state, (ArgVal) id, id);
+        DSMQueueApplyEnqueue(queue_object, th_state, (ArgVal) id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ; 
         // perform a dequeue operation
-        DSMQueueApplyDequeue(&queue_object, th_state, id);
+        DSMQueueApplyDequeue(queue_object, th_state, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -49,7 +49,8 @@ inline static void *Execute(void* Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-    DSMQueueStructInit(&queue_object, bench_args.nthreads);   
+	queue_object = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(DSMQueueStruct));
+    DSMQueueStructInit(queue_object, bench_args.nthreads);   
 
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
@@ -60,8 +61,8 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: enqueue state: counter: %d rounds: %d\n", queue_object.enqueue_struct.counter, queue_object.enqueue_struct.rounds);
-    fprintf(stderr, "DEBUG: dequeue state: counter: %d rounds: %d\n\n", queue_object.dequeue_struct.counter, queue_object.dequeue_struct.rounds);
+    fprintf(stderr, "DEBUG: enqueue state: counter: %d rounds: %d\n", queue_object->enqueue_struct.counter, queue_object->enqueue_struct.rounds);
+    fprintf(stderr, "DEBUG: dequeue state: counter: %d rounds: %d\n\n", queue_object->dequeue_struct.counter, queue_object->dequeue_struct.rounds);
 #endif
 
     return 0;

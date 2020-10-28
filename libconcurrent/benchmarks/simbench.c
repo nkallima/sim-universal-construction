@@ -8,7 +8,7 @@
 #include <bench_args.h>
 #include <fam.h>
 
-SimStruct sim_struct CACHE_ALIGN;
+SimStruct *sim_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
@@ -27,7 +27,7 @@ inline static void *Execute(void* Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        SimApplyOp(&sim_struct, &th_state, fetchAndMultiply, (Object) (id + 1), id);
+        SimApplyOp(sim_struct, &th_state, fetchAndMultiply, (Object) (id + 1), id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -37,8 +37,8 @@ inline static void *Execute(void* Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-
-    SimInit(&sim_struct, bench_args.nthreads, bench_args.backoff_high);
+	sim_struct = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStruct));
+    SimInit(sim_struct, bench_args.nthreads, bench_args.backoff_high);
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 
     
 #ifdef DEBUG
-    SimObjectState *l = (SimObjectState *)sim_struct.pool[((pointer_t*)&sim_struct.sp)->struct_data.index];
+    SimObjectState *l = (SimObjectState *)sim_struct->pool[((pointer_t*)&sim_struct->sp)->struct_data.index];
     fprintf(stderr, "DEBUG: Object state long value: %f\n", l->state.state_f);
     fprintf(stderr, "DEBUG: object counter: %d\n", l->counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", l->rounds);

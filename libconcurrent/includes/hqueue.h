@@ -10,8 +10,8 @@
 
 
 typedef struct HQueueStruct {
-    HSynchStruct enqueue_struct CACHE_ALIGN;
-    HSynchStruct dequeue_struct CACHE_ALIGN;
+    HSynchStruct *enqueue_struct;
+    HSynchStruct *dequeue_struct;
     volatile Node *last CACHE_ALIGN;
     volatile Node *first CACHE_ALIGN;
     Node guard CACHE_ALIGN;

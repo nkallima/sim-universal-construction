@@ -24,7 +24,7 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->next = st->head;
         node->val = arg;
         st->head = node;
- 
+
         return 0;
     } else {
         volatile HStackStruct *st = (HStackStruct *)state;

@@ -8,13 +8,13 @@ static __thread PoolStruct pool_node CACHE_ALIGN;
 void DSMSStackInit(DSMStackStruct *stack_object_struct, uint32_t nthreads) {
     DSMSynchStructInit(&stack_object_struct->object_struct, nthreads);
     stack_object_struct->head = null;
+	StoreFence();
 }
 
 void DSMStackThreadStateInit(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, int pid) {
     DSMSynchThreadStateInit(&object_struct->object_struct, &lobject_struct->th_state, (int)pid);
     init_pool(&pool_node, sizeof(Node));
 }
-
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
@@ -24,8 +24,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         if (st->head != null) {
             st->head = st->head->next;
             return node->val;
-        }
-        return -1;
+        } else return -1;
     } else {
         DSMStackStruct *st = (DSMStackStruct *)state;
         Node *node;

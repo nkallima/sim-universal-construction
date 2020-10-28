@@ -15,8 +15,8 @@ inline static RetVal fetchAndMultiply(void *state, ArgVal arg, int pid) {
     ObjectState res;
 
     res.state_f = obj->state_f;
-    //obj->state_f = obj->state_f * 1.00001 + (float)arg;
-    obj->state_f *= 1.00001;
+    //obj->state_f = obj->state_f + (float)arg;
+    obj->state_f *= 1.000001;
 
     return (RetVal)res.state;
 }

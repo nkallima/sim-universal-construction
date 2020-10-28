@@ -1,4 +1,3 @@
-#include <stats.h>
 #include <ccstack.h>
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
@@ -16,7 +15,6 @@ void CCStackThreadStateInit(StackCCSynchStruct *object_struct, CCStackThreadStat
     CCSynchThreadStateInit(&object_struct->object_struct, &lobject_struct->th_state, (int)pid);
     init_pool(&pool_node, sizeof(Node));
 }
-
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {

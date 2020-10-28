@@ -12,7 +12,7 @@
 #include <barrier.h>
 #include <bench_args.h>
 
-DSMStackStruct object_struct CACHE_ALIGN;
+DSMStackStruct *object_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
@@ -25,19 +25,19 @@ inline static void *Execute(void* Arg) {
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(DSMStackThreadState));
-    DSMStackThreadStateInit(&object_struct, th_state, (int)id);
+    DSMStackThreadStateInit(object_struct, th_state, (int)id);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
         // perform a push operation
-        DSMStackPush(&object_struct, th_state, id, id);
+        DSMStackPush(object_struct, th_state, id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ; 
         // perform a pop operation
-        DSMStackPop(&object_struct, th_state, id);
+        DSMStackPop(object_struct, th_state, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -47,7 +47,8 @@ inline static void *Execute(void* Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-    DSMSStackInit(&object_struct, bench_args.nthreads);
+	object_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(DSMStackStruct));
+    DSMSStackInit(object_struct, bench_args.nthreads);
 
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
@@ -58,7 +59,7 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: object state: counter: %d rounds: %d\n", object_struct.object_struct.counter, object_struct.object_struct.rounds);
+    fprintf(stderr, "DEBUG: object state: counter: %d rounds: %d\n", object_struct->object_struct.counter, object_struct->object_struct.rounds);
 #endif
 
     return 0;

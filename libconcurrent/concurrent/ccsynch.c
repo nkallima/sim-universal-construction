@@ -2,7 +2,6 @@
 
 static const int CCSYNCH_HELP_FACTOR = 10;
 
-
 RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     volatile CCSynchNode *p;
     volatile CCSynchNode *cur;
@@ -21,7 +20,7 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
     st_thread->next = (CCSynchNode *)cur;
 
     while (cur->locked) {                   // spinning
-            resched();
+        resched();
     }
     if (cur->completed)                     // I have been helped
         return cur->arg_ret;
@@ -52,7 +51,7 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
 
 #ifdef SYNCH_COMPACT_ALLOCATION
-    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(CCSynchNode));
+    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(CCSynchNode));
     l->Tail = &l->nodes[nthreads];
 #else
     l->nodes = NULL;
