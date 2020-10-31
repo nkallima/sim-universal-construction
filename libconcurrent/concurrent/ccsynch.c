@@ -51,7 +51,7 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
 
 #ifdef SYNCH_COMPACT_ALLOCATION
-    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(CCSynchNode));
+    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, (nthreads + 1) * sizeof(CCSynchNode));
     l->Tail = &l->nodes[nthreads];
 #else
     l->nodes = NULL;
