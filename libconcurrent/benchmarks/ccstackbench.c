@@ -12,7 +12,7 @@
 #include <barrier.h>
 #include <bench_args.h>
 
-StackCCSynchStruct *object_struct CACHE_ALIGN;
+CCStackStruct *object_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
@@ -47,7 +47,7 @@ inline static void *Execute(void* Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-	object_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(StackCCSynchStruct));
+	object_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(CCStackStruct));
     CCStackInit(object_struct, bench_args.nthreads);
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
