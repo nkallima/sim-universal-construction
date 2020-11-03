@@ -24,5 +24,5 @@ RetVal LFUObjectApplyOp(LFUObject *l, LFUObjectThreadState *th_state, RetVal (*s
         else backoff_delay(&th_state->backoff);
     } while(true);
 
-    return old_state.state;
+    return ret_state.state;
 }
