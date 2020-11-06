@@ -12,8 +12,10 @@
 // In contrast to Intel machines, Amd multiprocessors behave well with cache-line sizes 
 // of 64 bytes. Thus, a safe choice id 128. In any case, perform some experiments 
 // in order to find out the best value for cache-line size.
-#ifndef CACHE_LINE_SIZE
+#ifdef SYNCH_COMPACT_ALLOCATION
 #    define CACHE_LINE_SIZE            64
+#else
+#    define CACHE_LINE_SIZE            512
 #endif
 
 #ifdef __GNUC__
