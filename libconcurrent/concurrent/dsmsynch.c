@@ -81,8 +81,8 @@ void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
 
 void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, int pid) {
 #ifdef SYNCH_COMPACT_ALLOCATION
-    st_thread->MyNodes[0] = &l->nodes[pid];
-    st_thread->MyNodes[1] = &l->nodes[l->nthreads + pid];
+    st_thread->MyNodes[0] = &l->nodes[2 * pid];
+    st_thread->MyNodes[1] = &l->nodes[2 * pid + 1];
 #else
 	DSMSynchNode *nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
     st_thread->MyNodes[0] = &nodes[0];
