@@ -7,8 +7,8 @@ static const int GUARD = INT_MIN;
 static __thread PoolStruct pool_node CACHE_ALIGN;
 
 void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t numa_nodes) {
-	queue_object_struct->enqueue_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
-	queue_object_struct->dequeue_struct= getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
+    queue_object_struct->enqueue_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
+    queue_object_struct->dequeue_struct= getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
     HSynchStructInit(queue_object_struct->enqueue_struct, nthreads, numa_nodes);
     HSynchStructInit(queue_object_struct->dequeue_struct, nthreads, numa_nodes);
     queue_object_struct->guard.val = GUARD;
@@ -33,7 +33,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     node->val = arg;
     st->last->next = node;
     st->last = node;
-    return -1;
+    return 0;
 }
 
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {

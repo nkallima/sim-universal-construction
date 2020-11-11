@@ -19,8 +19,8 @@ typedef struct HQueueStruct {
 
 
 typedef struct HQueueThreadState {
-    HSynchThreadState enqueue_thread_state;
-    HSynchThreadState dequeue_thread_state;
+    HSynchThreadState enqueue_thread_state CACHE_ALIGN;
+    HSynchThreadState dequeue_thread_state CACHE_ALIGN;
 } HQueueThreadState;
 
 

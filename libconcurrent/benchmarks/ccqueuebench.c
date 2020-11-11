@@ -50,7 +50,7 @@ inline static void *Execute(void* Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-	queue_object = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(CCQueueStruct));
+    queue_object = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(CCQueueStruct));
     CCQueueStructInit(queue_object, bench_args.nthreads);   
     
     BarrierInit(&bar, bench_args.nthreads);

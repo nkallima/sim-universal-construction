@@ -68,13 +68,11 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
         }
     } else {
         int ncpus = numa_num_configured_cpus();
-        int hw_numa_size = (ncpus/2)/l->numa_nodes + (((ncpus/2) % l->numa_nodes) == 0 ? 0 : 1);
-
         if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus/2)) {
             if (getPreferedCore() >= ncpus/2)
-                node_of_thread = (getPreferedCore() - ncpus/2) / hw_numa_size;
+                node_of_thread = (getPreferedCore() - ncpus/2) / (l->numa_node_size/2);
             else
-                node_of_thread = getPreferedCore() / hw_numa_size;
+                node_of_thread = getPreferedCore() / (l->numa_node_size/2);
         } else {
             node_of_thread = pid / l->numa_node_size;
         }
@@ -84,17 +82,17 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
 #endif
 
     if (l->nodes[node_of_thread] == NULL) {
-        HSynchNode *ptr = getAlignedMemory(CACHE_LINE_SIZE, (l->numa_node_size + 1) * sizeof(HSynchNode));
+        HSynchNode *ptr = getAlignedMemory(CACHE_LINE_SIZE, (l->numa_node_size + 2) * sizeof(HSynchNode));
         
-        last_node = &ptr[l->numa_node_size];
+        last_node = &ptr[l->numa_node_size + 1];
         last_node->next = NULL;
         last_node->locked = false;
         last_node->completed = false;
 
         if (CASPTR(&l->nodes[node_of_thread], NULL, ptr) == false)
-            freeMemory(ptr, (l->numa_node_size + 1) * sizeof(HSynchNode));
+            freeMemory(ptr, (l->numa_node_size + 2) * sizeof(HSynchNode));
     }
-    last_node = l->nodes[node_of_thread] + l->numa_node_size;
+    last_node = l->nodes[node_of_thread] + l->numa_node_size + 1;
     CASPTR(&l->Tail[node_of_thread].ptr, NULL, last_node);
     node_index = FAA32(&l->node_indexes[node_of_thread], 1);
     st_thread->next_node = l->nodes[node_of_thread] + node_index;
