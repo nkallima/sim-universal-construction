@@ -91,6 +91,7 @@ int threadPin(int32_t cpu_id) {
 #      endif
 
 #   else
+    __prefered_core = cpu_id % getNCores();
     CPU_SET(cpu_id % getNCores(), &mask);
 #   endif
     ret = sched_setaffinity(0, len, &mask);
