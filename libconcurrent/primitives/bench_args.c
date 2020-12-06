@@ -25,15 +25,16 @@ static void printHelp(const char *exec_name) {
 void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
     int opt, long_index;
 
-    static struct option long_options[] = {{"threads", required_argument, 0, 't'},
-                                           {"fibers", required_argument, 0, 'f'},
-                                           {"runs", required_argument, 0, 'r'},
-                                           {"max_work", required_argument, 0, 'w'},
-                                           {"backoff_low", required_argument, 0, 'l'},
-                                           {"backoff_high", required_argument, 0, 'b'},
-                                           {"numa_nodes", required_argument, 0, 'n'},
-                                           {"help", no_argument, 0, 'h'},
-                                           {0, 0, 0, 0}};
+    static struct option long_options[] =
+            {{"threads", required_argument, 0, 't'},
+             {"fibers", required_argument, 0, 'f'},
+             {"runs", required_argument, 0, 'r'},
+             {"max_work", required_argument, 0, 'w'},
+             {"backoff_low", required_argument, 0, 'l'},
+             {"backoff_high", required_argument, 0, 'b'},
+             {"numa_nodes", required_argument, 0, 'n'},
+             {"help", no_argument, 0, 'h'},
+             {0, 0, 0, 0}};
 
     // Setting some default values, the user may overide them
     bench_args->nthreads = getNCores();
@@ -84,7 +85,11 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
     bench_args->runs /= bench_args->nthreads;
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: threads: %d -- fibers_per_thread: %d -- runs_per_thread: %ld -- max_work: %d\n", bench_args->nthreads, bench_args->fibers_per_thread, bench_args->runs,
+    fprintf(stderr,
+            "DEBUG: threads: %d -- fibers_per_thread: %d -- runs_per_thread: %ld -- max_work: %d\n",
+            bench_args->nthreads,
+            bench_args->fibers_per_thread,
+            bench_args->runs,
             bench_args->max_work);
 #endif
 }

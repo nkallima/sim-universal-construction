@@ -157,6 +157,10 @@ void printStats(int nthreads) {
             "L2 data cache misses: %.2lf\t"
             "Branch mis-predictions: %.2lf\t"
             "CPU stalls: %.2lf\t total operations: %ld\n",
-            __total_cpu_values[0] / ops, __total_cpu_values[1] / ops, __total_cpu_values[2] / ops, __total_cpu_values[3] / ops, (long)ops);
+            __total_cpu_values[0] / ops,
+            __total_cpu_values[1] / ops,
+            __total_cpu_values[2] / ops,
+            __total_cpu_values[3] / ops,
+            (long)ops);
 #endif
 }
