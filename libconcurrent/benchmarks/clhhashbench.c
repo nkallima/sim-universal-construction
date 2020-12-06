@@ -12,8 +12,8 @@
 #include <barrier.h>
 #include <bench_args.h>
 
-#define N_BUCKETS 64
-#define LOAD_FACTOR 1
+#define N_BUCKETS        64
+#define LOAD_FACTOR      1
 #define INITIAL_CAPACITY (LOAD_FACTOR * N_BUCKETS)
 
 #define RANDOM_RANGE (INITIAL_CAPACITY * log(INITIAL_CAPACITY))

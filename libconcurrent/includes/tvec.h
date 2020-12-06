@@ -6,19 +6,19 @@
 #    define _TVEC_H_
 
 #    ifdef sparc
-#        define bitword_t uint32_t
+#        define bitword_t                  uint32_t
 #        define _TVEC_DIVISION_SHIFT_BITS_ 5
-#        define _TVEC_MODULO_BITS_ 31
-#        define _TVEC_BIWORD_SIZE_ 32
+#        define _TVEC_MODULO_BITS_         31
+#        define _TVEC_BIWORD_SIZE_         32
 #    else
-#        define bitword_t uint64_t
+#        define bitword_t                  uint64_t
 #        define _TVEC_DIVISION_SHIFT_BITS_ 6
-#        define _TVEC_MODULO_BITS_ 63
-#        define _TVEC_BIWORD_SIZE_ 64
+#        define _TVEC_MODULO_BITS_         63
+#        define _TVEC_BIWORD_SIZE_         64
 #    endif
 
 /* automatic partial unrolling*/
-#    define _TVEC_CELLS_(N) ((N >> _TVEC_DIVISION_SHIFT_BITS_) + 1)
+#    define _TVEC_CELLS_(N)      ((N >> _TVEC_DIVISION_SHIFT_BITS_) + 1)
 #    define _TVEC_VECTOR_SIZE(N) (_TVEC_CELLS_(N) * sizeof(bitword_t))
 #    define LOOP(EXPR, I, TIMES)                                                                                                                                                                       \
         {                                                                                                                                                                                              \

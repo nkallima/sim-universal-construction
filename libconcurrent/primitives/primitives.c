@@ -236,7 +236,7 @@ inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
     int32_t new_val;
 
     while (true) {
-        old_val = *((int32_t * volatile) A);
+        old_val = *((int32_t *volatile)A);
         new_val = old_val + B;
         if (*A == old_val && CAS32(A, old_val, new_val) == true)
             break;
@@ -265,7 +265,7 @@ inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
     int64_t new_val;
 
     while (true) {
-        old_val = *((int64_t * volatile) A);
+        old_val = *((int64_t *volatile)A);
         new_val = old_val + B;
         if (*A == old_val && CAS64(A, old_val, new_val) == true)
             break;

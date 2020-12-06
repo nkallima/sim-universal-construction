@@ -4,7 +4,7 @@
 #    include <numa.h>
 #endif
 
-#define HSYNCH_HELP_FACTOR 10
+#define HSYNCH_HELP_FACTOR            10
 #define HSYNCH_DEFAULT_NUMA_NODE_SIZE 8
 
 static __thread int node_of_thread = 0;
