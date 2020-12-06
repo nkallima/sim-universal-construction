@@ -16,8 +16,8 @@ void DSMQueueStructInit(DSMQueueStruct *queue_object_struct, uint32_t nthreads) 
 }
 
 void DSMQueueThreadStateInit(DSMQueueStruct *object_struct, DSMQueueThreadState *lobject_struct, int pid) {
-    DSMSynchThreadStateInit(&lobject_struct->enqueue_thread_state, (int)pid);
-    DSMSynchThreadStateInit(&lobject_struct->dequeue_thread_state, (int)pid);
+    DSMSynchThreadStateInit(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, (int)pid);
+    DSMSynchThreadStateInit(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, (int)pid);
     init_pool(&pool_node, sizeof(Node));
 }
 

@@ -7,9 +7,10 @@
 #include <fastrand.h>
 #include <pool.h>
 #include <threadtools.h>
+#include <fam.h>
 
 typedef union LFUObject {
-    volatile Object val;
+    volatile ObjectState state;
     char pad[CACHE_LINE_SIZE];
 } LFUObject;
 
@@ -19,6 +20,6 @@ typedef struct LFUObjectThreadState {
 
 void LFUObjectInit(LFUObject *l, ArgVal value);
 void LFUObjectThreadStateInit(LFUObjectThreadState *th_state, int min_back, int max_back);
-RetVal LFUObjectApplyOp(LFUObject *l, LFUObjectThreadState *th_state, RetVal (*sfunc)(Object, ArgVal, int), ArgVal arg, int pid);
+RetVal LFUObjectApplyOp(LFUObject *l, LFUObjectThreadState *th_state, RetVal (*sfunc)(void *, ArgVal, int), ArgVal arg, int pid);
 
 #endif

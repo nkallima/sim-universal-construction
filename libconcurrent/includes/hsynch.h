@@ -27,7 +27,7 @@ typedef struct HSynchNode {
 } HSynchNode;
 
 typedef union HSynchNodePtr {
-    struct HSynchNode *ptr;
+    volatile HSynchNode *ptr;
     char pad[CACHE_LINE_SIZE];
 } HSynchNodePtr;
 
@@ -37,12 +37,14 @@ typedef struct HSynchThreadState {
 
 typedef struct HSynchStruct {
     CLHLockStruct *central_lock CACHE_ALIGN;
-    volatile HSynchNodePtr *Tail CACHE_ALIGN;
+    HSynchNodePtr *Tail CACHE_ALIGN;
 #ifdef DEBUG
     volatile int rounds CACHE_ALIGN;
     volatile int counter;
 #endif
-    uint32_t nthreads CACHE_ALIGN;
+    HSynchNode **nodes CACHE_ALIGN;
+    int32_t *node_indexes;
+    uint32_t nthreads;
     uint32_t numa_node_size;
     uint32_t numa_nodes;
     bool numa_policy;

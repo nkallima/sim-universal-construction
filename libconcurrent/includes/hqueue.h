@@ -9,16 +9,16 @@
 #include <queue-stack.h>
 
 typedef struct HQueueStruct {
-    HSynchStruct enqueue_struct CACHE_ALIGN;
-    HSynchStruct dequeue_struct CACHE_ALIGN;
+    HSynchStruct *enqueue_struct;
+    HSynchStruct *dequeue_struct;
     volatile Node *last CACHE_ALIGN;
     volatile Node *first CACHE_ALIGN;
     Node guard CACHE_ALIGN;
 } HQueueStruct;
 
 typedef struct HQueueThreadState {
-    HSynchThreadState enqueue_thread_state;
-    HSynchThreadState dequeue_thread_state;
+    HSynchThreadState enqueue_thread_state CACHE_ALIGN;
+    HSynchThreadState dequeue_thread_state CACHE_ALIGN;
 } HQueueThreadState;
 
 void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t numa_nodes);

@@ -16,8 +16,8 @@ void CCQueueStructInit(CCQueueStruct *queue_object_struct, uint32_t nthreads) {
 }
 
 void CCQueueThreadStateInit(CCQueueStruct *object_struct, CCQueueThreadState *lobject_struct, int pid) {
-    CCSynchThreadStateInit(&lobject_struct->enqueue_thread_state, (int)pid);
-    CCSynchThreadStateInit(&lobject_struct->dequeue_thread_state, (int)pid);
+    CCSynchThreadStateInit(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, (int)pid);
+    CCSynchThreadStateInit(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, (int)pid);
     init_pool(&pool_node, sizeof(Node));
 }
 

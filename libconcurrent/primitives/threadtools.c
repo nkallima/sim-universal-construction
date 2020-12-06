@@ -91,6 +91,7 @@ int threadPin(int32_t cpu_id) {
 #        endif
 
 #    else
+    __prefered_core = cpu_id % getNCores();
     CPU_SET(cpu_id % getNCores(), &mask);
 #    endif
     ret = sched_setaffinity(0, len, &mask);
@@ -136,8 +137,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
     if (uthreads != _DONT_USE_UTHREADS_ && uthreads > 1) {
         __uthreads = uthreads;
         __uthread_sched = true;
-        if (nthreads / uthreads > __ncores)
-            __system_oversubscription = true;
+        __system_oversubscription = true;
         BarrierInit(&bar, nthreads / uthreads + 1);
         for (i = 0; i < (nthreads / uthreads) - 1; i++) {
             last_thread_id = pthread_create(&__threads[i], null, uthreadWrapper, (void *)(i * uthreads));

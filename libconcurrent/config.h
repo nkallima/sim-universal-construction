@@ -30,17 +30,6 @@
 // See README.txt for more details.
 //#define DEBUG
 
-// Definition OBJECT_SIZE
-// ----------------------
-// This definition is only used in lfobject.c, simopt.c
-// and luobject.c experiments. In any other case it is
-// ignored. Its default value is 1. It is used for simulating
-// of an atomic array of Fetch&Multiply objects with
-// OBJECT_SIZE elements. All elements are updated simultaneously.
-#ifndef OBJECT_SIZE
-#    define OBJECT_SIZE            1
-#endif
-
 // Definition: DISABLE_BACKOFF
 // ---------------------------
 // By defining this, any backoff scheme used by any algorithm
@@ -71,6 +60,13 @@
 #define ArgVal                     int64_t
 
 #define NUMA_SUPPORT
+
+// Definition: SYNCH_COMPACT_ALLOCATION
+// ------------------------------------
+// This definition enables some experimental code on memory allocation that 
+// seems to greately improve the performance on AMD Epyc multiprocessors.
+// This flag seems to double the performance in CC-Synch and H-Synch algorithms.
+#define SYNCH_COMPACT_ALLOCATION
 
 // Definition: _TRACK_CPU_COUNTERS
 // -------------------------------

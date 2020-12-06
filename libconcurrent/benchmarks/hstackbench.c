@@ -12,7 +12,7 @@
 #include <barrier.h>
 #include <bench_args.h>
 
-HStackStruct object_struct CACHE_ALIGN;
+HStackStruct *object_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
@@ -25,19 +25,19 @@ inline static void *Execute(void *Arg) {
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(HStackThreadState));
-    HStackThreadStateInit(&object_struct, th_state, (int)id);
+    HStackThreadStateInit(object_struct, th_state, (int)id);
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
         // perform a push operation
-        HStackPush(&object_struct, th_state, id, id);
+        HStackPush(object_struct, th_state, id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
         // perform a pop operation
-        HStackPop(&object_struct, th_state, id);
+        HStackPop(object_struct, th_state, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -47,8 +47,8 @@ inline static void *Execute(void *Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-
-    HStackInit(&object_struct, bench_args.nthreads, bench_args.numa_nodes);
+    object_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HStackStruct));
+    HStackInit(object_struct, bench_args.nthreads, bench_args.numa_nodes);
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: object state: counter: %d rounds: %d\n", object_struct.object_struct.counter, object_struct.object_struct.rounds);
+    fprintf(stderr, "DEBUG: object state: counter: %d rounds: %d\n", object_struct->object_struct.counter, object_struct->object_struct.rounds);
 #endif
 
     return 0;

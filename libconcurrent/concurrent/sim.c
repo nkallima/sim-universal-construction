@@ -56,7 +56,7 @@ void SimThreadStateInit(SimThreadState *th_state, uint32_t nthreads, int pid) {
     th_state->backoff = 1;
 }
 
-Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfunc)(HalfSimObjectState *, ArgVal, int), Object arg, int pid) {
+Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfunc)(void *, ArgVal, int), Object arg, int pid) {
     ToggleVector *diffs = &th_state->diffs, *l_toggles = &th_state->l_toggles;
     pointer_t old_sp, new_sp;
     HalfSimObjectState *sp_data, *lsp_data;
@@ -97,8 +97,9 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
         TVEC_XOR(diffs, &lsp_data->applied, l_toggles);
 #ifdef DEBUG
         lsp_data->rounds++;
+        lsp_data->counter++;
 #endif
-        lsp_data->ret[pid] = sfunc(lsp_data, arg, pid);
+        lsp_data->ret[pid] = sfunc(&lsp_data->state, arg, pid);
         TVEC_REVERSE_BIT(diffs, pid);
         for (i = 0, prefix = 0; i < diffs->tvec_cells; i++, prefix += _TVEC_BIWORD_SIZE_) {
             ReadPrefetch(&sim_struct->announce[prefix]);
@@ -112,7 +113,10 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
                 pos = bitSearchFirst(diffs->cell[i]);
                 proc_id = prefix + pos;
                 diffs->cell[i] ^= ((bitword_t)1) << pos;
-                lsp_data->ret[proc_id] = sfunc(lsp_data, sim_struct->announce[proc_id], proc_id);
+                lsp_data->ret[proc_id] = sfunc(&lsp_data->state, sim_struct->announce[proc_id], proc_id);
+#ifdef DEBUG
+                lsp_data->counter++;
+#endif
             }
         }
         TVEC_COPY(&lsp_data->applied, l_toggles);                                       // change applied to be equal to what was read in sim_struct->a_toggles

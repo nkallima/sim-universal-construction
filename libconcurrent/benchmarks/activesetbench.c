@@ -13,7 +13,7 @@
 #include <bench_args.h>
 
 int64_t d1 CACHE_ALIGN, d2;
-ToggleVector active_set;
+volatile ToggleVector active_set CACHE_ALIGN;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
@@ -21,7 +21,7 @@ inline static void *Execute(void *Arg) {
     long i, rnum, mybank;
     volatile long j;
     long id = (long)Arg;
-    volatile ToggleVector lactive_set;
+    ToggleVector lactive_set;
     ToggleVector mystate;
 
     fastRandomSetSeed(id + 1);
@@ -29,6 +29,7 @@ inline static void *Execute(void *Arg) {
     if (id == 0)
         d1 = getTimeMillis();
     TVEC_INIT(&mystate, bench_args.nthreads);
+    TVEC_INIT(&lactive_set, bench_args.nthreads);
     TVEC_SET_BIT(&mystate, id);
     mybank = TVEC_GET_BANK_OF_BIT(id, bench_args.nthreads);
     for (i = 0; i < bench_args.runs; i++) {
@@ -37,7 +38,7 @@ inline static void *Execute(void *Arg) {
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
-        lactive_set = active_set;
+        TVEC_COPY(&lactive_set, (void *)&active_set);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -47,7 +48,7 @@ inline static void *Execute(void *Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-    TVEC_INIT(&active_set, bench_args.nthreads);
+    TVEC_INIT((ToggleVector *)&active_set, bench_args.nthreads);
     BarrierInit(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);

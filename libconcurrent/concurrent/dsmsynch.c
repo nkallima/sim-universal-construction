@@ -13,8 +13,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     mynode = st_thread->MyNodes[st_thread->toggle];
 
     mynode->next = null;
-    mynode->arg = arg;
-    mynode->ret = 0;
+    mynode->arg_ret = arg;
     mynode->locked = true;
     mynode->completed = false;
     mynode->pid = pid;
@@ -28,7 +27,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
             resched();
         }
         if (mynode->completed) // operation has already applied
-            return mynode->ret;
+            return mynode->arg_ret;
     }
 
 #ifdef DEBUG
@@ -42,7 +41,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
 #ifdef DEBUG
         l->counter += 1;
 #endif
-        p->ret = sfunc(state, p->arg, p->pid);
+        p->arg_ret = sfunc(state, p->arg_ret, p->pid);
         p->completed = true;
         p->locked = false;
         if (p->next == null || p->next->next == null || counter >= help_bound)
@@ -52,7 +51,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     // End critical section
     if (p->next == null) {
         if (l->Tail == p && CASPTR(&l->Tail, p, null) == true)
-            return mynode->ret;
+            return mynode->arg_ret;
         while (p->next == null) {
             resched();
         }
@@ -60,20 +59,34 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     p->next->locked = false;
     FullFence();
 
-    return mynode->ret;
+    return mynode->arg_ret;
 }
 
 void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
     l->Tail = null;
+
+#ifdef SYNCH_COMPACT_ALLOCATION
+    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
+#else
+    l->nodes = NULL;
+#endif
+
 #ifdef DEBUG
     l->counter = 0;
 #endif
     FullFence();
 }
 
-void DSMSynchThreadStateInit(DSMSynchThreadState *st_thread, int pid) {
-    st_thread->MyNodes[0] = getAlignedMemory(CACHE_LINE_SIZE, sizeof(DSMSynchNode));
-    st_thread->MyNodes[1] = getAlignedMemory(CACHE_LINE_SIZE, sizeof(DSMSynchNode));
+void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, int pid) {
+#ifdef SYNCH_COMPACT_ALLOCATION
+    st_thread->MyNodes[0] = &l->nodes[2 * pid];
+    st_thread->MyNodes[1] = &l->nodes[2 * pid + 1];
+#else
+    DSMSynchNode *nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
+    st_thread->MyNodes[0] = &nodes[0];
+    st_thread->MyNodes[1] = &nodes[1];
+#endif
+
     st_thread->toggle = 0;
 }

@@ -11,33 +11,17 @@
 #include <threadtools.h>
 #include <barrier.h>
 #include <bench_args.h>
-
-typedef struct ObjectState {
-    long long state;
-} ObjectState;
-
-typedef union CRStruct {
-    volatile Object obj;
-    char pad[CACHE_LINE_SIZE];
-} CRStruct;
+#include <fam.h>
 
 CLHLockStruct *object_lock CACHE_ALIGN;
-CRStruct Critical[OBJECT_SIZE] CACHE_ALIGN;
+ObjectState object CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-inline RetVal fetchAndMultiply(ArgVal arg, int pid) {
-    int i;
-
-    for (i = 0; i < OBJECT_SIZE; i++)
-        Critical[i].obj += 1;
-    return Critical[0].obj;
-}
-
-inline void apply_op(RetVal (*sfunc)(ArgVal, int), ArgVal arg, int pid) {
+inline void apply_op(RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     CLHLock(object_lock, pid);
-    sfunc(arg, pid);
+    sfunc(state, arg, pid);
     CLHUnlock(object_lock, pid);
 }
 
@@ -52,7 +36,7 @@ inline static void *Execute(void *Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        apply_op(fetchAndMultiply, (ArgVal)i, (int)id);
+        apply_op(fetchAndMultiply, &object, (ArgVal)i, (int)id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -62,6 +46,7 @@ inline static void *Execute(void *Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
+    object.state_f = 1.0;
     object_lock = CLHLockInit(bench_args.nthreads);
 
     BarrierInit(&bar, bench_args.nthreads);
@@ -71,6 +56,10 @@ int main(int argc, char *argv[]) {
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
+
+#ifdef DEBUG
+    fprintf(stderr, "DEBUG: shared state: %f\n", object.state_f);
+#endif
 
     return 0;
 }
