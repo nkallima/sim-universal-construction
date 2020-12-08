@@ -16,7 +16,7 @@ static __thread int32_t __thread_id = -1;
 static __thread int32_t __prefered_core = -1;
 static __thread int32_t __unjoined_threads = 0;
 
-static void *(*__func)(void *)CACHE_ALIGN = null;
+static void *(*__func)(void *) CACHE_ALIGN = null;
 static uint32_t __uthreads = 0;
 static uint32_t __nthreads = 0;
 static uint32_t __ncores = 0;
