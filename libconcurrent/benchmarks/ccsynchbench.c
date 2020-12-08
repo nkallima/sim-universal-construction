@@ -19,11 +19,11 @@ int64_t d1, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-inline static void *Execute(void* Arg) {
+inline static void *Execute(void *Arg) {
     CCSynchThreadState *th_state;
     long i, rnum;
     volatile long j;
-    long id = (long) Arg;
+    long id = (long)Arg;
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchThreadState));
@@ -34,7 +34,7 @@ inline static void *Execute(void* Arg) {
 
     for (i = 0; i < bench_args.runs; i++) {
         // perform a fetchAndMultiply operation
-        CCSynchApplyOp(object_combiner, th_state, fetchAndMultiply, (void *)object, (ArgVal) id, id);
+        CCSynchApplyOp(object_combiner, th_state, fetchAndMultiply, (void *)object, (ArgVal)id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -54,14 +54,14 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: object state: %f\n", object->state_f);
     fprintf(stderr, "DEBUG: object counter: %d\n", object_combiner->counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", object_combiner->rounds);
-    fprintf(stderr, "DEBUG: Average helping: %.2f\n", (float)object_combiner->counter/object_combiner->rounds);
+    fprintf(stderr, "DEBUG: Average helping: %.2f\n", (float)object_combiner->counter / object_combiner->rounds);
     fprintf(stderr, "\n");
 #endif
 

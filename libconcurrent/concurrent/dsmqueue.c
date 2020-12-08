@@ -24,7 +24,7 @@ void DSMQueueThreadStateInit(DSMQueueStruct *object_struct, DSMQueueThreadState 
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     DSMQueueStruct *st = (DSMQueueStruct *)state;
     Node *node;
-    
+
     node = alloc_obj(&pool_node);
     node->next = null;
     node->val = arg;
@@ -36,8 +36,8 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     DSMQueueStruct *st = (DSMQueueStruct *)state;
     Node *node = (Node *)st->first;
-    
-    if (st->first->next != null){
+
+    if (st->first->next != null) {
         st->first = st->first->next;
         return node->val;
     } else {
@@ -46,9 +46,9 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
 }
 
 void DSMQueueApplyEnqueue(DSMQueueStruct *object_struct, DSMQueueThreadState *lobject_struct, ArgVal arg, int pid) {
-    DSMSynchApplyOp(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, (ArgVal) pid, pid);
+    DSMSynchApplyOp(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, (ArgVal)pid, pid);
 }
 
 RetVal DSMQueueApplyDequeue(DSMQueueStruct *object_struct, DSMQueueThreadState *lobject_struct, int pid) {
-     return DSMSynchApplyOp(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, serialDequeue, object_struct, (ArgVal) pid, pid);
+    return DSMSynchApplyOp(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, serialDequeue, object_struct, (ArgVal)pid, pid);
 }

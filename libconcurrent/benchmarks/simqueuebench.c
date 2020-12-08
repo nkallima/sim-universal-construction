@@ -18,10 +18,10 @@ int64_t d1, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-static void *Execute(void* Arg) {
+static void *Execute(void *Arg) {
     SimQueueThreadState *th_state;
     long i = 0;
-    long id = (long) Arg;
+    long id = (long)Arg;
     long rnum;
     volatile int j = 0;
 
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2 * bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
         cur = cur->next;
         counter++;
     }
-    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter - 1); // Do not count queue->guard node 
+    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter - 1); // Do not count queue->guard node
 #endif
 
     return 0;

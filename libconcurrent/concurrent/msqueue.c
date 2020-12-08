@@ -19,19 +19,18 @@ void MSQueueEnqueue(MSQueue *l, MSQueueThreadState *th_state, ArgVal arg) {
     Node *next, *last;
 
     p = alloc_obj(&th_state->pool);
-    p->val = arg;                       
-    p->next = null;  
+    p->val = arg;
+    p->next = null;
     reset_backoff(&th_state->backoff);
     while (true) {
         last = (Node *)l->tail;
         next = (Node *)last->next;
         if (last == l->tail) {
-            if (next == null) { 
+            if (next == null) {
                 reset_backoff(&th_state->backoff);
                 if (CASPTR(&last->next, next, p))
                     break;
-            }
-            else {
+            } else {
                 CASPTR(&l->tail, last, next);
                 backoff_delay(&th_state->backoff);
             }
@@ -50,19 +49,18 @@ RetVal MSQueueDequeue(MSQueue *l, MSQueueThreadState *th_state) {
         last = (Node *)l->tail;
         next = (Node *)first->next;
         if (first == l->head) {
-             if (first == last) {
-                 if (next == null) return -1;
-                 CASPTR(&l->tail, last, next);
-                 backoff_delay(&th_state->backoff);
-             }
-             else {
-                  value = next->val;
-                  if (CASPTR(&l->head, first, next))
-                      break;
-                  backoff_delay(&th_state->backoff);
-             } 
-        } 
-     }
-     return value;
+            if (first == last) {
+                if (next == null)
+                    return -1;
+                CASPTR(&l->tail, last, next);
+                backoff_delay(&th_state->backoff);
+            } else {
+                value = next->val;
+                if (CASPTR(&l->head, first, next))
+                    break;
+                backoff_delay(&th_state->backoff);
+            }
+        }
+    }
+    return value;
 }
-

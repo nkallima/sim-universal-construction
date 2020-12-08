@@ -15,7 +15,7 @@ void initFibers(int max) {
     int i;
 
     MAX_FIBERS = max;
-    FIBER_LIST = getMemory(MAX_FIBERS*sizeof(Fiber));
+    FIBER_LIST = getMemory(MAX_FIBERS * sizeof(Fiber));
     getcontext(&(FIBER_LIST[0].context));
     FIBER_LIST[0].active = true;
     FIBER_LIST[0].context.uc_link = NULL;
@@ -32,9 +32,9 @@ inline static void switch_to_fiber(Fiber *prev, Fiber *cur) {
 void fiberYield(void) {
     int prev_fiber;
 
-    if (N_FIBERS==1) 
+    if (N_FIBERS == 1)
         return;
-    // Saved the state so call the next fiber 
+    // Saved the state so call the next fiber
     prev_fiber = currentFiber;
     do {
         currentFiber = (currentFiber + 1) % MAX_FIBERS;
@@ -57,9 +57,9 @@ static void fiber_start_func(FiberData *context) {
     if (_setjmp(*(context->cur)) == 0)
         swapcontext(&tmp, context->prev);
 
-    func((void *)arg);                             // Execute fiber with function func
-    if (N_FIBERS==1)                       // This check is not useful, since 
-        return;                            // main thread never calls fiber_start_func
+    func((void *)arg); // Execute fiber with function func
+    if (N_FIBERS == 1) // This check is not useful, since
+        return;        // main thread never calls fiber_start_func
     FIBER_RECYCLE = FIBER_LIST[currentFiber].context.uc_stack.ss_sp;
     FIBER_LIST[currentFiber].active = false;
     N_FIBERS--;
@@ -68,7 +68,7 @@ static void fiber_start_func(FiberData *context) {
         currentFiber = (currentFiber + 1) % MAX_FIBERS;
     } while (FIBER_LIST[currentFiber].active == false);
     switch_to_fiber(&FIBER_LIST[prev_fiber], &FIBER_LIST[currentFiber]);
-} 
+}
 
 int spawnFiber(void *(*func)(void *), long arg) {
     ucontext_t tmp;
@@ -88,13 +88,13 @@ int spawnFiber(void *(*func)(void *), long arg) {
     context.arg = arg;
     context.cur = &FIBER_LIST[N_FIBERS].jmp;
     context.prev = &tmp;
-    makecontext(&FIBER_LIST[N_FIBERS].context, (void(*)())fiber_start_func, 1, &context);
+    makecontext(&FIBER_LIST[N_FIBERS].context, (void (*)())fiber_start_func, 1, &context);
     swapcontext(&tmp, &FIBER_LIST[N_FIBERS].context);
     N_FIBERS++;
     return 1;
 }
 
-void waitForAllFibers(void) {            // Execute the fibers until they quit
+void waitForAllFibers(void) { // Execute the fibers until they quit
     while (N_FIBERS > 1)
-       fiberYield();
+        fiberYield();
 }

@@ -8,7 +8,7 @@ static __thread PoolStruct pool_node CACHE_ALIGN;
 
 void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t numa_nodes) {
     queue_object_struct->enqueue_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
-    queue_object_struct->dequeue_struct= getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
+    queue_object_struct->dequeue_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
     HSynchStructInit(queue_object_struct->enqueue_struct, nthreads, numa_nodes);
     HSynchStructInit(queue_object_struct->dequeue_struct, nthreads, numa_nodes);
     queue_object_struct->guard.val = GUARD;
@@ -23,11 +23,10 @@ void HQueueThreadStateInit(HQueueStruct *object_struct, HQueueThreadState *lobje
     init_pool(&pool_node, sizeof(Node));
 }
 
-
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     HQueueStruct *st = (HQueueStruct *)state;
     Node *node;
-    
+
     node = alloc_obj(&pool_node);
     node->next = null;
     node->val = arg;
@@ -39,8 +38,8 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     HQueueStruct *st = (HQueueStruct *)state;
     Node *node = (Node *)st->first;
-    
-    if (st->first->next != null){
+
+    if (st->first->next != null) {
         st->first = st->first->next;
         return node->val;
     } else {
@@ -49,9 +48,9 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
 }
 
 void HQueueApplyEnqueue(HQueueStruct *object_struct, HQueueThreadState *lobject_struct, ArgVal arg, int pid) {
-    HSynchApplyOp(object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, (ArgVal) pid, pid);
+    HSynchApplyOp(object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, (ArgVal)pid, pid);
 }
 
 RetVal HQueueApplyDequeue(HQueueStruct *object_struct, HQueueThreadState *lobject_struct, int pid) {
-    return HSynchApplyOp(object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, serialDequeue, object_struct, (ArgVal) pid, pid);
+    return HSynchApplyOp(object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, serialDequeue, object_struct, (ArgVal)pid, pid);
 }

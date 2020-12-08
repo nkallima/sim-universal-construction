@@ -21,7 +21,6 @@ void OsciQueueThreadStateInit(OsciQueueStruct *object_struct, OsciQueueThreadSta
     init_pool(&(object_struct->pool_node[getThreadId()]), sizeof(Node));
 }
 
-
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     OsciQueueStruct *st = (OsciQueueStruct *)state;
     Node *node;
@@ -37,8 +36,8 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     OsciQueueStruct *st = (OsciQueueStruct *)state;
     Node *node = (Node *)st->first;
-    
-    if (st->first->next != null){
+
+    if (st->first->next != null) {
         st->first = st->first->next;
         return node->val;
     } else {
@@ -47,9 +46,9 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
 }
 
 void OsciQueueApplyEnqueue(OsciQueueStruct *object_struct, OsciQueueThreadState *lobject_struct, ArgVal arg, int pid) {
-     OsciApplyOp(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, (ArgVal) pid, pid);
+    OsciApplyOp(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, serialEnqueue, object_struct, (ArgVal)pid, pid);
 }
 
 RetVal OsciQueueApplyDequeue(OsciQueueStruct *object_struct, OsciQueueThreadState *lobject_struct, int pid) {
-     return OsciApplyOp(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, serialDequeue, object_struct, (ArgVal) pid, pid);
+    return OsciApplyOp(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, serialDequeue, object_struct, (ArgVal)pid, pid);
 }

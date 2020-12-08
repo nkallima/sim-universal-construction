@@ -21,7 +21,6 @@ BenchArgs bench_args CACHE_ALIGN;
 
 inline static RetVal fetchAndMultiply(ArgVal arg, int pid);
 
-
 inline static RetVal fetchAndMultiply(ArgVal arg, int pid) {
     Object old_val;
 
@@ -30,11 +29,11 @@ inline static RetVal fetchAndMultiply(ArgVal arg, int pid) {
     return old_val;
 }
 
-inline static void *Execute(void* Arg) {
+inline static void *Execute(void *Arg) {
     OyamaThreadState *th_state;
     long i, rnum;
     volatile int j;
-    long id = (long) Arg;
+    long id = (long)Arg;
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(OyamaThreadState));
@@ -45,7 +44,7 @@ inline static void *Execute(void* Arg) {
 
     for (i = 0; i < bench_args.runs; i++) {
         // perform a fetchAndMultiply operation
-        OyamaApplyOp((OyamaStruct *)&object_lock, th_state, fetchAndMultiply, (ArgVal) id, id);
+        OyamaApplyOp((OyamaStruct *)&object_lock, th_state, fetchAndMultiply, (ArgVal)id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -62,13 +61,13 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: object counter: %d\n", object_lock.counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", object_lock.rounds);
-    fprintf(stderr, "DEBUG: Average helping: %f\n", (float)object_lock.counter/object_lock.rounds);
+    fprintf(stderr, "DEBUG: Average helping: %f\n", (float)object_lock.counter / object_lock.rounds);
 #endif
 
     return 0;

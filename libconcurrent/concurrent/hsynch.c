@@ -1,11 +1,11 @@
 #include <hsynch.h>
 
 #ifdef NUMA_SUPPORT
-#   include <numa.h>
+#    include <numa.h>
 #endif
 
-#define HSYNCH_HELP_FACTOR                    10
-#define HSYNCH_DEFAULT_NUMA_NODE_SIZE         8
+#define HSYNCH_HELP_FACTOR            10
+#define HSYNCH_DEFAULT_NUMA_NODE_SIZE 8
 
 static __thread int node_of_thread = 0;
 
@@ -15,7 +15,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     register HSynchNode *next_node, *tmp_next;
     register int counter = 0;
     int help_bound = HSYNCH_HELP_FACTOR * l->nthreads;
- 
+
     next_node = st_thread->next_node;
     next_node->next = null;
     next_node->locked = true;
@@ -27,17 +27,17 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
 
     st_thread->next_node = (HSynchNode *)cur;
 
-    while (cur->locked)                     // spinning
+    while (cur->locked) // spinning
         resched();
 
-    p = cur;                                // I am not been helped
-    if (cur->completed)                     // I have been helped
+    p = cur;            // I am not been helped
+    if (cur->completed) // I have been helped
         return cur->arg_ret;
     CLHLock(l->central_lock, pid);
 #ifdef DEBUG
     l->rounds++;
 #endif
-     while (counter < help_bound && p->next != null) {
+    while (counter < help_bound && p->next != null) {
         ReadPrefetch(p->next);
         counter++;
 #ifdef DEBUG
@@ -48,8 +48,8 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
         p->completed = true;
         p->locked = false;
         p = tmp_next;
-    } 
-    p->locked = false;                      // Unlock the next one
+    }
+    p->locked = false; // Unlock the next one
     CLHUnlock(l->central_lock, pid);
 
     return cur->arg_ret;
@@ -63,16 +63,16 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
     if (l->numa_policy) {
         if (getPreferedCore() != -1) {
             node_of_thread = numa_node_of_cpu(getPreferedCore());
-            if (node_of_thread == -1) 
+            if (node_of_thread == -1)
                 node_of_thread = pid / l->numa_node_size;
         }
     } else {
         int ncpus = numa_num_configured_cpus();
-        if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus/2)) {
-            if (getPreferedCore() >= ncpus/2)
-                node_of_thread = (getPreferedCore() - ncpus/2) / (l->numa_node_size/2);
+        if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) {
+            if (getPreferedCore() >= ncpus / 2)
+                node_of_thread = (getPreferedCore() - ncpus / 2) / (l->numa_node_size / 2);
             else
-                node_of_thread = getPreferedCore() / (l->numa_node_size/2);
+                node_of_thread = getPreferedCore() / (l->numa_node_size / 2);
         } else {
             node_of_thread = pid / l->numa_node_size;
         }
@@ -83,7 +83,7 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
 
     if (l->nodes[node_of_thread] == NULL) {
         HSynchNode *ptr = getAlignedMemory(CACHE_LINE_SIZE, (l->numa_node_size + 2) * sizeof(HSynchNode));
-        
+
         last_node = &ptr[l->numa_node_size + 1];
         last_node->next = NULL;
         last_node->locked = false;
@@ -106,16 +106,17 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
         l->numa_policy = true;
 #ifdef NUMA_SUPPORT
         l->numa_nodes = numa_max_node() + 1;
-        l->numa_node_size = nthreads/l->numa_nodes + ((nthreads%l->numa_nodes > 0) ? 1 : 0);
+        l->numa_node_size = nthreads / l->numa_nodes + ((nthreads % l->numa_nodes > 0) ? 1 : 0);
 #else
         l->numa_node_size = HSYNCH_DEFAULT_NUMA_NODE_SIZE;
-        l->numa_nodes = nthreads/l->numa_node_size + (nthreads%l->numa_node_size == 0 ? 0 : 1);
-        if (l->numa_nodes == 0) l->numa_nodes = 1;
+        l->numa_nodes = nthreads / l->numa_node_size + (nthreads % l->numa_node_size == 0 ? 0 : 1);
+        if (l->numa_nodes == 0)
+            l->numa_nodes = 1;
 #endif
     } else {
         l->numa_policy = false;
         l->numa_nodes = numa_regions;
-        l->numa_node_size = nthreads/l->numa_nodes + ((nthreads%l->numa_nodes > 0) ? 1 : 0);
+        l->numa_node_size = nthreads / l->numa_nodes + ((nthreads % l->numa_nodes > 0) ? 1 : 0);
     }
 
     l->central_lock = CLHLockInit(nthreads);
@@ -128,7 +129,7 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
         l->Tail[i].ptr = NULL;
     }
 #ifdef DEBUG
-    l->rounds = l->counter =0;
+    l->rounds = l->counter = 0;
 #endif
     StoreFence();
 }

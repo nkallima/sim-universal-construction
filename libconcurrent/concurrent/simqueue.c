@@ -6,12 +6,13 @@ static const int LOCAL_POOL_SIZE = _SIM_LOCAL_POOL_SIZE_;
 static EnqState *connect_state = NULL;
 
 static inline void EnqStateCopy(EnqState *dest, EnqState *src);
-inline static void connectQueue(SimQueueStruct *queue);;
+inline static void connectQueue(SimQueueStruct *queue);
+;
 
 static inline void EnqStateCopy(EnqState *dest, EnqState *src) {
     // copy everything except 'applied' field
     ToggleVector tmp_applied;
-    
+
     tmp_applied = dest->applied;
     memcpy(dest, src, EnqStateSize(dest->applied.nthreads));
     dest->applied = tmp_applied;
@@ -20,7 +21,7 @@ static inline void EnqStateCopy(EnqState *dest, EnqState *src) {
 static inline void DeqStateCopy(DeqState *dest, DeqState *src) {
     // copy everything except 'applied' field
     ToggleVector tmp_applied;
-    
+
     tmp_applied = dest->applied;
     memcpy(dest, src, DeqStateSize(dest->applied.nthreads));
     dest->applied = tmp_applied;
@@ -76,20 +77,20 @@ void SimQueueInit(SimQueueStruct *queue, uint32_t nthreads, int max_backoff) {
     for (i = 0; i < LOCAL_POOL_SIZE * nthreads + 1; i++) {
         queue->enq_pool[i] = getAlignedMemory(CACHE_LINE_SIZE, EnqStateSize(nthreads));
         queue->deq_pool[i] = getAlignedMemory(CACHE_LINE_SIZE, DeqStateSize(nthreads));
-        
+
         TVEC_INIT_AT(&queue->enq_pool[i]->applied, nthreads, queue->enq_pool[i]->__flex);
         TVEC_INIT_AT(&queue->deq_pool[i]->applied, nthreads, queue->deq_pool[i]->__flex);
 
-        queue->deq_pool[i]->ret = ((void*)&queue->deq_pool[i]->__flex) + _TVEC_VECTOR_SIZE(nthreads);
+        queue->deq_pool[i]->ret = ((void *)&queue->deq_pool[i]->__flex) + _TVEC_VECTOR_SIZE(nthreads);
     }
 
     // Initializing queue's state
     // --------------------------
-    TVEC_SET_ZERO((ToggleVector *) &queue->enq_pool[LOCAL_POOL_SIZE * nthreads]->applied);
+    TVEC_SET_ZERO((ToggleVector *)&queue->enq_pool[LOCAL_POOL_SIZE * nthreads]->applied);
     queue->enq_pool[LOCAL_POOL_SIZE * nthreads]->link_a = &queue->guard;
     queue->enq_pool[LOCAL_POOL_SIZE * nthreads]->link_b = null;
     queue->enq_pool[LOCAL_POOL_SIZE * nthreads]->ptr = &queue->guard;
-    TVEC_SET_ZERO((ToggleVector *) &queue->deq_pool[LOCAL_POOL_SIZE * nthreads]->applied);
+    TVEC_SET_ZERO((ToggleVector *)&queue->deq_pool[LOCAL_POOL_SIZE * nthreads]->applied);
     queue->deq_pool[LOCAL_POOL_SIZE * nthreads]->ptr = &queue->guard;
 #ifdef DEBUG
     queue->enq_pool[LOCAL_POOL_SIZE * nthreads]->counter = 0L;
@@ -98,7 +99,7 @@ void SimQueueInit(SimQueueStruct *queue, uint32_t nthreads, int max_backoff) {
     queue->MAX_BACK = max_backoff * 100;
     queue->guard.val = GUARD_VALUE;
     queue->guard.next = null;
-    
+
     connect_state = getAlignedMemory(CACHE_LINE_SIZE, EnqStateSize(nthreads));
     TVEC_INIT_AT(&connect_state->applied, nthreads, connect_state->__flex);
     FullFence();
@@ -124,9 +125,9 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
     TVEC_REVERSE_BIT(&th_state->my_enq_bit, pid);
     TVEC_NEGATIVE_BANK(&th_state->enq_toggle, &th_state->enq_toggle, th_state->mybank);
     mod_sp = queue->enq_pool[pid * LOCAL_POOL_SIZE + th_state->enq_local_index];
-    TVEC_ATOMIC_ADD_BANK(&queue->enqueuers, &th_state->enq_toggle, th_state->mybank);            // toggle pid's bit in a_toggles, Fetch&Add acts as a full write-barrier
+    TVEC_ATOMIC_ADD_BANK(&queue->enqueuers, &th_state->enq_toggle, th_state->mybank); // toggle pid's bit in a_toggles, Fetch&Add acts as a full write-barrier
 
-    if (!isSystemOversubscribed()) { 
+    if (!isSystemOversubscribed()) {
         volatile int k;
         int backoff_limit;
 
@@ -137,24 +138,24 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
         }
     } else {
         if (fastRandomRange(1, queue->nthreads) > 4)
-            resched();    
+            resched();
     }
 
     for (j = 0; j < 2; j++) {
-        tmp_sp = queue->enq_sp;          // This is an atomic read, since sp is volatile
-        ldw = *((pointer_t *) & tmp_sp);
+        tmp_sp = queue->enq_sp; // This is an atomic read, since sp is volatile
+        ldw = *((pointer_t *)&tmp_sp);
         lsp_data = queue->enq_pool[ldw.struct_data.index];
         TVEC_ATOMIC_COPY_BANKS(&mod_sp->applied, &lsp_data->applied, th_state->mybank);
         TVEC_AND_BANKS(diffs, &mod_sp->applied, &th_state->mask, th_state->mybank);
-        TVEC_XOR(diffs, diffs, &th_state->my_enq_bit);   // determine the set of active processes
-        if (TVEC_IS_SET(diffs, pid))                // if the operation has already been applied return
+        TVEC_XOR(diffs, diffs, &th_state->my_enq_bit); // determine the set of active processes
+        if (TVEC_IS_SET(diffs, pid))                   // if the operation has already been applied return
             return;
         EnqStateCopy(mod_sp, lsp_data);
-        TVEC_COPY(l_toggles, &queue->enqueuers);    // This is an atomic read, since sp is volatile
+        TVEC_COPY(l_toggles, &queue->enqueuers); // This is an atomic read, since sp is volatile
         if (tmp_sp.raw_data != queue->enq_sp.raw_data)
             continue;
         TVEC_XOR(diffs, &mod_sp->applied, l_toggles);
-        if (mod_sp->link_a->next == null)  // avoid owned state (MOESI protocol)
+        if (mod_sp->link_a->next == null) // avoid owned state (MOESI protocol)
             CASPTR(&mod_sp->link_a->next, null, mod_sp->link_b);
         enq_counter = 1;
         node = alloc_obj(&th_state->pool_node);
@@ -190,15 +191,14 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
         TVEC_COPY(&mod_sp->applied, l_toggles);
         mod_dw.struct_data.seq = ldw.struct_data.seq + 1;
         mod_dw.struct_data.index = LOCAL_POOL_SIZE * pid + th_state->enq_local_index;
-        if (tmp_sp.raw_data == queue->enq_sp.raw_data &&
-            CAS64(&queue->enq_sp, tmp_sp.raw_data, mod_dw.raw_data)) {
+        if (tmp_sp.raw_data == queue->enq_sp.raw_data && CAS64(&queue->enq_sp, tmp_sp.raw_data, mod_dw.raw_data)) {
             CASPTR(&mod_sp->link_a->next, null, mod_sp->link_b);
             th_state->enq_local_index = (th_state->enq_local_index + 1) % LOCAL_POOL_SIZE;
             th_state->backoff = (th_state->backoff >> 1) | 1;
             return;
-        }
-        else {
-            if (th_state->backoff < queue->MAX_BACK) th_state->backoff <<= 1;
+        } else {
+            if (th_state->backoff < queue->MAX_BACK)
+                th_state->backoff <<= 1;
             rollback(&th_state->pool_node, enq_counter);
         }
     }
@@ -206,7 +206,8 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
 }
 
 RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int pid) {
-    ToggleVector *diffs = &th_state->diffs, *l_toggles = &th_state->l_toggles;    DeqState *mod_sp, *lsp_data;
+    ToggleVector *diffs = &th_state->diffs, *l_toggles = &th_state->l_toggles;
+    DeqState *mod_sp, *lsp_data;
     pointer_t tmp_sp;
     int i, j, prefix;
     pointer_t ldw, mod_dw;
@@ -215,14 +216,14 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
     TVEC_REVERSE_BIT(&th_state->my_deq_bit, pid);
     TVEC_NEGATIVE_BANK(&th_state->deq_toggle, &th_state->deq_toggle, th_state->mybank);
     mod_sp = queue->deq_pool[pid * LOCAL_POOL_SIZE + th_state->deq_local_index];
-    TVEC_ATOMIC_ADD_BANK(&queue->dequeuers, &th_state->deq_toggle, th_state->mybank);            // toggle pid's bit in a_toggles, Fetch&Add acts as a full write-barrier
+    TVEC_ATOMIC_ADD_BANK(&queue->dequeuers, &th_state->deq_toggle, th_state->mybank); // toggle pid's bit in a_toggles, Fetch&Add acts as a full write-barrier
 
-    if (!isSystemOversubscribed()) { 
+    if (!isSystemOversubscribed()) {
         volatile int k;
         int backoff_limit;
 
         if (fastRandomRange(1, queue->nthreads) > 1) {
-            backoff_limit =  fastRandomRange(th_state->backoff >> 1, th_state->backoff);
+            backoff_limit = fastRandomRange(th_state->backoff >> 1, th_state->backoff);
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
@@ -232,16 +233,16 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
     }
 
     for (j = 0; j < 2; j++) {
-        tmp_sp = queue->deq_sp;                                 // This is an atomic read, since sp is volatile
-        ldw = *((pointer_t *) & tmp_sp);
+        tmp_sp = queue->deq_sp; // This is an atomic read, since sp is volatile
+        ldw = *((pointer_t *)&tmp_sp);
         lsp_data = queue->deq_pool[ldw.struct_data.index];
         TVEC_ATOMIC_COPY_BANKS(&mod_sp->applied, &lsp_data->applied, th_state->mybank);
         TVEC_AND_BANKS(diffs, &mod_sp->applied, &th_state->mask, th_state->mybank);
-        TVEC_XOR(diffs, diffs, &th_state->my_deq_bit);         // determine the set of active processes
-        if (TVEC_IS_SET(diffs, pid))                           // if the operation has already been applied return
+        TVEC_XOR(diffs, diffs, &th_state->my_deq_bit); // determine the set of active processes
+        if (TVEC_IS_SET(diffs, pid))                   // if the operation has already been applied return
             break;
         DeqStateCopy(mod_sp, lsp_data);
-        TVEC_COPY(l_toggles, &queue->dequeuers);                         // This is an atomic read, since sp is volatile
+        TVEC_COPY(l_toggles, &queue->dequeuers); // This is an atomic read, since sp is volatile
         if (tmp_sp.raw_data != queue->deq_sp.raw_data)
             continue;
         TVEC_XOR(diffs, &mod_sp->applied, l_toggles);
@@ -274,12 +275,12 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
         TVEC_COPY(&mod_sp->applied, l_toggles);
         mod_dw.struct_data.seq = ldw.struct_data.seq + 1;
         mod_dw.struct_data.index = LOCAL_POOL_SIZE * pid + th_state->deq_local_index;
-        if (tmp_sp.raw_data == queue->deq_sp.raw_data && 
-            CAS64(&queue->deq_sp, ldw.raw_data, mod_dw.raw_data)) {
+        if (tmp_sp.raw_data == queue->deq_sp.raw_data && CAS64(&queue->deq_sp, ldw.raw_data, mod_dw.raw_data)) {
             th_state->deq_local_index = (th_state->deq_local_index + 1) % LOCAL_POOL_SIZE;
             th_state->backoff = (th_state->backoff >> 1) | 1;
             return mod_sp->ret[pid];
-        } else if (th_state->backoff < queue->MAX_BACK) th_state->backoff <<= 1;
+        } else if (th_state->backoff < queue->MAX_BACK)
+            th_state->backoff <<= 1;
     }
 
     LoadFence();

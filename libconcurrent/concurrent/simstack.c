@@ -22,7 +22,7 @@ static inline void SimStackSimStackStateCopy(SimStackState *dest, SimStackState 
     // copy everything except 'applied' and 'ret' fields
     RetVal *tmp_ret;
     ToggleVector tmp_applied;
-    
+
     tmp_ret = dest->ret;
     tmp_applied = dest->applied;
     memcpy(dest, src, SimStackStateSize(dest->applied.nthreads));
@@ -62,8 +62,7 @@ void SimStackInit(SimStackStruct *stack, uint32_t nthreads, int max_backoff) {
     stack->sp.struct_data.seq = 0;
     TVEC_INIT((ToggleVector *)&stack->a_toggles, nthreads);
     stack->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->head = null;
-    
-    
+
     TVEC_SET_ZERO((ToggleVector *)&stack->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->applied);
     stack->MAX_BACK = max_backoff * 100;
 #ifdef DEBUG
@@ -87,11 +86,11 @@ inline static void serialPop(HalfSimStackState *st, int pid) {
 #ifdef DEBUG
     st->counter += 1;
 #endif
-    if(st->head != null) {
+    if (st->head != null) {
         st->ret[pid] = (RetVal)st->head->val;
         st->head = (Node *)st->head->next;
-    }
-    else st->ret[pid] = (RetVal)-1;
+    } else
+        st->ret[pid] = (RetVal)-1;
 }
 
 inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid) {
@@ -105,15 +104,15 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
     TVEC_REVERSE_BIT(&th_state->my_bit, pid);
     TVEC_NEGATIVE_BANK(&th_state->toggle, &th_state->toggle, mybank);
     lsp_data = (HalfSimStackState *)stack->pool[pid * _SIM_LOCAL_POOL_SIZE_ + th_state->local_index];
-    stack->announce[pid] = arg;                                                  // stack->announce the operation
-    TVEC_ATOMIC_ADD_BANK(&stack->a_toggles, &th_state->toggle, mybank);          // toggle pid's bit in stack->a_toggles, Fetch&Add acts as a full write-barrier
+    stack->announce[pid] = arg;                                         // stack->announce the operation
+    TVEC_ATOMIC_ADD_BANK(&stack->a_toggles, &th_state->toggle, mybank); // toggle pid's bit in stack->a_toggles, Fetch&Add acts as a full write-barrier
 
     if (!isSystemOversubscribed()) {
         volatile int k;
         int backoff_limit;
 
         if (fastRandomRange(1, stack->nthreads) > 1) {
-            backoff_limit =  fastRandomRange(th_state->backoff >> 1, th_state->backoff);
+            backoff_limit = fastRandomRange(th_state->backoff >> 1, th_state->backoff);
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
@@ -122,14 +121,14 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
     }
 
     for (j = 0; j < 2; j++) {
-        old_sp = stack->sp;                                                      // read reference to struct SimStackState
-        sp_data = (HalfSimStackState *)stack->pool[old_sp.struct_data.index];     // read reference of struct SimStackState in a local variable lsp_data
+        old_sp = stack->sp;                                                   // read reference to struct SimStackState
+        sp_data = (HalfSimStackState *)stack->pool[old_sp.struct_data.index]; // read reference of struct SimStackState in a local variable lsp_data
         TVEC_ATOMIC_COPY_BANKS(diffs, &sp_data->applied, mybank);
-        TVEC_XOR_BANKS(diffs, diffs, &th_state->my_bit, mybank);               // determine the set of active processes
-        if (TVEC_IS_SET(diffs, pid))                                             // if the operation has already been applied return
+        TVEC_XOR_BANKS(diffs, diffs, &th_state->my_bit, mybank); // determine the set of active processes
+        if (TVEC_IS_SET(diffs, pid))                             // if the operation has already been applied return
             break;
         SimStackSimStackStateCopy((SimStackState *)lsp_data, (SimStackState *)sp_data);
-        TVEC_COPY(l_toggles, (ToggleVector *)&stack->a_toggles);                                            // This is an atomic read, since a_toogles is volatile
+        TVEC_COPY(l_toggles, (ToggleVector *)&stack->a_toggles); // This is an atomic read, since a_toogles is volatile
         if (old_sp.raw_data != stack->sp.raw_data)
             continue;
         TVEC_XOR(diffs, &lsp_data->applied, l_toggles);
@@ -168,21 +167,20 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
             }
         }
 
-        TVEC_COPY(&lsp_data->applied, l_toggles);                                           // change applied to be equal to what was read in stack->a_toggles
-        new_sp.struct_data.seq = old_sp.struct_data.seq + 1;                     // increase timestamp
-        new_sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * pid + th_state->local_index;  // store in mod_dw.index the index in stack->pool where lsp_data will be stored
-        if (old_sp.raw_data==stack->sp.raw_data &&
-            CAS64(&stack->sp.raw_data, old_sp.raw_data, new_sp.raw_data)) {
+        TVEC_COPY(&lsp_data->applied, l_toggles);                                       // change applied to be equal to what was read in stack->a_toggles
+        new_sp.struct_data.seq = old_sp.struct_data.seq + 1;                            // increase timestamp
+        new_sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * pid + th_state->local_index; // store in mod_dw.index the index in stack->pool where lsp_data will be stored
+        if (old_sp.raw_data == stack->sp.raw_data && CAS64(&stack->sp.raw_data, old_sp.raw_data, new_sp.raw_data)) {
             th_state->local_index = (th_state->local_index + 1) % _SIM_LOCAL_POOL_SIZE_;
             th_state->backoff = (th_state->backoff >> 1) | 1;
             return lsp_data->ret[pid];
-        }
-        else {
-            if (th_state->backoff < stack->MAX_BACK) th_state->backoff <<= 1;
+        } else {
+            if (th_state->backoff < stack->MAX_BACK)
+                th_state->backoff <<= 1;
             rollback(&th_state->pool, push_counter);
         }
     }
-    return stack->pool[stack->sp.struct_data.index]->ret[pid];                    // return the value found in the record stored there
+    return stack->pool[stack->sp.struct_data.index]->ret[pid]; // return the value found in the record stored there
 }
 
 void SimStackPush(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid) {

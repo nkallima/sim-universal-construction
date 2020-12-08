@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include <string.h>
 #include <stdint.h>
-                    
+
 #include <config.h>
 #include <primitives.h>
 #include <fastrand.h>
@@ -18,7 +18,7 @@ int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-inline static void *Execute(void* Arg) {
+inline static void *Execute(void *Arg) {
     OsciStackThreadState *th_state;
     long i, rnum;
     volatile int j;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2 * bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG

@@ -1,6 +1,5 @@
 #include <dsmsynch.h>
 
-
 static const int DSMSIM_HELP_FACTOR = 10;
 
 RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
@@ -12,7 +11,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
 
     st_thread->toggle = 1 - st_thread->toggle;
     mynode = st_thread->MyNodes[st_thread->toggle];
-    
+
     mynode->next = null;
     mynode->arg_ret = arg;
     mynode->locked = true;
@@ -36,7 +35,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
 #endif
     counter = 0;
     p = mynode;
-    do {  // I surely do it for myself
+    do { // I surely do it for myself
         ReadPrefetch(p->next);
         counter++;
 #ifdef DEBUG
@@ -48,7 +47,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
         if (p->next == null || p->next->next == null || counter >= help_bound)
             break;
         p = p->next;
-    } while(true);
+    } while (true);
     // End critical section
     if (p->next == null) {
         if (l->Tail == p && CASPTR(&l->Tail, p, null) == true)
@@ -84,7 +83,7 @@ void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, 
     st_thread->MyNodes[0] = &l->nodes[2 * pid];
     st_thread->MyNodes[1] = &l->nodes[2 * pid + 1];
 #else
-	DSMSynchNode *nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
+    DSMSynchNode *nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
     st_thread->MyNodes[0] = &nodes[0];
     st_thread->MyNodes[1] = &nodes[1];
 #endif

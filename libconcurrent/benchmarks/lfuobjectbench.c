@@ -20,11 +20,11 @@ int MIN_BAK, MAX_BAK;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-inline static void *Execute(void* Arg) {
+inline static void *Execute(void *Arg) {
     LFUObjectThreadState *th_state;
     long i, rnum;
     volatile long j;
-    long id = (long) Arg;
+    long id = (long)Arg;
 
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(LFUObjectThreadState));
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
 
 #ifdef DEBUG
@@ -60,5 +60,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-
-

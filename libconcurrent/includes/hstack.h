@@ -12,7 +12,6 @@ typedef struct HStackStruct {
     volatile Node *head CACHE_ALIGN;
 } HStackStruct;
 
-
 typedef struct HStackThreadState {
     HSynchThreadState th_state;
 } HStackThreadState;

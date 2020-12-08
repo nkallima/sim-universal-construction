@@ -8,7 +8,6 @@
 #include <queue-stack.h>
 #include <uthreads.h>
 
-
 typedef struct HalfSimStackState {
     ToggleVector applied;
     Object *ret;
@@ -18,7 +17,6 @@ typedef struct HalfSimStackState {
 #endif
     uint64_t __flex[1];
 } HalfSimStackState;
-
 
 typedef struct SimStackState {
     ToggleVector applied;
@@ -31,8 +29,7 @@ typedef struct SimStackState {
     char pad[PAD_CACHE(sizeof(HalfSimStackState))];
 } SimStackState;
 
-#define SimStackStateSize(nthreads)        (sizeof(SimStackState) + _TVEC_VECTOR_SIZE(nthreads) + nthreads * sizeof(Object))
-
+#define SimStackStateSize(nthreads) (sizeof(SimStackState) + _TVEC_VECTOR_SIZE(nthreads) + nthreads * sizeof(Object))
 
 typedef struct SimStackThreadState {
     PoolStruct pool;
@@ -45,7 +42,6 @@ typedef struct SimStackThreadState {
     int local_index;
     int backoff;
 } SimStackThreadState;
-
 
 typedef struct SimStackStruct {
     ArgVal *announce;

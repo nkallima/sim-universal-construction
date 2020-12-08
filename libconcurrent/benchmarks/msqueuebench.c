@@ -19,10 +19,10 @@ int MIN_BAK, MAX_BAK;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-inline static void *Execute(void* Arg) {
+inline static void *Execute(void *Arg) {
     MSQueueThreadState *th_state;
     long i;
-    long id = (long) Arg;
+    long id = (long)Arg;
     long rnum;
     volatile long j;
 
@@ -55,12 +55,12 @@ int main(int argc, char *argv[]) {
     JoinThreadsN(bench_args.nthreads - 1);
     d2 = getTimeMillis();
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2 * bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads);
 #ifdef DEBUG
     int counter = 0;
 
-    while(queue.head != null) {
+    while (queue.head != null) {
         queue.head = queue.head->next;
         counter++;
     }

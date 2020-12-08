@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-
 typedef struct BenchArgs {
     uint64_t runs;
     uint32_t nthreads;
@@ -13,7 +12,6 @@ typedef struct BenchArgs {
     uint16_t backoff_low;
     uint16_t backoff_high;
 } BenchArgs;
-
 
 void parseArguments(BenchArgs *bench_args, int argc, char *argv[]);
 

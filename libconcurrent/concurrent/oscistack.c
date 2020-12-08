@@ -15,7 +15,6 @@ void OsciStackThreadStateInit(OsciStackStruct *object_struct, OsciStackThreadSta
     init_pool(&(object_struct->pool_node[getThreadId()]), sizeof(Node));
 }
 
-
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile OsciStackStruct *st = (OsciStackStruct *)state;
@@ -35,13 +34,13 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->next = st->head;
         node->val = arg;
         st->head = node;
- 
+
         return 0;
     }
 }
 
 void OsciStackApplyPush(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, ArgVal arg, int pid) {
-    OsciApplyOp(&(object_struct->object_struct), &(lobject_struct->th_state), serialPushPop, object_struct, (ArgVal) arg, pid);
+    OsciApplyOp(&(object_struct->object_struct), &(lobject_struct->th_state), serialPushPop, object_struct, (ArgVal)arg, pid);
 }
 
 void OsciStackApplyPop(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, int pid) {

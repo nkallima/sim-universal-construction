@@ -5,11 +5,9 @@
 #include <stdint.h>
 #include <limits.h>
 
-#define SIM_RAND_MAX         32768
+#define SIM_RAND_MAX 32768
 
-
-
-// This random generators are implementing 
+// This random generators are implementing
 // by following POSIX.1-2001 directives.
 // ---------------------------------------
 

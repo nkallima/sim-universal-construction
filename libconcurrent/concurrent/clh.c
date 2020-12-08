@@ -10,7 +10,7 @@ void CLHLock(CLHLockStruct *l, int pid) {
 
 void CLHUnlock(CLHLockStruct *l, int pid) {
     l->MyNode[pid]->locked = false;
-    l->MyNode[pid]= l->MyPred[pid];
+    l->MyNode[pid] = l->MyPred[pid];
 #ifdef sparc
     StoreFence();
 #endif

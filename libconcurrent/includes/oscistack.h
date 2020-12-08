@@ -11,18 +11,15 @@
 #include <uthreads.h>
 #include <queue-stack.h>
 
-
 typedef struct OsciStackStruct {
     OsciStruct object_struct CACHE_ALIGN;
     volatile Node *head CACHE_ALIGN;
     PoolStruct *pool_node CACHE_ALIGN;
 } OsciStackStruct;
 
-
 typedef struct OsciStackThreadState {
     OsciThreadState th_state;
 } OsciStackThreadState;
-
 
 void OsciStackInit(OsciStackStruct *stack_object_struct, uint32_t nthreads, uint32_t fibers_per_thread);
 void OsciStackThreadStateInit(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, int pid);

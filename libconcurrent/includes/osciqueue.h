@@ -19,12 +19,10 @@ typedef struct OsciQueueStruct {
     PoolStruct *pool_node CACHE_ALIGN;
 } OsciQueueStruct;
 
-
 typedef struct OsciQueueThreadState {
     OsciThreadState enqueue_thread_state;
     OsciThreadState dequeue_thread_state;
 } OsciQueueThreadState;
-
 
 void OsciQueueInit(OsciQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t fibers_per_thread);
 void OsciQueueThreadStateInit(OsciQueueStruct *object_struct, OsciQueueThreadState *lobject_struct, int pid);

@@ -17,22 +17,24 @@ inline void LFStackPush(LFStack *l, LFStackThreadState *th_state, ArgVal arg) {
     reset_backoff(&th_state->backoff);
     n->val = arg;
     do {
-        Node *old_top = (Node *) l->top;   // top is volatile
+        Node *old_top = (Node *)l->top; // top is volatile
         n->next = old_top;
         if (CASPTR(&l->top, old_top, n) == true)
             break;
-        else backoff_delay(&th_state->backoff);
-    } while(true);
+        else
+            backoff_delay(&th_state->backoff);
+    } while (true);
 }
 
 inline RetVal LFStackPop(LFStack *l, LFStackThreadState *th_state) {
     reset_backoff(&th_state->backoff);
     do {
-        Node *old_top = (Node *) l->top;
+        Node *old_top = (Node *)l->top;
         if (old_top == null)
             return (RetVal)INT_MIN;
-        if(CASPTR(&l->top, old_top, old_top->next))
+        if (CASPTR(&l->top, old_top, old_top->next))
             return old_top->val;
-        else backoff_delay(&th_state->backoff);
-    } while (true) ;
+        else
+            backoff_delay(&th_state->backoff);
+    } while (true);
 }

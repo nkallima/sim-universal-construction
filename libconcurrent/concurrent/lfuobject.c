@@ -20,9 +20,9 @@ RetVal LFUObjectApplyOp(LFUObject *l, LFUObjectThreadState *th_state, RetVal (*s
 
         if (CAS64(&l->state.state, old_state.state, new_state.state) == true) {
             break;
-        }
-        else backoff_delay(&th_state->backoff);
-    } while(true);
+        } else
+            backoff_delay(&th_state->backoff);
+    } while (true);
 
     return ret_state.state;
 }

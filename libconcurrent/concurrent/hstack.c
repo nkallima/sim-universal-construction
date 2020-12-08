@@ -32,7 +32,7 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
 
         if (st->head == null) {
             return -1;
-        } else { 
+        } else {
             st->head = st->head->next;
             return node->val;
         }
@@ -41,9 +41,9 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
 }
 
 void HStackPush(HStackStruct *object_struct, HStackThreadState *lobject_struct, ArgVal arg, int pid) {
-    HSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal) arg, pid);
+    HSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal)arg, pid);
 }
 
 RetVal HStackPop(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid) {
-    return HSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal) POP_OP, pid);
+    return HSynchApplyOp(&object_struct->object_struct, &lobject_struct->th_state, serialPushPop, object_struct, (ArgVal)POP_OP, pid);
 }
