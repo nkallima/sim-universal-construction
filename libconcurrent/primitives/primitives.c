@@ -42,7 +42,10 @@ inline static bool __CASPTR(void *A, void *B, void *C) {
     uint64_t prev;
     uint64_t *p = (uint64_t *)A;
 
-    asm volatile("lock;cmpxchgq %1,%2" : "=a"(prev) : "r"((uint64_t)C), "m"(*p), "0"((uint64_t)B) : "memory");
+    asm volatile("lock;cmpxchgq %1,%2" 
+                 : "=a"(prev)
+                 : "r"((uint64_t)C), "m"(*p), "0"((uint64_t)B) 
+                 : "memory");
     return (prev == (uint64_t)B);
 }
 
@@ -50,7 +53,10 @@ inline static bool __CAS64(volatile uint64_t *A, uint64_t B, uint64_t C) {
     uint64_t prev;
     uint64_t *p = (uint64_t *)A;
 
-    asm volatile("lock;cmpxchgq %1,%2" : "=a"(prev) : "r"(C), "m"(*p), "0"(B) : "memory");
+    asm volatile("lock;cmpxchgq %1,%2"
+                 : "=a"(prev)
+                 : "r"(C), "m"(*p), "0"(B)
+                 : "memory");
     return (prev == B);
 }
 
@@ -58,7 +64,9 @@ inline static bool __CAS32(uint32_t *A, uint32_t B, uint32_t C) {
     uint32_t prev;
     uint32_t *p = (uint32_t *)A;
 
-    asm volatile("lock;cmpxchgl %1,%2" : "=a"(prev) : "r"(C), "m"(*p), "0"(B) : "memory");
+    asm volatile("lock;cmpxchgl %1,%2" : "=a"(prev) 
+                 : "r"(C), "m"(*p), "0"(B) 
+                 : "memory");
     return (prev == B);
 }
 
