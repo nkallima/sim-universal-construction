@@ -20,12 +20,7 @@
 /* automatic partial unrolling*/
 #    define _TVEC_CELLS_(N)      ((N >> _TVEC_DIVISION_SHIFT_BITS_) + 1)
 #    define _TVEC_VECTOR_SIZE(N) (_TVEC_CELLS_(N) * sizeof(bitword_t))
-#    define LOOP(EXPR, I, TIMES)                                                                                                                                                                       \
-        {                                                                                                                                                                                              \
-            for (I = 0; I < TIMES; I++) {                                                                                                                                                              \
-                EXPR;                                                                                                                                                                                  \
-            }                                                                                                                                                                                          \
-        }
+#    define LOOP(EXPR, I, TIMES) {for (I = 0; I < TIMES; I++) {EXPR;}}
 
 typedef struct ToggleVector {
     uint32_t nthreads;
