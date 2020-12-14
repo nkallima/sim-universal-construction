@@ -154,10 +154,3 @@ execute one of the following make commands. This step is not necessary in case t
 
 For any further information, please do not hesitate to
 send an email at nkallima (at) ics.forth.gr. Feedback is always valuable.
-
-
-# Contribution
-
-If you wish to contribute to the project:
-- Install `clang-format` package (version >= 10)
-- After cloning the repository you need to run `git config --local core.hooksPath .git_hooks` to enable recommended code style checkes (placed in .clang_format file) during git commit. If the tool discovers incosistencies, it will create a patch file. Please follow the instructions to apply the patch before opening a pull request.
