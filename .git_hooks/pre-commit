@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Check for errors
+set -e
+
+# Make sure that clang-format exists
+if ! hash clang-format 2>/dev/null
+then
+    echo "'clang-format' was not found in PATH"
+    exit 1
+fi
+
+# Create patch file
+now=`date +"%Y-%m-%d-%H:%M:%S"`
+patch_filename="/tmp/${now}.patch"
+git clang-format -v --diff > ${patch_filename}
+
+# Show recommendations for user
+if grep -q "+++" "${patch_filename}";
+then
+    echo "Your changes do not conform with project's rules."
+    echo "Run: git apply ${patch_filename}"
+    exit 1
+else
+    echo "Your changes are in line with project's rules."
+fi
