@@ -27,6 +27,7 @@ ITERATIONS=10;
 RUNS=""
 LIST=0;
 WORKLOAD="";
+NUMA_NODES="";
 
 if [ "$#" = "0" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     usage;
@@ -48,7 +49,7 @@ while [ "$1" != "" ]; do
             FIBERS="-f $VALUE";
             ;;
         -b | --backoff | --backoff_high)
-            BACKOFF="-h $VALUE";
+            BACKOFF="-b $VALUE";
             ;;
         -bl | --backoff_low)
             MIN_BACKOFF="-l $VALUE";
@@ -58,6 +59,9 @@ while [ "$1" != "" ]; do
             ;;
         -w | --max_work)
             WORKLOAD="-w $VALUE";
+            ;;
+        -n | --numa_nodes)
+            NUMA_NODES="-n $VALUE";
             ;;
         -r | --runs)
             RUNS="-r $VALUE";
@@ -100,7 +104,7 @@ echo -e "\e[39m"
 rm -rf res.txt;
 
 for (( i=1; i<=$ITERATIONS; i++ ));do
-    ./bin/$FILE $NTHREADS $WORKLOAD $FIBERS $RUNS $BACKOFF $MIN_BACKOFF >> res.txt;
+    ./bin/$FILE $NTHREADS $WORKLOAD $FIBERS $RUNS $NUMA_NODES $BACKOFF $MIN_BACKOFF >> res.txt;
     tail -1 res.txt;
 done;
 

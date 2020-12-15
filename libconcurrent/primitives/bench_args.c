@@ -15,7 +15,7 @@ static void printHelp(const char *exec_name) {
             "-n,  --numa_nodes \t set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account\n"
             "-r,  --runs       \t set the number of runs that the benchmarked operation should be executed\n"
             "-w,  --max_work   \t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64\n"
-            "-b,  --backoff, --backoff_high \t sset an upper backoff bound\n"
+            "-b,  --backoff, --backoff_high \t set an upper backoff bound\n"
             "-l,  --backoff_low\t set a lower backoff bound\n"
             "\n"
             "-h, --help        \t displays this help and exits\n",
