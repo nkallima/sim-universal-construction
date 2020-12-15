@@ -1,9 +1,9 @@
 # Summary
 
 This is a collection of concurrent shared data structures, such as queue spin-locks, concurrent stacks,
-concurrent queues, concurrent hash-tables, etc. Some of these concrrent data-structures are wait-free, 
+concurrent queues, concurrent hash-tables, etc. Some of these concurrent data-structures are wait-free, 
 while some others are lock-free or blocking. This repository also provides a large collection of benchmarks
-that excersize the provided data-structure implementations.
+that exercise the provided data-structure implementations.
 
 The current version of this code is optimized for x86_64 machine architecture, but the code is also
 successfully tested in other machine architectures, such as ARM-V8 and RISC-V. 
@@ -21,23 +21,37 @@ Important parameters for the benchmarks and/or library are placed in the config.
 
 For running benchmarks use the bench.sh script file that is provided in the main directory of this source tree.
 
-Example usage: `./bench.sh FILE.run OPTION1=NUM1  OPTION2=NUM2 ...`
+Example usage: `./bench.sh FILE.run OPTION1=NUM1 OPTION2=NUM2 ...`
 
 The following options are available:
 
-|     Option          |                       Description                                            |
-| ------------------- | ---------------------------------------------------------------------------- |
-|  `-t`, `--threads`  |  set the number of threads (fiber threads also included, if any) to be used in the benchmark |
-|  `-f`, `--fibers`   |  set the number of user-level threads per posix thread |
-|  `-r`, `--repeat`   |  set the number of times that the benchmark should be executed, default is 10 times |
-|  `-w`, `--workload` |  set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the  |benchmarked object), default is 64
-|  `-l`, `--list`     |  displays the list of the available benchmarks |
-|  `-b`, `--backoff`, `--backoff_high` |  set an upper backoff bound for lock-free and Sim-based algorithms |
-|  `-bl`, `--backoff_low`  |  set a lower backoff bound (only for msqueue, lfstack and lfuobject benchmarks) |
-|  `-h`, `--help`     |  displays this help and exits |
+|     Option              |                       Description                                                     |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+|  `-t`, `--threads`      |  set the number of threads (fiber threads also included, if any) to be used in the benchmark |
+|  `-f`, `--fibers`       |  set the number of user-level threads per posix thread                                |
+|  `-r`, `--repeat`       |  set the number of times that the benchmark should be executed, default is 10 times   |
+|  `-w`, `--workload`     |  set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64 |
+|  `-l`, `--list`         |  displays the list of the available benchmarks                                        |
+|  `-b`, `--backoff`, `--backoff_high` |  set an upper backoff bound for lock-free and Sim-based algorithms       |
+|  `-bl`, `--backoff_low` |  set a lower backoff bound (only for msqueue, lfstack and lfuobject benchmarks)       |
+|  `-h`, `--help`         |  displays this help and exits                                                         |
 
 In order to perform smoke test: `./run_all.sh`. This will quickly run all available benchmarks with default options
-and store the results  in the `results.txt` file.
+and store the results in the `results.txt` file.
+
+# Performance/Optimizations
+
+Getting the best performance from the provided benchmarks is not always an easy task. Below, it follows a short-list of steps that a user could follow in order to get better performance in a modern multiprocessor.
+
+- In case that the target machine is a NUMA machine make sure `NUMA_SUPPORT` is enable in config.h. Usually this option when it is enabled gives much better performance in NUMA machines. However, in some older machines this option may induce performance overhead.
+- Whenever the `NUMA_SUPPORT` option is enabled, the runtime will detect the system’s number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits by manually setting-up the number of NUMA nodes manually have been observed (see the `--numa_nodes` option). More specifically, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (supporting 128 hardware threads) is much better by setting `--numa_nodes` equal to `2`. Notice that the runtime successfully reports that the available NUMA nodes are `8`, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of `--numa_nodes` may be needed.
+- Ensure about the performance impact of the `SYNCH_COMPACT_ALLOCATION` option in config.h. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis should be performed before deciding to enable or not this option.
+-  Check the cache line size (`CACHE_LINE_SIZE` and `S_CACHE_LINE` options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines better behave with `CACHE_LINE_SIZE` equal or greater than `128`, while most modern AMD machine achieve better performance with a value equal to `64`. Notice that `CACHE_LINE_SIZE` and `S_CACHE_LINE` depend on the `SYNCH_COMPACT_ALLOCATION` option (see includes/system.h).
+- Use backoff if it is available. Many of the provided algorithms could use backoff in order to provide better performance (e.g., sim, lfstack, msqueue, simqueue, simstack, etc.). In this case it is of crucial importance to use `-b` (and in some cases `-bl` arguments) in order to achieve the best performance. 
+- Ensure that you are using a recent gcc-compatible compiler, e.g. a `gcc` compiler of version `7.0` or greater is highly recommended.
+- Check the performance impact of the different available compiler optimizations. In most cases, gcc's `-Ofast` option gives the best performance. In addition, some algorithms (i.e., sim, osci, simstack, oscistack, simqueue and osciqueue) benefit by enabling the `-mavx` option (in case that AVX instructions are supported by the hardware).
+- Check if system oversubscription with user-level fibers enhances the performance. Many algorithms (i.e., the Sim and Osci families of algorithms) show tremendous performance boost by usimg system oversubscription and user-levels threads [3]. In this case use the `--fibers` option.
+
 
 # Collection
 
@@ -45,76 +59,76 @@ The current version of this library provides the following concurrent data-struc
 
 ### a) Combining techniques
 
-|     File          |                           Description                                   |
-| ----------------- | ----------------------------------------------------------------------- |
-|  ccsynch.c        |  A blocking Fetch&Multiply object based on the CC-Synch algorithm [1].  |
-|  dsmsynch.c       |  A blocking Fetch&Multiply object based on the DSM-Synch algorithm [1]. |
-|  hsynch.c         |  A blocking Fetch&Multiply object based on the H-Synch algorithm [1].   |
-|  sim.c            |  A wait-free Fetch&Multiply object based on the PSim algorithm [2].     |
-|  osci.c           |  A blocking Fetch&Multiply object based on the OSCI algorithm [3].      |
-|  oyama.c          |  A blocking Fetch&Multiply object based on the Oyama's algorithm [4].   |
+|     File                |                           Description                                                 |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+|  ccsynch.c              |  A blocking Fetch&Multiply object based on the CC-Synch algorithm [1].                |
+|  dsmsynch.c             |  A blocking Fetch&Multiply object based on the DSM-Synch algorithm [1].               |
+|  hsynch.c               |  A blocking Fetch&Multiply object based on the H-Synch algorithm [1].                 |
+|  sim.c                  |  A wait-free Fetch&Multiply object based on the PSim algorithm [2].                   |
+|  osci.c                 |  A blocking Fetch&Multiply object based on the OSCI algorithm [3].                    |
+|  oyama.c                |  A blocking Fetch&Multiply object based on the Oyama's algorithm [4].                 |
 
 
 ### b) Concurrent queues
 
-|     File          |                               Description                                         |
-| ----------------- | --------------------------------------------------------------------------------- |
-|  ccqueue.c        |  A blocking concurrent queue implementation based on the CC-Synch algorithm [1].  |
-|  dsmqueue.c       |  A blocking concurrent queue implementation based on the DSM-Synch algorithm [1]. |
-|  hqueue.c         |  A blocking concurrent queue implementation based on the H-Synch algorithm [1].   |
-|  simqueue.c       |  A wait-free concurrent queue implementation based on the SimQueue algorithm [2]. |
-|  osciqueue.c      |  A blocking concurrent queue implementation based on the OSCI algorithm [3].      |
-|  clhqueue.c       |  A blocking concurrent queue implementation based on CLH locks [5], [6].          |
-|  msqueue.c        |  A lock-free concurrent queue implementation based on the algorithm of [7].       |
+|     File                |                               Description                                             |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+|  ccqueue.c              |  A blocking concurrent queue implementation based on the CC-Synch algorithm [1].      |
+|  dsmqueue.c             |  A blocking concurrent queue implementation based on the DSM-Synch algorithm [1].     |
+|  hqueue.c               |  A blocking concurrent queue implementation based on the H-Synch algorithm [1].       |
+|  simqueue.c             |  A wait-free concurrent queue implementation based on the SimQueue algorithm [2].     |
+|  osciqueue.c            |  A blocking concurrent queue implementation based on the OSCI algorithm [3].          |
+|  clhqueue.c             |  A blocking concurrent queue implementation based on CLH locks [5], [6].              |
+|  msqueue.c              |  A lock-free concurrent queue implementation based on the algorithm of [7].           |
 
 
 ### c) Concurrent stacks
 
-|     File          |                                  Description                                          |
-| ----------------- | ------------------------------------------------------------------------------------- |
-|   ccstack.c       |  A blocking concurrent stack implementation based on the CC-Synch algorithm [1].      |
-|   dsmstack.c      |  A blocking concurrent stack implementation based on the DSM-Synch algorithm [1].     |
-|   hstack.c        |  A blocking concurrent stack implementation based on the H-Synch algorithm [1].       |
-|   simstack.c      |  A blocking concurrent stack implementation based on the SimStack algorithm [2].      |
-|   oscistack.c     |  A blocking concurrent stack implementation based on the OSCI algorithm [3].          |
-|   lfstack.c       |  A lock-free concurrent stack implementation based on the algorithm presented in [8]. |
-|   clhstack.c      |  A blocking concurrent stack implementation based on the CLH locks [5, 6].            |
+|     File                |                                  Description                                          |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+|   ccstack.c             |  A blocking concurrent stack implementation based on the CC-Synch algorithm [1].      |
+|   dsmstack.c            |  A blocking concurrent stack implementation based on the DSM-Synch algorithm [1].     |
+|   hstack.c              |  A blocking concurrent stack implementation based on the H-Synch algorithm [1].       |
+|   simstack.c            |  A blocking concurrent stack implementation based on the SimStack algorithm [2].      |
+|   oscistack.c           |  A blocking concurrent stack implementation based on the OSCI algorithm [3].          |
+|   lfstack.c             |  A lock-free concurrent stack implementation based on the algorithm presented in [8]. |
+|   clhstack.c            |  A blocking concurrent stack implementation based on the CLH locks [5, 6].            |
 
 
 ### d) Locks
 
-|     File         |                      Description                                   |
-| ---------------- | ------------------------------------------------------------------ |
-|  clh.c           |  A blocking Fetch&Multiply object based on the CLH locks [5, 6].   |
-|  mcs.c           |  A blocking Fetch&Multiply object based on the MCS locks [9].      |
+|     File                |                      Description                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+|  clh.c                  |  A blocking Fetch&Multiply object based on the CLH locks [5, 6].                      |
+|  mcs.c                  |  A blocking Fetch&Multiply object based on the MCS locks [9].                         |
 
 ### e) Hash-tables
 
-|     File         |                   Description                              |
-| ---------------- | ---------------------------------------------------------- |
-|  clhhash.c       |  A hash-table implementation based on CLH locks [5, 6].    |
-|  dsmhash.c       |  A hash-table implementation based on MCS locks [9].       |
+|     File                |                   Description                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+|  clhhash.c              |  A hash-table implementation based on CLH locks [5, 6].                               |
+|  dsmhash.c              |  A hash-table implementation based on MCS locks [9].                                  |
 
 ### f) Other benchmarks
 
-|     File              |                                Description                                   |
-| --------------------- | ---------------------------------------------------------------------------- |
-|  lfuobjectbench.c     | A simple, lock-free Fetch&Multiply object implementation.                    |
-|  fadbench.c           | A benchmark that measures the throughput of Fetch&Add instructions.          |
-|  activesetbench.c     | A simple implementation of an active-set.                                    |
-|  pthreadsbench.c      | A benchmark for measuring the performance os spin-locks of pthreads library. |
+|     File                |                                Description                                            |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+|  lfuobjectbench.c       | A simple, lock-free Fetch&Multiply object implementation.                             |
+|  fadbench.c             | A benchmark that measures the throughput of Fetch&Add instructions.                   |
+|  activesetbench.c       | A simple implementation of an active-set.                                             |
+|  pthreadsbench.c        | A benchmark for measuring the performance os spin-locks of pthreads library.          |
 
 # Compiling the library
 
 In case that you just want to compile the library that provides all the implemented concurrent algorithms
 execute one of the following make commands. This step is not necessary in case that you want to run benchmarks.
 
-|     Command             |                                Description                                           |
-| ----------------------- | ------------------------------------------------------------------------------------ |
-|  `make`                 |  Auto-detects the current architecture and compiles the library/benchmarks for it.   |
-|  `make CC=cc ARCH=arch` |  Compiles the library/benchmarks for the current architecture using the cc compiler  |
-|  `make icc`             |  Compiles the library/benchmarks using the icc compiler on some x86/x86_64 machine.  |
-|  `make clean`           |  Cleaning-up all binary files.                                                       |
+|     Command             |                                Description                                            |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+|  `make`                 |  Auto-detects the current architecture and compiles the library/benchmarks for it.    |
+|  `make CC=cc ARCH=arch` |  Compiles the library/benchmarks for the current architecture using the cc compiler.  |
+|  `make icc`             |  Compiles the library/benchmarks using the icc compiler on some x86/x86_64 machine.   |
+|  `make clean`           |  Cleaning-up all binary files.                                                        |
 
 
 # References
@@ -154,3 +168,4 @@ execute one of the following make commands. This step is not necessary in case t
 
 For any further information, please do not hesitate to
 send an email at nkallima (at) ics.forth.gr. Feedback is always valuable.
+
