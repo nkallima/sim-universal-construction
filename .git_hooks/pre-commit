@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Check for errors
-set -e
-
 # Make sure that clang-format exists
 if ! hash clang-format 2>/dev/null
 then
@@ -15,12 +12,15 @@ now=`date +"%Y-%m-%d-%H:%M:%S"`
 patch_filename="/tmp/${now}.patch"
 git clang-format -v --diff > ${patch_filename}
 
-# Show recommendations for user
-if grep -q "+++" "${patch_filename}";
+# Show recommendations for user if needed
+isInFilePlus=$(cat ${patch_filename} | grep -c "+++")
+isInFileMinus=$(cat ${patch_filename} | grep -c "\-\-\-")
+
+if [ $isInFilePlus -eq 0 ] || [ $isInFileMinus -eq 0 ]
 then
-    echo "Your changes do not conform with project's rules."
-    echo "Run: git apply ${patch_filename}"
-    exit 1
-else
     echo "Your changes are in line with project's rules."
+else
+    echo "Your changes do not conform with project's rules."
+    echo "Go to the root directory or repo and run: git apply ${patch_filename}"
+    exit 1
 fi
