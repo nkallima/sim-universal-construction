@@ -1,6 +1,8 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+#include <stdint.h>
+
 // Definition: MAX_WORK
 // --------------------
 // Define the maximum local work that each thread executes 
