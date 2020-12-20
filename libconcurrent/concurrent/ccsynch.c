@@ -16,6 +16,7 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
 
     cur = (CCSynchNode *)SWAP(&l->Tail, next_node);
     cur->arg_ret = arg;
+    cur->pid = pid;
     cur->next = (CCSynchNode *)next_node;
     st_thread->next = (CCSynchNode *)cur;
 

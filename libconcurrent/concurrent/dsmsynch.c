@@ -14,6 +14,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
 
     mynode->next = null;
     mynode->arg_ret = arg;
+    mynode->pid = pid;
     mynode->locked = true;
     mynode->completed = false;
     mynode->pid = pid;

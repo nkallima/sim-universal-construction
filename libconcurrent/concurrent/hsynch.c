@@ -23,6 +23,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
 
     cur = (volatile HSynchNode *)SWAP(&l->Tail[node_of_thread].ptr, next_node);
     cur->arg_ret = arg;
+    cur->pid = pid;
     cur->next = (HSynchNode *)next_node;
 
     st_thread->next_node = (HSynchNode *)cur;
