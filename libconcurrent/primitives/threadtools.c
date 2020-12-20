@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include <config.h>
 #include <threadtools.h>
 #include <primitives.h>
