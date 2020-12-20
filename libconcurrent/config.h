@@ -71,7 +71,6 @@
 // By enabling this definition, the Performance Application Programming Interface (PAPI)
 // is used for getting performance counters during the execution of benchmarks.
 // In this case, the PAPI library should be install and appropriately configured.
-// IF ENABLE, DO NOT FORGET TO ADD -lpapi OPTION in LDLIBS VARIABLE IN Makefile.generic!
 //#define _TRACK_CPU_COUNTERS
 
 //#define _EMULATE_FAA_

@@ -1,6 +1,6 @@
 COMPILER   = cc
 AR         = gcc-ar
-LDLIBS     = -lpthread -lm -lnuma #-lpapi
+LDLIBS     = -lpthread -lm -lnuma
 CFLAGS     =
 ARGS       =
 ARGCORES   =
