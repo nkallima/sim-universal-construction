@@ -17,15 +17,7 @@ void reset_backoff(BackoffStruct *b) {
 
 void backoff_delay(BackoffStruct *b) {
     if (isSystemOversubscribed()) {
-#ifdef sparc
         sched_yield();
-        sched_yield();
-        sched_yield();
-        sched_yield();
-        sched_yield();
-#else
-        sched_yield();
-#endif
     } else {
 #ifndef DISABLE_BACKOFF
         volatile unsigned i;
