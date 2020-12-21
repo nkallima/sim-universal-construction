@@ -6,15 +6,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#if defined(__sun)
-#    include <sys/pset.h> // P_PID, processor_bind()
-#    include <sys/types.h>
-#    include <sys/processor.h>
-#    include <sys/procset.h>
-#    include <unistd.h> // getpid() */
-#elif (defined(__gnu_linux__) || defined(__gnu__linux) || defined(__linux__))
-#    include <sched.h> // CPU_SET, CPU_ZERO, cpu_set_t, sched_setaffinity()
-#endif
+#include <sched.h> // CPU_SET, CPU_ZERO, cpu_set_t, sched_setaffinity()
 
 #include <config.h>
 #include <system.h>

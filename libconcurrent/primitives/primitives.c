@@ -11,32 +11,6 @@ extern __thread int64_t __executed_swap;
 extern __thread int64_t __executed_faa;
 #endif
 
-#ifdef __NO_GCC_SPARC__
-inline static uint32_t __bitSearchFirst32(uint32_t v) {
-    register uint32_t r; // The result of log2(v) will be stored here
-    register uint32_t shift;
-
-    r = (v > 0xFFFF) << 4;
-    v >>= r;
-    shift = (v > 0xFF) << 3;
-    v >>= shift;
-    r |= shift;
-    shift = (v > 0xF) << 2;
-    v >>= shift;
-    r |= shift;
-    shift = (v > 0x3) << 1;
-    v >>= shift;
-    r |= shift;
-    r |= (v >> 1);
-    return r;
-}
-
-inline uint32_t bitSearchFirst(uint64_t v) {
-    uint32_t r = __bitSearchFirst32((uint32_t)v);
-    return (r == 0) ? __bitSearchFirst32((uint32_t)(v >> 32)) + 31 : r;
-}
-#endif
-
 #ifdef __OLD_GCC_X86__
 inline static bool __CASPTR(void *A, void *B, void *C) {
     uint64_t prev;
@@ -225,7 +199,6 @@ inline void *_SWAP(void *A, void *B) {
     __executed_swap++;
 #    endif
     return old_val;
-
 #else
 #    ifdef DEBUG
     __executed_swap++;
@@ -253,7 +226,6 @@ inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
     __executed_faa++;
 #    endif
     return old_val;
-
 #else
 #    ifdef DEBUG
     __executed_faa++;
@@ -265,7 +237,6 @@ inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
 }
 
 inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
-
 #if defined(_EMULATE_FAA_)
 #    warning Fetch&Add instructions are simulated!
 
@@ -282,7 +253,6 @@ inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
     __executed_faa++;
 #    endif
     return old_val;
-
 #else
 #    ifdef DEBUG
     __executed_faa++;

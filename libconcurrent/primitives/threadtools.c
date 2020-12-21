@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include <config.h>
 #include <threadtools.h>
 #include <primitives.h>
@@ -54,13 +56,11 @@ inline static void *kthreadWrapper(void *arg) {
 }
 
 int threadPin(int32_t cpu_id) {
-    pthread_setconcurrency(getNCores());
-
-#if defined(__gnu_linux__) || defined(__gnu__linux) || defined(__linux__)
     int ret = 0;
     cpu_set_t mask;
     unsigned int len = sizeof(mask);
 
+    pthread_setconcurrency(getNCores());
     CPU_ZERO(&mask);
 
 #    ifdef NUMA_SUPPORT
@@ -99,9 +99,6 @@ int threadPin(int32_t cpu_id) {
         perror("sched_setaffinity");
 
     return ret;
-#else
-#    error Current machine architecture is not supported yet!
-#endif
 }
 
 inline static void *uthreadWrapper(void *arg) {

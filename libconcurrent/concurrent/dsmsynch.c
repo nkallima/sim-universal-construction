@@ -1,19 +1,20 @@
 #include <dsmsynch.h>
 
-static const int DSMSIM_HELP_FACTOR = 10;
+static const int DSMSYNCH_HELP_FACTOR = 10;
 
 RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     volatile DSMSynchNode *mynode;
     DSMSynchNode *mypred;
     volatile DSMSynchNode *p;
     register int counter;
-    int help_bound = DSMSIM_HELP_FACTOR * l->nthreads;
+    int help_bound = DSMSYNCH_HELP_FACTOR * l->nthreads;
 
     st_thread->toggle = 1 - st_thread->toggle;
     mynode = st_thread->MyNodes[st_thread->toggle];
 
     mynode->next = null;
     mynode->arg_ret = arg;
+    mynode->pid = pid;
     mynode->locked = true;
     mynode->completed = false;
     mynode->pid = pid;

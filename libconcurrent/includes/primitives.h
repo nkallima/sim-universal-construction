@@ -35,7 +35,6 @@
 #        define StoreFence() __sync_synchronize()
 #        define FullFence()  __sync_synchronize()
 #    endif
-
 #elif defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
 #    warning A newer version of GCC compiler is recommended!
 #    define LoadFence()      asm volatile("lfence" ::: "memory")
@@ -63,9 +62,6 @@ inline uint64_t nonZeroBits(uint64_t v);
                 asm volatile("pause");                                                                                                                                                                 \
             }                                                                                                                                                                                          \
         }
-
-#elif defined(sparc)
-#    define Pause() FullFence()
 #else
 #    define Pause()
 #endif
@@ -73,7 +69,6 @@ inline uint64_t nonZeroBits(uint64_t v);
 inline void *getMemory(size_t size);
 inline void *getAlignedMemory(size_t align, size_t size);
 inline void freeMemory(void *ptr, size_t size);
-
 inline int64_t getTimeMillis(void);
 
 #define CAS32(A, B, C) _CAS32((uint32_t *)A, (uint32_t)B, (uint32_t)C)
