@@ -10,7 +10,7 @@ static void printHelp(const char *exec_name) {
     fprintf(stderr,
             "Usage: %s OPTION1 NUM1  OPTION2 NUM2...\n"
             "The following options are available:\n"
-            "-t,  --threads    \t set the number of threads to be used in the benchmark (fiber threads also included)\n"
+            "-t,  --threads    \t set the number of POSIX threads to be used in the benchmark\n"
             "-f,  --fibers     \t set the number of user-level threads per posix thread\n"
             "-n,  --numa_nodes \t set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account\n"
             "-r,  --runs       \t set the number of runs that the benchmarked operation should be executed\n"
@@ -83,6 +83,10 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
         }
     }
     bench_args->runs /= bench_args->nthreads;
+
+    // Set the correct number for total number of threads
+    if (bench_args->fibers_per_thread != _DONT_USE_UTHREADS_)
+        bench_args->nthreads *= bench_args->fibers_per_thread;
 
 #ifdef DEBUG
     fprintf(stderr,

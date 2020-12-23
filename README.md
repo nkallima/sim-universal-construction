@@ -27,7 +27,8 @@ The following options are available:
 
 |     Option              |                       Description                                                     |
 | ----------------------- | ------------------------------------------------------------------------------------- |
-|  `-t`, `--threads`      |  set the number of threads (fiber threads also included, if any) to be used in the benchmark |
+|  `-s`, `--step`         |  set the step (extra number of threads to be used) in each set of iterations of the benchmark, default is number of processors/8 or 1 |
+|  `-t`, `--max_threads`  |  set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system cores |
 |  `-f`, `--fibers`       |  set the number of user-level threads per posix thread                                |
 |  `-r`, `--repeat`       |  set the number of times that the benchmark should be executed, default is 10 times   |
 |  `-w`, `--workload`     |  set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64 |
