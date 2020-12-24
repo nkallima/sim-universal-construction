@@ -82,11 +82,11 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
             break;
         }
     }
-    bench_args->runs /= bench_args->nthreads;
-
     // Set the correct number for total number of threads
     if (bench_args->fibers_per_thread != _DONT_USE_UTHREADS_)
         bench_args->nthreads *= bench_args->fibers_per_thread;
+
+    bench_args->runs /= bench_args->nthreads;
 
 #ifdef DEBUG
     fprintf(stderr,
