@@ -6,8 +6,8 @@ function usage()
     echo -e "This script runs the algorithm of FILE.run multiple times for various number of POSIX threads and calculates the average throughput (operations/second)";
     echo -e ""
     echo -e "The following options are available."
-    echo -e "-s, --step \t set the step (extra number of POSIX threads to be used) in succesive set of iterations of the benchmark, default is number of system_cpu/8 or 1"
     echo -e "-t, --max_threads \t set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system_cpus"
+    echo -e "-s, --step \t set the step (extra number of POSIX threads to be used) in succesive set of iterations of the benchmark, default is number of system_cpu/8 or 1"
     echo -e "-f, --fibers  \t set the number of fibers (user-level threads) per posix thread."
     echo -e "-i, --iterations \t set the number of times that the benchmark should be executed in each set, default is 10 times"
     echo -e "-r, --runs    \t set the number of runs that the benchmarked operation should be executed"
