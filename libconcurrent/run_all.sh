@@ -28,7 +28,7 @@ do
    index=$((i+1))
    printf "\nExecuting ${benchmark_array[$i]} ($index/$number_of_benchmarks)" | tee -a $result_file
    printf "\n========================================\n" >> $result_file
-   ./bench.sh ${benchmark_array[$i]} | grep "average" >> $result_file
+   ./bench.sh ${benchmark_array[$i]} >> $result_file
    printf "\n\n" >> $result_file
    printf " ...Done\n"
 done
