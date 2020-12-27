@@ -4,6 +4,7 @@ LDLIBS     = -lpthread -lm -lnuma
 CFLAGS     =
 ARGS       =
 ARGCORES   =
+D_ARGS     = 
 
 # define any directories containing header files other than /usr/include
 INCLUDES   = -Ilibconcurrent/includes
@@ -34,10 +35,10 @@ EXECS      = $(BENCHMARKS:.c=.run)
 all: $(EXECS) 
 
 $(EXECS): %.run : %.o libbuild
-	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $< -o $(BINDIR)/$(notdir $@) $(LIBDIR)/$(LIBNAME) $(LDLIBS)
+	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $(D_ARGS) $< -o $(BINDIR)/$(notdir $@) $(LIBDIR)/$(LIBNAME) $(LDLIBS)
 
 .c.o:
-	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) -c $< -o $@
+	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $(D_ARGS) -c $< -o $@
 
 libbuild: $(OBJECTS)
 	$(CC) -shared -o $(LIBDIR)/$(LIBNAMESO) $(OBJECTS)
