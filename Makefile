@@ -1,6 +1,6 @@
 ARCH  = $(shell uname -p)
 NPROC = $(shell nproc)
-LIBS  = $(shell ./libdeps.sh)
+LIBS  = $(shell ./libconcurrent/libdeps.sh)
 
 all:
 	make $(ARCH)

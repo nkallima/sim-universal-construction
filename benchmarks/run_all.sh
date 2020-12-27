@@ -8,7 +8,7 @@ if [ -f $result_file ] ; then
 fi
 
 printf "Compiling..."
-make > /dev/null
+cd ..; make all > /dev/null; cd benchmarks
 # Stop the script if there is a compile error
 if [ $? -ne 0 ]; then
    exit

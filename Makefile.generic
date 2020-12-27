@@ -6,19 +6,19 @@ ARGS       =
 ARGCORES   =
 
 # define any directories containing header files other than /usr/include
-INCLUDES   = -Iincludes
+INCLUDES   = -Ilibconcurrent/includes
 
 # define the output directory
-BINDIR     = bin
+BINDIR     = benchmarks/bin
 
-LIBDIR     = lib
+LIBDIR     = libconcurrent/lib
 
 LIBNAME    = libconcurrent.a
 LIBNAMESO  = libconcurrent.so
 
 # define the C source files
-PRIMITIVES = $(wildcard primitives/*.c)
-CONCURRENT = $(wildcard concurrent/*.c)
+PRIMITIVES = $(wildcard libconcurrent/primitives/*.c)
+CONCURRENT = $(wildcard libconcurrent/concurrent/*.c)
 BENCHMARKS = $(wildcard benchmarks/*bench.c)
 SRCS       = $(PRIMITIVES) $(CONCURRENT) 
 
@@ -31,10 +31,10 @@ EXECS      = $(BENCHMARKS:.c=.run)
 
 .PHONY: all clean
 
-all: $(EXECS) libbuild
+all: $(EXECS) 
 
-$(EXECS): %.run : %.o $(OBJECTS)
-	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $< -o $(BINDIR)/$(notdir $@) $(OBJECTS) $(LDLIBS)
+$(EXECS): %.run : %.o libbuild
+	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $< -o $(BINDIR)/$(notdir $@) $(LIBDIR)/$(LIBNAME) $(LDLIBS)
 
 .c.o:
 	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) -c $< -o $@
