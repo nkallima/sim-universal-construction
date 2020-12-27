@@ -9,9 +9,9 @@ ARGCORES   =
 INCLUDES   = -Ilibconcurrent/includes
 
 # define the output directory
-BINDIR     = benchmarks/bin
+BINDIR     = build/bin
 
-LIBDIR     = libconcurrent/lib
+LIBDIR     = build/lib
 
 LIBNAME    = libconcurrent.a
 LIBNAMESO  = libconcurrent.so

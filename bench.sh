@@ -89,15 +89,15 @@ while [ "$1" != "" ]; do
 done
 
 if [ $LIST = "1" ]; then
-   cd bin;
+   cd build/bin;
    ls -lafr *.run
    exit -1;
 fi
 
-if [ ! -e bin/$FILE ]; then
+if [ ! -e build/bin/$FILE ]; then
    echo -e "\n" $FILE "is not available for benchmarking.\n"
    echo -e "Available files for benchmarking: "
-   cd bin;
+   cd build/bin;
    ls -lafr *.run
    exit -1;
 fi
@@ -140,7 +140,7 @@ for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
     
     # Redirect stdout to res.txt, stderr to /dev/null
     for (( i=1; i<=$ITERATIONS; i++ ));do
-        ./bin/$FILE -t $PTHREADS $WORKLOAD $FIBERS $RUNS $NUMA_NODES $BACKOFF $MIN_BACKOFF 1>> res.txt 2> /dev/null;
+        ./build/bin/$FILE -t $PTHREADS $WORKLOAD $FIBERS $RUNS $NUMA_NODES $BACKOFF $MIN_BACKOFF 1>> res.txt 2> /dev/null;
     done
 
     awk 'BEGIN {debug_prefix="";
