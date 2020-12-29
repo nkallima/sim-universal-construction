@@ -127,24 +127,24 @@ void stop_cpu_counters(int id) {
 #endif
 }
 
-void printStats(int nthreads) {
+void printStats(uint32_t nthreads, uint64_t runs) {
 #ifdef DEBUG
     printf("DEBUG: ");
-    printf("failed_CAS_per_op: %f\t", (float)__total_failed_cas / (nthreads * RUNS));
+    printf("failed_CAS_per_op: %f\t", (float)__total_failed_cas / (nthreads * runs));
     printf("executed_CAS: %ld\t", __total_executed_cas);
     printf("successful_CAS: %ld\t", __total_executed_cas - __total_failed_cas);
     printf("executed_SWAP: %ld\t", __total_executed_swap);
     printf("executed_FAA: %ld\t", __total_executed_faa);
     printf("atomics: %ld\t", __total_executed_cas + __total_executed_swap + __total_executed_faa);
-    printf("atomics_per_op: %.2f\t", ((float)(__total_executed_cas + __total_executed_swap + __total_executed_faa)) / (nthreads * RUNS));
-    printf("operations_per_CAS: %.2f", (nthreads * RUNS) / ((float)(__total_executed_cas - __total_failed_cas)));
+    printf("atomics_per_op: %.2f\t", ((float)(__total_executed_cas + __total_executed_swap + __total_executed_faa)) / runs);
+    printf("operations_per_CAS: %.2f", runs / ((float)(__total_executed_cas - __total_failed_cas)));
 #endif
     printf("\n");
 
 #ifdef _TRACK_CPU_COUNTERS
     long long __total_cpu_values[N_CPU_COUNTERS];
     int k, j;
-    double ops = RUNS * nthreads;
+    double ops = runs * nthreads;
 
     for (j = 0; j < N_CPU_COUNTERS; j++) {
         __total_cpu_values[j] = 0;

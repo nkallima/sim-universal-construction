@@ -5,6 +5,7 @@
 
 typedef struct BenchArgs {
     uint64_t runs;
+    uint64_t total_runs;
     uint32_t nthreads;
     uint32_t fibers_per_thread;
     uint32_t max_work;
