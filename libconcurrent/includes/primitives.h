@@ -6,7 +6,7 @@
 #include <math.h>
 #include <math.h>
 #include <stdint.h>
-#include <sys/timeb.h>
+#include <time.h>
 #include <malloc.h>
 
 #include <config.h>

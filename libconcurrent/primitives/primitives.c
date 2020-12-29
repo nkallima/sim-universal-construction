@@ -135,10 +135,12 @@ inline void freeMemory(void *ptr, size_t size) {
 }
 
 inline int64_t getTimeMillis(void) {
-    struct timeb tm;
+    struct timespec tm;
 
-    ftime(&tm);
-    return 1000 * tm.time + tm.millitm;
+    if (clock_gettime(CLOCK_MONOTONIC, &tm) == -1) {
+        perror("clock_gettime");
+        return 0;
+    } else return tm.tv_sec*1000LL + tm.tv_nsec/1000000LL;
 }
 
 inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {

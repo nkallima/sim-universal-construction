@@ -45,5 +45,5 @@ libbuild: $(OBJECTS)
 	$(AR) rcs $(LIBDIR)/$(LIBNAME) $(OBJECTS)
 
 clean: $(SRCS)
-	rm -f $(OBJECTS) $(OBJEXECS) $(BINDIR)/*.run $(LIBDIR)/*.a $(LIBDIR)/*.so res.txt *.log
+	rm -f $(OBJECTS) $(OBJEXECS) $(BINDIR)/*.run $(LIBDIR)/*.a $(LIBDIR)/*.so res.txt results.txt *.log
 
