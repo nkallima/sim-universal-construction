@@ -3,6 +3,7 @@ v2.1.0
 ------
 - Siginficant enhancements on bench.sh.
 - New folder/file library structure.
+- ftime is replaced by clock_gettime.
 
 v2.0.1
 ------
