@@ -1,0 +1,49 @@
+COMPILER   = cc
+AR         = gcc-ar
+LDLIBS     = -lpthread -lm -lnuma
+CFLAGS     =
+ARGS       =
+ARGCORES   =
+D_ARGS     = 
+
+# define any directories containing header files other than /usr/include
+INCLUDES   = -Ilibconcurrent/includes
+
+# define the output directory
+BINDIR     = build/bin
+
+LIBDIR     = build/lib
+
+LIBNAME    = libconcurrent.a
+LIBNAMESO  = libconcurrent.so
+
+# define the C source files
+PRIMITIVES = $(wildcard libconcurrent/primitives/*.c)
+CONCURRENT = $(wildcard libconcurrent/concurrent/*.c)
+BENCHMARKS = $(wildcard benchmarks/*bench.c)
+SRCS       = $(PRIMITIVES) $(CONCURRENT) 
+
+# define the C object files 
+OBJECTS    = $(SRCS:.c=.o)
+OBJEXECS   = $(BENCHMARKS:.c=.o)
+
+# define the .run executable files
+EXECS      = $(BENCHMARKS:.c=.run)
+
+.PHONY: all clean
+
+all: $(EXECS) 
+
+$(EXECS): %.run : %.o libbuild
+	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $(D_ARGS) $< -o $(BINDIR)/$(notdir $@) $(LIBDIR)/$(LIBNAME) $(LDLIBS)
+
+.c.o:
+	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $(D_ARGS) -c $< -o $@
+
+libbuild: $(OBJECTS)
+	$(CC) -shared -o $(LIBDIR)/$(LIBNAMESO) $(OBJECTS)
+	$(AR) rcs $(LIBDIR)/$(LIBNAME) $(OBJECTS)
+
+clean: $(SRCS)
+	rm -f $(OBJECTS) $(OBJEXECS) $(BINDIR)/*.run $(LIBDIR)/*.a $(LIBDIR)/*.so res.txt results.txt *.log
+
