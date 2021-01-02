@@ -55,8 +55,8 @@ clean: $(SRCS)
 	@rm -rf $(LIBDIR)/*.a
 	@printf '$(COLOR_RM)\t$(LIBDIR)/*.so\n'
 	@rm -rf $(LIBDIR)/*.so
-	@printf '$(COLOR_RM)\tlibconcurrent/primitives/*.c\n'
-	@printf '$(COLOR_RM)\tlibconcurrent/concurrent/*.c\n'
+	@printf '$(COLOR_RM)\tlibconcurrent/primitives/*.o\n'
+	@printf '$(COLOR_RM)\tlibconcurrent/concurrent/*.o\n'
 	@rm -f $(OBJECTS)
 	@printf '$(COLOR_RM)\tExecutable files\n'
 	@rm -rf $(BINDIR)/*.run
