@@ -1,5 +1,6 @@
 v2.1.1
 ------
+- Improving the ouput messages of build-system.
 - Adding support for clang in Makefile (i.e.,use `make clang` for building the sources with the clang compile).
 - A few bug-fixes and minor improvements.
 
