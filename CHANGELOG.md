@@ -1,3 +1,6 @@
+v2.1.1
+------
+- A few bug-fixes and minor improvements.
 
 v2.1.0
 ------
@@ -11,7 +14,6 @@ v2.0.1
 - PAPI and NUMA libraries automatically used depending user's settings in config.h.
 - Pid fix for the Sync family of algorithms.
 
-
 v2.0
 ----
 - Initial support for ARM-V8 and RISC-V machine architectures.
@@ -24,16 +26,14 @@ v2.0
 - A .clang-format file is provided in order to maintain the styling-consistency of the source code.
 - Numerous performance optimizations and bug-fixes.
 
-
 v1.9.1
 ------
 - Testing has been performed in RISC-V and aarch64 machine architectures.
 - Bug fixes and performance improvements.
 
-
 v1.9
 ----
--Support for ARM-V8 and RISC-V machine architectures.
+- Support for ARM-V8 and RISC-V machine architectures.
 
 v1.8
 ----
