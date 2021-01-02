@@ -129,6 +129,7 @@ execute one of the following make commands. This step is not necessary in case t
 | ----------------------- | ------------------------------------------------------------------------------------- |
 |  `make`                 |  Auto-detects the current architecture and compiles the library/benchmarks for it.    |
 |  `make CC=cc ARCH=arch` |  Compiles the library/benchmarks for the current architecture using the cc compiler.  |
+|  `make clang`           |  Compiles the library/benchmarks using the clang compiler.                            |
 |  `make icc`             |  Compiles the library/benchmarks using the icc compiler on some x86/x86_64 machine.   |
 |  `make clean`           |  Cleaning-up all binary files.                                                        |
 
