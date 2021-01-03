@@ -3,6 +3,7 @@ v2.1.1
 - Improving the ouput messages of build-system.
 - Adding support for clang in Makefile (i.e.,use `make clang` for building the sources with the clang compile).
 - A few bug-fixes and minor improvements.
+- Dropped support for Intel icc compiler and added support for Intel icx compiler. Tested with Intel(R) oneAPI DPC++ Compiler 2021.1.2.
 
 v2.1.0
 ------

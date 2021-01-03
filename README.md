@@ -10,7 +10,7 @@ successfully tested in other machine architectures, such as ARM-V8 and RISC-V.
 Some of the benchmarks perform much better in architectures that natively support Fetch&Add
 instructions (e.g., x86_64, etc.).
 
-As a compiler, gcc is recommended, but you may also try to use icc or clang.
+As a compiler, gcc is recommended, but you may also try to use icx or clang.
 For compiling the benchmarks, it is highly recommended to use gcc of version 4.3.0 or greater.
 Building requires the `libnuma` development package.
 For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.).
@@ -30,7 +30,7 @@ The following options are available:
 |  `-t`, `--max_threads`  |  set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system cores |
 |  `-s`, `--step`         |  set the step (extra number of threads to be used) in each set of iterations of the benchmark, default is number of processors/8 or 1 |
 |  `-f`, `--fibers`       |  set the number of user-level threads per posix thread                                |
-|  `-r`, `--repeat`       |  set the number of times that the benchmark should be executed, default is 10 times   |
+|  `-r`, `--repeat`       |  set the number of times that the benchmark should be executed, default is 1000000 times   |
 |  `-w`, `--workload`     |  set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64 |
 |  `-l`, `--list`         |  displays the list of the available benchmarks                                        |
 |  `-n`, `numa_nodes`     |  set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account |
@@ -130,7 +130,7 @@ execute one of the following make commands. This step is not necessary in case t
 |  `make`                 |  Auto-detects the current architecture and compiles the library/benchmarks for it.    |
 |  `make CC=cc ARCH=arch` |  Compiles the library/benchmarks for the current architecture using the cc compiler.  |
 |  `make clang`           |  Compiles the library/benchmarks using the clang compiler.                            |
-|  `make icc`             |  Compiles the library/benchmarks using the icc compiler on some x86/x86_64 machine.   |
+|  `make icx`             |  Compiles the library/benchmarks using the Intel icx compiler.                        |
 |  `make clean`           |  Cleaning-up all binary files.                                                        |
 
 
