@@ -30,7 +30,8 @@ The following options are available:
 |  `-t`, `--max_threads`  |  set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system cores |
 |  `-s`, `--step`         |  set the step (extra number of threads to be used) in each set of iterations of the benchmark, default is number of processors/8 or 1 |
 |  `-f`, `--fibers`       |  set the number of user-level threads per posix thread                                |
-|  `-r`, `--repeat`       |  set the number of times that the benchmark should be executed, default is 1000000 times   |
+|  `-r`, `--repeat`       |  set the total number of operations executed by the benchmark, default is 1000000     |
+|  `-i`, `--iterations`   |  set the number of times that the benchmark should be executed, default is 10         |
 |  `-w`, `--workload`     |  set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64 |
 |  `-l`, `--list`         |  displays the list of the available benchmarks                                        |
 |  `-n`, `numa_nodes`     |  set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account |
