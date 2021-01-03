@@ -3,7 +3,6 @@ AR         = gcc-ar
 LDLIBS     = -lpthread -lm -lnuma
 CFLAGS     =
 ARGS       =
-ARGCORES   =
 D_ARGS     = 
 
 # define any directories containing header files other than /usr/include
@@ -25,25 +24,41 @@ SRCS       = $(PRIMITIVES) $(CONCURRENT)
 
 # define the C object files 
 OBJECTS    = $(SRCS:.c=.o)
-OBJEXECS   = $(BENCHMARKS:.c=.o)
 
 # define the .run executable files
 EXECS      = $(BENCHMARKS:.c=.run)
+
+COLOR_CC   = [  \e[32mCC\e[39m  ]
+COLOR_AR   = [  \e[36mAR\e[39m  ]
+COLOR_RM   = [  \e[31mRM\e[39m  ]
 
 .PHONY: all clean
 
 all: $(EXECS) 
 
-$(EXECS): %.run : %.o libbuild
-	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $(D_ARGS) $< -o $(BINDIR)/$(notdir $@) $(LIBDIR)/$(LIBNAME) $(LDLIBS)
+$(EXECS): %.run : %.c libbuild
+	@printf '$(COLOR_CC)\t$<\n'
+	@$(COMPILER) $(CFLAGS) $(ARGS) $(INCLUDES) $(D_ARGS) $< -o $(BINDIR)/$(notdir $@) $(LIBDIR)/$(LIBNAME) $(LDLIBS)
 
 .c.o:
-	$(COMPILER) $(CFLAGS) $(ARGS) $(ARGCORES) $(INCLUDES) $(D_ARGS) -c $< -o $@
+	@printf '$(COLOR_CC)\t$<\n'
+	@$(COMPILER) $(CFLAGS) $(ARGS) $(INCLUDES) $(D_ARGS) -c $< -o $@
 
 libbuild: $(OBJECTS)
-	$(CC) -shared -o $(LIBDIR)/$(LIBNAMESO) $(OBJECTS)
-	$(AR) rcs $(LIBDIR)/$(LIBNAME) $(OBJECTS)
+	@printf '$(COLOR_CC)\t$(LIBDIR)/$(LIBNAMESO)\n'
+	@$(CC) -shared -o $(LIBDIR)/$(LIBNAMESO) $(OBJECTS)
+	@printf '$(COLOR_AR)\t$(LIBDIR)/$(LIBNAME)\n'
+	@$(AR) rcs $(LIBDIR)/$(LIBNAME) $(OBJECTS)
 
 clean: $(SRCS)
-	rm -f $(OBJECTS) $(OBJEXECS) $(BINDIR)/*.run $(LIBDIR)/*.a $(LIBDIR)/*.so res.txt results.txt *.log
-
+	@printf '$(COLOR_RM)\t$(LIBDIR)/*.a\n'
+	@rm -rf $(LIBDIR)/*.a
+	@printf '$(COLOR_RM)\t$(LIBDIR)/*.so\n'
+	@rm -rf $(LIBDIR)/*.so
+	@printf '$(COLOR_RM)\tlibconcurrent/primitives/*.o\n'
+	@printf '$(COLOR_RM)\tlibconcurrent/concurrent/*.o\n'
+	@rm -f $(OBJECTS)
+	@printf '$(COLOR_RM)\tExecutable files\n'
+	@rm -rf $(BINDIR)/*.run
+	@printf '$(COLOR_RM)\tLog and result files\n'
+	@rm -rf res.txt results.txt *.log

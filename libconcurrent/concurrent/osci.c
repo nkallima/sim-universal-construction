@@ -123,7 +123,7 @@ void OsciInit(OsciStruct *l, uint32_t nthreads, uint32_t fibers_per_thread) {
     int i;
 
     l->nthreads = nthreads;
-    if (fibers_per_thread < nthreads)
+    if (fibers_per_thread <= nthreads)
         l->fibers_per_thread = fibers_per_thread;
     else
         l->fibers_per_thread = 1;

@@ -1,3 +1,9 @@
+v2.1.1
+------
+- Improving the ouput messages of build-system.
+- Adding support for clang in Makefile (i.e.,use `make clang` for building the sources with the clang compile).
+- A few bug-fixes and minor improvements.
+- Dropped support for Intel icc compiler and added support for Intel icx compiler. Tested with Intel(R) oneAPI DPC++ Compiler 2021.1.2.
 
 v2.1.0
 ------
@@ -11,7 +17,6 @@ v2.0.1
 - PAPI and NUMA libraries automatically used depending user's settings in config.h.
 - Pid fix for the Sync family of algorithms.
 
-
 v2.0
 ----
 - Initial support for ARM-V8 and RISC-V machine architectures.
@@ -24,16 +29,14 @@ v2.0
 - A .clang-format file is provided in order to maintain the styling-consistency of the source code.
 - Numerous performance optimizations and bug-fixes.
 
-
 v1.9.1
 ------
 - Testing has been performed in RISC-V and aarch64 machine architectures.
 - Bug fixes and performance improvements.
 
-
 v1.9
 ----
--Support for ARM-V8 and RISC-V machine architectures.
+- Support for ARM-V8 and RISC-V machine architectures.
 
 v1.8
 ----
