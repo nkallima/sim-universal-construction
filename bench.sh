@@ -168,7 +168,7 @@ for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
                 ops_per_cas += $24;
                 i += 1} 
         END {   time = time/i; throughput = throughput/i;
-                print "average time:", time,"msec\t\taverage throughput:", throughput, "ops/sec";
+                printf "average time: %5d msec\t average throughput: %7.2f mops/sec", time, throughput;
                 if (debug_prefix == "DEBUG:") {
                     failed_cas = failed_cas/i; print "failed cas: \t", failed_cas, "";
                     executed_cas =executed_cas/i; print "executed cas: \t", executed_cas, "";
