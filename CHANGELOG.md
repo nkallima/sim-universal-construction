@@ -1,3 +1,7 @@
+v2.1.2
+------
+- Better output for bench.sh script.
+
 v2.1.1
 ------
 - Improving the output messages of build-system.
