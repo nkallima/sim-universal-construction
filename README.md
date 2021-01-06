@@ -153,10 +153,10 @@ execute one of the following make commands. This step is not necessary in case t
     for Symbolic and Irregular Applications. Vol. 16. 1999.
 
 [5]. T. S. Craig. "Building FIFO and priority-queueing spin locks from atomic swap". 
-    Technical Report TR 93-02-02, Department of Computer Science, University of Washington, February 1993
+    Technical Report TR 93-02-02, Department of Computer Science, University of Washington, February 1993.
 
 [6]. Magnusson, Peter, Anders Landin, and Erik Hagersten. "Queue locks on cache coherent multiprocessors".
-    Parallel Processing Symposium, 1994. Proceedings., Eighth International. IEEE, 1994
+    Parallel Processing Symposium, 1994. Proceedings., Eighth International. IEEE, 1994.
     
 [7]. Michael, Maged M., and Michael L. Scott. "Simple, fast, and practical non-blocking and blocking concurrent
     queue algorithms". Proceedings of the fifteenth annual ACM symposium on Principles of distributed 
