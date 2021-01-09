@@ -27,8 +27,10 @@ int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-inline static void enqueue(PoolStruct *pool_node, Object arg, int pid) {
-    ListNode *n = alloc_obj(pool_node);
+__thread PoolStruct pool_node;
+
+inline static void enqueue(Object arg, int pid) {
+    ListNode *n = alloc_obj(&pool_node);
 
     n->value = (Object)arg;
     n->next = null;
@@ -40,15 +42,18 @@ inline static void enqueue(PoolStruct *pool_node, Object arg, int pid) {
 
 inline static Object dequeue(int pid) {
     Object result;
+    ListNode *n = NULL;
 
     CLHLock(lhead, pid);
     if (Head->next == null)
-        result = -1;
+        return -1;
     else {
         result = Head->next->value;
+        n = (ListNode *)Head;
         Head = Head->next;
     }
     CLHUnlock(lhead, pid);
+    recycle_obj(&pool_node, n);
 
     return result;
 }
@@ -58,7 +63,6 @@ inline static void *Execute(void *Arg) {
     long rnum;
     long id = (long)Arg;
     volatile int j;
-    PoolStruct pool_node;
 
     fastRandomSetSeed(id + 1);
     init_pool(&pool_node, sizeof(ListNode));
@@ -67,7 +71,7 @@ inline static void *Execute(void *Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        enqueue(&pool_node, (Object)1, id);
+        enqueue((Object)1, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -76,6 +80,7 @@ inline static void *Execute(void *Arg) {
         for (j = 0; j < rnum; j++)
             ;
     }
+
     return NULL;
 }
 

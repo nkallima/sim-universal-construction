@@ -42,10 +42,10 @@ typedef struct SimObjectState {
 
 typedef union pointer_t {
     struct StructData {
-        int64_t seq : 32;
-        int32_t index : 32;
+        uint64_t seq : 32;
+        uint32_t index : 32;
     } struct_data;
-    int64_t raw_data;
+    volatile uint64_t raw_data;
 } pointer_t;
 
 typedef struct SimThreadState {

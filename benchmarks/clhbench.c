@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: shared state: %f\n", object.state_f);
+    fprintf(stderr, "DEBUG: Object float state: %f\n", object.state_f);
 #endif
 
     return 0;

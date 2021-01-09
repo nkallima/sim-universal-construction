@@ -97,7 +97,6 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
     ToggleVector *diffs = &th_state->diffs, *l_toggles = &th_state->l_toggles, *pops = &th_state->pops;
     pointer_t new_sp, old_sp;
     HalfSimStackState *lsp_data, *sp_data;
-    ArgVal tmp_arg;
     int i, j, prefix, mybank, push_counter;
 
     mybank = TVEC_GET_BANK_OF_BIT(pid, stack->nthreads);
@@ -116,9 +115,8 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
-    } else {
+    } else
         resched();
-    }
 
     for (j = 0; j < 2; j++) {
         old_sp = stack->sp;                                                   // read reference to struct SimStackState
@@ -146,11 +144,10 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
                 pos = bitSearchFirst(diffs->cell[i]);
                 proc_id = prefix + pos;
                 diffs->cell[i] ^= ((bitword_t)1) << pos;
-                tmp_arg = stack->announce[proc_id];
-                if (tmp_arg == POP) {
+                if (stack->announce[proc_id] == POP) {
                     pops->cell[i] |= ((bitword_t)1) << pos;
                 } else {
-                    serialPush(lsp_data, th_state, tmp_arg);
+                    serialPush(lsp_data, th_state, stack->announce[proc_id]);
                     push_counter++;
                 }
             }
@@ -169,7 +166,7 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
 
         TVEC_COPY(&lsp_data->applied, l_toggles);                                       // change applied to be equal to what was read in stack->a_toggles
         new_sp.struct_data.seq = old_sp.struct_data.seq + 1;                            // increase timestamp
-        new_sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * pid + th_state->local_index; // store in mod_dw.index the index in stack->pool where lsp_data will be stored
+        new_sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * pid + th_state->local_index;  // store in mod_dw.index the index in stack->pool where lsp_data will be stored
         if (old_sp.raw_data == stack->sp.raw_data && CAS64(&stack->sp.raw_data, old_sp.raw_data, new_sp.raw_data)) {
             th_state->local_index = (th_state->local_index + 1) % _SIM_LOCAL_POOL_SIZE_;
             th_state->backoff = (th_state->backoff >> 1) | 1;

@@ -1,6 +1,9 @@
 v2.1.2
 ------
+- A new implementations of the pool.c functionality. Most stack and queue implementations support memory reclamation, the only exception are the simstack, simqueue, lfstack and msqueue implementations.
+- Code clean-up for the Sim family of algorithms.
 - Better output for bench.sh script.
+- Documentation improvements.
 
 v2.1.1
 ------
@@ -11,7 +14,7 @@ v2.1.1
 
 v2.1.0
 ------
-- Siginficant enhancements on bench.sh.
+- Significant enhancements on bench.sh.
 - New folder/file library structure.
 - ftime is replaced by clock_gettime.
 

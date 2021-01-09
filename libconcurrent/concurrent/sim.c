@@ -78,10 +78,8 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
-    } else {
-        if (fastRandomRange(1, sim_struct->nthreads) > 4)
-            resched();
-    }
+    } else if (fastRandomRange(1, sim_struct->nthreads) > 4)
+        resched();
 
     for (j = 0; j < 2; j++) {
         old_sp = sim_struct->sp;                                                    // read reference to struct ObjectState

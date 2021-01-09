@@ -17,6 +17,20 @@ void HStackThreadStateInit(HStackStruct *object_struct, HStackThreadState *lobje
 
 inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
+        volatile HStackStruct *st = (HStackStruct *)state;
+        volatile Node *node = st->head;
+
+        if (st->head == null) {
+            return -1;
+        } else {
+            RetVal ret = node->val;
+
+            st->head = st->head->next;
+            recycle_obj(&pool_node, (void *)node);
+
+            return ret;
+        }
+    } else {
         HStackStruct *st = (HStackStruct *)state;
         Node *node;
 
@@ -25,17 +39,6 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->val = arg;
         st->head = node;
 
-        return 0;
-    } else {
-        volatile HStackStruct *st = (HStackStruct *)state;
-        volatile Node *node = st->head;
-
-        if (st->head == null) {
-            return -1;
-        } else {
-            st->head = st->head->next;
-            return node->val;
-        }
         return 0;
     }
 }

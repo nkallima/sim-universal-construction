@@ -67,7 +67,8 @@ int main(int argc, char *argv[]) {
         head = head->next;
         i++;
     }
-    fprintf(stderr, "DEBUG: object state: counter: %d rounds: %d nodes left in the queue: %d\n", object_struct.object_struct.counter, object_struct.object_struct.rounds, i);
+    fprintf(stderr, "DEBUG: Object state: %ld\n", object_struct.object_struct.counter);
+    fprintf(stderr, "DEBUG: rounds: %d nodes left in the queue: %d\n", object_struct.object_struct.rounds, i);
 #endif
 
     return 0;

@@ -61,8 +61,10 @@ int main(int argc, char *argv[]) {
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: enqueue state: counter: %d rounds: %d\n", queue_object->enqueue_struct.counter, queue_object->enqueue_struct.rounds);
-    fprintf(stderr, "DEBUG: dequeue state: counter: %d rounds: %d\n\n", queue_object->dequeue_struct.counter, queue_object->dequeue_struct.rounds);
+    fprintf(stderr, "DEBUG: Enqueue: Object state: %ld\n", queue_object->enqueue_struct.counter);
+    fprintf(stderr, "DEBUG: Enqueue: rounds: %d\n", queue_object->enqueue_struct.rounds);
+    fprintf(stderr, "DEBUG: Dequeue: Object state: %ld\n", queue_object->dequeue_struct.counter);
+    fprintf(stderr, "DEBUG: Dequeue: rounds: %d\n", queue_object->dequeue_struct.rounds);
 #endif
 
     return 0;

@@ -56,8 +56,7 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: object state: %f\n", object->state_f);
-    fprintf(stderr, "DEBUG: object counter: %d\n", object_combiner->counter);
+    fprintf(stderr, "DEBUG: Object state: %ld\n", object_combiner->counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", object_combiner->rounds);
     fprintf(stderr, "DEBUG: Average helping: %f\n", (float)object_combiner->counter / object_combiner->rounds);
 #endif

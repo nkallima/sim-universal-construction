@@ -33,8 +33,8 @@ typedef struct CCSynchStruct {
     uint32_t nthreads;
 #ifdef DEBUG
     int *combiner_counter;
-    volatile int rounds CACHE_ALIGN;
-    volatile int counter;
+    volatile uint64_t counter CACHE_ALIGN;
+    volatile int rounds;
 #endif
 } CCSynchStruct;
 

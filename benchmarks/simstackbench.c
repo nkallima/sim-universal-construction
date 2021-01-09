@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: Object state debug counter: %lld\n", (long long int)stack->pool[stack->sp.struct_data.index]->counter);
+    fprintf(stderr, "DEBUG: Object state: %lld\n", (long long int)stack->pool[stack->sp.struct_data.index]->counter);
 #endif
 
     return 0;

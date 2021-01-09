@@ -38,8 +38,11 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     Node *node = (Node *)st->first;
 
     if (st->first->next != null) {
+        RetVal ret = node->val;
+
         st->first = st->first->next;
-        return node->val;
+        recycle_obj(&(st->pool_node[getThreadId()]), (void *)node);
+        return ret;
     } else {
         return -1;
     }

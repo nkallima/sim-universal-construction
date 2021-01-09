@@ -19,7 +19,6 @@ typedef struct ListNode {
 } ListNode;
 
 CLHLockStruct *lhead CACHE_ALIGN;
-int counter = 0;
 ListNode guard CACHE_ALIGN = {0, null};
 volatile ListNode *Head CACHE_ALIGN = &guard;
 int64_t d1 CACHE_ALIGN, d2;
@@ -39,15 +38,18 @@ inline static void push(Object arg, int pid) {
 
 inline static Object pop(int pid) {
     Object result;
+    ListNode *n = NULL;
 
     CLHLock(lhead, pid);
-    if (Head->next == null)
-        result = -1;
+    if (Head->next == NULL)
+        return -1;
     else {
         result = Head->next->value;
+        n = (ListNode *)Head;
         Head = Head->next;
     }
     CLHUnlock(lhead, pid);
+    recycle_obj(&pool_node, n);
 
     return result;
 }
@@ -74,6 +76,7 @@ inline static void *Execute(void *Arg) {
         for (j = 0; j < rnum; j++)
             ;
     }
+
     return NULL;
 }
 

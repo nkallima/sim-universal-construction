@@ -39,8 +39,8 @@ typedef struct HSynchStruct {
     CLHLockStruct *central_lock CACHE_ALIGN;
     HSynchNodePtr *Tail CACHE_ALIGN;
 #ifdef DEBUG
-    volatile int rounds CACHE_ALIGN;
-    volatile int counter;
+    volatile uint64_t counter CACHE_ALIGN;
+    volatile int rounds;
 #endif
     HSynchNode **nodes CACHE_ALIGN;
     int32_t *node_indexes;

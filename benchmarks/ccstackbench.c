@@ -58,7 +58,8 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: object state: counter: %d rounds: %d\n", object_struct->object_struct.counter, object_struct->object_struct.rounds);
+    fprintf(stderr, "DEBUG: Object state: %ld\n", object_struct->object_struct.counter);
+    fprintf(stderr, "DEBUG: rounds: %d\n", object_struct->object_struct.rounds);
 #endif
 
     return 0;

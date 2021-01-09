@@ -33,8 +33,8 @@ typedef struct DSMSynchStruct {
     DSMSynchNode *nodes CACHE_ALIGN;
     uint32_t nthreads;
 #ifdef DEBUG
-    volatile int rounds CACHE_ALIGN;
-    volatile int counter;
+    volatile uint64_t counter CACHE_ALIGN;
+    volatile int rounds;
 #endif
 } DSMSynchStruct;
 

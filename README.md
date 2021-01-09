@@ -1,9 +1,12 @@
 # Summary
 
-This is a collection of concurrent shared data structures, such as queue spin-locks, concurrent stacks,
-concurrent queues, concurrent hash-tables, etc. Some of these concurrent data-structures are wait-free, 
-while some others are lock-free or blocking. This repository also provides a large collection of benchmarks
-that exercise the provided data-structure implementations.
+This is a open-source framework for concurrent data-structures and benchmarks. The provided framework 
+contains a substantial set of concurrent data-structures such as `queues`, `stacks`, `combining-objects`,
+`hash-tables`, `locks`, etc. This framework also provides a user-friendly runtime for developing and
+benchmarking concurrent data-structures. Among other features, this runtime provides functionality 
+for creating threads easily (both Posix and user-space threads), tools for measuring performance, etc.
+The provided concurrent data-structures and the runtime are highly optimized for contemporary 
+NUMA multiprocessors such as AMD Epyc and Intel Xeon.
 
 The current version of this code is optimized for x86_64 machine architecture, but the code is also
 successfully tested in other machine architectures, such as ARM-V8 and RISC-V. 
@@ -14,7 +17,8 @@ As a compiler, gcc is recommended, but you may also try to use icx or clang.
 For compiling the benchmarks, it is highly recommended to use gcc of version 4.3.0 or greater.
 Building requires the `libnuma` development package.
 For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.).
-Important parameters for the benchmarks and/or library are placed in the config.h file.
+Important parameters for the benchmarks and/or library are placed in the `config.h` file
+(see more on Performance/Optimizations Section).
 
 
 # Running Benchmarks
@@ -128,10 +132,11 @@ execute one of the following make commands. This step is not necessary in case t
 
 |     Command             |                                Description                                            |
 | ----------------------- | ------------------------------------------------------------------------------------- |
-|  `make`                 |  Auto-detects the current architecture and compiles the library/benchmarks for it.    |
-|  `make CC=cc ARCH=arch` |  Compiles the library/benchmarks for the current architecture using the cc compiler.  |
-|  `make clang`           |  Compiles the library/benchmarks using the clang compiler.                            |
-|  `make icx`             |  Compiles the library/benchmarks using the Intel icx compiler.                        |
+|  `make`                 |  Auto-detects the current architecture and compiles the source-code for it.           |
+|  `make CC=cc ARCH=arch` |  Compiles the source-code for the current architecture using the cc compiler.         |
+|  `make clang`           |  Compiles the source-code using the clang compiler.                                   |
+|  `make icx`             |  Compiles the source-code using the Intel icx compiler.                               |
+|  `make unknown`         |  Compiles the source-code for architectures other than X86_64, e.g. riscv, arm, etc.  |
 |  `make clean`           |  Cleaning-up all binary files.                                                        |
 
 

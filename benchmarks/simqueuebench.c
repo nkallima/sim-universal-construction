@@ -64,7 +64,8 @@ int main(int argc, char *argv[]) {
     Node *link_a = queue->enq_pool[queue->enq_sp.struct_data.index]->link_a;
     Node *link_b = queue->enq_pool[queue->enq_sp.struct_data.index]->link_b;
     CASPTR(&link_a->next, null, link_b);
-    fprintf(stderr, "DEBUG: State value: %ld\n", (long)queue->enq_pool[queue->enq_sp.struct_data.index]->counter);
+    fprintf(stderr, "DEBUG: Enqueue: Object state: %ld\n", (long)queue->enq_pool[queue->enq_sp.struct_data.index]->counter);
+    fprintf(stderr, "DEBUG: Dequeue: Object state: %ld\n", (long)queue->deq_pool[queue->deq_sp.struct_data.index]->counter);
     volatile Node *cur = queue->deq_pool[queue->deq_sp.struct_data.index]->ptr;
     long counter = 0;
     while (cur != null) {
