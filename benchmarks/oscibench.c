@@ -23,21 +23,23 @@ inline static void *Execute(void *Arg) {
     OsciThreadState *th_state;
     long i, rnum;
     volatile int j;
-    long pid = (long)Arg;
+    long id = (long)Arg;
 
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(OsciThreadState));
-    fastRandomSetSeed(pid);
-    OsciThreadStateInit(th_state, &object_lock, pid);
+    fastRandomSetSeed(id);
+    OsciThreadStateInit(th_state, &object_lock, id);
     BarrierWait(&bar);
-    if (pid == 0)
-        d1 = getTimeMillis();
+    if (id == 0) d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        OsciApplyOp(&object_lock, th_state, fetchAndMultiply, (void *)&object, (ArgVal)pid, pid);
+        OsciApplyOp(&object_lock, th_state, fetchAndMultiply, (void *)&object, (ArgVal)id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
+    BarrierWait(&bar);
+    if (id == 0) d2 = getTimeMillis();
+
     return NULL;
 }
 
@@ -45,10 +47,9 @@ int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
     object.state_f = 1.0;
     OsciInit(&object_lock, bench_args.nthreads, bench_args.fibers_per_thread);
-    BarrierInit(&bar, bench_args.nthreads);
+    BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
-    d2 = getTimeMillis();
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);

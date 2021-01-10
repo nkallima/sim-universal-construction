@@ -1,4 +1,4 @@
-v2.1.2
+v2.2.0
 ------
 - A new implementations of the pool.c functionality. Most stack and queue implementations support memory reclamation, the only exception are the simstack, simqueue, lfstack and msqueue implementations.
 - Code clean-up for the Sim family of algorithms.

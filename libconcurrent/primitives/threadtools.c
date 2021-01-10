@@ -135,7 +135,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
         __uthreads = uthreads;
         __uthread_sched = true;
         __system_oversubscription = true;
-        BarrierInit(&bar, nthreads / uthreads + 1);
+        BarrierSet(&bar, nthreads / uthreads + 1);
         for (i = 0; i < (nthreads / uthreads) - 1; i++) {
             last_thread_id = pthread_create(&__threads[i], null, uthreadWrapper, (void *)(i * uthreads));
             if (last_thread_id != 0) {
@@ -151,7 +151,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
             __system_oversubscription = true;
         else
             __noop_resched = true;
-        BarrierInit(&bar, nthreads + 1);
+        BarrierSet(&bar, nthreads + 1);
         for (i = 0; i < nthreads - 1; i++) {
             last_thread_id = pthread_create(&__threads[i], null, kthreadWrapper, (void *)i);
             if (last_thread_id != 0) {
@@ -166,7 +166,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
 }
 
 void JoinThreadsN(uint32_t nthreads) {
-    BarrierWait(&bar);
+    BarrierLastLeave(&bar);
     freeMemory(__threads, (nthreads + 1) * sizeof(pthread_t));
 }
 
