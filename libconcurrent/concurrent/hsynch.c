@@ -70,13 +70,11 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
     } else {
         int ncpus = numa_num_configured_cpus();
         if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2) && ncpus > 1) {
-            int half_numa_size = l->numa_node_size / 2;
-            if (half_numa_size == 0)
-                half_numa_size = 1;
-            if (getPreferedCore() >= ncpus / 2)
-                node_of_thread = (getPreferedCore() - ncpus / 2) / half_numa_size;
-            else
-                node_of_thread = getPreferedCore() / half_numa_size;
+            int actual_numa_node = numa_node_of_cpu(getPreferedCore());
+            int manual_numa_node = actual_numa_node % l->numa_nodes;
+
+            node_of_thread = manual_numa_node;
+//fprintf(stderr, "######## PID: %d -- NODE OF THREAD %d -- PREFERED CORE: %d\n", pid, node_of_thread, getPreferedCore());
         } else {
             node_of_thread = pid / l->numa_node_size;
         }
@@ -110,7 +108,7 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
         l->numa_policy = true;
 #ifdef NUMA_SUPPORT
         l->numa_nodes = numa_max_node() + 1;
-        l->numa_node_size = nthreads / l->numa_nodes + ((nthreads % l->numa_nodes > 0) ? 1 : 0);
+        l->numa_node_size = nthreads / l->numa_nodes + (nthreads % l->numa_nodes);
 #else
         l->numa_node_size = HSYNCH_DEFAULT_NUMA_NODE_SIZE;
         l->numa_nodes = nthreads / l->numa_node_size + (nthreads % l->numa_node_size == 0 ? 0 : 1);
@@ -120,9 +118,11 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
     } else {
         l->numa_policy = false;
         l->numa_nodes = numa_regions;
-        l->numa_node_size = nthreads / l->numa_nodes + ((nthreads % l->numa_nodes > 0) ? 1 : 0);
+        l->numa_node_size = nthreads / l->numa_nodes;
+        if (nthreads % l->numa_nodes != 0) 
+            l->numa_node_size *= 2;
     }
-
+//fprintf(stderr, "######## NUMA_NODES: %d -- NODE SIZE: %d\n", l->numa_nodes, l->numa_node_size);
     l->central_lock = CLHLockInit(nthreads);
     l->nodes = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNode *));
     l->Tail = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNodePtr));

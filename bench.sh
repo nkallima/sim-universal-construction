@@ -136,7 +136,7 @@ echo ""
 
 # Run the selected number of threads
 for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
-    echo -e "\e[36m$PTHREADS threads:\e[39m"
+    echo -ne "\e[36m$PTHREADS threads:\e[39m "
     
     # Redirect stdout to res.txt, stderr to /dev/null
     for (( i=1; i<=$ITERATIONS; i++ ));do
