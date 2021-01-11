@@ -69,11 +69,14 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
         }
     } else {
         int ncpus = numa_num_configured_cpus();
-        if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) {
+        if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2) && ncpus > 1) {
+            int half_numa_size = l->numa_node_size / 2;
+            if (half_numa_size == 0)
+                half_numa_size = 1;
             if (getPreferedCore() >= ncpus / 2)
-                node_of_thread = (getPreferedCore() - ncpus / 2) / (l->numa_node_size / 2);
+                node_of_thread = (getPreferedCore() - ncpus / 2) / half_numa_size;
             else
-                node_of_thread = getPreferedCore() / (l->numa_node_size / 2);
+                node_of_thread = getPreferedCore() / half_numa_size;
         } else {
             node_of_thread = pid / l->numa_node_size;
         }
