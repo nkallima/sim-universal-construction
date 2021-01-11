@@ -74,7 +74,6 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
             int manual_numa_node = actual_numa_node % l->numa_nodes;
 
             node_of_thread = manual_numa_node;
-//fprintf(stderr, "######## PID: %d -- NODE OF THREAD %d -- PREFERED CORE: %d\n", pid, node_of_thread, getPreferedCore());
         } else {
             node_of_thread = pid / l->numa_node_size;
         }
@@ -122,7 +121,7 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
         if (nthreads % l->numa_nodes != 0) 
             l->numa_node_size *= 2;
     }
-//fprintf(stderr, "######## NUMA_NODES: %d -- NODE SIZE: %d\n", l->numa_nodes, l->numa_node_size);
+
     l->central_lock = CLHLockInit(nthreads);
     l->nodes = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNode *));
     l->Tail = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNodePtr));
