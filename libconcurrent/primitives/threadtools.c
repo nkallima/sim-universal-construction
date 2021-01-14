@@ -94,7 +94,7 @@ int threadPin(int32_t cpu_id) {
     __prefered_core = preferedCoreOfThread(cpu_id);
     CPU_SET(__prefered_core, &mask);
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: thread: %d -- numa_node: %d -- core: %d -- nodes: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core, nodes);
+    fprintf(stderr, "DEBUG: thread: %d -- numa_node: %d -- core: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core);
 #endif
     ret = sched_setaffinity(0, len, &mask);
     if (ret == -1)
