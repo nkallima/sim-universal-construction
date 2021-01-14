@@ -55,15 +55,9 @@ inline static void *kthreadWrapper(void *arg) {
     return null;
 }
 
-int threadPin(int32_t cpu_id) {
-    int ret = 0;
-    cpu_set_t mask;
-    unsigned int len = sizeof(mask);
-
-    pthread_setconcurrency(getNCores());
-    CPU_ZERO(&mask);
-
-#    ifdef NUMA_SUPPORT
+inline uint32_t preferedCoreOfThread(uint32_t pid) {
+    uint32_t prefered_core = 0;
+#ifdef NUMA_SUPPORT
     int ncpus = numa_num_configured_cpus();
     int nodes = numa_max_node() + 1;
     int node_size = ncpus / nodes;
@@ -71,29 +65,37 @@ int threadPin(int32_t cpu_id) {
     if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) {
         int half_node_size = node_size / 2;
         int offset = 0;
-        uint32_t half_cpu_id = cpu_id;
+        uint32_t half_cpu_id = pid;
 
-        if (cpu_id >= ncpus / 2) {
-            half_cpu_id = cpu_id - ncpus / 2;
+        if (pid >= ncpus / 2) {
+            half_cpu_id = pid - ncpus / 2;
             offset = ncpus / 2;
         }
-        __prefered_core = (half_cpu_id % nodes) * half_node_size + half_cpu_id / nodes;
-        __prefered_core += offset;
-        __prefered_core %= getNCores();
-        CPU_SET(__prefered_core, &mask);
+        prefered_core = (half_cpu_id % nodes) * half_node_size + half_cpu_id / nodes;
+        prefered_core += offset;
     } else {
-        __prefered_core = ((cpu_id % nodes) * node_size) % getNCores();
-        CPU_SET(__prefered_core, &mask);
+        prefered_core = ((pid % nodes) * node_size);
     }
+#else
+    prefered_core = pid;
+#endif
+    prefered_core %= getNCores();
 
-#        ifdef DEBUG
+    return prefered_core;
+}
+
+int threadPin(int32_t cpu_id) {
+    int ret = 0;
+    cpu_set_t mask;
+    unsigned int len = sizeof(mask);
+
+    pthread_setconcurrency(getNCores());
+    CPU_ZERO(&mask);
+    __prefered_core = preferedCoreOfThread(cpu_id);
+    CPU_SET(__prefered_core, &mask);
+#ifdef DEBUG
     fprintf(stderr, "DEBUG: thread: %d -- numa_node: %d -- core: %d -- nodes: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core, nodes);
-#        endif
-
-#    else
-    __prefered_core = cpu_id % getNCores();
-    CPU_SET(cpu_id % getNCores(), &mask);
-#    endif
+#endif
     ret = sched_setaffinity(0, len, &mask);
     if (ret == -1)
         perror("sched_setaffinity");

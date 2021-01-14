@@ -63,8 +63,8 @@
 // ---------------------------------------
 // This definition disables node recycling in the concurrent stack and queue
 // implementations that support memory reclamation. This may have negative impact in
-// performance. By default, this flag is disabled.
-//#define POOL_NODE_RECYCLING_DISABLE
+// performance. By default, this flag is enabled.
+#define POOL_NODE_RECYCLING_DISABLE
 
 // Definition: _TRACK_CPU_COUNTERS
 // -------------------------------

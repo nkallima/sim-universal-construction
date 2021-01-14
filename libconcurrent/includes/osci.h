@@ -23,7 +23,7 @@ typedef struct OsciNode {
 
 typedef struct OsciThreadState {
     volatile OsciNode next_node[2];
-    int toggle CACHE_ALIGN;
+    int toggle;
 } OsciThreadState;
 
 typedef struct OsciStruct {
