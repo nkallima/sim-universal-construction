@@ -57,14 +57,14 @@
 // This definition enables some optimizations on memory allocation that seems to greately
 // improve the performance on AMD Epyc multiprocessors. This flag seems to double the
 // performance in CC-Synch and H-Synch algorithms.
-//#define SYNCH_COMPACT_ALLOCATION
+#define SYNCH_COMPACT_ALLOCATION
 
 // Definition: POOL_NODE_RECYCLING_DISABLE
 // ---------------------------------------
 // This definition disables node recycling in the concurrent stack and queue
 // implementations that support memory reclamation. This may have negative impact in
 // performance. By default, this flag is enabled.
-#define POOL_NODE_RECYCLING_DISABLE
+//#define POOL_NODE_RECYCLING_DISABLE
 
 // Definition: _TRACK_CPU_COUNTERS
 // -------------------------------
