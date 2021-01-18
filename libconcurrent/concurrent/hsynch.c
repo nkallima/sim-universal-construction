@@ -73,7 +73,7 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
             int manual_numa_node;
 
             int actual_numa_node = numa_node_of_cpu(getPreferedCore());
-            int actual_per_manual = (numa_max_node() + 1) / l->numa_nodes;
+            int actual_per_manual = numa_num_task_nodes() / l->numa_nodes;
             if (actual_per_manual != 0)
                 manual_numa_node = actual_numa_node / actual_per_manual;
             else {
@@ -113,7 +113,7 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
     if (numa_regions == HSYNCH_DEFAULT_NUMA_POLICY) {
         l->numa_policy = true;
 #ifdef NUMA_SUPPORT
-        l->numa_nodes = numa_max_node() + 1;
+        l->numa_nodes = numa_num_task_nodes();
         l->numa_node_size = nthreads / l->numa_nodes + (nthreads % l->numa_nodes);
 #else
         l->numa_node_size = HSYNCH_DEFAULT_NUMA_NODE_SIZE;

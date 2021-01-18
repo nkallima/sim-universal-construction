@@ -59,7 +59,7 @@ inline uint32_t preferedCoreOfThread(uint32_t pid) {
     uint32_t prefered_core = 0;
 #ifdef NUMA_SUPPORT
     int ncpus = numa_num_configured_cpus();
-    int nodes = numa_max_node() + 1;
+    int nodes = numa_num_task_nodes();
     int node_size = ncpus / nodes;
 
     if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) {
