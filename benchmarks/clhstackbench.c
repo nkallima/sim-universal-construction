@@ -44,7 +44,7 @@ inline static Object pop(int pid) {
     if (Head->next == NULL)
         return -1;
     else {
-        result = Head->next->value;
+        result = Head->value;
         n = (ListNode *)Head;
         Head = Head->next;
     }
