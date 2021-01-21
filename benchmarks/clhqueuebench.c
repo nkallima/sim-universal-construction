@@ -48,7 +48,7 @@ inline static Object dequeue(int pid) {
     if (Head->next == null)
         return -1;
     else {
-        result = Head->next->value;
+        result = Head->value;
         n = (ListNode *)Head;
         Head = Head->next;
     }
