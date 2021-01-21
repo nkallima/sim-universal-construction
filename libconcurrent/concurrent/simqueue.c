@@ -164,7 +164,6 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
 #ifdef DEBUG
         lsp_data->counter += 1;
 #endif
-        enq_counter = 0;
         for (i = 0, prefix = 0; i < diffs->tvec_cells; i++, prefix += _TVEC_BIWORD_SIZE_) {
             while (diffs->cell[i] != 0L) {
                 register int pos, proc_id;
