@@ -39,20 +39,20 @@ typedef struct HalfDeqState {
     ToggleVector applied;
     Node *ptr;
     RetVal *ret;
-    uint64_t __flex[1];
 #ifdef DEBUG
     int32_t counter;
 #endif
+    uint64_t __flex[1];
 } HalfDeqState;
 
 typedef struct DeqState {
     ToggleVector applied;
     Node *ptr;
     RetVal *ret;
-    uint64_t __flex[1];
 #ifdef DEBUG
     int32_t counter;
 #endif
+    uint64_t __flex[1];
     char pad[PAD_CACHE(sizeof(HalfDeqState))];
 } DeqState;
 
