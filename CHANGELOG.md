@@ -2,6 +2,8 @@ v2.2.0
 ------
 - A new implementations of the pool.c functionality. Most stack and queue implementations support memory reclamation, the only exception are the simstack, simqueue, lfstack and msqueue implementations.
 - Code clean-up for the Sim family of algorithms.
+- Improvements on the HSynch family of algorithms.
+- Enhanced NUMA support for the NUMA-aware data-structures.
 - Better output for bench.sh script.
 - Documentation improvements.
 
