@@ -10,50 +10,29 @@
 #include <sim.h>
 #include <queue-stack.h>
 
-typedef struct HalfEnqState {
-    ToggleVector applied;
-    Node *link_a CACHE_ALIGN;
-    Node *link_b;
-    Node *ptr;
-#ifdef DEBUG
-    int32_t counter;
-#endif
-    uint64_t __flex[1];
-} HalfEnqState;
-
 typedef struct EnqState {
     ToggleVector applied;
-    Node *link_a CACHE_ALIGN;
-    Node *link_b;
-    Node *ptr;
+    uint64_t copy_point;
+    Node *tail CACHE_ALIGN;
+    Node *first;
+    Node *last;
 #ifdef DEBUG
     int32_t counter;
 #endif
     uint64_t __flex[1];
-    char pad[PAD_CACHE(sizeof(HalfEnqState))];
 } EnqState;
 
 #define EnqStateSize(N) (sizeof(EnqState) + _TVEC_VECTOR_SIZE(N))
 
-typedef struct HalfDeqState {
-    ToggleVector applied;
-    Node *ptr;
-    RetVal *ret;
-#ifdef DEBUG
-    int32_t counter;
-#endif
-    uint64_t __flex[1];
-} HalfDeqState;
-
 typedef struct DeqState {
     ToggleVector applied;
-    Node *ptr;
+    uint64_t copy_point;
+    Node *head;
     RetVal *ret;
 #ifdef DEBUG
     int32_t counter;
 #endif
     uint64_t __flex[1];
-    char pad[PAD_CACHE(sizeof(HalfDeqState))];
 } DeqState;
 
 #define DeqStateSize(N) (sizeof(DeqState) + _TVEC_VECTOR_SIZE(N) + (N) * sizeof(RetVal))
@@ -70,7 +49,6 @@ typedef struct SimQueueThreadState {
     PoolStruct pool_node;
     int deq_local_index;
     int enq_local_index;
-    int mybank;
     int backoff;
 } SimQueueThreadState;
 
