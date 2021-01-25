@@ -70,17 +70,14 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
     } else {
         int ncpus = numa_num_configured_cpus();
         if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2) && ncpus > 1) {
-            int manual_numa_node;
-
             int actual_numa_node = numa_node_of_cpu(getPreferedCore());
             int actual_per_manual = numa_num_task_nodes() / l->numa_nodes;
             if (actual_per_manual != 0)
-                manual_numa_node = actual_numa_node / actual_per_manual;
+                node_of_thread = actual_numa_node / actual_per_manual;
             else {
                 int threads_per_node = l->nthreads / l->numa_nodes;
-                manual_numa_node = getPreferedCore() / threads_per_node;
+                node_of_thread = getPreferedCore() / threads_per_node;
             }
-            node_of_thread = manual_numa_node;
         } else {
             node_of_thread = pid / l->numa_node_size;
         }

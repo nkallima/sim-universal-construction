@@ -23,7 +23,6 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
 
         if (st->head != null) {
             RetVal ret = node->val;
-
             st->head = st->head->next;
             recycle_obj(&pool_node, (void *)node);
             return ret;
