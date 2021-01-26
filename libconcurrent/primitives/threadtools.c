@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <unistd.h>
 
 #include <config.h>
@@ -125,7 +126,7 @@ inline static void *uthreadWrapper(void *arg) {
 
 int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
     long i;
-    int last_thread_id;
+    int last_thread_id = -1;
 
     init_cpu_counters();
     __ncores = sysconf(_SC_NPROCESSORS_ONLN);

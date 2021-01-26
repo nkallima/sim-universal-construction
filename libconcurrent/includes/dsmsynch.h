@@ -38,7 +38,7 @@ typedef struct DSMSynchStruct {
 #endif
 } DSMSynchStruct;
 
-void DSMSynchStructInit(DSMSynchStruct *l, uint32_t ntreads);
+void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads);
 void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, int pid);
 RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid);
 

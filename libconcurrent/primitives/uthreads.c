@@ -9,7 +9,6 @@ static __thread Fiber *FIBER_RECYCLE = null;
 static __thread int MAX_FIBERS = 1;
 static __thread int currentFiber = 0;
 
-inline static void switch_to_fiber(Fiber *prev, Fiber *cur);
 
 void initFibers(int max) {
     int i;
