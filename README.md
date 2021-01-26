@@ -4,7 +4,7 @@ This is a open-source framework for concurrent data-structures and benchmarks. T
 contains a substantial set of concurrent data-structures such as `queues`, `stacks`, `combining-objects`,
 `hash-tables`, `locks`, etc. This framework also provides a user-friendly runtime for developing and
 benchmarking concurrent data-structures. Among other features, this runtime provides functionality 
-for creating threads easily (both Posix and user-space threads), tools for measuring performance, etc.
+for creating threads easily (both Posix and user-level threads), tools for measuring performance, etc.
 The provided concurrent data-structures and the runtime are highly optimized for contemporary 
 NUMA multiprocessors such as AMD Epyc and Intel Xeon.
 
@@ -136,7 +136,7 @@ execute one of the following make commands. This step is not necessary in case t
 |  `make CC=cc ARCH=arch` |  Compiles the source-code for the current architecture using the cc compiler.         |
 |  `make clang`           |  Compiles the source-code using the clang compiler.                                   |
 |  `make icx`             |  Compiles the source-code using the Intel icx compiler.                               |
-|  `make unknown`         |  Compiles the source-code for architectures other than X86_64, e.g. riscv, arm, etc.  |
+|  `make unknown`         |  Compiles the source-code for architectures other than X86_64, e.g. RISC-V, ARM, etc. |
 |  `make clean`           |  Cleaning-up all binary files.                                                        |
 
 

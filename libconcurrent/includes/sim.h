@@ -12,7 +12,7 @@
 #define _SIM_LOCAL_POOL_SIZE_ 4
 
 #if _SIM_LOCAL_POOL_SIZE_ < 2
-#    error SIM universal construction is mproperily configured
+#    error SIM universal construction is improperly configured
 #endif
 
 typedef struct HalfSimObjectState {
@@ -42,8 +42,8 @@ typedef struct SimObjectState {
 
 typedef union pointer_t {
     struct StructData {
-        uint64_t seq : 32;
-        uint32_t index : 32;
+        uint64_t seq : 40;
+        uint32_t index : 24;
     } struct_data;
     volatile uint64_t raw_data;
 } pointer_t;

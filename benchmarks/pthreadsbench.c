@@ -18,10 +18,6 @@ int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-void SHARED_OBJECT_INIT(void) {
-    object = 1;
-}
-
 inline static void *Execute(void *Arg) {
     long i, rnum;
     volatile int j;
@@ -48,8 +44,7 @@ inline static void *Execute(void *Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-
-    SHARED_OBJECT_INIT();
+    object = 1;
     pthread_spin_init(&lock, PTHREAD_PROCESS_SHARED);
     BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
