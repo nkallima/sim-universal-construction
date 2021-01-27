@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Node: %ld\n", head->val);
         counter++;
     }
-    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter); // Do not count queue->guard node
+    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter);
 #endif
 
     return 0;

@@ -59,6 +59,13 @@ int main(int argc, char *argv[]) {
 
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: Object state: %lld\n", (long long int)stack->pool[stack->sp.struct_data.index]->counter);
+    volatile Node *head = stack->pool[stack->sp.struct_data.index]->head;
+    long counter = 0;
+    while (head != NULL) {
+        head = head->next;
+        counter++;
+    }
+    fprintf(stderr, "DEBUG: %ld nodes were left in the stack\n", counter);
 #endif
 
     return 0;
