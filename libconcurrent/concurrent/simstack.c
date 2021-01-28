@@ -23,22 +23,6 @@ static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src) {
     memcpy(&dest->head, &src->head, SimStackStateSize(dest->applied.nthreads) - sizeof(ToggleVector) - sizeof(Object *));
 }
 
-void SimStackThreadStateInit(SimStackThreadState *th_state, uint32_t nthreads, int pid) {
-    TVEC_INIT(&th_state->diffs, nthreads);
-    TVEC_INIT(&th_state->l_toggles, nthreads);
-    TVEC_INIT(&th_state->mask, nthreads);
-    TVEC_INIT(&th_state->my_bit, nthreads);
-    TVEC_INIT(&th_state->toggle, nthreads);
-    TVEC_INIT(&th_state->pops, nthreads);
-
-    th_state->local_index = 0;
-    TVEC_REVERSE_BIT(&th_state->my_bit, pid);
-    TVEC_SET_BIT(&th_state->mask, pid);
-    TVEC_NEGATIVE(&th_state->toggle, &th_state->mask);
-    th_state->backoff = 1;
-    init_pool(&th_state->pool, sizeof(Node));
-}
-
 void SimStackInit(SimStackStruct *stack, uint32_t nthreads, int max_backoff) {
     int i;
 
@@ -62,6 +46,22 @@ void SimStackInit(SimStackStruct *stack, uint32_t nthreads, int max_backoff) {
     stack->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->counter = 0;
 #endif
     FullFence();
+}
+
+void SimStackThreadStateInit(SimStackThreadState *th_state, uint32_t nthreads, int pid) {
+    TVEC_INIT(&th_state->diffs, nthreads);
+    TVEC_INIT(&th_state->l_toggles, nthreads);
+    TVEC_INIT(&th_state->mask, nthreads);
+    TVEC_INIT(&th_state->my_bit, nthreads);
+    TVEC_INIT(&th_state->toggle, nthreads);
+    TVEC_INIT(&th_state->pops, nthreads);
+
+    TVEC_REVERSE_BIT(&th_state->my_bit, pid);
+    TVEC_SET_BIT(&th_state->mask, pid);
+    TVEC_NEGATIVE(&th_state->toggle, &th_state->mask);
+    th_state->local_index = 0;
+    th_state->backoff = 1;
+    init_pool(&th_state->pool, sizeof(Node));
 }
 
 inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_state, ArgVal arg) {

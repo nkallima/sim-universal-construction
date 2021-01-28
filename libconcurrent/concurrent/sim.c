@@ -4,7 +4,7 @@ static inline void SimStateCopy(SimObjectState *dest, SimObjectState *src);
 
 static inline void SimStateCopy(SimObjectState *dest, SimObjectState *src) {
     // copy everything except 'applied' and 'ret' fields
-    memcpy(&dest->state, &src->state, SimObjectStateSize(dest->applied.nthreads) - sizeof(ToggleVector) - sizeof(RetVal *));
+    memcpy(&dest->state, &src->state, SimObjectStateSize(dest->applied.nthreads) - CACHE_LINE_SIZE);
 }
 
 void SimInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff) {
@@ -15,9 +15,8 @@ void SimInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff) {
     sim_struct->announce = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(ArgVal));
     sim_struct->pool = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimObjectState *) * (_SIM_LOCAL_POOL_SIZE_ * nthreads + 1));
     for (i = 0; i < _SIM_LOCAL_POOL_SIZE_ * nthreads + 1; i++) {
-        void *p = getAlignedMemory(CACHE_LINE_SIZE, SimObjectStateSize(nthreads));
-        sim_struct->pool[i] = p;
-        TVEC_INIT_AT(&sim_struct->pool[i]->applied, nthreads, (void *)sim_struct->pool[i]->__flex);
+        sim_struct->pool[i] = getAlignedMemory(CACHE_LINE_SIZE, SimObjectStateSize(nthreads));
+        TVEC_INIT_AT(&sim_struct->pool[i]->applied, nthreads, sim_struct->pool[i]->__flex);
         sim_struct->pool[i]->ret = ((void *)sim_struct->pool[i]->__flex) + _TVEC_VECTOR_SIZE(nthreads);
     }
 
@@ -26,6 +25,7 @@ void SimInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff) {
 
     // OBJECT'S INITIAL VALUE
     // ----------------------
+    sim_struct->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->state.state = 0;
     TVEC_SET_ZERO((ToggleVector *)&sim_struct->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->applied);
     sim_struct->MAX_BACK = max_backoff * 100;
 #ifdef DEBUG
