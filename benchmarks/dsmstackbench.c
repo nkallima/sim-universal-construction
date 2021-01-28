@@ -63,6 +63,15 @@ int main(int argc, char *argv[]) {
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: Object state: counter: %ld\n", object_struct->object_struct.counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", object_struct->object_struct.rounds);
+    volatile Node *top = object_struct->top;
+    long counter;
+
+    counter = 0;
+    while (top != null) {
+        top = top->next;
+        counter++;
+    }
+    fprintf(stderr, "DEBUG: %ld nodes left in the queue\n", counter);
 #endif
 
     return 0;

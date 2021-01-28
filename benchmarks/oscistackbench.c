@@ -59,16 +59,17 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    volatile Node *head = object_struct.head;
-    int i;
-
-    i = 0;
-    while (head != null) {
-        head = head->next;
-        i++;
-    }
     fprintf(stderr, "DEBUG: Object state: %ld\n", object_struct.object_struct.counter);
-    fprintf(stderr, "DEBUG: rounds: %d nodes left in the queue: %d\n", object_struct.object_struct.rounds, i);
+    fprintf(stderr, "DEBUG: rounds: %d\n", object_struct.object_struct.rounds);
+    volatile Node *top = object_struct.top;
+    long counter;
+
+    counter = 0;
+    while (top != null) {
+        top = top->next;
+        counter++;
+    }
+    fprintf(stderr, "DEBUG: %ld nodes left in the queue\n", counter);
 #endif
 
     return 0;

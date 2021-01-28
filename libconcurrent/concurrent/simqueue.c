@@ -1,7 +1,6 @@
 #include <sim.h>
 #include <simqueue.h>
 
-static const int GUARD_VALUE = INT_MAX;
 static const int LOCAL_POOL_SIZE = _SIM_LOCAL_POOL_SIZE_;
 
 static inline void EnqStateCopy(EnqState *dest, EnqState *src);

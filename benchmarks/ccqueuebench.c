@@ -65,6 +65,14 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "DEBUG: Enqueue: rounds: %d\n", queue_object->enqueue_struct.rounds);
     fprintf(stderr, "DEBUG: Dequeue: Object state: %ld\n", queue_object->dequeue_struct.counter);
     fprintf(stderr, "DEBUG: Dequeue: rounds: %d\n", queue_object->dequeue_struct.rounds);
+    volatile Node *first = (Node *)queue_object->first;
+    long counter = 0;
+
+    while (first->next != null) {
+        first = first->next;
+        counter++;
+    }
+    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter);
 #endif
 
     return 0;

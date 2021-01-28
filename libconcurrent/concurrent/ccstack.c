@@ -7,7 +7,7 @@ static __thread PoolStruct pool_node CACHE_ALIGN;
 
 void CCStackInit(CCStackStruct *stack_object_struct, uint32_t nthreads) {
     CCSynchStructInit(&stack_object_struct->object_struct, nthreads);
-    stack_object_struct->head = null;
+    stack_object_struct->top = null;
     StoreFence();
 }
 
@@ -19,11 +19,11 @@ void CCStackThreadStateInit(CCStackStruct *object_struct, CCStackThreadState *lo
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile CCStackStruct *st = (CCStackStruct *)state;
-        volatile Node *node = st->head;
+        volatile Node *node = st->top;
 
-        if (st->head != null) {
+        if (st->top != null) {
             RetVal ret = node->val;
-            st->head = st->head->next;
+            st->top = st->top->next;
             recycle_obj(&pool_node, (void *)node);
             return ret;
         } else
@@ -33,9 +33,9 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         Node *node;
 
         node = alloc_obj(&pool_node);
-        node->next = st->head;
+        node->next = st->top;
         node->val = arg;
-        st->head = node;
+        st->top = node;
 
         return 0;
     }

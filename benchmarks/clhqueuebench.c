@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #include <config.h>
+#include <queue-stack.h>
 #include <primitives.h>
 #include <fastrand.h>
 #include <clh.h>
@@ -13,16 +14,12 @@
 #include <barrier.h>
 #include <bench_args.h>
 
-typedef struct ListNode {
-    volatile struct ListNode *next; // in the queue where Head and Tail point to.
-    int32_t value;                  // initially, there is a sentinel node
-} ListNode;
 
 CLHLockStruct *lhead, *ltail;
-ListNode guard CACHE_ALIGN = {null, 0};
+Node guard CACHE_ALIGN = {GUARD_VALUE, NULL};
 
-volatile ListNode *Head CACHE_ALIGN = &guard;
-volatile ListNode *Tail CACHE_ALIGN = &guard;
+volatile Node *Head CACHE_ALIGN = &guard;
+volatile Node *Tail CACHE_ALIGN = &guard;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
@@ -30,9 +27,9 @@ BenchArgs bench_args CACHE_ALIGN;
 __thread PoolStruct pool_node;
 
 inline static void enqueue(Object arg, int pid) {
-    ListNode *n = alloc_obj(&pool_node);
+    Node *n = alloc_obj(&pool_node);
 
-    n->value = (Object)arg;
+    n->val = (Object)arg;
     n->next = null;
     CLHLock(ltail, pid);
     Tail->next = n;
@@ -42,14 +39,14 @@ inline static void enqueue(Object arg, int pid) {
 
 inline static Object dequeue(int pid) {
     Object result;
-    ListNode *n = NULL;
+    Node *n = NULL;
 
     CLHLock(lhead, pid);
     if (Head->next == null)
         return -1;
     else {
-        result = Head->value;
-        n = (ListNode *)Head;
+        result = Head->val;
+        n = (Node *)Head;
         Head = Head->next;
     }
     CLHUnlock(lhead, pid);
@@ -65,7 +62,7 @@ inline static void *Execute(void *Arg) {
     volatile int j;
 
     fastRandomSetSeed(id + 1);
-    init_pool(&pool_node, sizeof(ListNode));
+    init_pool(&pool_node, sizeof(Node));
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
@@ -98,6 +95,16 @@ int main(int argc, char *argv[]) {
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
+#ifdef DEBUG
+    volatile Node *head = Head;
+    long counter = 0;
+
+    while (head->next != null) {
+        head = head->next;
+        counter++;
+    }
+    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter);
+#endif
 
     return 0;
 }

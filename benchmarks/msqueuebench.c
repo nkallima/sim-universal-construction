@@ -60,13 +60,13 @@ int main(int argc, char *argv[]) {
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
 #ifdef DEBUG
-    int counter = 0;
+    long counter = 0;
 
     while (queue.head != null) {
         queue.head = queue.head->next;
         counter++;
     }
-    fprintf(stderr, "DEBUG: %d nodes were left in the queue!\n", counter - 1);
+    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter - 1);
 #endif
 
     return 0;

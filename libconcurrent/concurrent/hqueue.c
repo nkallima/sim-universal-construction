@@ -3,7 +3,6 @@
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 
-static const int GUARD = INT_MIN;
 static __thread PoolStruct pool_node CACHE_ALIGN;
 
 void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t numa_nodes) {
@@ -11,7 +10,7 @@ void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t n
     queue_object_struct->dequeue_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
     HSynchStructInit(queue_object_struct->enqueue_struct, nthreads, numa_nodes);
     HSynchStructInit(queue_object_struct->dequeue_struct, nthreads, numa_nodes);
-    queue_object_struct->guard.val = GUARD;
+    queue_object_struct->guard.val = GUARD_VALUE;
     queue_object_struct->guard.next = null;
     queue_object_struct->first = &queue_object_struct->guard;
     queue_object_struct->last = &queue_object_struct->guard;
@@ -32,18 +31,21 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     node->val = arg;
     st->last->next = node;
     st->last = node;
-    return 0;
+    return -1;
 }
 
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     HQueueStruct *st = (HQueueStruct *)state;
-    Node *node = (Node *)st->first;
+    volatile Node *node, *prev;
 
-    if (st->first->next != null) {
-        RetVal ret = node->val;
+    if (st->first->next != null){
+        prev = st->first;
         st->first = st->first->next;
-        recycle_obj(&pool_node, (void *)node);
-        return ret;
+        node = st->first;
+        if (node->val == GUARD_VALUE)
+            return serialDequeue(state, arg, pid);
+        recycle_obj(&pool_node, (Node *)prev);
+        return node->val;
     } else {
         return -1;
     }

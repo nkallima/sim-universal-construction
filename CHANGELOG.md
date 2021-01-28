@@ -4,6 +4,7 @@ v2.2.0
 - Code clean-up for the Sim family of algorithms.
 - Improvements on the HSynch family of algorithms.
 - Enhanced NUMA support for the NUMA-aware data-structures.
+- Homogenized code for stack and queue implementations.
 - Better output for bench.sh script.
 - Documentation improvements.
 
