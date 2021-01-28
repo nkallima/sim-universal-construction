@@ -12,11 +12,8 @@
 #include <pool.h>
 #include <barrier.h>
 #include <bench_args.h>
+#include <queue-stack.h>
 
-typedef struct Node {
-    Object value;                   // initially, there is a sentinel node
-    volatile struct Node *next; // in the queue where Top and Tail point to.
-} Node;
 
 CLHLockStruct *lock CACHE_ALIGN;
 Node guard CACHE_ALIGN = {0, null};
@@ -29,7 +26,7 @@ __thread PoolStruct pool_node;
 
 inline static void push(Object arg, int pid) {
     volatile Node *n = alloc_obj(&pool_node);
-    n->value = (Object)arg;
+    n->val = (Object)arg;
     CLHLock(lock, pid); // Critical section
     n->next = Top;
     Top = n;
@@ -42,9 +39,9 @@ inline static Object pop(int pid) {
 
     CLHLock(lock, pid);
     if (Top->next == NULL)
-        return -1;
+        result = EMPTY_STACK;
     else {
-        result = Top->value;
+        result = Top->val;
         n = (Node *)Top;
         Top = Top->next;
     }
@@ -99,7 +96,7 @@ int main(int argc, char *argv[]) {
     long counter;
 
     counter = 0;
-    while (ltop->next != null) {
+    while (ltop != null) {
         ltop = ltop->next;
         counter++;
     }

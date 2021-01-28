@@ -51,7 +51,7 @@ RetVal MSQueueDequeue(MSQueue *l, MSQueueThreadState *th_state) {
         if (first == l->head) {
             if (first == last) {
                 if (next == null)
-                    return -1;
+                    return EMPTY_QUEUE;
                 CASPTR(&l->tail, last, next);
                 backoff_delay(&th_state->backoff);
             } else {

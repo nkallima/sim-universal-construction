@@ -27,7 +27,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
             recycle_obj(&pool_node, (void *)node);
             return ret;
         } else
-            return -1;
+            return EMPTY_STACK;
     } else {
         DSMStackStruct *st = (DSMStackStruct *)state;
         Node *node;
@@ -37,7 +37,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->val = arg;
         st->top = node;
 
-        return 0;
+        return PUSH_SUCCESS;
     }
 }
 

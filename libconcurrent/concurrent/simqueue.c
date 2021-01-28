@@ -260,7 +260,7 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
                 if (node != NULL) {
                     lsp_data->ret[proc_id] = node->val;
                     lsp_data->head = (Node *)node;
-                } else lsp_data->ret[proc_id] = GUARD_VALUE;
+                } else lsp_data->ret[proc_id] = EMPTY_QUEUE;
 
                 diffs->cell[i] ^= ((bitword_t)1) << pos;
             }

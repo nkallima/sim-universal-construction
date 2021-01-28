@@ -83,7 +83,7 @@ inline static void serialPop(HalfSimStackState *st, int pid) {
         st->ret[pid] = (RetVal)st->head->val;
         st->head = (Node *)st->head->next;
     } else
-        st->ret[pid] = (RetVal)-1;
+        st->ret[pid] = EMPTY_STACK;
 }
 
 inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid) {

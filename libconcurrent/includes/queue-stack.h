@@ -3,12 +3,17 @@
 
 #include <limits.h>
 
-#define GUARD_VALUE INT_MIN
-
 typedef struct Node {
     Object val;
     volatile struct Node *next;
 } Node;
 
+#define GUARD_VALUE     LONG_MIN
+#define EMPTY_QUEUE     (GUARD_VALUE + 1)
+#define EMPTY_STACK     (GUARD_VALUE + 1)
+#define ENQUEUE_SUCCESS 0
+#define ENQUEUE_FAIL    -1
+#define PUSH_SUCCESS    0
+#define PUSH_FAIL       -1
 
 #endif

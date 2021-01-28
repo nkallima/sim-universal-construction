@@ -31,7 +31,7 @@ inline RetVal LFStackPop(LFStack *l, LFStackThreadState *th_state) {
     do {
         Node *old_top = (Node *)l->top;
         if (old_top == null)
-            return (RetVal)INT_MIN;
+            return EMPTY_STACK;
         if (CASPTR(&l->top, old_top, old_top->next))
             return old_top->val;
         else

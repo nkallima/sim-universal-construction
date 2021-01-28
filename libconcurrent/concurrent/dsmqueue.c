@@ -29,7 +29,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     node->val = arg;
     st->last->next = node;
     st->last = node;
-    return -1;
+    return ENQUEUE_SUCCESS;
 }
 
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
@@ -45,7 +45,7 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
         recycle_obj(&pool_node, (Node *)prev);
         return node->val;
     } else {
-        return -1;
+        return EMPTY_QUEUE;
     }
 }
 

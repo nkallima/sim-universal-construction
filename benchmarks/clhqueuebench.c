@@ -39,18 +39,24 @@ inline static void enqueue(Object arg, int pid) {
 
 inline static Object dequeue(int pid) {
     Object result;
-    Node *n = NULL;
+    Node *node = NULL;
 
     CLHLock(lhead, pid);
     if (Head->next == null)
-        return -1;
+        result = EMPTY_QUEUE;
     else {
-        result = Head->val;
-        n = (Node *)Head;
+        node = (Node *)Head;
         Head = Head->next;
+        if (node->val == GUARD_VALUE && Head->next != NULL) {
+            Head = Head->next;
+            result = EMPTY_QUEUE;
+        } else {
+            result = node->val;
+        }
     }
     CLHUnlock(lhead, pid);
-    recycle_obj(&pool_node, n);
+    if (node != NULL)
+        recycle_obj(&pool_node, node);
 
     return result;
 }
@@ -68,7 +74,7 @@ inline static void *Execute(void *Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        enqueue((Object)1, id);
+        enqueue((Object)id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;

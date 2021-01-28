@@ -21,7 +21,7 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         volatile Node *node = st->top;
 
         if (st->top == null) {
-            return -1;
+            return EMPTY_STACK;
         } else {
             RetVal ret = node->val;
 
@@ -39,7 +39,7 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->val = arg;
         st->top = node;
 
-        return 0;
+        return PUSH_SUCCESS;
     }
 }
 

@@ -27,7 +27,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
             return ret;
         }
 
-        return -1;
+        return EMPTY_STACK;
     } else {
         OsciStackStruct *st = (OsciStackStruct *)state;
         Node *node;
@@ -37,7 +37,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->val = arg;
         st->top = node;
 
-        return 0;
+        return PUSH_SUCCESS;
     }
 }
 
