@@ -46,7 +46,9 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
 #endif
         tmp_next = p->next;
         p->arg_ret = sfunc(state, p->arg_ret, p->pid);
+        NonTSOFence();
         p->completed = true;
+        NonTSOFence();
         p->locked = false;
         p = tmp_next;
     }

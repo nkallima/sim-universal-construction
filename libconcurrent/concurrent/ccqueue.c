@@ -29,6 +29,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     node->val = arg;
     st->last->next = node;
     st->last = node;
+    NonTSOFence();
     return ENQUEUE_SUCCESS;
 }
 
@@ -42,6 +43,7 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
         node = st->first;
         if (node->val == GUARD_VALUE)
             return serialDequeue(state, arg, pid);
+        NonTSOFence();
         recycle_obj(&pool_node, (Node *)prev);
         return node->val;
     } else {

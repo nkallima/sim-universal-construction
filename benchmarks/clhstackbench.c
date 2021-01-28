@@ -30,6 +30,7 @@ inline static void push(Object arg, int pid) {
     CLHLock(lock, pid); // Critical section
     n->next = Top;
     Top = n;
+    NonTSOFence();
     CLHUnlock(lock, pid);
 }
 
@@ -45,6 +46,7 @@ inline static Object pop(int pid) {
         n = (Node *)Top;
         Top = Top->next;
     }
+    NonTSOFence();
     CLHUnlock(lock, pid);
     recycle_obj(&pool_node, n);
 

@@ -106,6 +106,7 @@ osci_start:
             resched();
         }
     }
+    NonTSOFence();
     i = 0;
     while (i < l->fibers_per_thread) {
         if (p->next->rec[i].completed == false) {

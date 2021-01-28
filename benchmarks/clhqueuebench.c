@@ -34,6 +34,7 @@ inline static void enqueue(Object arg, int pid) {
     CLHLock(ltail, pid);
     Tail->next = n;
     Tail = n;
+    NonTSOFence();
     CLHUnlock(ltail, pid);
 }
 
@@ -54,6 +55,7 @@ inline static Object dequeue(int pid) {
             result = node->val;
         }
     }
+    NonTSOFence();
     CLHUnlock(lhead, pid);
     if (node != NULL)
         recycle_obj(&pool_node, node);
