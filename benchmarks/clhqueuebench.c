@@ -33,8 +33,8 @@ inline static void enqueue(Object arg, int pid) {
     n->next = null;
     CLHLock(ltail, pid);
     Tail->next = n;
-    Tail = n;
     NonTSOFence();
+    Tail = n;
     CLHUnlock(ltail, pid);
 }
 
@@ -49,7 +49,7 @@ inline static Object dequeue(int pid) {
         node = (Node *)Head;
         Head = Head->next;
         NonTSOFence();
-        if (node->val == GUARD_VALUE) {
+        if (node->val == GUARD_VALUE && Head->next != null) {
             Head = Head->next;
             result = EMPTY_QUEUE;
         } else {
