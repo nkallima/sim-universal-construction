@@ -48,14 +48,14 @@ inline static Object dequeue(int pid) {
     else {
         node = (Node *)Head;
         Head = Head->next;
-        if (node->val == GUARD_VALUE && Head->next != NULL) {
+        NonTSOFence();
+        if (node->val == GUARD_VALUE) {
             Head = Head->next;
             result = EMPTY_QUEUE;
         } else {
             result = node->val;
         }
     }
-    NonTSOFence();
     CLHUnlock(lhead, pid);
     if (node != NULL)
         recycle_obj(&pool_node, node);
@@ -87,7 +87,9 @@ inline static void *Execute(void *Arg) {
     }
     BarrierWait(&bar);
     if (id == 0) d2 = getTimeMillis();
+#ifndef DEBUG
     destroy_pool(&pool_node);
+#endif
 
     return NULL;
 }

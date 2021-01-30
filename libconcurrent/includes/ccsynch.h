@@ -32,7 +32,6 @@ typedef struct CCSynchStruct {
     CCSynchNode *nodes CACHE_ALIGN;
     uint32_t nthreads;
 #ifdef DEBUG
-    int *combiner_counter;
     volatile uint64_t counter CACHE_ALIGN;
     volatile int rounds;
 #endif

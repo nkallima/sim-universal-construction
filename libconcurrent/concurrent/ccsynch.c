@@ -27,7 +27,6 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
         return cur->arg_ret;
 #ifdef DEBUG
     l->rounds++;
-    l->combiner_counter[pid] += 1;
 #endif
     p = cur; // I am not been helped
     while (p->next != null && counter < help_bound) {
@@ -63,12 +62,7 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
 #endif
 
 #ifdef DEBUG
-    int i;
-
     l->rounds = l->counter = 0;
-    l->combiner_counter = getAlignedMemory(CACHE_LINE_SIZE, sizeof(int));
-    for (i = 0; i < nthreads; i++)
-        l->combiner_counter[i] += 1;
 #endif
 
     l->Tail->next = null;

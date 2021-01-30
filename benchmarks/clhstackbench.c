@@ -77,7 +77,9 @@ inline static void *Execute(void *Arg) {
     }
     BarrierWait(&bar);
     if (id == 0) d2 = getTimeMillis();
+#ifndef DEBUG
     destroy_pool(&pool_node);
+#endif
 
     return NULL;
 }
@@ -98,7 +100,7 @@ int main(int argc, char *argv[]) {
     long counter;
 
     counter = 0;
-    while (ltop != null) {
+    while (ltop->next != null) {
         ltop = ltop->next;
         counter++;
     }

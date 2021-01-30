@@ -6,6 +6,7 @@ v2.2.0
 - Enhanced NUMA support for the NUMA-aware data-structures.
 - Homogenized code for stack and queue implementations.
 - Better output for bench.sh script.
+- Numerous performance optimizations and bug-fixes, especially in machines with weak memory models.
 - Documentation improvements.
 
 v2.1.1

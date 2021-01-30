@@ -15,7 +15,9 @@ inline void BarrierWait(Barrier *bar) {
             resched();
     } else {
         bar->arrive = bar->val_at_set;
+        NonTSOFence();
         bar->leave_flag = true;
+        NonTSOFence();
         bar->arrive_flag = false;
         FullFence();
     }
@@ -26,7 +28,9 @@ inline void BarrierWait(Barrier *bar) {
             resched();
     } else {
         bar->leave = bar->val_at_set;
+        NonTSOFence();
         bar->arrive_flag = true;
+        NonTSOFence();
         bar->leave_flag = false;
         FullFence();
     }

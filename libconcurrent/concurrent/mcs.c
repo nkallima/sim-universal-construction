@@ -9,10 +9,11 @@ void MCSLock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
 
     if (prev != NULL) {
         l->Tail->locked = true;
+        NonTSOFence();
         thread_state->MyNode->locked = true;
         prev->next = thread_state->MyNode;
+        NonTSOFence();
     }
-    NonTSOFence();
     while (thread_state->MyNode->locked == true) {
         resched();
     }
