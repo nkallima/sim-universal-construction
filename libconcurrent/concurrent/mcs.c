@@ -11,6 +11,7 @@ void MCSLock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
         l->Tail->locked = true;
         NonTSOFence();
         thread_state->MyNode->locked = true;
+        NonTSOFence();
         prev->next = thread_state->MyNode;
         NonTSOFence();
     }
