@@ -97,9 +97,8 @@ int main(int argc, char *argv[]) {
 
 #ifdef DEBUG
     volatile Node *ltop = Top;
-    long counter;
+    long counter = 0;
 
-    counter = 0;
     while (ltop->next != null) {
         ltop = ltop->next;
         counter++;

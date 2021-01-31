@@ -64,9 +64,8 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "DEBUG: Object state: counter: %ld\n", object_struct->object_struct.counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", object_struct->object_struct.rounds);
     volatile Node *top = object_struct->top;
-    long counter;
+    long counter = 0;
 
-    counter = 0;
     while (top != null) {
         top = top->next;
         counter++;

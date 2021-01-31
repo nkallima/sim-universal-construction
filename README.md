@@ -1,6 +1,6 @@
 # Summary
 
-This is a open-source framework for concurrent data-structures and benchmarks. The provided framework 
+This is an open-source framework for concurrent data-structures and benchmarks. The provided framework 
 contains a substantial set of concurrent data-structures such as `queues`, `stacks`, `combining-objects`,
 `hash-tables`, `locks`, etc. This framework also provides a user-friendly runtime for developing and
 benchmarking concurrent data-structures. Among other features, this runtime provides functionality 

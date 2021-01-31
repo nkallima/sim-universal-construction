@@ -64,9 +64,8 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "DEBUG: Dequeue: Object state: %ld\n", queue_object.dequeue_struct.counter);
     fprintf(stderr, "DEBUG: Dequeue: rounds: %d\n", queue_object.dequeue_struct.rounds);
     volatile Node *first = queue_object.first;
-    long counter;
+    long counter = 0;
 
-    counter = 0;
     while (first->next != null) {
         first = first->next;
         counter++;
