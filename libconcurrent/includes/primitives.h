@@ -27,13 +27,15 @@
 #    define bitSearchFirst(A) __builtin_ctzll(A)
 #    define nonZeroBits(A)    __builtin_popcountll(A)
 #    if defined(__amd64__) || defined(__x86_64__)
-#        define LoadFence()  asm volatile("lfence" ::: "memory")
-#        define StoreFence() asm volatile("sfence" ::: "memory")
-#        define FullFence()  asm volatile("mfence" ::: "memory")
+#        define LoadFence()   asm volatile("lfence" ::: "memory")
+#        define StoreFence()  asm volatile("sfence" ::: "memory")
+#        define FullFence()   asm volatile("mfence" ::: "memory")
+#        define NonTSOFence()
 #    else
-#        define LoadFence()  __sync_synchronize()
-#        define StoreFence() __sync_synchronize()
-#        define FullFence()  __sync_synchronize()
+#        define LoadFence()   __sync_synchronize()
+#        define StoreFence()  __sync_synchronize()
+#        define FullFence()   __sync_synchronize()
+#        define NonTSOFence() __sync_synchronize()
 #    endif
 #elif defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
 #    warning A newer version of GCC compiler is recommended!
@@ -42,6 +44,7 @@
 #    define FullFence()      asm volatile("mfence" ::: "memory")
 #    define ReadPrefetch(A)  asm volatile("prefetchnta %0" ::"m"(*((const int *)A)))
 #    define StorePrefetch(A) asm volatile("prefetchnta %0" ::"m"(*((const int *)A)))
+#    define NonTSOFence()
 
 //   in this case where gcc is too old, implement atomic primitives in primitives.c
 #    define __OLD_GCC_X86__

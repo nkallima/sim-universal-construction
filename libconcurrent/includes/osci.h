@@ -23,7 +23,7 @@ typedef struct OsciNode {
 
 typedef struct OsciThreadState {
     volatile OsciNode next_node[2];
-    int toggle CACHE_ALIGN;
+    int toggle;
 } OsciThreadState;
 
 typedef struct OsciStruct {
@@ -33,8 +33,8 @@ typedef struct OsciStruct {
     uint32_t groups_of_fibers;
     ptr_aligned_t *current_node;
 #ifdef DEBUG
+    volatile uint64_t counter;
     volatile int rounds CACHE_ALIGN;
-    volatile int counter;
 #endif
 } OsciStruct;
 

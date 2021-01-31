@@ -5,9 +5,7 @@
 
 #include <config.h>
 #include <primitives.h>
-#include <tvec.h>
 #include <fastrand.h>
-#include <pool.h>
 #include <threadtools.h>
 #include <simqueue.h>
 #include <barrier.h>
@@ -30,9 +28,7 @@ static void *Execute(void *Arg) {
     SimQueueThreadStateInit(queue, th_state, id);
 
     BarrierWait(&bar);
-    if (id == 0) {
-        d1 = getTimeMillis();
-    }
+    if (id == 0) d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
         SimQueueEnqueue(queue, th_state, id, id);
@@ -44,6 +40,9 @@ static void *Execute(void *Arg) {
         for (j = 0; j < rnum; j++)
             ;
     }
+    BarrierWait(&bar);
+    if (id == 0) d2 = getTimeMillis();
+
     return NULL;
 }
 
@@ -52,26 +51,29 @@ int main(int argc, char *argv[]) {
     queue = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimQueueStruct));
     SimQueueInit(queue, bench_args.nthreads, bench_args.backoff_high);
 
-    BarrierInit(&bar, bench_args.nthreads);
+    BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
-    d2 = getTimeMillis();
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    Node *link_a = queue->enq_pool[queue->enq_sp.struct_data.index]->link_a;
-    Node *link_b = queue->enq_pool[queue->enq_sp.struct_data.index]->link_b;
-    CASPTR(&link_a->next, null, link_b);
-    fprintf(stderr, "DEBUG: State value: %ld\n", (long)queue->enq_pool[queue->enq_sp.struct_data.index]->counter);
-    volatile Node *cur = queue->deq_pool[queue->deq_sp.struct_data.index]->ptr;
+    Node *first = queue->enq_pool[queue->enq_sp.struct_data.index]->first;
+    Node *last = queue->enq_pool[queue->enq_sp.struct_data.index]->last;
+    if (first != NULL) {
+        CASPTR(&first->next, NULL, last);
+    }
+    fprintf(stderr, "DEBUG: Enqueue: Object state: %ld\n", (long)queue->enq_pool[queue->enq_sp.struct_data.index]->counter);
+    fprintf(stderr, "DEBUG: Dequeue: Object state: %ld\n", (long)queue->deq_pool[queue->deq_sp.struct_data.index]->counter);
+    volatile Node *head = queue->deq_pool[queue->deq_sp.struct_data.index]->head;
     long counter = 0;
-    while (cur != null) {
-        cur = cur->next;
+    while (head->next != NULL) {
+        head = head->next;
+        fprintf(stderr, "Node: %ld\n", head->val);
         counter++;
     }
-    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter - 1); // Do not count queue->guard node
+    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter);
 #endif
 
     return 0;

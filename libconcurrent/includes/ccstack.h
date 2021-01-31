@@ -9,7 +9,7 @@
 
 typedef struct CCStackStruct {
     CCSynchStruct object_struct CACHE_ALIGN;
-    volatile Node *volatile head CACHE_ALIGN;
+    volatile Node *volatile top CACHE_ALIGN;
 } CCStackStruct;
 
 typedef struct CCStackThreadState {

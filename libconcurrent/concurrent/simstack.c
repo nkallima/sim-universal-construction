@@ -16,34 +16,11 @@ static const int POP = INT_MIN;
 inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_state, ArgVal arg);
 inline static void serialPop(HalfSimStackState *st, int pid);
 inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid);
-static inline void SimStackSimStackStateCopy(SimStackState *dest, SimStackState *src);
+static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src);
 
-static inline void SimStackSimStackStateCopy(SimStackState *dest, SimStackState *src) {
+static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src) {
     // copy everything except 'applied' and 'ret' fields
-    RetVal *tmp_ret;
-    ToggleVector tmp_applied;
-
-    tmp_ret = dest->ret;
-    tmp_applied = dest->applied;
-    memcpy(dest, src, SimStackStateSize(dest->applied.nthreads));
-    dest->ret = tmp_ret;
-    dest->applied = tmp_applied;
-}
-
-void SimStackThreadStateInit(SimStackThreadState *th_state, uint32_t nthreads, int pid) {
-    TVEC_INIT(&th_state->diffs, nthreads);
-    TVEC_INIT(&th_state->l_toggles, nthreads);
-    TVEC_INIT(&th_state->mask, nthreads);
-    TVEC_INIT(&th_state->my_bit, nthreads);
-    TVEC_INIT(&th_state->toggle, nthreads);
-    TVEC_INIT(&th_state->pops, nthreads);
-
-    th_state->local_index = 0;
-    TVEC_REVERSE_BIT(&th_state->my_bit, pid);
-    TVEC_SET_BIT(&th_state->mask, pid);
-    TVEC_NEGATIVE(&th_state->toggle, &th_state->mask);
-    th_state->backoff = 1;
-    init_pool(&th_state->pool, sizeof(Node));
+    memcpy(&dest->head, &src->head, SimStackStateSize(dest->applied.nthreads) - sizeof(ToggleVector) - sizeof(Object *));
 }
 
 void SimStackInit(SimStackStruct *stack, uint32_t nthreads, int max_backoff) {
@@ -71,6 +48,22 @@ void SimStackInit(SimStackStruct *stack, uint32_t nthreads, int max_backoff) {
     FullFence();
 }
 
+void SimStackThreadStateInit(SimStackThreadState *th_state, uint32_t nthreads, int pid) {
+    TVEC_INIT(&th_state->diffs, nthreads);
+    TVEC_INIT(&th_state->l_toggles, nthreads);
+    TVEC_INIT(&th_state->mask, nthreads);
+    TVEC_INIT(&th_state->my_bit, nthreads);
+    TVEC_INIT(&th_state->toggle, nthreads);
+    TVEC_INIT(&th_state->pops, nthreads);
+
+    TVEC_REVERSE_BIT(&th_state->my_bit, pid);
+    TVEC_SET_BIT(&th_state->mask, pid);
+    TVEC_NEGATIVE(&th_state->toggle, &th_state->mask);
+    th_state->local_index = 0;
+    th_state->backoff = 1;
+    init_pool(&th_state->pool, sizeof(Node));
+}
+
 inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_state, ArgVal arg) {
 #ifdef DEBUG
     st->counter += 1;
@@ -90,22 +83,21 @@ inline static void serialPop(HalfSimStackState *st, int pid) {
         st->ret[pid] = (RetVal)st->head->val;
         st->head = (Node *)st->head->next;
     } else
-        st->ret[pid] = (RetVal)-1;
+        st->ret[pid] = EMPTY_STACK;
 }
 
 inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid) {
     ToggleVector *diffs = &th_state->diffs, *l_toggles = &th_state->l_toggles, *pops = &th_state->pops;
     pointer_t new_sp, old_sp;
     HalfSimStackState *lsp_data, *sp_data;
-    ArgVal tmp_arg;
     int i, j, prefix, mybank, push_counter;
 
     mybank = TVEC_GET_BANK_OF_BIT(pid, stack->nthreads);
     TVEC_REVERSE_BIT(&th_state->my_bit, pid);
     TVEC_NEGATIVE_BANK(&th_state->toggle, &th_state->toggle, mybank);
     lsp_data = (HalfSimStackState *)stack->pool[pid * _SIM_LOCAL_POOL_SIZE_ + th_state->local_index];
-    stack->announce[pid] = arg;                                         // stack->announce the operation
-    TVEC_ATOMIC_ADD_BANK(&stack->a_toggles, &th_state->toggle, mybank); // toggle pid's bit in stack->a_toggles, Fetch&Add acts as a full write-barrier
+    stack->announce[pid] = arg;                                                         // stack->announce the operation
+    TVEC_ATOMIC_ADD_BANK(&stack->a_toggles, &th_state->toggle, mybank);                 // toggle pid's bit in stack->a_toggles, Fetch&Add acts as a full write-barrier
 
     if (!isSystemOversubscribed()) {
         volatile int k;
@@ -116,19 +108,18 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
-    } else {
+    } else
         resched();
-    }
 
     for (j = 0; j < 2; j++) {
-        old_sp = stack->sp;                                                   // read reference to struct SimStackState
-        sp_data = (HalfSimStackState *)stack->pool[old_sp.struct_data.index]; // read reference of struct SimStackState in a local variable lsp_data
+        old_sp = stack->sp;                                                             // read reference to struct SimStackState
+        sp_data = (HalfSimStackState *)stack->pool[old_sp.struct_data.index];           // read reference of struct SimStackState in a local variable lsp_data
         TVEC_ATOMIC_COPY_BANKS(diffs, &sp_data->applied, mybank);
-        TVEC_XOR_BANKS(diffs, diffs, &th_state->my_bit, mybank); // determine the set of active processes
-        if (TVEC_IS_SET(diffs, pid))                             // if the operation has already been applied return
+        TVEC_XOR_BANKS(diffs, diffs, &th_state->my_bit, mybank);                        // determine the set of active processes
+        if (TVEC_IS_SET(diffs, pid))                                                    // if the operation has already been applied return
             break;
-        SimStackSimStackStateCopy((SimStackState *)lsp_data, (SimStackState *)sp_data);
-        TVEC_COPY(l_toggles, (ToggleVector *)&stack->a_toggles); // This is an atomic read, since a_toogles is volatile
+        SimStackStateCopy((SimStackState *)lsp_data, (SimStackState *)sp_data);
+        TVEC_COPY(l_toggles, (ToggleVector *)&stack->a_toggles);                        // This is an atomic read, since a_toogles is volatile
         if (old_sp.raw_data != stack->sp.raw_data)
             continue;
         TVEC_XOR(diffs, &lsp_data->applied, l_toggles);
@@ -146,11 +137,10 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
                 pos = bitSearchFirst(diffs->cell[i]);
                 proc_id = prefix + pos;
                 diffs->cell[i] ^= ((bitword_t)1) << pos;
-                tmp_arg = stack->announce[proc_id];
-                if (tmp_arg == POP) {
+                if (stack->announce[proc_id] == POP) {
                     pops->cell[i] |= ((bitword_t)1) << pos;
                 } else {
-                    serialPush(lsp_data, th_state, tmp_arg);
+                    serialPush(lsp_data, th_state, stack->announce[proc_id]);
                     push_counter++;
                 }
             }
@@ -180,7 +170,7 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
             rollback(&th_state->pool, push_counter);
         }
     }
-    return stack->pool[stack->sp.struct_data.index]->ret[pid]; // return the value found in the record stored there
+    return stack->pool[stack->sp.struct_data.index]->ret[pid];                          // return the value found in the record stored there
 }
 
 void SimStackPush(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid) {

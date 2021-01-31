@@ -5,9 +5,7 @@
 
 #include <config.h>
 #include <primitives.h>
-#include <tvec.h>
 #include <fastrand.h>
-#include <pool.h>
 #include <threadtools.h>
 #include <simstack.h>
 #include <barrier.h>
@@ -29,9 +27,7 @@ inline static void *Execute(void *Arg) {
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStackThreadState));
     SimStackThreadStateInit(th_state, bench_args.nthreads, id);
     BarrierWait(&bar);
-    if (id == 0) {
-        d1 = getTimeMillis();
-    }
+    if (id == 0) d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
         SimStackPush(stack, th_state, id, id);
@@ -43,6 +39,9 @@ inline static void *Execute(void *Arg) {
         for (j = 0; j < rnum; j++)
             ;
     }
+    BarrierWait(&bar);
+    if (id == 0) d2 = getTimeMillis();
+
     return NULL;
 }
 
@@ -51,16 +50,22 @@ int main(int argc, char *argv[]) {
 
     stack = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStackStruct));
     SimStackInit(stack, bench_args.nthreads, bench_args.backoff_high);
-    BarrierInit(&bar, bench_args.nthreads);
+    BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
-    d2 = getTimeMillis();
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: Object state debug counter: %lld\n", (long long int)stack->pool[stack->sp.struct_data.index]->counter);
+    fprintf(stderr, "DEBUG: Object state: %lld\n", (long long int)stack->pool[stack->sp.struct_data.index]->counter);
+    volatile Node *head = stack->pool[stack->sp.struct_data.index]->head;
+    long counter = 0;
+    while (head != NULL) {
+        head = head->next;
+        counter++;
+    }
+    fprintf(stderr, "DEBUG: %ld nodes were left in the stack\n", counter);
 #endif
 
     return 0;

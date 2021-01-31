@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #include <config.h>
+#include <queue-stack.h>
 #include <primitives.h>
 #include <fastrand.h>
 #include <clh.h>
@@ -13,42 +14,51 @@
 #include <barrier.h>
 #include <bench_args.h>
 
-typedef struct ListNode {
-    volatile struct ListNode *next; // in the queue where Head and Tail point to.
-    int32_t value;                  // initially, there is a sentinel node
-} ListNode;
 
 CLHLockStruct *lhead, *ltail;
-ListNode guard CACHE_ALIGN = {null, 0};
+Node guard CACHE_ALIGN = {GUARD_VALUE, NULL};
 
-volatile ListNode *Head CACHE_ALIGN = &guard;
-volatile ListNode *Tail CACHE_ALIGN = &guard;
+volatile Node *Head CACHE_ALIGN = &guard;
+volatile Node *Tail CACHE_ALIGN = &guard;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
 
-inline static void enqueue(PoolStruct *pool_node, Object arg, int pid) {
-    ListNode *n = alloc_obj(pool_node);
+__thread PoolStruct pool_node;
 
-    n->value = (Object)arg;
+inline static void enqueue(Object arg, int pid) {
+    Node *n = alloc_obj(&pool_node);
+
+    n->val = (Object)arg;
     n->next = null;
     CLHLock(ltail, pid);
     Tail->next = n;
+    NonTSOFence();
     Tail = n;
     CLHUnlock(ltail, pid);
 }
 
 inline static Object dequeue(int pid) {
     Object result;
+    Node *node = NULL;
 
     CLHLock(lhead, pid);
     if (Head->next == null)
-        result = -1;
+        result = EMPTY_QUEUE;
     else {
-        result = Head->next->value;
+        node = (Node *)Head;
         Head = Head->next;
+        NonTSOFence();
+        if (node->val == GUARD_VALUE && Head->next != null) {
+            Head = Head->next;
+            result = EMPTY_QUEUE;
+        } else {
+            result = node->val;
+        }
     }
     CLHUnlock(lhead, pid);
+    if (node != NULL)
+        recycle_obj(&pool_node, node);
 
     return result;
 }
@@ -58,16 +68,15 @@ inline static void *Execute(void *Arg) {
     long rnum;
     long id = (long)Arg;
     volatile int j;
-    PoolStruct pool_node;
 
     fastRandomSetSeed(id + 1);
-    init_pool(&pool_node, sizeof(ListNode));
+    init_pool(&pool_node, sizeof(Node));
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        enqueue(&pool_node, (Object)1, id);
+        enqueue((Object)id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -76,6 +85,12 @@ inline static void *Execute(void *Arg) {
         for (j = 0; j < rnum; j++)
             ;
     }
+    BarrierWait(&bar);
+    if (id == 0) d2 = getTimeMillis();
+#ifndef DEBUG
+    destroy_pool(&pool_node);
+#endif
+
     return NULL;
 }
 
@@ -84,13 +99,22 @@ int main(int argc, char *argv[]) {
     ltail = CLHLockInit(bench_args.nthreads);
     lhead = CLHLockInit(bench_args.nthreads);
 
-    BarrierInit(&bar, bench_args.nthreads);
+    BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
-    d2 = getTimeMillis();
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
+#ifdef DEBUG
+    volatile Node *head = Head;
+    long counter = 0;
+
+    while (head->next != null) {
+        head = head->next;
+        counter++;
+    }
+    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter);
+#endif
 
     return 0;
 }

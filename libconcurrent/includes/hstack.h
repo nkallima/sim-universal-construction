@@ -9,7 +9,7 @@
 
 typedef struct HStackStruct {
     HSynchStruct object_struct CACHE_ALIGN;
-    volatile Node *head CACHE_ALIGN;
+    volatile Node *top CACHE_ALIGN;
 } HStackStruct;
 
 typedef struct HStackThreadState {

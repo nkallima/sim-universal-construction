@@ -42,6 +42,9 @@ inline static void *Execute(void *Arg) {
         for (j = 0; j < rnum; j++)
             ;
     }
+    BarrierWait(&bar);
+    if (id == 0) d2 = getTimeMillis();
+
     return NULL;
 }
 
@@ -49,16 +52,25 @@ int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
     object_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HStackStruct));
     HStackInit(object_struct, bench_args.nthreads, bench_args.numa_nodes);
-    BarrierInit(&bar, bench_args.nthreads);
+    BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
-    d2 = getTimeMillis();
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: object state: counter: %d rounds: %d\n", object_struct->object_struct.counter, object_struct->object_struct.rounds);
+    fprintf(stderr, "DEBUG: Object state: %ld\n", object_struct->object_struct.counter);
+    fprintf(stderr, "DEBUG: rounds: %d\n", object_struct->object_struct.rounds);
+    volatile Node *top = object_struct->top;
+    long counter;
+
+    counter = 0;
+    while (top != null) {
+        top = top->next;
+        counter++;
+    }
+    fprintf(stderr, "DEBUG: %ld nodes left in the queue\n", counter);
 #endif
 
     return 0;

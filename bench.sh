@@ -136,7 +136,7 @@ echo ""
 
 # Run the selected number of threads
 for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
-    echo -e "\e[36m$PTHREADS threads\e[39m"
+    echo -ne "\e[36m$PTHREADS threads:\e[39m "
     
     # Redirect stdout to res.txt, stderr to /dev/null
     for (( i=1; i<=$ITERATIONS; i++ ));do
@@ -168,7 +168,7 @@ for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
                 ops_per_cas += $24;
                 i += 1} 
         END {   time = time/i; throughput = throughput/i;
-                print "average time:", time,"msec\t\taverage throughput:", throughput, "mops/sec";
+                printf "average time: %5d msec\t average throughput: %7.2f mops/sec\n", time, throughput;
                 if (debug_prefix == "DEBUG:") {
                     failed_cas = failed_cas/i; print "failed cas: \t", failed_cas, "";
                     executed_cas =executed_cas/i; print "executed cas: \t", executed_cas, "";

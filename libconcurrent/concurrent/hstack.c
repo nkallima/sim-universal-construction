@@ -7,7 +7,7 @@ static __thread PoolStruct pool_node CACHE_ALIGN;
 
 void HStackInit(HStackStruct *stack_object_struct, uint32_t nthreads, uint32_t numa_nodes) {
     HSynchStructInit(&stack_object_struct->object_struct, nthreads, numa_nodes);
-    stack_object_struct->head = null;
+    stack_object_struct->top = null;
 }
 
 void HStackThreadStateInit(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid) {
@@ -17,26 +17,28 @@ void HStackThreadStateInit(HStackStruct *object_struct, HStackThreadState *lobje
 
 inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
+        volatile HStackStruct *st = (HStackStruct *)state;
+        volatile Node *node = st->top;
+
+        if (st->top == null) {
+            return EMPTY_STACK;
+        } else {
+            RetVal ret = node->val;
+            st->top = st->top->next;
+            NonTSOFence();
+            recycle_obj(&pool_node, (void *)node);
+            return ret;
+        }
+    } else {
         HStackStruct *st = (HStackStruct *)state;
         Node *node;
 
         node = alloc_obj(&pool_node);
-        node->next = st->head;
+        node->next = st->top;
         node->val = arg;
-        st->head = node;
-
-        return 0;
-    } else {
-        volatile HStackStruct *st = (HStackStruct *)state;
-        volatile Node *node = st->head;
-
-        if (st->head == null) {
-            return -1;
-        } else {
-            st->head = st->head->next;
-            return node->val;
-        }
-        return 0;
+        st->top = node;
+        NonTSOFence();
+        return PUSH_SUCCESS;
     }
 }
 

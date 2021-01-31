@@ -43,7 +43,9 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
         l->counter += 1;
 #endif
         p->arg_ret = sfunc(state, p->arg_ret, p->pid);
+        NonTSOFence();
         p->completed = true;
+        NonTSOFence();
         p->locked = false;
         if (p->next == null || p->next->next == null || counter >= help_bound)
             break;
@@ -57,6 +59,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
             resched();
         }
     }
+    NonTSOFence();
     p->next->locked = false;
     FullFence();
 

@@ -9,7 +9,7 @@
 
 typedef struct DSMStackStruct {
     DSMSynchStruct object_struct CACHE_ALIGN;
-    volatile Node *volatile head CACHE_ALIGN;
+    volatile Node *volatile top CACHE_ALIGN;
 } DSMStackStruct;
 
 typedef struct DSMStackThreadState {
@@ -19,6 +19,6 @@ typedef struct DSMStackThreadState {
 void DSMSStackInit(DSMStackStruct *stack_object_struct, uint32_t nthreads);
 void DSMStackThreadStateInit(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, int pid);
 void DSMStackPush(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, ArgVal arg, int pid);
-void DSMStackPop(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, int pid);
+RetVal DSMStackPop(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, int pid);
 
 #endif

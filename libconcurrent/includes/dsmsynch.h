@@ -33,12 +33,12 @@ typedef struct DSMSynchStruct {
     DSMSynchNode *nodes CACHE_ALIGN;
     uint32_t nthreads;
 #ifdef DEBUG
-    volatile int rounds CACHE_ALIGN;
-    volatile int counter;
+    volatile uint64_t counter CACHE_ALIGN;
+    volatile int rounds;
 #endif
 } DSMSynchStruct;
 
-void DSMSynchStructInit(DSMSynchStruct *l, uint32_t ntreads);
+void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads);
 void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, int pid);
 RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid);
 

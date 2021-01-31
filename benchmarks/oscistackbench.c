@@ -8,7 +8,6 @@
 #include <primitives.h>
 #include <fastrand.h>
 #include <threadtools.h>
-#include <uthreads.h>
 #include <oscistack.h>
 #include <barrier.h>
 #include <bench_args.h>
@@ -22,27 +21,29 @@ inline static void *Execute(void *Arg) {
     OsciStackThreadState *th_state;
     long i, rnum;
     volatile int j;
-    long pid = (long)Arg;
+    long id = (long)Arg;
 
-    fastRandomSetSeed(pid);
+    fastRandomSetSeed(id);
     BarrierWait(&bar);
-    if (pid == 0) {
-        d1 = getTimeMillis();
-    }
+    if (id == 0) d1 = getTimeMillis();
+
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(OsciStackThreadState));
-    OsciStackThreadStateInit(&object_struct, th_state, pid);
+    OsciStackThreadStateInit(&object_struct, th_state, id);
     for (i = 0; i < bench_args.runs; i++) {
         // perform a push operation
-        OsciStackApplyPush(&object_struct, th_state, pid, pid);
+        OsciStackApplyPush(&object_struct, th_state, id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
         // perform a pop operation
-        OsciStackApplyPop(&object_struct, th_state, pid);
+        OsciStackApplyPop(&object_struct, th_state, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
+    BarrierWait(&bar);
+    if (id == 0) d2 = getTimeMillis();
+
     return NULL;
 }
 
@@ -50,24 +51,24 @@ int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
 
     OsciStackInit(&object_struct, bench_args.nthreads, bench_args.fibers_per_thread);
-    BarrierInit(&bar, bench_args.nthreads);
+    BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
-    d2 = getTimeMillis();
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    volatile Node *head = object_struct.head;
-    int i;
+    fprintf(stderr, "DEBUG: Object state: %ld\n", object_struct.object_struct.counter);
+    fprintf(stderr, "DEBUG: rounds: %d\n", object_struct.object_struct.rounds);
+    volatile Node *top = object_struct.top;
+    long counter = 0;
 
-    i = 0;
-    while (head != null) {
-        head = head->next;
-        i++;
+    while (top != null) {
+        top = top->next;
+        counter++;
     }
-    fprintf(stderr, "DEBUG: object state: counter: %d rounds: %d nodes left in the queue: %d\n", object_struct.object_struct.counter, object_struct.object_struct.rounds, i);
+    fprintf(stderr, "DEBUG: %ld nodes left in the queue\n", counter);
 #endif
 
     return 0;

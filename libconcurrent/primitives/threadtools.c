@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <unistd.h>
 
 #include <config.h>
@@ -55,6 +56,35 @@ inline static void *kthreadWrapper(void *arg) {
     return null;
 }
 
+inline uint32_t preferedCoreOfThread(uint32_t pid) {
+    uint32_t prefered_core = 0;
+#ifdef NUMA_SUPPORT
+    int ncpus = numa_num_configured_cpus();
+    int nodes = numa_num_task_nodes();
+    int node_size = ncpus / nodes;
+
+    if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) {
+        int half_node_size = node_size / 2;
+        int offset = 0;
+        uint32_t half_cpu_id = pid;
+
+        if (pid >= ncpus / 2) {
+            half_cpu_id = pid - ncpus / 2;
+            offset = ncpus / 2;
+        }
+        prefered_core = (half_cpu_id % nodes) * half_node_size + half_cpu_id / nodes;
+        prefered_core += offset;
+    } else {
+        prefered_core = ((pid % nodes) * node_size);
+    }
+#else
+    prefered_core = pid;
+#endif
+    prefered_core %= getNCores();
+
+    return prefered_core;
+}
+
 int threadPin(int32_t cpu_id) {
     int ret = 0;
     cpu_set_t mask;
@@ -62,38 +92,11 @@ int threadPin(int32_t cpu_id) {
 
     pthread_setconcurrency(getNCores());
     CPU_ZERO(&mask);
-
-#    ifdef NUMA_SUPPORT
-    int ncpus = numa_num_configured_cpus();
-    int nodes = numa_max_node() + 1;
-    int node_size = ncpus / nodes;
-
-    if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) {
-        int half_node_size = node_size / 2;
-        int offset = 0;
-        uint32_t half_cpu_id = cpu_id;
-
-        if (cpu_id >= ncpus / 2) {
-            half_cpu_id = cpu_id - ncpus / 2;
-            offset = ncpus / 2;
-        }
-        __prefered_core = (half_cpu_id % nodes) * half_node_size + half_cpu_id / nodes;
-        __prefered_core += offset;
-        __prefered_core %= getNCores();
-        CPU_SET(__prefered_core, &mask);
-    } else {
-        __prefered_core = ((cpu_id % nodes) * node_size) % getNCores();
-        CPU_SET(__prefered_core, &mask);
-    }
-
-#        ifdef DEBUG
-    fprintf(stderr, "DEBUG: thread: %d -- numa_node: %d -- core: %d -- nodes: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core, nodes);
-#        endif
-
-#    else
-    __prefered_core = cpu_id % getNCores();
-    CPU_SET(cpu_id % getNCores(), &mask);
-#    endif
+    __prefered_core = preferedCoreOfThread(cpu_id);
+    CPU_SET(__prefered_core, &mask);
+#if defined(DEBUG) && defined(NUMA_SUPPORT)
+    fprintf(stderr, "DEBUG: thread: %d -- numa_node: %d -- core: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core);
+#endif
     ret = sched_setaffinity(0, len, &mask);
     if (ret == -1)
         perror("sched_setaffinity");
@@ -123,7 +126,7 @@ inline static void *uthreadWrapper(void *arg) {
 
 int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
     long i;
-    int last_thread_id;
+    int last_thread_id = -1;
 
     init_cpu_counters();
     __ncores = sysconf(_SC_NPROCESSORS_ONLN);
@@ -135,7 +138,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
         __uthreads = uthreads;
         __uthread_sched = true;
         __system_oversubscription = true;
-        BarrierInit(&bar, nthreads / uthreads + 1);
+        BarrierSet(&bar, nthreads / uthreads + 1);
         for (i = 0; i < (nthreads / uthreads) - 1; i++) {
             last_thread_id = pthread_create(&__threads[i], null, uthreadWrapper, (void *)(i * uthreads));
             if (last_thread_id != 0) {
@@ -151,7 +154,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
             __system_oversubscription = true;
         else
             __noop_resched = true;
-        BarrierInit(&bar, nthreads + 1);
+        BarrierSet(&bar, nthreads + 1);
         for (i = 0; i < nthreads - 1; i++) {
             last_thread_id = pthread_create(&__threads[i], null, kthreadWrapper, (void *)i);
             if (last_thread_id != 0) {
@@ -166,7 +169,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
 }
 
 void JoinThreadsN(uint32_t nthreads) {
-    BarrierWait(&bar);
+    BarrierLastLeave(&bar);
     freeMemory(__threads, (nthreads + 1) * sizeof(pthread_t));
 }
 

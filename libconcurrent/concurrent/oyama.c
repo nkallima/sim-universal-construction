@@ -45,6 +45,7 @@ RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal 
                     p = (OyamaAnnounceNode *)tmp_next;
                 }
             }
+            NonTSOFence();
             // Release the lock
             l->lock = UNLOCKED;
             StoreFence();

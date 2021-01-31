@@ -29,7 +29,7 @@ inline static void *Execute(void *Arg) {
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        LFStackPush(&stack, th_state, id + 1);
+        LFStackPush(&stack, th_state, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -38,6 +38,9 @@ inline static void *Execute(void *Arg) {
         for (j = 0; j < rnum; j++)
             ;
     }
+    BarrierWait(&bar);
+    if (id == 0) d2 = getTimeMillis();
+
     return NULL;
 }
 
@@ -45,23 +48,22 @@ int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
 
     LFStackInit(&stack);
-    BarrierInit(&bar, bench_args.nthreads);
+    BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
-    d2 = getTimeMillis();
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    int counter = 0;
+    long counter = 0;
 
     while (stack.top != null) {
         counter++;
         stack.top = stack.top->next;
     }
 
-    fprintf(stderr, "DEBUG: %d nodes were left in the stack!\n", counter);
+    fprintf(stderr, "DEBUG: %ld nodes were left in the stack\n", counter);
 #endif
 
     return 0;

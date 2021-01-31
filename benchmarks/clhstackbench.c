@@ -12,16 +12,12 @@
 #include <pool.h>
 #include <barrier.h>
 #include <bench_args.h>
+#include <queue-stack.h>
 
-typedef struct ListNode {
-    Object value;                   // initially, there is a sentinel node
-    volatile struct ListNode *next; // in the queue where Head and Tail point to.
-} ListNode;
 
-CLHLockStruct *lhead CACHE_ALIGN;
-int counter = 0;
-ListNode guard CACHE_ALIGN = {0, null};
-volatile ListNode *Head CACHE_ALIGN = &guard;
+CLHLockStruct *lock CACHE_ALIGN;
+Node guard CACHE_ALIGN = {0, null};
+volatile Node *Top CACHE_ALIGN = &guard;
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
@@ -29,25 +25,30 @@ BenchArgs bench_args CACHE_ALIGN;
 __thread PoolStruct pool_node;
 
 inline static void push(Object arg, int pid) {
-    volatile ListNode *n = alloc_obj(&pool_node);
-    n->value = (Object)arg;
-    CLHLock(lhead, pid); // Critical section
-    n->next = Head;
-    Head = n;
-    CLHUnlock(lhead, pid);
+    volatile Node *n = alloc_obj(&pool_node);
+    n->val = (Object)arg;
+    CLHLock(lock, pid); // Critical section
+    n->next = Top;
+    Top = n;
+    NonTSOFence();
+    CLHUnlock(lock, pid);
 }
 
 inline static Object pop(int pid) {
     Object result;
+    Node *n = NULL;
 
-    CLHLock(lhead, pid);
-    if (Head->next == null)
-        result = -1;
+    CLHLock(lock, pid);
+    if (Top->next == NULL)
+        result = EMPTY_STACK;
     else {
-        result = Head->next->value;
-        Head = Head->next;
+        result = Top->val;
+        n = (Node *)Top;
+        Top = Top->next;
     }
-    CLHUnlock(lhead, pid);
+    NonTSOFence();
+    CLHUnlock(lock, pid);
+    recycle_obj(&pool_node, n);
 
     return result;
 }
@@ -59,13 +60,13 @@ inline static void *Execute(void *Arg) {
     volatile int j;
 
     fastRandomSetSeed(id + 1);
-    init_pool(&pool_node, sizeof(ListNode));
+    init_pool(&pool_node, sizeof(Node));
     BarrierWait(&bar);
     if (id == 0)
         d1 = getTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        push((Object)1, id);
+        push((Object)id, id);
         rnum = fastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
@@ -74,19 +75,36 @@ inline static void *Execute(void *Arg) {
         for (j = 0; j < rnum; j++)
             ;
     }
+    BarrierWait(&bar);
+    if (id == 0) d2 = getTimeMillis();
+#ifndef DEBUG
+    destroy_pool(&pool_node);
+#endif
+
     return NULL;
 }
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-    lhead = CLHLockInit(bench_args.nthreads);
+    lock = CLHLockInit(bench_args.nthreads);
 
-    BarrierInit(&bar, bench_args.nthreads);
+    BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
-    d2 = getTimeMillis();
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     printStats(bench_args.nthreads, bench_args.total_runs);
+
+#ifdef DEBUG
+    volatile Node *ltop = Top;
+    long counter = 0;
+
+    while (ltop->next != null) {
+        ltop = ltop->next;
+        counter++;
+    }
+    fprintf(stderr, "DEBUG: %ld nodes left in the queue\n", counter);
+#endif
+
     return 0;
 }

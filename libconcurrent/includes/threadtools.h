@@ -20,6 +20,7 @@ void JoinThreadsN(uint32_t nthreads);
 
 inline int32_t getThreadId(void);
 inline int32_t getPreferedCore(void);
+inline uint32_t preferedCoreOfThread(uint32_t pid);
 inline uint32_t getNCores(void);
 inline void resched(void);
 inline bool isSystemOversubscribed(void);

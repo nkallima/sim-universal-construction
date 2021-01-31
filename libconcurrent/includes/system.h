@@ -21,9 +21,6 @@
 #ifdef __GNUC__
 #    define CACHE_ALIGN __attribute__((aligned(CACHE_LINE_SIZE)))
 #    define VAR_ALIGN   __attribute__((aligned(16)))
-#elif defined(MSVC)
-#    define CACHE_ALIGN __declspec(align(CACHE_LINE_SIZE))
-#    define VAR_ALIGN   __declspec(align(16))
 #else
 #    define CACHE_ALIGN
 #    define VAR_ALIGN
