@@ -153,7 +153,7 @@ execute one of the following make commands. This step is not necessary in case t
     Data Structures". Proceedings of the 21st International Conference on Principles of Distributed Systems.
     Opodis 2017.
 
-[3]. Oyama, Yoshihiro, Kenjiro Taura, and Akinori Yonezawa. "Executing parallel programs with synchronization 
+[4]. Oyama, Yoshihiro, Kenjiro Taura, and Akinori Yonezawa. "Executing parallel programs with synchronization 
     bottlenecks efficiently". Proceedings of the International Workshop on Parallel and Distributed Computing
     for Symbolic and Irregular Applications. Vol. 16. 1999.
 
