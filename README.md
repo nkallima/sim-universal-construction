@@ -13,13 +13,6 @@ successfully tested in other machine architectures, such as ARM-V8 and RISC-V.
 Some of the benchmarks perform much better in architectures that natively support Fetch&Add
 instructions (e.g., x86_64, etc.).
 
-As a compiler, gcc is recommended, but you may also try to use icx or clang.
-For compiling the benchmarks, it is highly recommended to use gcc of version 4.3.0 or greater.
-Building requires the `libnuma` development package.
-For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.).
-Important parameters for the benchmarks and/or library are placed in the `config.h` file
-(see more on Performance/Optimizations Section).
-
 
 # Running Benchmarks
 
@@ -124,6 +117,16 @@ The current version of this library provides the following concurrent data-struc
 |  fadbench.c             | A benchmark that measures the throughput of Fetch&Add instructions.                   |
 |  activesetbench.c       | A simple implementation of an active-set.                                             |
 |  pthreadsbench.c        | A benchmark for measuring the performance os spin-locks of pthreads library.          |
+
+# Requirements
+
+- A modern 64-bit machine. Currently, 32-bit architectures are not supported. The current version of this code is optimized for the x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.).
+- As a compiler, gcc of version 4.3 or greater is recommended, but you may also try to use icx or clang. 
+- Building requires the following development packages:
+    - `libnuma`
+    - `libpapi` in case that the `_TRACK_CPU_COUNTERS` flag is enabled in `config.h`.
+
+For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `config.h` file (see more on Performance/Optimizations Section).
 
 # Compiling the library
 
