@@ -130,7 +130,7 @@ void stop_cpu_counters(int id) {
 void printStats(uint32_t nthreads, uint64_t runs) {
 #ifdef DEBUG
     printf("DEBUG: ");
-    printf("failed_CAS_per_op: %f\t", (float)__total_failed_cas / (nthreads * runs));
+    printf("failed_CAS_per_op: %f\t", (float)__total_failed_cas / runs);
     printf("executed_CAS: %ld\t", __total_executed_cas);
     printf("successful_CAS: %ld\t", __total_executed_cas - __total_failed_cas);
     printf("executed_SWAP: %ld\t", __total_executed_swap);
