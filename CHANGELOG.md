@@ -1,3 +1,8 @@
+v2.2.1
+------
+- Executing 'Pause' instructions on spinning-loops for the X86 architecture. Spin-locks and some lock-free algorithms may have performance benefits in SMT architecures.  
+- Documentation improvements.
+
 v2.2.0
 ------
 - A new implementation of the pool.c functionality. Most stack and queue implementations support memory reclamation, the only exception are the simstack, simqueue, lfstack and msqueue implementations.
