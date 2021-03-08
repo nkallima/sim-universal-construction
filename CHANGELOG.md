@@ -1,6 +1,6 @@
 v2.2.1
 ------
-- Executing 'Pause' instructions on spinning-loops for the X86 architecture. Spin-locks and some lock-free algorithms may have performance benefits in SMT architecures.  
+- Executing `Pause` instructions on spinning-loops for the X86 architecture. Spin-locks and some lock-free algorithms may have performance benefits in SMT architectures.  
 - Documentation improvements.
 
 v2.2.0
