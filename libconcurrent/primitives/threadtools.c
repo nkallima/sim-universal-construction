@@ -178,12 +178,13 @@ inline int32_t getThreadId(void) {
 }
 
 inline void resched(void) {
-    if (__noop_resched)
-        return;
-    else if (__uthread_sched)
+    if (__noop_resched) {
+        Pause();
+    } else if (__uthread_sched) {
         fiberYield();
-    else
+    } else {
         sched_yield();
+    }
 }
 
 inline bool isSystemOversubscribed(void) {
