@@ -87,7 +87,7 @@ The Synch framework (\autoref{fig:code_structure}) consists of 3 main parts, i.e
     - `libnuma`
 
 
-# Acknowledgements
+# Acknowledgments
 
 Many thanks to Panagiota Fatourou for all the fruitful discussions and her significant contribution on the concurrent data-structures implementations presented in [@FK2011;@FK2012;@FK2014;@FK2017]. 
 
