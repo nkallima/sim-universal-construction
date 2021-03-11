@@ -80,14 +80,16 @@ The Synch framework (\autoref{fig:code_structure}) consists of 3 main parts, i.e
 
 ## Requirements
 
-- A modern 64-bit multi-core machine. Currently, 32-bit architectures are not supported. The current version of this code is optimized for the x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.).
-- As a compiler, gcc of version 4.3 or greater is recommended, but the framework has been successfully built with icx or clang. 
+- A modern 64-bit multi-core machine. Currently, 32-bit architectures are not supported. The current version of this code is optimized for the x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.). For the case of x86_64  architecture, the code has been evaluated in numerous Intel and AMD multicore machines. In the case of ARM-V8 architecture, the code has been successfully evaluated in a Trenz Zynq UltraScale+ board (4 A53 Cortex cores) and in a Raspberry Pi 3 board(4 Cortex A53 cores). For the RISC-V architecture, the code has been evaluated in a SiFive HiFive Unleashed (4 U54 RISC‑V cores) respectively.
+- As a compiler, gcc of version 4.3 or greater is recommended, but the framework has been successfully built with icx and clang. 
 - Building requires the following development packages:
     - `libpapi` in the case that the user wants to measure performance using CPU performance counters.
     - `libnuma`
 
 
 # Acknowledgments
+
+This work was partially supported by the European Commission under the Horizon 2020 Framework Programme for Research and Innovation through the "European Processor Initiative: Specific Grant Agreement 1" (Grant Agreement Nr 826647).
 
 Many thanks to Panagiota Fatourou for all the fruitful discussions and her significant contribution on the concurrent data-structures implementations presented in [@FK2011;@FK2012;@FK2014;@FK2017]. 
 
