@@ -1,0 +1,183 @@
+#!/bin/bash
+
+RUNS_PER_THREAD=100000
+MAX_PTHREADS=$(nproc)
+BIN_PATH="./build/bin"
+RES_FILE="res.txt"
+BUILD_LOG="build.log"
+STEP_SELETCTED=0
+STEP_THREADS=1
+FIBERS=""
+NUMA_NODES=""
+PASS_STATUS=1
+
+function usage()
+{
+    echo -e "Usage: ./validate.sh OPTION=NUM ...";
+    echo -e "This script compiles the sources in DEBUG mode and validates the correctnes of some of the provided concurrent objects.";
+    echo -e ""
+    echo -e "The following options are available."
+    echo -e "-t, --max_threads \t set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system_cpus"
+    echo -e "-s, --step \t set the step (extra number of POSIX threads to be used) in succesive set of iterations of the benchmark, default is number of system_cpu/8 or 1"
+    echo -e "-f, --fibers  \t set the number of fibers (user-level threads) per posix thread."
+    echo -e "-r, --runs    \t set the total number of operations executed by each thread of each benchmark, default is ${RUNS_PER_THREAD}"
+    echo -e "-w, --max_work\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64"
+    echo -e ""
+    echo -e "-h, --help    \t displays this help and exits"
+    echo -e ""
+}
+
+COLOR_PASS="[ \e[32mPASS\e[39m ]"
+COLOR_FAIL="[ \e[31mFAIL\e[39m ]"
+
+declare -a uobjects=("ccsynchbench.run"                     "dsmsynchbench.run" "hsynchbench.run" "oscibench.run"      "simbench.run")
+declare -a queues=(  "ccqueuebench.run" "clhqueuebench.run" "dsmqueuebench.run" "hqueuebench.run" "osciqueuebench.run" "simqueuebench.run")
+declare -a stacks=(  "ccstackbench.run" "clhstackbench.run" "dsmstackbench.run" "hstackbench.run" "oscistackbench.run" "simstackbench.run")
+
+declare -a validate_objects=()
+
+validate_objects+=${uobjects[@]}
+validate_objects+=${queues[@]}
+validate_objects+=${stacks[@]}
+
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    usage;
+    exit;
+fi
+
+while [ "$1" != "" ]; do
+    PARAM=`echo $1 | awk -F= '{print $1}'`
+    VALUE=`echo $1 | awk -F= '{print $2}'`
+    case $PARAM in
+        -h | --help)
+            usage;
+            exit;
+            ;;
+        -s | --step_threads)
+            STEP_THREADS=$VALUE
+            STEP_SELETCTED=1
+            ;;
+        -t | --max_threads)
+            MAX_PTHREADS=$VALUE
+            ;;
+        -f | --fibers)
+            FIBERS="-f $VALUE"
+            ;;
+        -w | --max_work)
+            WORKLOAD="-w $VALUE"
+            ;;
+        -n | --numa_nodes)
+            NUMA_NODES="-n $VALUE"
+            ;;
+        -r | --runs)
+            RUNS_PER_THREAD=$VALUE
+            ;;
+        -*)
+            echo "ERROR: unknown parameter \"$PARAM\""
+            usage
+            exit 1
+            ;;
+	*)
+	    FILE=$PARAM
+	    ;;
+    esac
+    shift
+done
+
+# Calculate step according to user preferences
+if [ $STEP_SELETCTED -eq 0 ]; then
+    if [ $MAX_PTHREADS -gt 8 ]; then 
+        STEP_THREADS=$(($MAX_PTHREADS / 8))
+    fi
+fi
+
+# Fill the array with the selected number of threads
+PTHREADS_ARRAY=()
+
+# Add set of iterations for 1 thread, if needed
+if [ $STEP_THREADS -ne 1 ]; then
+    PTHREADS_ARRAY+=(1)
+fi
+# Add intermediate sets
+for (( PTHREADS=$STEP_THREADS; PTHREADS<$MAX_PTHREADS; PTHREADS+=$STEP_THREADS ));do
+    PTHREADS_ARRAY+=($PTHREADS)
+done
+# Add set of iterations for max threads
+PTHREADS_ARRAY+=($MAX_PTHREADS)
+
+echo "Compiling the sources..."
+make clean debug > $BUILD_LOG
+
+# Run the selected number of threads
+for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
+    printf "\n\e[36mValidating for %3d threads\n" $PTHREADS
+    echo -e "==========================\e[39m"
+    for bench in "${uobjects[@]}"; do
+        printf "Validating %-20s \t\t\t\t\t" $bench
+        runs=$(($RUNS_PER_THREAD * $PTHREADS))
+        $BIN_PATH/$bench -t $PTHREADS -r $runs $WORKLOAD $FIBERS $NUMA_NODES > $RES_FILE 2>&1
+        state=$(fgrep "Object state: " $RES_FILE)
+        state=${state/#"DEBUG: Object state: "}
+        if [ $state -eq $runs ]; then
+            echo -e $COLOR_PASS
+        else
+            echo -e $COLOR_FAIL
+            echo "Expected state: " $runs
+            echo "Invalid state: " $state
+            PASS_STATUS=0
+        fi
+    done
+
+    for bench in "${stacks[@]}"; do
+        printf "Validating %-20s \t\t\t\t\t" $bench
+        runs=$(($RUNS_PER_THREAD * $PTHREADS))
+        $BIN_PATH/$bench -t $PTHREADS -r $runs $WORKLOAD $FIBERS $NUMA_NODES > $RES_FILE 2>&1
+        state=$(fgrep "Object state: " $RES_FILE)
+        state=${state/#"DEBUG: Object state: "}
+        runs=$(($runs * 2))
+        if [ $state -eq $runs ]
+        then
+            echo -e $COLOR_PASS
+        else
+            echo -e $COLOR_FAIL
+            echo "Expected state: " $runs
+            echo "Invalid state: " $state
+            PASS_STATUS=0
+        fi
+    done
+
+    for bench in "${queues[@]}"; do
+        runs=$(($RUNS_PER_THREAD * $PTHREADS))
+        printf "Validating %-20s \t\t\t\t\t" $bench
+        $BIN_PATH/$bench -t $PTHREADS -r $runs $WORKLOAD $FIBERS $NUMA_NODES > $RES_FILE 2>&1
+        enq_state=$(fgrep "DEBUG: Enqueue: Object state: " $RES_FILE)
+        deq_state=$(fgrep "DEBUG: Dequeue: Object state: " $RES_FILE)
+        left_nodes=$(fgrep "nodes were left in the queue" $RES_FILE)
+        left_nodes=${left_nodes/#"DEBUG: "}
+        left_nodes=${left_nodes/%" nodes were left in the queue"}
+        enq_state=${enq_state/#"DEBUG: Enqueue: Object state: "}
+        deq_state=${deq_state/#"DEBUG: Dequeue: Object state: "}
+        if [ $enq_state -eq $runs ]; then
+            if [ $left_nodes -eq 0 ]; then
+                echo -e $COLOR_PASS
+            else
+                echo -e $COLOR_FAIL
+                echo "Error state: " $left_nodes "nodes were left in the queue"
+                PASS_STATUS=0
+            fi
+        else
+            echo -e $COLOR_FAIL
+            echo "Expected state: " $runs
+            echo "Invalid state: " $enq_state
+            PASS_STATUS=0
+        fi
+    done
+done
+
+if [ $PASS_STATUS -eq 1 ]; then
+    printf "\n\n\e[32mAll validation tests passed successfully!\n"
+    printf "=========================================\e[39m\n\n"
+else
+    printf "\n\n\e[31mValidation tests failed!\n"
+    printf "========================\e[39m\n\n"
+fi
