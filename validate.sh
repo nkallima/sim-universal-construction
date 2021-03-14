@@ -133,13 +133,13 @@ for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
         # state counts the actual number of both push and pop operations applied in the concurrent stack
         state=$(fgrep "Object state: " $RES_FILE)
         state=${state/#"DEBUG: Object state: "}
-        runs=$(($runs * 2))
-        if [ $state -eq $runs ]
+        valid_state=$(($runs * 2))
+        if [ $state -eq $valid_state ]
         then
             echo -e $COLOR_PASS
         else
             echo -e $COLOR_FAIL
-            echo "Expected state: " $runs
+            echo "Expected state: " $valid_state
             echo "Invalid state: " $state
             PASS_STATUS=0
         fi
