@@ -17,8 +17,8 @@ function usage()
     echo -e "This script compiles the sources in DEBUG mode and validates the correctnes of some of the provided concurrent objects.";
     echo -e ""
     echo -e "The following options are available."
-    echo -e "-t, --max_threads \t set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system_cpus"
-    echo -e "-s, --step \t set the step (extra number of POSIX threads to be used) in succesive set of iterations of the benchmark, default is number of system_cpu/8 or 1"
+    echo -e "-t, --max_threads \t set the maximum number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system's virtual cores"
+    echo -e "-s, --step \t set the step (extra number of POSIX threads to be used) in succesive set of iterations of the benchmark, default is the (number of system/s virtual cores/8) or 1"
     echo -e "-f, --fibers  \t set the number of fibers (user-level threads) per posix thread."
     echo -e "-r, --runs    \t set the total number of operations executed by each thread of each benchmark, default is ${RUNS_PER_THREAD}"
     echo -e "-w, --max_work\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64"
@@ -33,12 +33,6 @@ COLOR_FAIL="[ \e[31mFAIL\e[39m ]"
 declare -a uobjects=("ccsynchbench.run"                     "dsmsynchbench.run" "hsynchbench.run" "oscibench.run"      "simbench.run")
 declare -a queues=(  "ccqueuebench.run" "clhqueuebench.run" "dsmqueuebench.run" "hqueuebench.run" "osciqueuebench.run" "simqueuebench.run")
 declare -a stacks=(  "ccstackbench.run" "clhstackbench.run" "dsmstackbench.run" "hstackbench.run" "oscistackbench.run" "simstackbench.run")
-
-declare -a validate_objects=()
-
-validate_objects+=${uobjects[@]}
-validate_objects+=${queues[@]}
-validate_objects+=${stacks[@]}
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     usage;
@@ -110,12 +104,15 @@ make clean debug > $BUILD_LOG
 
 # Run the selected number of threads
 for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
-    printf "\n\e[36mValidating for %3d threads\n" $PTHREADS
-    echo -e "==========================\e[39m"
+    printf "\n\e[36mValidating for %3d thread(s)\n" $PTHREADS
+    echo -e "============================\e[39m"
+
+    runs=$(($RUNS_PER_THREAD * $PTHREADS))
+
     for bench in "${uobjects[@]}"; do
         printf "Validating %-20s \t\t\t\t\t" $bench
-        runs=$(($RUNS_PER_THREAD * $PTHREADS))
         $BIN_PATH/$bench -t $PTHREADS -r $runs $WORKLOAD $FIBERS $NUMA_NODES > $RES_FILE 2>&1
+        # state counts the actual number of the operations applied in the concurrent object
         state=$(fgrep "Object state: " $RES_FILE)
         state=${state/#"DEBUG: Object state: "}
         if [ $state -eq $runs ]; then
@@ -130,8 +127,8 @@ for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
 
     for bench in "${stacks[@]}"; do
         printf "Validating %-20s \t\t\t\t\t" $bench
-        runs=$(($RUNS_PER_THREAD * $PTHREADS))
         $BIN_PATH/$bench -t $PTHREADS -r $runs $WORKLOAD $FIBERS $NUMA_NODES > $RES_FILE 2>&1
+        # state counts the actual number of both push and pop operations applied in the concurrent stack
         state=$(fgrep "Object state: " $RES_FILE)
         state=${state/#"DEBUG: Object state: "}
         runs=$(($runs * 2))
@@ -147,10 +144,11 @@ for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
     done
 
     for bench in "${queues[@]}"; do
-        runs=$(($RUNS_PER_THREAD * $PTHREADS))
         printf "Validating %-20s \t\t\t\t\t" $bench
         $BIN_PATH/$bench -t $PTHREADS -r $runs $WORKLOAD $FIBERS $NUMA_NODES > $RES_FILE 2>&1
+        # state counts the actual number of the enqueue operations applied in the concurrent queue
         enq_state=$(fgrep "DEBUG: Enqueue: Object state: " $RES_FILE)
+        # state counts the actual number of the dequeue operations applied in the concurrent queue
         deq_state=$(fgrep "DEBUG: Dequeue: Object state: " $RES_FILE)
         left_nodes=$(fgrep "nodes were left in the queue" $RES_FILE)
         left_nodes=${left_nodes/#"DEBUG: "}
