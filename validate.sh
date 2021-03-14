@@ -7,6 +7,7 @@ RES_FILE="res.txt"
 BUILD_LOG="build.log"
 STEP_SELETCTED=0
 STEP_THREADS=1
+WORKLOAD="-w 64"
 FIBERS=""
 NUMA_NODES=""
 PASS_STATUS=1
@@ -21,7 +22,7 @@ function usage()
     echo -e "-s, --step \t set the step (extra number of POSIX threads to be used) in succesive set of iterations of the benchmark, default is the (number of system/s virtual cores/8) or 1"
     echo -e "-f, --fibers  \t set the number of fibers (user-level threads) per posix thread."
     echo -e "-r, --runs    \t set the total number of operations executed by each thread of each benchmark, default is ${RUNS_PER_THREAD}"
-    echo -e "-w, --max_work\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64"
+    echo -e "-w, --max_work\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is ${WORKLOAD}"
     echo -e "-n, --numa_nodes\t set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account"
     echo -e ""
     echo -e "-h, --help    \t displays this help and exits"
