@@ -12,6 +12,7 @@ function usage()
     echo -e "-i, --iterations set the number of times that the benchmark should be executed, default is 10"
     echo -e "-r, --runs    \t set the total number of operations executed by the benchmark, default is 1000000"
     echo -e "-w, --max_work\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64"
+    echo -e "-n, --numa_nodes\t set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account"
     echo -e "-l, --list    \t displays the list of the available benchmarks"
     echo -e "-b, --backoff, --backoff_high \t set a backoff upper bound for lock-free and Sim-based algorithms"
     echo -e "-bl, --backoff_low            \t set a backoff lower bound (only for msqueue, lfstack and lfuobject benchmarks)"
