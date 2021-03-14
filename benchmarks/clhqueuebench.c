@@ -19,7 +19,15 @@ CLHLockStruct *lhead, *ltail;
 Node guard CACHE_ALIGN = {GUARD_VALUE, NULL};
 
 volatile Node *Head CACHE_ALIGN = &guard;
+#ifdef DEBUG
+volatile uint64_t deq_state = 0;
+#endif
+
 volatile Node *Tail CACHE_ALIGN = &guard;
+#ifdef DEBUG
+volatile uint64_t enq_state = 0;
+#endif
+
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
@@ -35,6 +43,9 @@ inline static void enqueue(Object arg, int pid) {
     Tail->next = n;
     NonTSOFence();
     Tail = n;
+#ifdef DEBUG
+    enq_state += 1;
+#endif
     CLHUnlock(ltail, pid);
 }
 
@@ -56,6 +67,9 @@ inline static Object dequeue(int pid) {
             result = node->val;
         }
     }
+#ifdef DEBUG
+    deq_state += 1;
+#endif
     CLHUnlock(lhead, pid);
     if (node != NULL)
         recycle_obj(&pool_node, node);
@@ -109,6 +123,8 @@ int main(int argc, char *argv[]) {
     volatile Node *head = Head;
     long counter = 0;
 
+    fprintf(stderr, "DEBUG: Enqueue: Object state: %ld\n", enq_state);
+    fprintf(stderr, "DEBUG: Dequeue: Object state: %ld\n", deq_state);
     while (head->next != null) {
         head = head->next;
         counter++;

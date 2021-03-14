@@ -6,12 +6,13 @@ function usage()
     echo -e "This script runs the algorithm of FILE.run multiple times for various number of POSIX threads and calculates the average throughput (operations/second)";
     echo -e ""
     echo -e "The following options are available."
-    echo -e "-t, --max_threads \t set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system_cpus"
-    echo -e "-s, --step \t set the step (extra number of POSIX threads to be used) in succesive set of iterations of the benchmark, default is number of system_cpu/8 or 1"
+    echo -e "-t, --max_threads \t set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system's virtual cores"
+    echo -e "-s, --step \t set the step (extra number of POSIX threads to be used) in succesive set of iterations of the benchmark, default is the (number of system/s virtual cores/8) or 1"
     echo -e "-f, --fibers  \t set the number of fibers (user-level threads) per posix thread."
     echo -e "-i, --iterations set the number of times that the benchmark should be executed, default is 10"
     echo -e "-r, --runs    \t set the total number of operations executed by the benchmark, default is 1000000"
-    echo -e "-w, --max_work\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64"
+    echo -e "-w, --max_work\t set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is ${WORKLOAD}"
+    echo -e "-n, --numa_nodes\t set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account"
     echo -e "-l, --list    \t displays the list of the available benchmarks"
     echo -e "-b, --backoff, --backoff_high \t set a backoff upper bound for lock-free and Sim-based algorithms"
     echo -e "-bl, --backoff_low            \t set a backoff lower bound (only for msqueue, lfstack and lfuobject benchmarks)"
@@ -29,7 +30,7 @@ MIN_BACKOFF=""
 ITERATIONS=10
 RUNS=""
 LIST=0
-WORKLOAD=""
+WORKLOAD="-w 64"
 NUMA_NODES=""
 
 if [ "$#" = "0" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then

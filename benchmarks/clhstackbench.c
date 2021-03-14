@@ -17,7 +17,12 @@
 
 CLHLockStruct *lock CACHE_ALIGN;
 Node guard CACHE_ALIGN = {0, null};
+
 volatile Node *Top CACHE_ALIGN = &guard;
+#ifdef DEBUG
+volatile uint64_t stack_state = 0;
+#endif
+
 int64_t d1 CACHE_ALIGN, d2;
 Barrier bar CACHE_ALIGN;
 BenchArgs bench_args CACHE_ALIGN;
@@ -30,6 +35,9 @@ inline static void push(Object arg, int pid) {
     CLHLock(lock, pid); // Critical section
     n->next = Top;
     Top = n;
+#ifdef DEBUG
+    stack_state += 1;
+#endif
     NonTSOFence();
     CLHUnlock(lock, pid);
 }
@@ -46,6 +54,9 @@ inline static Object pop(int pid) {
         n = (Node *)Top;
         Top = Top->next;
     }
+#ifdef DEBUG
+    stack_state += 1;
+#endif
     NonTSOFence();
     CLHUnlock(lock, pid);
     recycle_obj(&pool_node, n);
@@ -99,6 +110,7 @@ int main(int argc, char *argv[]) {
     volatile Node *ltop = Top;
     long counter = 0;
 
+    fprintf(stderr, "DEBUG: Object state: %ld\n", stack_state);
     while (ltop->next != null) {
         ltop = ltop->next;
         counter++;

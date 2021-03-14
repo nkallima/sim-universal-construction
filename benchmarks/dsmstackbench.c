@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
     printStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
-    fprintf(stderr, "DEBUG: Object state: counter: %ld\n", object_struct->object_struct.counter);
+    fprintf(stderr, "DEBUG: Object state: %ld\n", object_struct->object_struct.counter);
     fprintf(stderr, "DEBUG: rounds: %d\n", object_struct->object_struct.rounds);
     volatile Node *top = object_struct->top;
     long counter = 0;

@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
         first = first->next;
         counter++;
     }
-    fprintf(stderr, "DEBUG: %ld nodes left in the queue\n", counter);
+    fprintf(stderr, "DEBUG: %ld nodes were left in the queue\n", counter);
 #endif
 
     return 0;

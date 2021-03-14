@@ -1,3 +1,8 @@
+v2.3.0
+------
+- Introducing 'validate.sh', a smoke/validation script that verifies many of the provided data structures.
+- A few improvements on some benchmarks in order to be conformed with 'validator.sh'.
+
 v2.2.1
 ------
 - Executing `Pause` instructions on spinning-loops for the X86 architecture. Spin-locks and some lock-free algorithms may have performance benefits in SMT architectures.  
