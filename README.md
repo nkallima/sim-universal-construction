@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
     StartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
     JoinThreadsN(N_THREADS - 1);
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", 
+    printf("time: %ld (ms)\tthroughput: %.2f (millions ops/sec)\n", 
            (d2 - d1), RUNS * N_THREADS / (1000.0 * (d2 - d1)));
 
     return 0;
