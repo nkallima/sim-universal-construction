@@ -180,7 +180,7 @@ Getting the best performance from the provided benchmarks is not always an easy 
 
 # License
 
-The Synch framework is provided under the [LGPL-2.1 License](LISCENCE).
+The Synch framework is provided under the [LGPL-2.1 License](LICENSE).
 
 # References
 
