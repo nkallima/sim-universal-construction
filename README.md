@@ -168,6 +168,20 @@ Getting the best performance from the provided benchmarks is not always an easy 
 - Check the performance impact of the different available compiler optimizations. In most cases, gcc's `-Ofast` option gives the best performance. In addition, some algorithms (i.e., sim, osci, simstack, oscistack, simqueue and osciqueue) benefit by enabling the `-mavx` option (in case that AVX instructions are supported by the hardware).
 - Check if system oversubscription with user-level fibers enhances the performance. Many algorithms (i.e., the Sim and Osci families of algorithms) show tremendous performance boost by using oversubscription and user-level threads [3]. In this case, use the `--fibers` option.
 
+# If you want to cite us
+
+```latex
+@misc{SynchFramework,
+  title={{Synch: A framework for concurrent data-structures and benchmarks.}},
+  author={Kallimanis, Nikolaos D.},
+  url={{https://github.com/nkallima/sim-universal-construction}}
+}
+```
+
+# License
+
+The Synch framework is provided under the [LGPL-2.1 License](LISCENCE).
+
 # References
 
 [1]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Revisiting the combining synchronization technique". ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012.
