@@ -55,16 +55,16 @@ The current version of this library provides the following concurrent data-struc
 | Concurrent  Object    |                Provided Implementations                           |
 | --------------------- | ----------------------------------------------------------------- |
 | Combining Objects     | CC-Synch, DSM-Synch and H-Synch [1]                               |
-|                       | PSim [2;10]                                                       |
+|                       | PSim [2,10]                                                       |
 |                       | Osci [3]                                                          |
 |                       | Oyama [4]                                                         |
 | Concurrent Queues     | CC-Queue, DSM-Queue and H-Queue [1]                               |
-|                       | SimQueue [2;10]                                                   |
+|                       | SimQueue [2,10]                                                   |
 |                       | OsciQueue [3]                                                     |
 |                       | CLH-Queue [5,6]                                                   |
 |                       | MS-Queue [7]                                                      |
 | Concurrent Stacks     | CC-Stack, DSM-Stack and H-Stack [1]                               |
-|                       | SimStack [2;10]                                                   |
+|                       | SimStack [2,10]                                                   |
 |                       | OsciStack [3]                                                     |
 |                       | CLH-Stack [5,6]                                                   |
 |                       | LF-Stack [8]                                                      |
