@@ -1,7 +1,9 @@
 v2.3.0
 ------
-- Introducing 'validate.sh', a smoke/validation script that verifies many of the provided data structures.
-- A few improvements on some benchmarks in order to be conformed with 'validator.sh'.
+- Introducing `validate.sh`, a smoke/validation script that verifies many of the provided data structures.
+- A few improvements on some benchmarks in order to be conformed with `validate.sh`.
+- Introducing the logo of the repository.
+- Enhancements on `README.md`.
 
 v2.2.1
 ------
