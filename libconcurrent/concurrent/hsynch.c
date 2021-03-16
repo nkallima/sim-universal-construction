@@ -108,6 +108,8 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
 void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions) {
     int i;
 
+    if (numa_regions > nthreads)
+        numa_regions = nthreads;
     l->nthreads = nthreads;
     if (numa_regions == HSYNCH_DEFAULT_NUMA_POLICY) {
         // Whenever numa_regions is equal to HSYNCH_DEFAULT_NUMA_POLICY, the user uses

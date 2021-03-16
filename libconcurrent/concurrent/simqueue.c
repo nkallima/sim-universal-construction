@@ -1,4 +1,3 @@
-#include <sim.h>
 #include <simqueue.h>
 
 static const int LOCAL_POOL_SIZE = _SIM_LOCAL_POOL_SIZE_;
@@ -21,10 +20,10 @@ inline static void DeqLinkQueue(SimQueueStruct *queue, DeqState *pst) {
     enq_sp.raw_data = queue->enq_sp.raw_data;
     enq_pst = queue->enq_pool[enq_sp.struct_data.index];
 
-    FullFence();
     if (pst->head->next == NULL) {
         volatile Node *last = enq_pst->last;
         volatile Node *first = enq_pst->first;
+        FullFence();
         if (first != NULL && last != NULL && enq_sp.raw_data == queue->enq_sp.raw_data)
             CASPTR(&first->next, NULL, last);
     }
