@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install libnuma-dev
-      run: sudo apt-get install -y install libnuma-dev
+      run: sudo apt-get -y install libnuma-dev
     - name: make clean
       run: make clean
     - name: make
