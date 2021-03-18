@@ -1,0 +1,23 @@
+name: validate
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install libnuma-dev
+      run: sudo apt-get -y install libnuma-dev
+    - name: validate
+      run: ./validate.sh
