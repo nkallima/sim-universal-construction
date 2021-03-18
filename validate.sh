@@ -4,7 +4,7 @@ RUNS_PER_THREAD=100000
 MAX_PTHREADS=$(nproc)
 BIN_PATH="./build/bin"
 RES_FILE="res.txt"
-BUILD_LOG="build.log"
+BUILD_LOG=$HOME/build.log
 STEP_SELETCTED=0
 STEP_THREADS=1
 WORKLOAD="-w 64"
@@ -101,8 +101,18 @@ done
 # Add set of iterations for max threads
 PTHREADS_ARRAY+=($MAX_PTHREADS)
 
-echo "Compiling the sources..."
-make clean debug > $BUILD_LOG
+echo -ne "Compiling the sources...\t\t\t\t\t\t"
+make clean debug &> $BUILD_LOG
+
+if [ $? -eq 0 ]; then
+    echo -e $COLOR_PASS
+else
+    echo -e $COLOR_FAIL
+    echo -e "\nCheck" $BUILD_LOG "for the build error-log."
+    printf "\n\n\e[31mFailed to build validation tests!\n"
+    printf "================================\e[39m\n\n"
+    exit 1
+fi
 
 # Run the selected number of threads
 for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
@@ -180,4 +190,5 @@ if [ $PASS_STATUS -eq 1 ]; then
 else
     printf "\n\n\e[31mValidation tests failed!\n"
     printf "========================\e[39m\n\n"
+    exit 1
 fi
