@@ -184,6 +184,8 @@ for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
     done
 done
 
+rm -f $RES_FILE
+
 if [ $PASS_STATUS -eq 1 ]; then
     printf "\n\n\e[32mAll validation tests passed successfully!\n"
     printf "=========================================\e[39m\n\n"
