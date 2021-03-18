@@ -178,9 +178,17 @@ Getting the best performance from the provided benchmarks is not always an easy 
 }
 ```
 
+# Releases
+
+An extensive list of the recent releases and their features is provided at [https://github.com/nkallima/sim-universal-construction/releases](https://github.com/nkallima/sim-universal-construction/releases)
+
 # License
 
 The Synch framework is provided under the [LGPL-2.1 License](LICENSE).
+
+# Code of conduct
+
+[Code of conduct](.github/CODE_OF_CONDUCT.md).
 
 # References
 
