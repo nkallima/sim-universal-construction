@@ -1,3 +1,9 @@
+v2.3.1
+------
+- Improvements on `validate.sh` for better error reporting.
+- Enhancements on `README.md`.
+- Improved logo.
+
 v2.3.0
 ------
 - Introducing `validate.sh`, a smoke/validation script that verifies many of the provided data structures.
