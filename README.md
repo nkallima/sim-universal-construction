@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="logo_synch.png" alt="The Synch Framework" width="80%">
+    <img src="resources/logo_synch.png" alt="The Synch Framework" width="80%">
 </p>
 
 # Summary
@@ -42,7 +42,7 @@ The following options are available:
 
 The framework provides the `validate.sh` validation/smoke script. The `validate.sh` script compiles the sources in `DEBUG` mode and runs a big set of benchmarks with various numbers of threads. After running each of the benchmarks, the script evaluates the `DEBUG` output and in case of success it prints `PASS`. In case of a failure, the script simple prints `FAIL`. In order to see all the available options of the validation/smoke script, execute `validate.sh -h`. The following image shows the execution and the default behavior of `validate.sh`.
 
-![](validate_example.gif)
+![](resources/validate_example.gif)
 
 
 The framework provides another simple fast smoke test: `./run_all.sh`. This will quickly run all available benchmarks with default options and store the results in the `results.txt` file.
