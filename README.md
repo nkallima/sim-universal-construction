@@ -40,7 +40,7 @@ The following options are available:
 |  `-bl`, `--backoff_low` |  set a lower backoff bound (only for msqueue, lfstack and lfuobject benchmarks)       |
 |  `-h`, `--help`         |  displays this help and exits                                                         |
 
-The framework provides the `validate.sh` validation/smoke script. The `validate.sh` script compiles the sources in `DEBUG` mode and runs a big set of benchmarks with various numbers of threads. After running each of the benchmarks, the script evaluates the `DEBUG` output and in case of success it prints `PASS`. In case of a failure, the script simple prints `FAIL`. In order to see all the available options of the validation/smoke script, execute `validate.sh -h`. The following image shows the execution and the default behavior of `validate.sh`.
+The framework provides the `validate.sh` validation/smoke script. The `validate.sh` script compiles the sources in `DEBUG` mode and runs a big set of benchmarks with various numbers of threads. After running each of the benchmarks, the script evaluates the `DEBUG` output and in case of success it prints `PASS`. In case of a failure, the script simply prints `FAIL`. In order to see all the available options of the validation/smoke script, execute `validate.sh -h`. The following image shows the execution and the default behavior of `validate.sh`.
 
 ![](resources/validate_example.gif)
 
