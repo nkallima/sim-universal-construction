@@ -1,3 +1,7 @@
+v2.4.0
+------
+- Adding the LCRQ Queue implementation (Adam Morrison and Yehuda Afek, PPoPP 2013, http://mcg.cs.tau.ac.il/projects/lcrq). 
+
 v2.3.1
 ------
 - Improvements on `validate.sh` for better error reporting.

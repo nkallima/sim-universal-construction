@@ -63,6 +63,7 @@ The current version of this library provides the following concurrent data-struc
 |                       | OsciQueue [3]                                                     |
 |                       | CLH-Queue [5,6]                                                   |
 |                       | MS-Queue [7]                                                      |
+|                       | LCRQ [11,12]                                                      |
 | Concurrent Stacks     | CC-Stack, DSM-Stack and H-Stack [1]                               |
 |                       | SimStack [2,10]                                                   |
 |                       | OsciStack [3]                                                     |
@@ -78,8 +79,9 @@ The current version of this library provides the following concurrent data-struc
 # Requirements
 
 - A modern 64-bit machine. Currently, 32-bit architectures are not supported. The current version of this code is optimized for the x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.).
-- As a compiler, gcc of version 4.3 or greater is recommended, but you may also try to use icx or clang. 
+- As a compiler, gcc of version 4.8 or greater is recommended, but you may also try to use icx or clang. 
 - Building requires the following development packages:
+    - `libatomic`
     - `libnuma`
     - `libpapi` in case that the `_TRACK_CPU_COUNTERS` flag is enabled in `config.h`.
 
@@ -172,7 +174,7 @@ Getting the best performance from the provided benchmarks is not always an easy 
 
 ```latex
 @misc{SynchFramework,
-  title={{Synch: A framework for concurrent data-structures and benchmarks.}},
+  title={{Synch: A framework for concurrent data-structures and benchmarks. https://github.com/nkallima/sim-universal-construction}},
   author={Kallimanis, Nikolaos D.},
   url={{https://github.com/nkallima/sim-universal-construction}}
 }
@@ -210,7 +212,11 @@ The Synch framework is provided under the [LGPL-2.1 License](LICENSE).
 
 [9]. Mellor-Crummey, John M., and Michael L. Scott. "Algorithms for scalable synchronization on shared-memory multiprocessors". ACM Transactions on Computer Systems (TOCS) 9.1 (1991): 21-65.
 
-[10]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Highly-efficient wait-free synchronization." Theory of Computing Systems 55.3 (2014): 475-520.
+[10]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Highly-efficient wait-free synchronization". Theory of Computing Systems 55.3 (2014): 475-520.
+
+[11]. Adam Morrison, and Yehuda Afek. "Fast concurrent queues for x86 processors". Proceedings of the 18th ACM SIGPLAN symposium on Principles and practice of parallel programming. 2013.
+
+[12]. Adam Morrison, and Yehuda Afek. Source code for LCRQ. http://mcg.cs.tau.ac.il/projects/lcrq
 
 # Contact
 
