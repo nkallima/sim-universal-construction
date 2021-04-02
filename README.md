@@ -1,3 +1,5 @@
+[![check-build](https://github.com/nkallima/sim-universal-construction/actions/workflows/check-build.yml/badge.svg)](https://github.com/nkallima/sim-universal-construction/actions/workflows/check-build.yml) [![validate](https://github.com/nkallima/sim-universal-construction/actions/workflows/validate.yml/badge.svg)](https://github.com/nkallima/sim-universal-construction/actions/workflows/validate.yml)
+
 <p align="center">
     <img src="resources/logo_synch.png" alt="The Synch Framework" width="80%">
 </p>
