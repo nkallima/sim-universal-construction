@@ -108,9 +108,9 @@ inline uint64_t nonZeroBits(uint64_t v) {
 #endif
 
 inline bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t C1) {
-    int res;
+    bool res;
 
-#ifdef __OLD_GCC_X86__
+#if defined(__OLD_GCC_X86__) || defined(__amd64__) || defined(__x86_64__)
     uint64_t dummy;
 
     asm volatile("lock;"

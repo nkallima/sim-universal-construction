@@ -85,7 +85,9 @@ typedef struct LCRQStruct {
 
 typedef struct LCRQThreadState {
     RingQueue *nrq;
+#ifdef HAVE_HPTRS
     RingQueue *hazardptr;
+#endif
 #ifdef DEBUG
     uint64_t mycloses;
     uint64_t myunsafes;

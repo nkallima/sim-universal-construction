@@ -3,8 +3,6 @@
 
 #include <stdlib.h>
 #include <limits.h>
-#include <math.h>
-#include <math.h>
 #include <stdint.h>
 #include <time.h>
 #include <malloc.h>
@@ -28,6 +26,9 @@
 #    define StorePrefetch(A)            __builtin_prefetch((const void *)A, 1, 3);
 #    define bitSearchFirst(A)           __builtin_ctzll(A)
 #    define nonZeroBits(A)              __builtin_popcountll(A)
+#    define Likely(A)                   __builtin_expect(!!(A), 1)
+#    define Unlikely(A)                 __builtin_expect(!!(A), 0)
+#    define UNUSED_ARG                  __attribute__((unused))
 #    if defined(__amd64__) || defined(__x86_64__)
 #        define LoadFence()   asm volatile("lfence" ::: "memory")
 #        define StoreFence()  asm volatile("sfence" ::: "memory")
@@ -40,6 +41,7 @@
 #        define NonTSOFence() __sync_synchronize()
 #    endif
 #elif defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
+#    warning You may lose performance!
 #    warning A newer version of GCC compiler is recommended!
 #    define LoadFence()      asm volatile("lfence" ::: "memory")
 #    define StoreFence()     asm volatile("sfence" ::: "memory")
@@ -47,7 +49,9 @@
 #    define ReadPrefetch(A)  asm volatile("prefetchnta %0" ::"m"(*((const int *)A)))
 #    define StorePrefetch(A) asm volatile("prefetchnta %0" ::"m"(*((const int *)A)))
 #    define NonTSOFence()
-
+#    define Likely(A)        (A)
+#    define Unlikely(A)      (A)
+#    define UNUSED_ARG       __attribute__((unused))
 //   in this case where gcc is too old, implement atomic primitives in primitives.c
 #    define __OLD_GCC_X86__
 inline int bitSearchFirst(uint64_t B);

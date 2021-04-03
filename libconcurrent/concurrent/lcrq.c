@@ -43,16 +43,13 @@
 #include <primitives.h>
 #include <lcrq.h>
 
-
-#define likely(x)   __builtin_expect(!!(x), 1)
-#define unlikely(x) __builtin_expect(!!(x), 0)
-
 inline static int is_empty(uint64_t v) __attribute__ ((pure));
 inline static uint64_t node_index(uint64_t i) __attribute__ ((pure));
 inline static uint64_t set_unsafe(uint64_t i) __attribute__ ((pure));
 inline static uint64_t node_unsafe(uint64_t i) __attribute__ ((pure));
 inline static uint64_t tail_index(uint64_t t) __attribute__ ((pure));
 inline static int crq_is_closed(uint64_t t) __attribute__ ((pure));
+inline static void fix_state(RingQueue *rq);
 
 #ifdef DEBUG
 inline static void count_closed_crq(LCRQThreadState *thread_state) {
@@ -103,12 +100,12 @@ inline static int crq_is_closed(uint64_t t) {
     return (t & (1ull << 63)) != 0;
 }
 
-inline static void fixState(RingQueue *rq) {
+inline static void fix_state(RingQueue *rq) {
     while (true) {
         uint64_t t = FAA64(&rq->tail, 0);
         uint64_t h = FAA64(&rq->head, 0);
 
-        if (unlikely(rq->tail != t))
+        if (Unlikely(rq->tail != t))
             continue;
 
         if (h > t) {
@@ -121,23 +118,25 @@ inline static void fixState(RingQueue *rq) {
 
 inline static int close_crq(RingQueue *rq, const uint64_t t, const int tries) {
     if (tries < 10)
-        return CAS64(&rq->tail, t + 1, (t + 1)|(1ull<<63));
+        return CAS64(&rq->tail, t + 1, set_unsafe(t + 1));
     else
         return BitTAS64(&rq->tail, 63);
 }
 
-void LCRQInit(LCRQStruct *queue, uint32_t nthreads) {
+void LCRQInit(LCRQStruct *queue, uint32_t nthreads UNUSED_ARG) {
      RingQueue *rq = getMemory(sizeof(RingQueue));
      init_ring(rq);
      queue->head = queue->tail = rq;
 }
 
-void LCRQThreadStateInit(LCRQThreadState *thread_state, int pid) {
+void LCRQThreadStateInit(LCRQThreadState *thread_state, int pid UNUSED_ARG) {
     thread_state->nrq = NULL;
+#ifdef HAVE_HPTRS
     thread_state->hazardptr = NULL;
+#endif
 }
 
-void LCRQEnqueue(LCRQStruct *queue, LCRQThreadState *thread_state, ArgVal arg, int pid) {
+void LCRQEnqueue(LCRQStruct *queue, LCRQThreadState *thread_state, ArgVal arg, int pid UNUSED_ARG) {
     int try_close = 0;
 
     while (true) {
@@ -145,13 +144,13 @@ void LCRQEnqueue(LCRQStruct *queue, LCRQThreadState *thread_state, ArgVal arg, i
 
 #ifdef HAVE_HPTRS
         SWAP(&thread_state->hazardptr, rq);
-        if (unlikely(tail != rq))
+        if (Unlikely(queue->tail != rq))
             continue;
 #endif
 
         RingQueue *next = rq->next;
  
-        if (unlikely(next != null)) {
+        if (Unlikely(next != null)) {
             CASPTR(&queue->tail, rq, next);
             continue;
         }
@@ -182,10 +181,10 @@ alloc:
         uint64_t idx = cell->idx;
         uint64_t val = cell->val;
 
-        if (likely(is_empty(val))) {
-            if (likely(node_index(idx) <= t)) {
+        if (Likely(is_empty(val))) {
+            if (Likely(node_index(idx) <= t)) {
                 int64_t cas_arg = -1;
-                if ((likely(!node_unsafe(idx)) || rq->head < t) && CAS128((uint64_t*)cell, *((uint64_t *)&cas_arg), idx, arg, t)) {
+                if ((Likely(!node_unsafe(idx)) || rq->head < t) && CAS128((uint64_t*)cell, *((uint64_t *)&cas_arg), idx, arg, t)) {
                     return;
                 }
             }
@@ -193,21 +192,21 @@ alloc:
 
         uint64_t h = rq->head;
 
-        if (unlikely((int64_t)(t - h) >= (int64_t)RING_SIZE) && close_crq(rq, t, ++try_close)) {
+        if (Unlikely((int64_t)(t - h) >= (int64_t)RING_SIZE) && close_crq(rq, t, ++try_close)) {
             count_closed_crq(thread_state);
             goto alloc;
         }
     }
 }
 
-RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid) {
+RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid UNUSED_ARG) {
     while (true) {
         RingQueue *rq = queue->head;
         RingQueue *next;
 
 #ifdef HAVE_HPTRS
         SWAP(&thread_state->hazardptr, rq);
-        if (unlikely(head != rq))
+        if (Unlikely(head != rq))
             continue;
 #endif
 
@@ -225,10 +224,10 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid) {
             uint64_t idx = node_index(cell_idx);
             uint64_t val = cell->val;
 
-            if (unlikely(idx > h)) break;
+            if (Unlikely(idx > h)) break;
 
-            if (likely(!is_empty(val))) {
-                if (likely(idx == h)) {
+            if (Likely(!is_empty(val))) {
+                if (Likely(idx == h)) {
                     int64_t cas_arg = -1;
                     if (CAS128((uint64_t*)cell, val, cell_idx, *((uint64_t *)&cas_arg), (unsafe | h) + RING_SIZE))
                         return val;
@@ -246,7 +245,7 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid) {
                 int crq_closed = crq_is_closed(tt);
                 uint64_t t = tail_index(tt);
 
-                if (unlikely(unsafe)) { // Nothing to do, move along
+                if (Unlikely(unsafe)) { // Nothing to do, move along
                     if (CAS128((uint64_t*)cell, val, cell_idx, val, (unsafe | h) + RING_SIZE))
                         break;
                 } else if (t < h + 1 || r > 200000 || crq_closed) {
@@ -262,7 +261,7 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid) {
         }
 
         if (tail_index(rq->tail) <= h + 1) {
-            fixState(rq);
+            fix_state(rq);
             // try to return empty
             next = rq->next;
             if (next == null)
