@@ -172,6 +172,40 @@ Getting the best performance from the provided benchmarks is not always an easy 
 - Check the performance impact of the different available compiler optimizations. In most cases, gcc's `-Ofast` option gives the best performance. In addition, some algorithms (i.e., sim, osci, simstack, oscistack, simqueue and osciqueue) benefit by enabling the `-mavx` option (in case that AVX instructions are supported by the hardware).
 - Check if system oversubscription with user-level fibers enhances the performance. Many algorithms (i.e., the Sim and Osci families of algorithms) show tremendous performance boost by using oversubscription with user-level threads [3]. In this case, use the `--fibers` option.
 
+
+# Memory reclamation (Stacks and Queues)
+
+The Synch framework provides a pool mechanism (see `primitives/pool.h`) that efficiently allocates and de-allocates memory for the provided concurrent stack and queue implementations. The allocation mechanism of this pool implementation is low-overhead.  All the provided stack and queue implementations use the functionality of this pool mechanism. In order to support memory reclamation in a safe manner, a concurrent object should guarantee that each memory object that is going to de-allocated should accessed only by the thread that is going to free it. Generally, de-allocating and thus reclaiming memory is easy in many blocking objects, since there is a lock that protects the de-allocated memory object. However, de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Currently, the Synch framework supports memory reclamation for the following blocking concurrent stack and queue implementations:
+- Concurrent Queues:
+    - CC-Queue, DSM-Queue and H-Queue [1]
+    - OsciQueue [3]
+    - CLH-Queue [5,6]
+- Concurrent Stacks:
+    - CC-Stack, DSM-Stack and H-Stack [1]
+    - OsciStack [3]
+    - CLH-Stack [5,6]
+
+Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.
+
+By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the `POOL_NODE_RECYCLING_DISABLE` option should be enabled in `config.h`.
+
+The following table shows the memory reclamation characteristics of the provided stack and queues implementations.
+
+| Concurrent  Object    |        Provided Implementations           | Memory Reclamation                        |
+| --------------------- | ----------------------------------------- | ----------------------------------------- |
+| Concurrent Queues     | CC-Queue, DSM-Queue and H-Queue [1]       | Supported                                 |
+|                       | SimQueue [2,10]                           | Not supported                             |
+|                       | OsciQueue [3]                             | Supported                                 |
+|                       | CLH-Queue [5,6]                           | Supported                                 |
+|                       | MS-Queue [7]                              | Hazard Pointers (not provided by Synch)   |
+|                       | LCRQ [11,12]                              | Hazard Pointers (not provided by Synch)   |
+| Concurrent Stacks     | CC-Stack, DSM-Stack and H-Stack [1]       | Supported                                 |
+|                       | SimStack [2,10]                           | Not supported                             |
+|                       | OsciStack [3]                             | Supported                                 |
+|                       | CLH-Stack [5,6]                           | Supported                                 |
+|                       | LF-Stack [8]                              | Hazard Pointers (not provided by Synch)   |
+
+
 # If you want to cite us
 
 ```latex
