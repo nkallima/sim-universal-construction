@@ -19,9 +19,11 @@
 #endif
 
 #ifdef __GNUC__
-#    define CACHE_ALIGN __attribute__((aligned(CACHE_LINE_SIZE)))
-#    define VAR_ALIGN   __attribute__((aligned(16)))
+#    define S_CACHE_ALIGN __attribute__((aligned(S_CACHE_LINE_SIZE)))
+#    define CACHE_ALIGN   __attribute__((aligned(CACHE_LINE_SIZE)))
+#    define VAR_ALIGN     __attribute__((aligned(16)))
 #else
+#    define S_CACHE_ALIGN
 #    define CACHE_ALIGN
 #    define VAR_ALIGN
 #endif
