@@ -12,39 +12,43 @@ extern __thread int64_t __executed_faa;
 #endif
 
 #ifdef __OLD_GCC_X86__
-inline static bool __CASPTR(void *A, void *B, void *C) {
+inline bool __CASPTR(void *A, void *B, void *C) {
     uint64_t prev;
     uint64_t *p = (uint64_t *)A;
 
-    asm volatile("lock;cmpxchgq %1,%2" 
+    asm volatile("lock;"
+                 "cmpxchgq %1,%2" 
                  : "=a"(prev)
                  : "r"((uint64_t)C), "m"(*p), "0"((uint64_t)B) 
                  : "memory");
     return (prev == (uint64_t)B);
 }
 
-inline static bool __CAS64(volatile uint64_t *A, uint64_t B, uint64_t C) {
+inline bool __CAS64(volatile uint64_t *A, uint64_t B, uint64_t C) {
     uint64_t prev;
     uint64_t *p = (uint64_t *)A;
 
-    asm volatile("lock;cmpxchgq %1,%2"
+    asm volatile("lock;"
+                 "cmpxchgq %1,%2"
                  : "=a"(prev)
                  : "r"(C), "m"(*p), "0"(B)
                  : "memory");
     return (prev == B);
 }
 
-inline static bool __CAS32(uint32_t *A, uint32_t B, uint32_t C) {
+inline bool __CAS32(uint32_t *A, uint32_t B, uint32_t C) {
     uint32_t prev;
     uint32_t *p = (uint32_t *)A;
 
-    asm volatile("lock;cmpxchgl %1,%2" : "=a"(prev) 
+    asm volatile("lock;"
+                 "cmpxchgl %1,%2" 
+                 : "=a"(prev) 
                  : "r"(C), "m"(*p), "0"(B) 
                  : "memory");
     return (prev == B);
 }
 
-inline static void *__SWAP(void *A, void *B) {
+inline void *__SWAP(void *A, void *B) {
     int64_t *p = (int64_t *)A;
 
     asm volatile("lock;"
@@ -55,7 +59,7 @@ inline static void *__SWAP(void *A, void *B) {
     return B;
 }
 
-inline static int64_t __FAA64(volatile int64_t *A, int64_t B) {
+inline int64_t __FAA64(volatile int64_t *A, int64_t B) {
     asm volatile("lock;"
                  "xaddq %0, %1"
                  : "=r"(B), "=m"(*A)
@@ -64,13 +68,25 @@ inline static int64_t __FAA64(volatile int64_t *A, int64_t B) {
     return B;
 }
 
-inline static int32_t __FAA32(volatile int32_t *A, int32_t B) {
+inline int32_t __FAA32(volatile int32_t *A, int32_t B) {
     asm volatile("lock;"
                  "xaddl %0, %1"
                  : "=r"(B), "=m"(*A)
                  : "0"(B), "m"(*A)
                  : "memory");
     return B;
+}
+
+inline uint64_t __BitTAS64(volatile uint64_t *A, unsigned char B) {
+    int64_t *p = (int64_t *)A;
+    int64_t bit = B;
+    asm volatile("lock;" 
+                 "btsq %0, %1"
+                 : "=r"(bit), "=m"(*p)
+                 : "0"(bit), "m"(*p)
+                 : "memory");
+
+    return bit;
 }
 
 inline int bitSearchFirst(uint64_t B) {
@@ -90,6 +106,30 @@ inline uint64_t nonZeroBits(uint64_t v) {
     return c;
 }
 #endif
+
+inline bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t C1) {
+    bool res;
+
+#if defined(__OLD_GCC_X86__) || defined(__amd64__) || defined(__x86_64__)
+    uint64_t dummy;
+
+    asm volatile("lock;"
+                 "cmpxchg16b %2; setz %1"
+                 : "=d" (dummy), "=a" (res), "+m" (*A)
+                 : "b" (C0), "c" (C1), "a" (B0),  "d" (B1));
+#else
+    __uint128_t old_value = (__uint128_t)(B0) | (((__uint128_t)(B1)) << 64ULL);
+    __uint128_t new_value = (__uint128_t)(C0) | (((__uint128_t)(C1)) << 64ULL);
+    res = __atomic_compare_exchange_16(A, &old_value, new_value, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
+#endif
+
+#ifdef DEBUG
+    __executed_cas++;
+    __failed_cas += 1 - res;
+#endif
+
+    return res;
+}
 
 inline void *getMemory(size_t size) {
     void *p;
@@ -143,17 +183,17 @@ inline int64_t getTimeMillis(void) {
     } else return tm.tv_sec*1000LL + tm.tv_nsec/1000000LL;
 }
 
-inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {
+inline bool _CASPTR(void *A, void *B, void *C) {
 #ifdef DEBUG
     int res;
 
-    res = __CAS32(A, B, C);
+    res = __CASPTR(A, B, C);
     __executed_cas++;
     __failed_cas += 1 - res;
 
     return res;
 #else
-    return __CAS32(A, B, C);
+    return __CASPTR(A, B, C);
 #endif
 }
 
@@ -171,17 +211,17 @@ inline bool _CAS64(uint64_t *A, uint64_t B, uint64_t C) {
 #endif
 }
 
-inline bool _CASPTR(void *A, void *B, void *C) {
+inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {
 #ifdef DEBUG
     int res;
 
-    res = __CASPTR(A, B, C);
+    res = __CAS32(A, B, C);
     __executed_cas++;
     __failed_cas += 1 - res;
 
     return res;
 #else
-    return __CASPTR(A, B, C);
+    return __CAS32(A, B, C);
 #endif
 }
 
@@ -263,4 +303,8 @@ inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
     return __FAA64(A, B);
 #    endif
 #endif
+}
+
+inline uint64_t _BitTAS64(volatile uint64_t *A, unsigned char B) {
+    return __BitTAS64(A, B);
 }
