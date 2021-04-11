@@ -183,8 +183,7 @@ alloc:
 
         if (Likely(is_empty(val))) {
             if (Likely(node_index(idx) <= t)) {
-                int64_t cas_arg = -1;
-                if ((Likely(!node_unsafe(idx)) || rq->head < t) && CAS128((uint64_t*)cell, *((uint64_t *)&cas_arg), idx, arg, t)) {
+                if ((Likely(!node_unsafe(idx)) || rq->head < t) && CAS128((uint64_t*)cell, -1, idx, arg, t)) {
                     return;
                 }
             }
@@ -228,8 +227,7 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid UNU
 
             if (Likely(!is_empty(val))) {
                 if (Likely(idx == h)) {
-                    int64_t cas_arg = -1;
-                    if (CAS128((uint64_t*)cell, val, cell_idx, *((uint64_t *)&cas_arg), (unsafe | h) + RING_SIZE))
+                    if (CAS128((uint64_t*)cell, val, cell_idx, -1, (unsafe | h) + RING_SIZE))
                         return val;
                 } else {
                     if (CAS128((uint64_t*)cell, val, cell_idx, val, set_unsafe(idx))) {
