@@ -89,7 +89,7 @@ The current version of this library provides the following concurrent data-struc
 
 For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `config.h` file (see more on Performance/Optimizations Section).
 
-# Compiling the library
+# Compiling the framework
 
 In case that you just want to compile the library that provides all the implemented concurrent algorithms
 execute one of the following make commands. This step is not necessary in case that you want to run benchmarks.
