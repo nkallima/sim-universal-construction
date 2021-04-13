@@ -1,6 +1,9 @@
 v2.4.0
 ------
-- Adding the LCRQ Queue implementation (Adam Morrison and Yehuda Afek, PPoPP 2013, http://mcg.cs.tau.ac.il/projects/lcrq). 
+- Adding the LCRQ Queue implementation (Adam Morrison and Yehuda Afek, PPoPP 2013, http://mcg.cs.tau.ac.il/projects/lcrq).
+- Memory reclamation for SimStack is supported.
+- Adding support for 128 bit Compare&Swap.
+- Documentation improvements; a memory reclamation section was added in `README.md`.
 
 v2.3.1
 ------

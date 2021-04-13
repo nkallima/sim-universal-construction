@@ -1,6 +1,6 @@
 ARCH     = $(shell uname -p)
 NPROC    = $(shell nproc)
-LIBS     = $(shell ./libconcurrent/libdeps.sh) -latomic
+LIBS     = $(shell ./libconcurrent/libdeps.sh)
 CLANG_AR = ar
 
 all:
