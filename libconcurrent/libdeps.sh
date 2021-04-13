@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LDLIBS="-lpthread -lm";
+LDLIBS="-lpthread -latomic";
 
 DEFINITIONS=(NUMA_SUPPORT _TRACK_CPU_COUNTERS);
 LIBS=("-lnuma" "-lpapi");
