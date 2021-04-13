@@ -11,12 +11,13 @@
 #include <threadtools.h>
 #include <simstack.h>
 
-static const int POP = INT_MIN;
+static const uint64_t POP = LLONG_MIN;
 
 inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_state, ArgVal arg);
-inline static void serialPop(HalfSimStackState *st, int pid);
+inline static bool serialPop(HalfSimStackState *st, int pid);
 inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid);
 static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src);
+inline static void recycleList(PoolStruct *pool, Node *head, uint32_t items);
 
 static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src) {
     // copy everything except 'applied' and 'ret' fields
@@ -64,6 +65,15 @@ void SimStackThreadStateInit(SimStackThreadState *th_state, uint32_t nthreads, i
     init_pool(&th_state->pool, sizeof(Node));
 }
 
+inline static void recycleList(PoolStruct *pool, Node *head, uint32_t items) {
+    while (items > 0) {
+        Node *node = head;
+        head = (Node *)head->next;
+        items--;
+        recycle_obj(pool, node);
+    }
+}
+
 inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_state, ArgVal arg) {
 #ifdef DEBUG
     st->counter += 1;
@@ -75,22 +85,25 @@ inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_sta
     st->head = n;
 }
 
-inline static void serialPop(HalfSimStackState *st, int pid) {
+inline static bool serialPop(HalfSimStackState *st, int pid) {
 #ifdef DEBUG
     st->counter += 1;
 #endif
     if (st->head != null) {
         st->ret[pid] = (RetVal)st->head->val;
         st->head = (Node *)st->head->next;
-    } else
+        return true;
+    } else {
         st->ret[pid] = EMPTY_STACK;
+        return false;
+    }
 }
 
 inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid) {
     ToggleVector *diffs = &th_state->diffs, *l_toggles = &th_state->l_toggles, *pops = &th_state->pops;
     pointer_t new_sp, old_sp;
     HalfSimStackState *lsp_data, *sp_data;
-    int i, j, prefix, mybank, push_counter;
+    int i, j, prefix, mybank;
 
     mybank = TVEC_GET_BANK_OF_BIT(pid, stack->nthreads);
     TVEC_REVERSE_BIT(&th_state->my_bit, pid);
@@ -123,8 +136,9 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
         if (old_sp.raw_data != stack->sp.raw_data)
             continue;
         TVEC_XOR(diffs, &lsp_data->applied, l_toggles);
-        push_counter = 0;
+
         TVEC_SET_ZERO(pops);
+        int push_counter = 0;
         for (i = 0, prefix = 0; i < diffs->tvec_cells; i++, prefix += _TVEC_BIWORD_SIZE_) {
             ReadPrefetch(&stack->announce[prefix]);
             ReadPrefetch(&stack->announce[prefix + 8]);
@@ -146,6 +160,8 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
             }
         }
 
+        Node *free_list = lsp_data->head;
+        int pop_counter = 0;
         for (i = 0, prefix = 0; i < pops->tvec_cells; i++, prefix += _TVEC_BIWORD_SIZE_) {
             while (pops->cell[i] != 0L) {
                 register int pos, proc_id;
@@ -153,23 +169,29 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
                 pos = bitSearchFirst(pops->cell[i]);
                 proc_id = prefix + pos;
                 pops->cell[i] ^= ((bitword_t)1) << pos;
-                serialPop(lsp_data, proc_id);
+                pop_counter += serialPop(lsp_data, proc_id);
+                NonTSOFence();
+                if (old_sp.raw_data != stack->sp.raw_data)
+                    goto outer;
             }
         }
-
+ outer:
         TVEC_COPY(&lsp_data->applied, l_toggles);                                       // change applied to be equal to what was read in stack->a_toggles
         new_sp.struct_data.seq = old_sp.struct_data.seq + 1;                            // increase timestamp
         new_sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * pid + th_state->local_index; // store in mod_dw.index the index in stack->pool where lsp_data will be stored
         if (old_sp.raw_data == stack->sp.raw_data && CAS64(&stack->sp.raw_data, old_sp.raw_data, new_sp.raw_data)) {
             th_state->local_index = (th_state->local_index + 1) % _SIM_LOCAL_POOL_SIZE_;
             th_state->backoff = (th_state->backoff >> 1) | 1;
+            recycleList(&th_state->pool, free_list, pop_counter);
+
             return lsp_data->ret[pid];
         } else {
             if (th_state->backoff < stack->MAX_BACK)
                 th_state->backoff <<= 1;
-            rollback(&th_state->pool, push_counter);
+            recycleList(&th_state->pool, free_list, push_counter);
         }
     }
+
     return stack->pool[stack->sp.struct_data.index]->ret[pid];                          // return the value found in the record stored there
 }
 

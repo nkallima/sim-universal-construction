@@ -173,9 +173,9 @@ Getting the best performance from the provided benchmarks is not always an easy 
 - Check if system oversubscription with user-level fibers enhances the performance. Many algorithms (i.e., the Sim and Osci families of algorithms) show tremendous performance boost by using oversubscription with user-level threads [3]. In this case, use the `--fibers` option.
 
 
-# Memory reclamation (Stacks and Queues)
+# Memory reclamation (stacks and queues)
 
-The Synch framework provides a pool mechanism (see `primitives/pool.h`) that efficiently allocates and de-allocates memory for the provided concurrent stack and queue implementations. The allocation mechanism of this pool implementation is low-overhead.  All the provided stack and queue implementations use the functionality of this pool mechanism. In order to support memory reclamation in a safe manner, a concurrent object should guarantee that each memory object that is going to de-allocated should accessed only by the thread that is going to free it. Generally, de-allocating and thus reclaiming memory is easy in many blocking objects, since there is a lock that protects the de-allocated memory object. However, de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Currently, the Synch framework supports memory reclamation for the following blocking concurrent stack and queue implementations:
+The Synch framework provides a pool mechanism (see `includes/pool.h`) that efficiently allocates and de-allocates memory for the provided concurrent stack and queue implementations. The allocation mechanism of this pool implementation is low-overhead.  All the provided stack and queue implementations use the functionality of this pool mechanism. In order to support memory reclamation in a safe manner, a concurrent object should guarantee that each memory object that is going to de-allocated should be accessed only by the thread that is going to free it. Generally, de-allocating and thus reclaiming memory is easy in many blocking objects, since there is a lock that protects the de-allocated memory object. Currently, the Synch framework supports memory reclamation for the following concurrent stack and queue implementations:
 - Concurrent Queues:
     - CC-Queue, DSM-Queue and H-Queue [1]
     - OsciQueue [3]
@@ -184,8 +184,9 @@ The Synch framework provides a pool mechanism (see `primitives/pool.h`) that eff
     - CC-Stack, DSM-Stack and H-Stack [1]
     - OsciStack [3]
     - CLH-Stack [5,6]
+    - SimStack [2,10] (since v2.4.0)
 
-Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.
+Note that de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Since v2.4.0, SimStack supports memory reclamation using the functionality of `pool.h` and a technique that is similar to that presented by Blelloch and Weiin in [13]. Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.
 
 By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the `POOL_NODE_RECYCLING_DISABLE` option should be enabled in `config.h`.
 
@@ -200,10 +201,15 @@ The following table shows the memory reclamation characteristics of the provided
 |                       | MS-Queue [7]                              | Hazard Pointers (not provided by Synch)   |
 |                       | LCRQ [11,12]                              | Hazard Pointers (not provided by Synch)   |
 | Concurrent Stacks     | CC-Stack, DSM-Stack and H-Stack [1]       | Supported                                 |
-|                       | SimStack [2,10]                           | Not supported                             |
+|                       | SimStack [2,10]                           | Supported (since v2.4.0)                  |
 |                       | OsciStack [3]                             | Supported                                 |
 |                       | CLH-Stack [5,6]                           | Supported                                 |
 |                       | LF-Stack [8]                              | Hazard Pointers (not provided by Synch)   |
+
+
+## Memory reclamation limitations
+
+In the current design of the reclamation mechanism, each thread uses a single private pool for reclaiming memory. In a producer-consumer scenario where a set of threads performs only enqueue operations (or push operations in case of stacks) and all other threads perform dequeue operations (or pop operations in case of stacks), insufficient memory reclamation is performed since each memory pool is only accessible by the thread that owns it. We aim to improve this in future versions of the Synch framework.
 
 
 # If you want to cite us
@@ -238,21 +244,23 @@ The Synch framework is provided under the [LGPL-2.1 License](LICENSE).
 
 [4]. Yoshihiro Oyama, Kenjiro Taura, and Akinori Yonezawa. "Executing parallel programs with synchronization bottlenecks efficiently". Proceedings of the International Workshop on Parallel and Distributed Computing for Symbolic and Irregular Applications. Vol. 16. 1999.
 
-[5]. T. S. Craig. "Building FIFO and priority-queueing spin locks from atomic swap". Technical Report TR 93-02-02, Department of Computer Science, University of Washington, February 1993.
+[5]. Travis S. Craig. "Building FIFO and priority-queueing spin locks from atomic swap". Technical Report TR 93-02-02, Department of Computer Science, University of Washington, February 1993.
 
 [6]. Peter Magnusson, Anders Landin, and Erik Hagersten. "Queue locks on cache coherent multiprocessors". Parallel Processing Symposium, 1994. Proceedings., Eighth International. IEEE, 1994.
     
 [7]. Maged M. Michael, and Michael L. Scott. "Simple, fast, and practical non-blocking and blocking concurrent queue algorithms". Proceedings of the fifteenth annual ACM symposium on Principles of distributed computing. ACM, 1996.
     
-[8]. Treiber, R. Kent. "Systems programming: Coping with parallelism". International Business Machines Incorporated, Thomas J. Watson Research Center, 1986.
+[8]. R. Kent Treiber. "Systems programming: Coping with parallelism". International Business Machines Incorporated, Thomas J. Watson Research Center, 1986.
 
-[9]. Mellor-Crummey, John M., and Michael L. Scott. "Algorithms for scalable synchronization on shared-memory multiprocessors". ACM Transactions on Computer Systems (TOCS) 9.1 (1991): 21-65.
+[9]. John M. Mellor-Crummey, and Michael L. Scott. "Algorithms for scalable synchronization on shared-memory multiprocessors". ACM Transactions on Computer Systems (TOCS) 9.1 (1991): 21-65.
 
 [10]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Highly-efficient wait-free synchronization". Theory of Computing Systems 55.3 (2014): 475-520.
 
 [11]. Adam Morrison, and Yehuda Afek. "Fast concurrent queues for x86 processors". Proceedings of the 18th ACM SIGPLAN symposium on Principles and practice of parallel programming. 2013.
 
 [12]. Adam Morrison, and Yehuda Afek. Source code for LCRQ. http://mcg.cs.tau.ac.il/projects/lcrq
+
+[13]. Guy E. Blelloch, and Yuanhao Wei. "Brief Announcement: Concurrent Fixed-Size Allocation and Free in Constant Time." 34th International Symposium on Distributed Computing (DISC 2020). Schloss Dagstuhl-Leibniz-Zentrum für Informatik, 2020.
 
 # Contact
 
