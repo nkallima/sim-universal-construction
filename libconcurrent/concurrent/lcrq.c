@@ -214,7 +214,7 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid UNU
         RingNode* cell = &rq->array[h & (RING_SIZE-1)];
         StorePrefetch(cell);
 
-        uint64_t tt;
+        uint64_t tt = 0;
         int r = 0;
 
         while (true) {
