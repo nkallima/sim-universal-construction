@@ -21,6 +21,4 @@ typedef union ptr_aligned_t {
     char pad[CACHE_LINE_SIZE];
 } ptr_aligned_t;
 
-#define null NULL
-
 #endif

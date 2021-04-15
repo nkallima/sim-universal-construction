@@ -1,11 +1,10 @@
 #ifndef _HSTACK_H_
 #define _HSTACK_H_
 
-#include <hsynch.h>
 #include <config.h>
-#include <primitives.h>
-#include <pool.h>
 #include <queue-stack.h>
+#include <hsynch.h>
+#include <primitives.h>
 
 typedef struct HStackStruct {
     HSynchStruct object_struct CACHE_ALIGN;

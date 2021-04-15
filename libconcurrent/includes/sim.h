@@ -1,12 +1,10 @@
 #ifndef _SIM_H_
 #define _SIM_H_
 
-#include <stdint.h>
 #include <config.h>
+#include <stdint.h>
 #include <primitives.h>
 #include <tvec.h>
-#include <fastrand.h>
-#include <threadtools.h>
 #include <fam.h>
 
 #define _SIM_LOCAL_POOL_SIZE_ 4

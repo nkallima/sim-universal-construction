@@ -1,4 +1,6 @@
 #include <primitives.h>
+#include <time.h>
+#include <malloc.h>
 
 #ifdef NUMA_SUPPORT
 #    include <numa.h>
@@ -139,7 +141,7 @@ inline void *getMemory(size_t size) {
 #else
     p = malloc(size);
 #endif
-    if (p == null) {
+    if (p == NULL) {
         perror("memory allocation fail");
         exit(EXIT_FAILURE);
     } else
@@ -159,7 +161,7 @@ inline void *getAlignedMemory(size_t align, size_t size) {
     p = (void *)memalign(align, size);
 #endif
 
-    if (p == null) {
+    if (p == NULL) {
         perror("memory allocation fail");
         exit(EXIT_FAILURE);
     } else

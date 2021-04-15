@@ -1,4 +1,6 @@
 #include <ccsynch.h>
+#include <stdbool.h>
+#include <primitives.h>
 
 static const int CCSYNCH_HELP_FACTOR = 10;
 
@@ -10,7 +12,7 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
     int counter = 0;
 
     next_node = st_thread->next;
-    next_node->next = null;
+    next_node->next = NULL;
     next_node->locked = true;
     next_node->completed = false;
 
@@ -29,7 +31,7 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
     l->rounds++;
 #endif
     p = cur; // I am not been helped
-    while (p->next != null && counter < help_bound) {
+    while (p->next != NULL && counter < help_bound) {
         StorePrefetch(p->next);
         counter++;
 #ifdef DEBUG
@@ -65,7 +67,7 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     l->rounds = l->counter = 0;
 #endif
 
-    l->Tail->next = null;
+    l->Tail->next = NULL;
     l->Tail->locked = false;
     l->Tail->completed = false;
 

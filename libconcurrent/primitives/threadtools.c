@@ -6,6 +6,9 @@
 #include <primitives.h>
 #include <uthreads.h>
 #include <barrier.h>
+#include <sched.h> // CPU_SET, CPU_ZERO, cpu_set_t, sched_setaffinity()
+#include <pthread.h>
+#include <stdio.h>
 
 #ifdef NUMA_SUPPORT
 #    include <numa.h>
@@ -19,7 +22,7 @@ static __thread int32_t __thread_id = -1;
 static __thread int32_t __prefered_core = -1;
 static __thread int32_t __unjoined_threads = 0;
 
-static void *(*__func)(void *) CACHE_ALIGN = null;
+static void *(*__func)(void *) CACHE_ALIGN = NULL;
 static uint32_t __uthreads = 0;
 static uint32_t __nthreads = 0;
 static uint32_t __ncores = 0;
@@ -53,7 +56,7 @@ inline static void *kthreadWrapper(void *arg) {
     __func((void *)pid);
     stop_cpu_counters(pid);
     BarrierLeave(&bar);
-    return null;
+    return NULL;
 }
 
 inline uint32_t preferedCoreOfThread(uint32_t pid) {
@@ -121,7 +124,7 @@ inline static void *uthreadWrapper(void *arg) {
     waitForAllFibers();
     stop_cpu_counters(kernel_id);
     BarrierLeave(&bar);
-    return null;
+    return NULL;
 }
 
 int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
@@ -140,7 +143,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
         __system_oversubscription = true;
         BarrierSet(&bar, nthreads / uthreads + 1);
         for (i = 0; i < (nthreads / uthreads) - 1; i++) {
-            last_thread_id = pthread_create(&__threads[i], null, uthreadWrapper, (void *)(i * uthreads));
+            last_thread_id = pthread_create(&__threads[i], NULL, uthreadWrapper, (void *)(i * uthreads));
             if (last_thread_id != 0) {
                 perror("pthread_create");
                 exit(EXIT_FAILURE);
@@ -156,7 +159,7 @@ int StartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads) {
             __noop_resched = true;
         BarrierSet(&bar, nthreads + 1);
         for (i = 0; i < nthreads - 1; i++) {
-            last_thread_id = pthread_create(&__threads[i], null, kthreadWrapper, (void *)i);
+            last_thread_id = pthread_create(&__threads[i], NULL, kthreadWrapper, (void *)i);
             if (last_thread_id != 0) {
                 perror("pthread_create");
                 exit(EXIT_FAILURE);

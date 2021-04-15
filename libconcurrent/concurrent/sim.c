@@ -1,4 +1,5 @@
 #include <sim.h>
+#include <fastrand.h>
 
 static inline void SimStateCopy(SimObjectState *dest, SimObjectState *src);
 

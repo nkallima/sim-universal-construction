@@ -1,11 +1,6 @@
 #ifndef _BACKOFF_H_
 #define _BACKOFF_H_
 
-#include <config.h>
-#include <sched.h>
-#include <sys/select.h>
-#include <fastrand.h>
-
 typedef struct BackoffStruct {
     unsigned backoff;
     unsigned backoff_base_bits;

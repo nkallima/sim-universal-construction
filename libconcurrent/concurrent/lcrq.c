@@ -73,7 +73,7 @@ inline static void init_ring(RingQueue *r) {
     }
 
     r->head = r->tail = 0;
-    r->next = null;
+    r->next = NULL;
 }
 
 inline static int is_empty(uint64_t v)  {
@@ -150,7 +150,7 @@ void LCRQEnqueue(LCRQStruct *queue, LCRQThreadState *thread_state, ArgVal arg, i
 
         RingQueue *next = rq->next;
  
-        if (Unlikely(next != null)) {
+        if (Unlikely(next != NULL)) {
             CASPTR(&queue->tail, rq, next);
             continue;
         }
@@ -159,7 +159,7 @@ void LCRQEnqueue(LCRQStruct *queue, LCRQThreadState *thread_state, ArgVal arg, i
 
         if (crq_is_closed(t)) {
 alloc:
-            if (thread_state->nrq == null) {
+            if (thread_state->nrq == NULL) {
                 thread_state->nrq = getMemory(sizeof(RingQueue));
                 init_ring(thread_state->nrq);
             }
@@ -167,9 +167,9 @@ alloc:
             // Solo enqueue
             thread_state->nrq->tail = 1, thread_state->nrq->array[0].val = arg, thread_state->nrq->array[0].idx = 0;
 
-            if (CASPTR(&rq->next, null, thread_state->nrq)) {
+            if (CASPTR(&rq->next, NULL, thread_state->nrq)) {
                 CASPTR(&queue->tail, rq, thread_state->nrq);
-                thread_state->nrq = null;
+                thread_state->nrq = NULL;
                 return;
             }
             continue;
@@ -262,7 +262,7 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid UNU
             fix_state(rq);
             // try to return empty
             next = rq->next;
-            if (next == null)
+            if (next == NULL)
                 return EMPTY_QUEUE;  // EMPTY
             if (tail_index(rq->tail) <= h + 1)
                 CASPTR(&queue->head, rq, next);

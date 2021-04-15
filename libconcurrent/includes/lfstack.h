@@ -2,12 +2,10 @@
 #define _LFSTACK_H_
 
 #include <config.h>
+#include <queue-stack.h>
 #include <primitives.h>
 #include <backoff.h>
-#include <fastrand.h>
 #include <pool.h>
-#include <threadtools.h>
-#include <queue-stack.h>
 
 typedef struct LFStack {
     volatile Node *top;

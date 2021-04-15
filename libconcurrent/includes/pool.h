@@ -1,6 +1,7 @@
 #ifndef _POOL_H_
 #define _POOL_H_
 
+#include <stdint.h>
 #include <primitives.h>
 
 typedef struct BlockObject {

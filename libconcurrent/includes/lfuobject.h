@@ -4,9 +4,6 @@
 #include <config.h>
 #include <primitives.h>
 #include <backoff.h>
-#include <fastrand.h>
-#include <pool.h>
-#include <threadtools.h>
 #include <fam.h>
 
 typedef union LFUObject {

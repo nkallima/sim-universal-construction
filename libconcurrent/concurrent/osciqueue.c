@@ -1,5 +1,5 @@
 #include <osciqueue.h>
-#include <queue-stack.h>
+#include <uthreads.h>
 
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
@@ -10,7 +10,7 @@ void OsciQueueInit(OsciQueueStruct *queue_object_struct, uint32_t nthreads, uint
     OsciInit(&queue_object_struct->dequeue_struct, nthreads, fibers_per_thread);
     queue_object_struct->pool_node = getAlignedMemory(CACHE_LINE_SIZE, queue_object_struct->enqueue_struct.groups_of_fibers * sizeof(PoolStruct));
     queue_object_struct->guard.val = GUARD_VALUE;
-    queue_object_struct->guard.next = null;
+    queue_object_struct->guard.next = NULL;
     queue_object_struct->first = &queue_object_struct->guard;
     queue_object_struct->last = &queue_object_struct->guard;
 }
@@ -26,7 +26,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     Node *node;
 
     node = alloc_obj(&(st->pool_node[getThreadId()]));
-    node->next = null;
+    node->next = NULL;
     node->val = arg;
     st->last->next = node;
     st->last = node;
@@ -37,7 +37,7 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     OsciQueueStruct *st = (OsciQueueStruct *)state;
     volatile Node *node, *prev;
 
-    if (st->first->next != null){
+    if (st->first->next != NULL){
         prev = st->first;
         st->first = st->first->next;
         node = st->first;

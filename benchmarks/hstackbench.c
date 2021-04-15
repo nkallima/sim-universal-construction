@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     long counter;
 
     counter = 0;
-    while (top != null) {
+    while (top != NULL) {
         top = top->next;
         counter++;
     }

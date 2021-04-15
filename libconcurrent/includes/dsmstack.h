@@ -1,11 +1,10 @@
 #ifndef _DSMSTACK_H_
 #define _DSMSTACK_H_
 
-#include <dsmsynch.h>
 #include <config.h>
 #include <primitives.h>
-#include <pool.h>
 #include <queue-stack.h>
+#include <dsmsynch.h>
 
 typedef struct DSMStackStruct {
     DSMSynchStruct object_struct CACHE_ALIGN;

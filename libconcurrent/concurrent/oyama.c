@@ -32,9 +32,9 @@ RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal 
 #ifdef DEBUG
             l->rounds++;
 #endif
-            while (counter < help_bound && (p = (OyamaAnnounceNode *)SWAP(&l->tail, null)) != null) {
+            while (counter < help_bound && (p = (OyamaAnnounceNode *)SWAP(&l->tail, NULL)) != NULL) {
                 // Start helping all the active processes
-                while (p != null) {
+                while (p != NULL) {
                     counter++;
 #ifdef DEBUG
                     l->counter++;
@@ -67,7 +67,7 @@ void OyamaThreadStateInit(OyamaThreadState *th_state) {
 void OyamaInit(OyamaStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
     l->lock = UNLOCKED;
-    l->tail = null;
+    l->tail = NULL;
 #ifdef DEBUG
     l->rounds = l->counter = 0;
 #endif

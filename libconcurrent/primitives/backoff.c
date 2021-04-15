@@ -1,5 +1,6 @@
 #include <backoff.h>
 #include <threadtools.h>
+#include <sched.h> // sched_yield();
 
 void init_backoff(BackoffStruct *b, unsigned base_bits, unsigned cap_bits, unsigned shift_bits) {
     b->backoff_base_bits = base_bits;

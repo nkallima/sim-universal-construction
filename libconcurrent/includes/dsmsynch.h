@@ -2,7 +2,6 @@
 #define _DSMSYNCH_H_
 
 #include <config.h>
-
 #include <primitives.h>
 
 typedef struct HalfDSMSynchNode {

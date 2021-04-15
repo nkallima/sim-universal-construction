@@ -11,6 +11,7 @@
 #include <dsmhash.h>
 #include <barrier.h>
 #include <bench_args.h>
+#include <math.h>
 
 #define N_BUCKETS        64
 #define LOAD_FACTOR      1

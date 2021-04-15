@@ -17,7 +17,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     int help_bound = HSYNCH_HELP_FACTOR * l->nthreads;
 
     next_node = st_thread->next_node;
-    next_node->next = null;
+    next_node->next = NULL;
     next_node->locked = true;
     next_node->completed = false;
 
@@ -38,7 +38,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
 #ifdef DEBUG
     l->rounds++;
 #endif
-    while (counter < help_bound && p->next != null) {
+    while (counter < help_bound && p->next != NULL) {
         ReadPrefetch(p->next);
         counter++;
 #ifdef DEBUG

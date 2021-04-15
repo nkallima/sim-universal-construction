@@ -1,4 +1,5 @@
 #include <ccstack.h>
+#include <pool.h>
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
@@ -7,7 +8,7 @@ static __thread PoolStruct pool_node CACHE_ALIGN;
 
 void CCStackInit(CCStackStruct *stack_object_struct, uint32_t nthreads) {
     CCSynchStructInit(&stack_object_struct->object_struct, nthreads);
-    stack_object_struct->top = null;
+    stack_object_struct->top = NULL;
     StoreFence();
 }
 
@@ -21,7 +22,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         volatile CCStackStruct *st = (CCStackStruct *)state;
         volatile Node *node = st->top;
 
-        if (st->top != null) {
+        if (st->top != NULL) {
             RetVal ret = node->val;
             st->top = st->top->next;
             NonTSOFence();

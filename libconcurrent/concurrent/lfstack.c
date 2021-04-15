@@ -1,7 +1,7 @@
 #include <lfstack.h>
 
 inline void LFStackInit(LFStack *l) {
-    l->top = null;
+    l->top = NULL;
     FullFence();
 }
 
@@ -30,7 +30,7 @@ inline RetVal LFStackPop(LFStack *l, LFStackThreadState *th_state) {
     reset_backoff(&th_state->backoff);
     do {
         Node *old_top = (Node *)l->top;
-        if (old_top == null)
+        if (old_top == NULL)
             return EMPTY_STACK;
         if (CASPTR(&l->top, old_top, old_top->next))
             return old_top->val;

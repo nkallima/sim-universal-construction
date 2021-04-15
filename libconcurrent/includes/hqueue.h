@@ -1,12 +1,10 @@
 #ifndef _HQUEUE_H_
 #define _HQUEUE_H_
 
-#include <hsynch.h>
 #include <config.h>
-#include <primitives.h>
-#include <fastrand.h>
-#include <pool.h>
+#include <hsynch.h>
 #include <queue-stack.h>
+#include <primitives.h>
 
 typedef struct HQueueStruct {
     HSynchStruct *enqueue_struct;

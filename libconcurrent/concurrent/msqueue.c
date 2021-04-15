@@ -3,7 +3,7 @@
 void MSQueueInit(MSQueue *l) {
     Node *p = getMemory(sizeof(Node));
 
-    p->next = null;
+    p->next = NULL;
     l->head = p;
     l->tail = p;
     FullFence();
@@ -20,13 +20,13 @@ void MSQueueEnqueue(MSQueue *l, MSQueueThreadState *th_state, ArgVal arg) {
 
     p = alloc_obj(&th_state->pool);
     p->val = arg;
-    p->next = null;
+    p->next = NULL;
     reset_backoff(&th_state->backoff);
     while (true) {
         last = (Node *)l->tail;
         next = (Node *)last->next;
         if (last == l->tail) {
-            if (next == null) {
+            if (next == NULL) {
                 reset_backoff(&th_state->backoff);
                 if (CASPTR(&last->next, next, p))
                     break;
@@ -50,7 +50,7 @@ RetVal MSQueueDequeue(MSQueue *l, MSQueueThreadState *th_state) {
         next = (Node *)first->next;
         if (first == l->head) {
             if (first == last) {
-                if (next == null)
+                if (next == NULL)
                     return EMPTY_QUEUE;
                 CASPTR(&l->tail, last, next);
                 backoff_delay(&th_state->backoff);

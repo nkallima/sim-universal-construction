@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <stdint.h>
-#include <time.h>
-#include <malloc.h>
 
 #include <config.h>
 #include <system.h>

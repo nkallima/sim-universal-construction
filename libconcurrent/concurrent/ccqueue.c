@@ -1,4 +1,5 @@
 #include <ccqueue.h>
+#include <pool.h>
 
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
@@ -9,7 +10,7 @@ void CCQueueStructInit(CCQueueStruct *queue_object_struct, uint32_t nthreads) {
     CCSynchStructInit(&queue_object_struct->enqueue_struct, nthreads);
     CCSynchStructInit(&queue_object_struct->dequeue_struct, nthreads);
     queue_object_struct->guard.val = GUARD_VALUE;
-    queue_object_struct->guard.next = null;
+    queue_object_struct->guard.next = NULL;
     queue_object_struct->first = &queue_object_struct->guard;
     queue_object_struct->last = &queue_object_struct->guard;
 }
@@ -25,7 +26,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     Node *node;
 
     node = alloc_obj(&pool_node);
-    node->next = null;
+    node->next = NULL;
     node->val = arg;
     st->last->next = node;
     st->last = node;
@@ -37,7 +38,7 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     CCQueueStruct *st = (CCQueueStruct *)state;
     volatile Node *node, *prev;
 
-    if (st->first->next != null){
+    if (st->first->next != NULL){
         prev = st->first;
         st->first = st->first->next;
         node = st->first;

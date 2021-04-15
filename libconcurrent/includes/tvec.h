@@ -1,6 +1,5 @@
 #include <string.h>
-
-#include "primitives.h"
+#include <primitives.h>
 
 #ifndef _TVEC_H_
 #    define _TVEC_H_

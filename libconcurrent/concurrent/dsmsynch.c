@@ -12,7 +12,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     st_thread->toggle = 1 - st_thread->toggle;
     mynode = st_thread->MyNodes[st_thread->toggle];
 
-    mynode->next = null;
+    mynode->next = NULL;
     mynode->arg_ret = arg;
     mynode->pid = pid;
     mynode->locked = true;
@@ -20,7 +20,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     mynode->pid = pid;
 
     mypred = (DSMSynchNode *)SWAP(&l->Tail, mynode);
-    if (mypred != null) {
+    if (mypred != NULL) {
         mypred->next = (DSMSynchNode *)mynode;
         FullFence();
 
@@ -47,15 +47,15 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
         p->completed = true;
         NonTSOFence();
         p->locked = false;
-        if (p->next == null || p->next->next == null || counter >= help_bound)
+        if (p->next == NULL || p->next->next == NULL || counter >= help_bound)
             break;
         p = p->next;
     } while (true);
     // End critical section
-    if (p->next == null) {
-        if (l->Tail == p && CASPTR(&l->Tail, p, null) == true)
+    if (p->next == NULL) {
+        if (l->Tail == p && CASPTR(&l->Tail, p, NULL) == true)
             return mynode->arg_ret;
-        while (p->next == null) {
+        while (p->next == NULL) {
             resched();
         }
     }
@@ -68,7 +68,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
 
 void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
-    l->Tail = null;
+    l->Tail = NULL;
 
 #ifdef SYNCH_COMPACT_ALLOCATION
     l->nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));

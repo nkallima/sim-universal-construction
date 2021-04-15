@@ -14,7 +14,7 @@ inline void DSMHashInit(DSMHash *hash, int hash_size, int nthreads) {
     hash->buckets = getAlignedMemory(CACHE_LINE_SIZE, hash_size * sizeof(ptr_aligned_t));
     for (i = 0; i < hash_size; i++) {
         DSMSynchStructInit(&hash->synch[i], nthreads);
-        hash->buckets[i].ptr = null;
+        hash->buckets[i].ptr = NULL;
     }
 }
 
@@ -48,7 +48,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
         bool found = false;
         HashNode *cur = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -66,7 +66,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
         bool found = false;
         HashNode *cur = top, *prev = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -86,7 +86,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
         bool found = false;
         HashNode *cur = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -116,7 +116,7 @@ inline void DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t k
     args.key = key;
     args.value = INT_MIN;
     args.bucket = hash_func(hash, key);
-    args.node = null;
+    args.node = NULL;
     hash->announce[pid] = args;
     DSMSynchApplyOp(&hash->synch[args.bucket], &th_state->th_state[args.bucket], serialOperations, (void *)hash, 0, pid);
 }
@@ -128,7 +128,7 @@ inline void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t k
     args.key = key;
     args.value = INT_MIN;
     args.bucket = hash_func(hash, key);
-    args.node = null;
+    args.node = NULL;
     hash->announce[pid] = args;
     DSMSynchApplyOp(&hash->synch[args.bucket], &th_state->th_state[args.bucket], serialOperations, (void *)hash, 0, pid);
 }

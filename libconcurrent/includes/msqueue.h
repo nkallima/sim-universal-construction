@@ -4,9 +4,7 @@
 #include <config.h>
 #include <primitives.h>
 #include <backoff.h>
-#include <fastrand.h>
 #include <pool.h>
-#include <threadtools.h>
 #include <queue-stack.h>
 
 typedef struct MSQueue {

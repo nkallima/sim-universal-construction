@@ -3,12 +3,9 @@
 
 #include <config.h>
 #include <primitives.h>
-#include <tvec.h>
-#include <fastrand.h>
-#include <pool.h>
-#include <threadtools.h>
-#include <sim.h>
 #include <queue-stack.h>
+#include <sim.h>
+#include <pool.h>
 
 typedef struct EnqState {
     ToggleVector applied;

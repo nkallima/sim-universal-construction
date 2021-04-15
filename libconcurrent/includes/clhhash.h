@@ -1,11 +1,11 @@
 #ifndef _CLHHASH_H_
 #define _CLHHASH_H_
 
+#include <stdint.h>
 #include <primitives.h>
-#include <system.h>
 #include <types.h>
-#include <clh.h>
 #include <pool.h>
+#include <clh.h>
 
 typedef struct HashNode {
     struct HashNode *next;

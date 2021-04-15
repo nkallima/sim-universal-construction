@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     volatile Node *top = object_struct->top;
     long counter = 0;
 
-    while (top != null) {
+    while (top != NULL) {
         top = top->next;
         counter++;
     }
