@@ -2,8 +2,8 @@
 
 #define _FAM_H_
 
-#include <stdint.h>
 #include <config.h>
+#include <stdint.h>
 
 typedef union ObjectState {
     uint64_t state;

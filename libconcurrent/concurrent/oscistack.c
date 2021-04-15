@@ -1,4 +1,5 @@
 #include <oscistack.h>
+#include <uthreads.h>
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
@@ -7,7 +8,7 @@ static const int POP_OP = INT_MIN;
 void OsciStackInit(OsciStackStruct *stack_object_struct, uint32_t nthreads, uint32_t fibers_per_thread) {
     OsciInit(&(stack_object_struct->object_struct), nthreads, fibers_per_thread);
     stack_object_struct->pool_node = getAlignedMemory(CACHE_LINE_SIZE, stack_object_struct->object_struct.groups_of_fibers * sizeof(PoolStruct));
-    stack_object_struct->top = null;
+    stack_object_struct->top = NULL;
 }
 
 void OsciStackThreadStateInit(OsciStackStruct *object_struct, OsciStackThreadState *lobject_struct, int pid) {
@@ -20,7 +21,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         volatile OsciStackStruct *st = (OsciStackStruct *)state;
         volatile Node *node = st->top;
 
-        if (st->top != null) {
+        if (st->top != NULL) {
             RetVal ret = node->val;
             st->top = st->top->next;
             recycle_obj(&(st->pool_node[getThreadId()]), (void *)node);

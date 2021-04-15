@@ -1,11 +1,8 @@
 #ifndef _CLH_H_
 #define _CLH_H_
 
-#include <stdlib.h>
-#include <pthread.h>
-
 #include <primitives.h>
-#include <config.h>
+#include <stdbool.h>
 
 typedef union CLHLockNode {
     bool locked;

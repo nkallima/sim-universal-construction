@@ -16,7 +16,7 @@
 
 
 CLHLockStruct *lock CACHE_ALIGN;
-Node guard CACHE_ALIGN = {0, null};
+Node guard CACHE_ALIGN = {0, NULL};
 
 volatile Node *Top CACHE_ALIGN = &guard;
 #ifdef DEBUG
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
     long counter = 0;
 
     fprintf(stderr, "DEBUG: Object state: %ld\n", stack_state);
-    while (ltop->next != null) {
+    while (ltop->next != NULL) {
         ltop = ltop->next;
         counter++;
     }

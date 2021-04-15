@@ -39,7 +39,7 @@ void SimStackInit(SimStackStruct *stack, uint32_t nthreads, int max_backoff) {
     stack->sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * nthreads;
     stack->sp.struct_data.seq = 0;
     TVEC_INIT((ToggleVector *)&stack->a_toggles, nthreads);
-    stack->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->head = null;
+    stack->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->head = NULL;
 
     TVEC_SET_ZERO((ToggleVector *)&stack->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->applied);
     stack->MAX_BACK = max_backoff * 100;
@@ -89,7 +89,7 @@ inline static bool serialPop(HalfSimStackState *st, int pid) {
 #ifdef DEBUG
     st->counter += 1;
 #endif
-    if (st->head != null) {
+    if (st->head != NULL) {
         st->ret[pid] = (RetVal)st->head->val;
         st->head = (Node *)st->head->next;
         return true;

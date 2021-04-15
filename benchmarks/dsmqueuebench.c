@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
     volatile Node *first = (Node *)queue_object->first;
     long counter = 0;
 
-    while (first->next != null) {
+    while (first->next != NULL) {
         first = first->next;
         counter++;
     }

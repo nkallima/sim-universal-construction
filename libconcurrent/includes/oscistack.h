@@ -3,13 +3,9 @@
 
 #include <config.h>
 #include <primitives.h>
-#include <fastrand.h>
-#include <uthreads.h>
-#include <types.h>
+#include <queue-stack.h>
 #include <osci.h>
 #include <pool.h>
-#include <uthreads.h>
-#include <queue-stack.h>
 
 typedef struct OsciStackStruct {
     OsciStruct object_struct CACHE_ALIGN;

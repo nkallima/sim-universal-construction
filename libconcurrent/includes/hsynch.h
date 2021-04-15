@@ -1,11 +1,9 @@
 #ifndef _HSYNCH_H_
 #define _HSYNCH_H_
 
-#include <system.h>
 #include <config.h>
 #include <primitives.h>
 #include <clh.h>
-#include <fastrand.h>
 
 #define HSYNCH_DEFAULT_NUMA_POLICY 0
 

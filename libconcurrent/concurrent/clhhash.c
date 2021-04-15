@@ -1,4 +1,5 @@
 #include <clhhash.h>
+#include <stdbool.h>
 
 static inline int64_t hash_func(CLHHash *hash, int64_t key);
 static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid);
@@ -14,7 +15,7 @@ inline void CLHHashInit(CLHHash *hash, int hash_size, int nthreads) {
     hash->buckets = getAlignedMemory(CACHE_LINE_SIZE, hash_size * sizeof(ptr_aligned_t));
     for (i = 0; i < hash_size; i++) {
         hash->synch[i] = CLHLockInit(nthreads);
-        hash->buckets[i].ptr = null;
+        hash->buckets[i].ptr = NULL;
     }
 }
 
@@ -43,7 +44,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
         bool found = false;
         HashNode *cur = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -61,7 +62,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
         bool found = false;
         HashNode *cur = top, *prev = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -81,7 +82,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
         bool found = false;
         HashNode *cur = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;

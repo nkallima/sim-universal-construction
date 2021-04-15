@@ -1,9 +1,8 @@
 #ifndef _DSMHASH_H_
 #define _DSMHASH_H_
 
+#include <stdint.h>
 #include <primitives.h>
-#include <system.h>
-#include <types.h>
 #include <dsmsynch.h>
 #include <pool.h>
 

@@ -1,4 +1,5 @@
 #include <osci.h>
+#include <uthreads.h>
 
 static const int OSCI_HELP_FACTOR = 10;
 
@@ -16,7 +17,7 @@ void OsciThreadStateInit(OsciThreadState *st_thread, OsciStruct *l, int pid) {
             st_thread->next_node[i].rec[j].completed = true;
             st_thread->next_node[i].rec[j].locked = true;
         }
-        st_thread->next_node[i].next = null;
+        st_thread->next_node[i].next = NULL;
         st_thread->next_node[i].toggle = 0;
         st_thread->next_node[i].door = _OSCI_DOOR_INIT;
     }
@@ -32,10 +33,10 @@ RetVal OsciApplyOp(OsciStruct *l, OsciThreadState *st_thread, RetVal (*sfunc)(vo
     mynode = &st_thread->next_node[st_thread->toggle];
 osci_start:
     do { // Try to acquire the combining point
-        if (l->current_node[group].ptr == null)
-            CASPTR(&l->current_node[group].ptr, null, mynode);
+        if (l->current_node[group].ptr == NULL)
+            CASPTR(&l->current_node[group].ptr, NULL, mynode);
         cur = l->current_node[group].ptr;
-    } while (cur == null);
+    } while (cur == NULL);
 
     if (cur == mynode) { // In that case, I'm the combiner
         st_thread->toggle = 1 - st_thread->toggle;
@@ -43,15 +44,15 @@ osci_start:
         cur->rec[offset_id].pid = pid;
         cur->rec[offset_id].locked = true;
         cur->rec[offset_id].completed = false;
-        cur->next = null;
+        cur->next = NULL;
         cur->door = _OSCI_DOOR_OPENED;
         resched();                         // Scheduling point
-        l->current_node[group].ptr = null; // Release the combining point
+        l->current_node[group].ptr = NULL; // Release the combining point
         while (!CAS32(&cur->door, _OSCI_DOOR_OPENED, _OSCI_DOOR_INIT))
             resched();
         pred = SWAP(&l->Tail, cur);
 
-        if (pred != null) {
+        if (pred != NULL) {
             pred->next = cur;
             FullFence();
             while (cur->rec[offset_id].locked)
@@ -94,15 +95,15 @@ osci_start:
             }
         }
         counter += i;
-        if (p->next == null || p->next->next == null || counter >= help_bound)
+        if (p->next == NULL || p->next->next == NULL || counter >= help_bound)
             break;
         p = p->next;
     } while (true);
     // End critical section
-    if (p->next == null) {
-        if (l->Tail == p && CASPTR(&l->Tail, p, null) == true)
+    if (p->next == NULL) {
+        if (l->Tail == p && CASPTR(&l->Tail, p, NULL) == true)
             return cur->rec[offset_id].arg_ret;
-        while (p->next == null) {
+        while (p->next == NULL) {
             resched();
         }
     }
@@ -134,7 +135,7 @@ void OsciInit(OsciStruct *l, uint32_t nthreads, uint32_t fibers_per_thread) {
 #endif
     l->current_node = getAlignedMemory(CACHE_LINE_SIZE, l->groups_of_fibers * sizeof(ptr_aligned_t));
     for (i = 0; i < l->groups_of_fibers; i++)
-        l->current_node[i].ptr = null;
-    l->Tail = null;
+        l->current_node[i].ptr = NULL;
+    l->Tail = NULL;
     StoreFence();
 }

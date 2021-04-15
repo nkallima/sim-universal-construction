@@ -6,7 +6,6 @@
 #include <primitives.h>
 #include <pool.h>
 #include <queue-stack.h>
-#include <uthreads.h>
 
 typedef struct HalfSimStackState {
     ToggleVector applied;

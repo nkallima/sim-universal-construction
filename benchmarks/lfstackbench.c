@@ -6,6 +6,7 @@
 #include <lfstack.h>
 #include <barrier.h>
 #include <bench_args.h>
+#include <fastrand.h>
 
 LFStack stack CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
@@ -58,7 +59,7 @@ int main(int argc, char *argv[]) {
 #ifdef DEBUG
     long counter = 0;
 
-    while (stack.top != null) {
+    while (stack.top != NULL) {
         counter++;
         stack.top = stack.top->next;
     }

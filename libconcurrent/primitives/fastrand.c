@@ -1,4 +1,6 @@
 #include <fastrand.h>
+#include <limits.h>
+#include <math.h>
 
 static __thread long __fast_random_next = 1;
 static __thread uint32_t __fast_random_next_z = 2;

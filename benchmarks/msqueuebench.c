@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
 #ifdef DEBUG
     long counter = 0;
 
-    while (queue.head != null) {
+    while (queue.head != NULL) {
         queue.head = queue.head->next;
         counter++;
     }

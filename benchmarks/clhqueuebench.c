@@ -38,7 +38,7 @@ inline static void enqueue(Object arg, int pid) {
     Node *n = alloc_obj(&pool_node);
 
     n->val = (Object)arg;
-    n->next = null;
+    n->next = NULL;
     CLHLock(ltail, pid);
     Tail->next = n;
     NonTSOFence();
@@ -54,13 +54,13 @@ inline static Object dequeue(int pid) {
     Node *node = NULL;
 
     CLHLock(lhead, pid);
-    if (Head->next == null)
+    if (Head->next == NULL)
         result = EMPTY_QUEUE;
     else {
         node = (Node *)Head;
         Head = Head->next;
         NonTSOFence();
-        if (node->val == GUARD_VALUE && Head->next != null) {
+        if (node->val == GUARD_VALUE && Head->next != NULL) {
             Head = Head->next;
             result = EMPTY_QUEUE;
         } else {
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
 
     fprintf(stderr, "DEBUG: Enqueue: Object state: %ld\n", enq_state);
     fprintf(stderr, "DEBUG: Dequeue: Object state: %ld\n", deq_state);
-    while (head->next != null) {
+    while (head->next != NULL) {
         head = head->next;
         counter++;
     }

@@ -1,4 +1,5 @@
 #include <simqueue.h>
+#include <fastrand.h>
 
 static const int LOCAL_POOL_SIZE = _SIM_LOCAL_POOL_SIZE_;
 
@@ -97,7 +98,7 @@ void SimQueueInit(SimQueueStruct *queue, uint32_t nthreads, int max_backoff) {
     // Initializing queue's state
     // --------------------------
     queue->guard.val = GUARD_VALUE;
-    queue->guard.next = null;
+    queue->guard.next = NULL;
     TVEC_SET_ZERO((ToggleVector *)&queue->enq_pool[LOCAL_POOL_SIZE * nthreads]->applied);
     queue->enq_pool[LOCAL_POOL_SIZE * nthreads]->tail = &queue->guard;
     queue->enq_pool[LOCAL_POOL_SIZE * nthreads]->first = NULL;
@@ -157,7 +158,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
         EnqLinkQueue(queue, lsp_data);
         enq_counter = 1;
         node = alloc_obj(&th_state->pool_node);
-        node->next = null;
+        node->next = NULL;
         node->val = arg;
         llist = node;
         TVEC_REVERSE_BIT(diffs, pid);
@@ -176,7 +177,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
 #endif
                 node->next = alloc_obj(&th_state->pool_node);
                 node = (Node *)node->next;
-                node->next = null;
+                node->next = NULL;
                 node->val = queue->announce[proc_id];
                 diffs->cell[i] ^= ((bitword_t)1) << pos;
             }

@@ -1,12 +1,10 @@
 #ifndef _DSMQUEUE_H_
 #define _DSMQUEUE_H_
 
-#include <dsmsynch.h>
 #include <config.h>
-#include <primitives.h>
-#include <fastrand.h>
-#include <pool.h>
 #include <queue-stack.h>
+#include <dsmsynch.h>
+#include <primitives.h>
 
 typedef struct DSMQueueStruct {
     DSMSynchStruct enqueue_struct CACHE_ALIGN;

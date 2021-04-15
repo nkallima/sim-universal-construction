@@ -1,9 +1,8 @@
 #ifndef _BARRIER_H_
 #define _BARRIER_H_
 
-#include <primitives.h>
-#include <system.h>
-#include <types.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef struct {
     volatile int32_t arrive;

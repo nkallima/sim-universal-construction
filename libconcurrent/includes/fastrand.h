@@ -1,9 +1,7 @@
 #ifndef _FASTRAND_H_
 #define _FASTRAND_H_
 
-#include <math.h>
 #include <stdint.h>
-#include <limits.h>
 
 #define SIM_RAND_MAX 32768
 

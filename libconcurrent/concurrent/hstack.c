@@ -1,4 +1,5 @@
 #include <hstack.h>
+#include <pool.h>
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
@@ -7,7 +8,7 @@ static __thread PoolStruct pool_node CACHE_ALIGN;
 
 void HStackInit(HStackStruct *stack_object_struct, uint32_t nthreads, uint32_t numa_nodes) {
     HSynchStructInit(&stack_object_struct->object_struct, nthreads, numa_nodes);
-    stack_object_struct->top = null;
+    stack_object_struct->top = NULL;
 }
 
 void HStackThreadStateInit(HStackStruct *object_struct, HStackThreadState *lobject_struct, int pid) {
@@ -20,7 +21,7 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         volatile HStackStruct *st = (HStackStruct *)state;
         volatile Node *node = st->top;
 
-        if (st->top == null) {
+        if (st->top == NULL) {
             return EMPTY_STACK;
         } else {
             RetVal ret = node->val;

@@ -1,15 +1,9 @@
 #ifndef _THREAD_H_
 #define _THREAD_H_
 
-#include <stdio.h>
-#include <pthread.h>
+#include <config.h>
 #include <stdint.h>
 #include <stdbool.h>
-
-#include <sched.h> // CPU_SET, CPU_ZERO, cpu_set_t, sched_setaffinity()
-
-#include <config.h>
-#include <system.h>
 
 #define _DONT_USE_UTHREADS_ 1
 

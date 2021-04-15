@@ -1,12 +1,9 @@
 #ifndef _CCSTACK_H_
 #define _CCSTACK_H_
 
-#include <ccsynch.h>
 #include <config.h>
-#include <primitives.h>
-#include <fastrand.h>
-#include <pool.h>
 #include <queue-stack.h>
+#include <ccsynch.h>
 
 typedef struct CCQueueStruct {
     CCSynchStruct enqueue_struct CACHE_ALIGN;

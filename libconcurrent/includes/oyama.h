@@ -3,8 +3,6 @@
 
 #include <config.h>
 #include <primitives.h>
-#include <fastrand.h>
-#include <threadtools.h>
 
 typedef struct HalfOyamaAnnounceNode {
     volatile struct OyamaAnnounceNode *next;

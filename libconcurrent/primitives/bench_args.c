@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <getopt.h>
+#include <stdio.h>
 
 #include <bench_args.h>
 #include <primitives.h>

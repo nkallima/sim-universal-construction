@@ -2,6 +2,7 @@
 
 #include <config.h>
 #include <pool.h>
+#include <stdio.h>
 
 static const uint32_t BLOCK_SIZE = 4096 * 8192;
 

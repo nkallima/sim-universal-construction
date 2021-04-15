@@ -1,4 +1,5 @@
 #include <hqueue.h>
+#include <pool.h>
 
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
@@ -11,7 +12,7 @@ void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t n
     HSynchStructInit(queue_object_struct->enqueue_struct, nthreads, numa_nodes);
     HSynchStructInit(queue_object_struct->dequeue_struct, nthreads, numa_nodes);
     queue_object_struct->guard.val = GUARD_VALUE;
-    queue_object_struct->guard.next = null;
+    queue_object_struct->guard.next = NULL;
     queue_object_struct->first = &queue_object_struct->guard;
     queue_object_struct->last = &queue_object_struct->guard;
 }
@@ -27,7 +28,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     Node *node;
 
     node = alloc_obj(&pool_node);
-    node->next = null;
+    node->next = NULL;
     node->val = arg;
     st->last->next = node;
     st->last = node;
@@ -39,7 +40,7 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     HQueueStruct *st = (HQueueStruct *)state;
     volatile Node *node, *prev;
 
-    if (st->first->next != null){
+    if (st->first->next != NULL){
         prev = st->first;
         st->first = st->first->next;
         node = st->first;

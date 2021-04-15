@@ -4,8 +4,8 @@ inline static void switch_to_fiber(Fiber *prev, Fiber *cur);
 inline static void fiber_start_func(FiberData *context);
 
 static volatile __thread int N_FIBERS = 1;
-static __thread Fiber *FIBER_LIST = null;
-static __thread Fiber *FIBER_RECYCLE = null;
+static __thread Fiber *FIBER_LIST = NULL;
+static __thread Fiber *FIBER_RECYCLE = NULL;
 static __thread int MAX_FIBERS = 1;
 static __thread int currentFiber = 0;
 
@@ -39,9 +39,9 @@ void fiberYield(void) {
         currentFiber = (currentFiber + 1) % MAX_FIBERS;
     } while (FIBER_LIST[currentFiber].active == false);
     switch_to_fiber(&FIBER_LIST[prev_fiber], &FIBER_LIST[currentFiber]);
-    if (FIBER_RECYCLE != null) {
+    if (FIBER_RECYCLE != NULL) {
         freeMemory(FIBER_RECYCLE, sizeof(Fiber));
-        FIBER_RECYCLE = null;
+        FIBER_RECYCLE = NULL;
     }
 }
 

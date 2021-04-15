@@ -3,7 +3,6 @@
 
 #include <config.h>
 #include <primitives.h>
-#include <fastrand.h>
 
 typedef struct HalfCCSynchNode {
     struct HalfCCSynchNode *next;

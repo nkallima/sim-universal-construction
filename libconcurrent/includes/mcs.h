@@ -1,11 +1,10 @@
 #ifndef _MCS_H_
 #define _MCS_H_
 
-#include <stdlib.h>
-#include <pthread.h>
-
-#include <primitives.h>
 #include <config.h>
+#include <primitives.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef struct HalfMCSLockNode {
     volatile bool locked;

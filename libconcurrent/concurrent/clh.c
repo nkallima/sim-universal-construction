@@ -1,4 +1,5 @@
 #include <clh.h>
+#include <primitives.h>
 
 void CLHLock(CLHLockStruct *l, int pid) {
     NonTSOFence();
@@ -29,7 +30,7 @@ CLHLockStruct *CLHLockInit(uint32_t nthreads) {
     l->MyPred = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(CLHLockNode *));
     for (j = 0; j < nthreads; j++) {
         l->MyNode[j] = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode));
-        l->MyPred[j] = null;
+        l->MyPred[j] = NULL;
     }
     FullFence();
 

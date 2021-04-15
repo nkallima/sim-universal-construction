@@ -3,9 +3,6 @@
 
 #include <config.h>
 #include <primitives.h>
-#include <fastrand.h>
-#include <uthreads.h>
-#include <types.h>
 #include <osci.h>
 #include <pool.h>
 #include <queue-stack.h>
