@@ -69,6 +69,7 @@ In the `libconcurrent/config.h` file, the user can configure some basic options 
 - Enable/disable debug mode.
 - Support for Numa machines.
 - Enable performance statistics, etc.
+
 However, the default configuration should work well in many cases.
 
 
