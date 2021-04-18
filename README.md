@@ -14,8 +14,14 @@ The current version of this code is optimized for x86_64 machine architecture, b
 
 # Collection
 
-The current version of this library provides the following concurrent data-structures implementations:
+The Synch framework provides a large set of high-performant concurrent data-structures, such as combining-objects, concurrent queues and stacks, concurrent hash-tables and locks. The cornerstone of the Synch framework are the combining objects. A Combining object is a concurrent object/data-structure that is able to simulate any other concurrent object, e.g. stacks, queues, atomic counters, barriers, etc. The Synch framework provides the PSim wait-free combining object [2,10], the blocking combining objects CC-Synch, DSM-Synch and H-Synch [1], and the blocking combining object based on the technique presented in [4]. Moreover, the Synch framework provides the Osci blocking, combining technique [3] that achieves good performance using user-level threads.
 
+In terms of concurrent queues, the Synch framework provides the SimQueue [2,10] wait-free queue implementation that is based on the PSim combining object, the CC-Queue, DSM-Queue and H-Queue [1] blocking queue implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. A blocking queue implementation based on the CLH locks [5,6] and the lock-free implementation presented in [7] are also provided.
+Since v2.4.0, the Synch framework provides the LCRQ [11,12] queue implementation. In terms of concurrent stacks, the Synch framework provides the SimStack [2,10] wait-free stack implementation that is based on the PSim combining object, the CC-Stack, DSM-Stack and H-Stack [1] blocking stack implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. Moreover, the lock-free stack implementation of [8] and the blocking implementation based on the CLH locks [5,6] are provided. The Synch framework also provides concurrent queue and stacks implementations (i.e. OsciQueue and OsciStack implementations) that achieve very high performance using user-level threads [3].
+
+Furthermore, the Synch framework provides a few scalable lock implementations, i.e. the MCS queue-lock presented in [9] and the CLH queue-lock presented in [5,6]. Finally, the Synch framework provides two example-implementations of concurrent hash-tables. More specifically, it provides a simple implementation based on CLH queue-locks [5,6] and an implementation based on the DSM-Synch [1] combining technique.
+
+The following table presents a summary of the concurrent data-structures offered by the Synch framework.
 | Concurrent  Object    |                Provided Implementations                           |
 | --------------------- | ----------------------------------------------------------------- |
 | Combining Objects     | CC-Synch, DSM-Synch and H-Synch [1]                               |
