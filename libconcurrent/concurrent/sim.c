@@ -1,5 +1,6 @@
 #include <sim.h>
 #include <fastrand.h>
+#include <threadtools.h>
 
 static inline void SimStateCopy(SimObjectState *dest, SimObjectState *src);
 

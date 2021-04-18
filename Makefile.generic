@@ -10,11 +10,13 @@ INCLUDES   = -Ilibconcurrent/includes
 
 # define the output directory
 BINDIR     = build/bin
-
 LIBDIR     = build/lib
+DOCSDIR    = build/docs
 
 LIBNAME    = libconcurrent.a
 LIBNAMESO  = libconcurrent.so
+
+BUILD_LOG=./build.log
 
 # define the C source files
 PRIMITIVES = $(wildcard libconcurrent/primitives/*.c)
@@ -62,3 +64,12 @@ clean: $(SRCS)
 	@rm -rf $(BINDIR)/*.run
 	@printf '$(COLOR_RM)\tLog and result files\n'
 	@rm -rf res.txt results.txt *.log
+	@printf '$(COLOR_RM)\tOld documentation files\n'
+	@rm -rf $(DOCSDIR)/*
+
+docs:
+	@printf '$(COLOR_RM)\tOld documentation files\n'
+	@rm -rf $(DOCSDIR)/*
+	@printf '$(COLOR_CC)\tGenerating documentation\n'
+	@doxygen resources/Doxyfile >> $(BUILD_LOG)
+	@printf 'Documentation build log is placed in $(BUILD_LOG)\n'

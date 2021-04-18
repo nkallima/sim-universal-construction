@@ -6,6 +6,8 @@
 #include <primitives.h>
 #include <config.h>
 #include <hsynch.h>
+#include <threadtools.h>
+#include <stdlib.h>
 
 static void printHelp(const char *exec_name) {
     fprintf(stderr,

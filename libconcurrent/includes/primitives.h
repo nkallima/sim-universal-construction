@@ -1,15 +1,12 @@
 #ifndef _PRIMITIVES_H_
 #define _PRIMITIVES_H_
 
-#include <stdlib.h>
-#include <limits.h>
 #include <stdint.h>
-
+#include <stdbool.h>
 #include <config.h>
 #include <system.h>
-#include <types.h>
-#include <threadtools.h>
 #include <stats.h>
+#include <stddef.h>
 
 #if defined(__GNUC__) && (__GNUC__ * 10000 + __GNUC_MINOR__ * 100) >= 40100
 #    define __CAS128(A, B0, B1, C0, C1) _CAS128(A, B0, B1, C0, C1)

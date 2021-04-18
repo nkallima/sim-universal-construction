@@ -1,6 +1,8 @@
 #include <primitives.h>
 #include <time.h>
 #include <malloc.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #ifdef NUMA_SUPPORT
 #    include <numa.h>

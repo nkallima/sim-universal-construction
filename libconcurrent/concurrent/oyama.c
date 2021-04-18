@@ -1,4 +1,5 @@
 #include <oyama.h>
+#include <threadtools.h>
 
 inline static void OyamaWait(void);
 

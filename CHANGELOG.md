@@ -1,3 +1,12 @@
+Changelog
+---------
+
+v2.5.0
+------
+- Header-files cleanup in order to provide a better and consistent API.
+- Create a `doxygen` configuration file dor auto-generating man-pages/documentation.
+- Extensive documentation of the API.
+
 v2.4.0
 ------
 - Adding the LCRQ Queue implementation (Adam Morrison and Yehuda Afek, PPoPP 2013, http://mcg.cs.tau.ac.il/projects/lcrq).

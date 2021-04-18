@@ -1,5 +1,5 @@
 #include <osciqueue.h>
-#include <uthreads.h>
+#include <threadtools.h>
 
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);

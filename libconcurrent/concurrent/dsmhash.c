@@ -1,4 +1,5 @@
 #include <dsmhash.h>
+#include <limits.h>
 
 static inline int64_t hash_func(DSMHash *hash, int64_t key);
 static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid);

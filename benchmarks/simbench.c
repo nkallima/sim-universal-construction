@@ -8,6 +8,7 @@
 #include <bench_args.h>
 #include <fam.h>
 #include <fastrand.h>
+#include <threadtools.h>
 
 SimStruct *sim_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;

@@ -1,5 +1,6 @@
 #include <barrier.h>
 #include <primitives.h>
+#include <threadtools.h>
 
 inline void BarrierSet(Barrier *bar, uint32_t n) {
     bar->arrive = n;

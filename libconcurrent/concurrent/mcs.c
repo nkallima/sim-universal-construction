@@ -1,4 +1,5 @@
 #include <mcs.h>
+#include <threadtools.h>
 
 void MCSLock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
     volatile MCSLockNode *prev;

@@ -1,4 +1,5 @@
 #include <hsynch.h>
+#include <threadtools.h>
 
 #ifdef NUMA_SUPPORT
 #    include <numa.h>

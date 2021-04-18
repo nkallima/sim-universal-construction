@@ -22,4 +22,7 @@ unknown:
 	make -f Makefile.generic -j $(NPROC) COMPILER=$(CC) LDLIBS='$(LIBS)'  CFLAGS='-std=gnu89 -Ofast -fPIC -flto'
 
 clean:
-	make -f Makefile.generic clean -j $(NPROC)
+	make -f Makefile.generic clean
+
+docs:
+	make -f Makefile.generic docs

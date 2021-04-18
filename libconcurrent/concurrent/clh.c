@@ -1,5 +1,6 @@
 #include <clh.h>
 #include <primitives.h>
+#include <threadtools.h>
 
 void CLHLock(CLHLockStruct *l, int pid) {
     NonTSOFence();

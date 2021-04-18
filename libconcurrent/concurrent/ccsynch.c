@@ -1,6 +1,7 @@
 #include <ccsynch.h>
 #include <stdbool.h>
 #include <primitives.h>
+#include <threadtools.h>
 
 static const int CCSYNCH_HELP_FACTOR = 10;
 

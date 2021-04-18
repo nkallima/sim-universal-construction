@@ -1,12 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <string.h>
 #include <stdint.h>
 #include <lfstack.h>
 #include <barrier.h>
 #include <bench_args.h>
 #include <fastrand.h>
+#include <threadtools.h>
 
 LFStack stack CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;

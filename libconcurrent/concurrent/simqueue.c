@@ -1,5 +1,6 @@
 #include <simqueue.h>
 #include <fastrand.h>
+#include <threadtools.h>
 
 static const int LOCAL_POOL_SIZE = _SIM_LOCAL_POOL_SIZE_;
 

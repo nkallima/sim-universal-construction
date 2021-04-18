@@ -1,5 +1,6 @@
 #include <clhhash.h>
 #include <stdbool.h>
+#include <limits.h>
 
 static inline int64_t hash_func(CLHHash *hash, int64_t key);
 static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid);

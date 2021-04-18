@@ -3,6 +3,7 @@
 
 #include <config.h>
 #include <primitives.h>
+#include <types.h>
 
 typedef struct OsciFiberRec {
     volatile ArgVal arg_ret;

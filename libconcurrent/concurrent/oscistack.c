@@ -1,5 +1,5 @@
 #include <oscistack.h>
-#include <uthreads.h>
+#include <threadtools.h>
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 

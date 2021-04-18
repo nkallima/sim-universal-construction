@@ -1,4 +1,5 @@
 #include <dsmsynch.h>
+#include <threadtools.h>
 
 static const int DSMSYNCH_HELP_FACTOR = 10;
 

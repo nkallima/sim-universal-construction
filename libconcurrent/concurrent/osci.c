@@ -1,5 +1,5 @@
 #include <osci.h>
-#include <uthreads.h>
+#include <threadtools.h>
 
 static const int OSCI_HELP_FACTOR = 10;
 

@@ -5,6 +5,7 @@
 #include <primitives.h>
 #include <dsmsynch.h>
 #include <pool.h>
+#include <types.h>
 
 typedef struct HashNode {
     struct HashNode *next;
