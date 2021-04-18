@@ -6,18 +6,70 @@
 
 # Summary
 
-This is an open-source framework for concurrent data-structures and benchmarks. The provided framework 
-contains a substantial set of concurrent data-structures such as `queues`, `stacks`, `combining-objects`,
-`hash-tables`, `locks`, etc. This framework also provides a user-friendly runtime for developing and
-benchmarking concurrent data-structures. Among other features, this runtime provides functionality 
-for creating threads easily (both Posix and user-level threads), tools for measuring performance, etc.
-The provided concurrent data-structures and the runtime are highly optimized for contemporary 
-NUMA multiprocessors such as AMD Epyc and Intel Xeon.
+This is an open-source framework for concurrent data-structures and benchmarks. The provided framework contains a substantial set of concurrent data-structures such as `queues`, `stacks`, `combining-objects`,
+`hash-tables`, `locks`, etc. This framework also provides a user-friendly runtime for developing and benchmarking concurrent data-structures. Among other features, this runtime provides functionality for creating threads easily (both Posix and user-level threads), tools for measuring performance, etc. The provided concurrent data-structures and the runtime are highly optimized for contemporary NUMA multiprocessors such as AMD Epyc and Intel Xeon.
 
-The current version of this code is optimized for x86_64 machine architecture, but the code is also
-successfully tested in other machine architectures, such as ARM-V8 and RISC-V. 
-Some of the benchmarks perform much better in architectures that natively support Fetch&Add
-instructions (e.g., x86_64, etc.).
+The current version of this code is optimized for x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.).
+
+
+# Collection
+
+The current version of this library provides the following concurrent data-structures implementations:
+
+| Concurrent  Object    |                Provided Implementations                           |
+| --------------------- | ----------------------------------------------------------------- |
+| Combining Objects     | CC-Synch, DSM-Synch and H-Synch [1]                               |
+|                       | PSim [2,10]                                                       |
+|                       | Osci [3]                                                          |
+|                       | Oyama [4]                                                         |
+| Concurrent Queues     | CC-Queue, DSM-Queue and H-Queue [1]                               |
+|                       | SimQueue [2,10]                                                   |
+|                       | OsciQueue [3]                                                     |
+|                       | CLH-Queue [5,6]                                                   |
+|                       | MS-Queue [7]                                                      |
+|                       | LCRQ [11,12]                                                      |
+| Concurrent Stacks     | CC-Stack, DSM-Stack and H-Stack [1]                               |
+|                       | SimStack [2,10]                                                   |
+|                       | OsciStack [3]                                                     |
+|                       | CLH-Stack [5,6]                                                   |
+|                       | LF-Stack [8]                                                      |
+| Locks                 | CLH [5,6]                                                         |
+|                       | MCS [9]                                                           |
+| Hash Tables           | CLH-Hash [5,6]                                                    |
+|                       | A hash-table based on DSM-Synch [1]                               |
+
+
+# Requirements
+
+- A modern 64-bit machine. Currently, 32-bit architectures are not supported. The current version of this code is optimized for the x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.).
+- As a compiler, gcc of version 4.8 or greater is recommended, but you may also try to use icx or clang. 
+- Building requires the following development packages:
+    - `libatomic`
+    - `libnuma`
+    - `libpapi` in case that the `_TRACK_CPU_COUNTERS` flag is enabled in `libconcurrent/config.h`.
+
+For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `config.h` file (see more on Performance/Optimizations Section).
+
+
+# Configuring and compiling the framework
+
+In case that you just want to compile the library that provides all the implemented concurrent algorithms execute one of the following make commands in the root directory of the source files. This step is necessary in case that you want to run benchmarks.
+
+|     Command             |                                Description                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------- |
+|  `make`                 |  Auto-detects the current architecture and compiles the source-code for it (this should work for most users). |
+|  `make CC=cc ARCH=arch` |  Compiles the source-code for the current architecture using the cc compiler.                                 |
+|  `make clang`           |  Compiles the source-code using the clang compiler.                                                           |
+|  `make icx`             |  Compiles the source-code using the Intel icx compiler.                                                       |
+|  `make unknown`         |  Compiles the source-code for architectures other than X86_64, e.g. RISC-V, ARM, etc.                         |
+|  `make clean`           |  Cleaning-up all the binary files.                                                                            |
+|  `make docs`            |  Creating the documentation (i.e. man-pages for the framework).                                               |
+
+In the `libconcurrent/config.h` file, the user can configure some basic options for the framework, such as:
+- Enable/disable debug mode.
+- Support for Numa machines.
+- Enable performance statistics, etc.
+However, the default configuration should work well in many cases.
 
 
 # Running Benchmarks
@@ -49,59 +101,58 @@ The framework provides the `validate.sh` validation/smoke script. The `validate.
 
 The framework provides another simple fast smoke test: `./run_all.sh`. This will quickly run all available benchmarks with default options and store the results in the `results.txt` file.
 
+# Performance/Optimizations
 
-# Collection
+Getting the best performance from the provided benchmarks is not always an easy task. A useful guide to consider in order to get better performance in a modern multiprocessor follows.
 
-The current version of this library provides the following concurrent data-structures implementations:
-
-| Concurrent  Object    |                Provided Implementations                           |
-| --------------------- | ----------------------------------------------------------------- |
-| Combining Objects     | CC-Synch, DSM-Synch and H-Synch [1]                               |
-|                       | PSim [2,10]                                                       |
-|                       | Osci [3]                                                          |
-|                       | Oyama [4]                                                         |
-| Concurrent Queues     | CC-Queue, DSM-Queue and H-Queue [1]                               |
-|                       | SimQueue [2,10]                                                   |
-|                       | OsciQueue [3]                                                     |
-|                       | CLH-Queue [5,6]                                                   |
-|                       | MS-Queue [7]                                                      |
-|                       | LCRQ [11,12]                                                      |
-| Concurrent Stacks     | CC-Stack, DSM-Stack and H-Stack [1]                               |
-|                       | SimStack [2,10]                                                   |
-|                       | OsciStack [3]                                                     |
-|                       | CLH-Stack [5,6]                                                   |
-|                       | LF-Stack [8]                                                      |
-| Locks                 | CLH [5,6]                                                         |
-|                       | MCS [9]                                                           |
-| Hash Tables           | CLH-Hash [5,6]                                                    |
-|                       | A hash-table based on DSM-Synch [1]                               |
+- In case that the target machine is a NUMA machine make sure `NUMA_SUPPORT` is enabled in config.h. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.
+- Whenever the `NUMA_SUPPORT` option is enabled, the runtime will detect the system’s number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the `--numa_nodes` option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting `--numa_nodes` equal to `2`. Notice that the runtime successfully reports that the available NUMA nodes are `8`, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of `--numa_nodes` may be needed.
+- Check the performance impact of the `SYNCH_COMPACT_ALLOCATION` option in config.h. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.
+- Check the cache line size (`CACHE_LINE_SIZE` and `S_CACHE_LINE` options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines behave better with `CACHE_LINE_SIZE` equal or greater than `128`, while most modern AMD machine achieve better performance with a value equal to `64`. Notice that `CACHE_LINE_SIZE` and `S_CACHE_LINE` depend on the `SYNCH_COMPACT_ALLOCATION` option (see includes/system.h).
+- Use backoff if it is available. Many of the provided algorithms could use backoff in order to provide better performance (e.g., sim, lfstack, msqueue, simqueue, simstack, etc.). In this case, it is of crucial importance to use `-b` (and in some cases `-bl` arguments) in order to get the best performance. 
+- Ensure that you are using a recent gcc-compatible compiler, e.g. a `gcc` compiler of version `7.0` or greater is highly recommended.
+- Check the performance impact of the different available compiler optimizations. In most cases, gcc's `-Ofast` option gives the best performance. In addition, some algorithms (i.e., sim, osci, simstack, oscistack, simqueue and osciqueue) benefit by enabling the `-mavx` option (in case that AVX instructions are supported by the hardware).
+- Check if system oversubscription with user-level fibers enhances the performance. Many algorithms (i.e., the Sim and Osci families of algorithms) show tremendous performance boost by using oversubscription with user-level threads [3]. In this case, use the `--fibers` option.
 
 
+# Memory reclamation (stacks and queues)
 
-# Requirements
+The Synch framework provides a pool mechanism (see `includes/pool.h`) that efficiently allocates and de-allocates memory for the provided concurrent stack and queue implementations. The allocation mechanism of this pool implementation is low-overhead.  All the provided stack and queue implementations use the functionality of this pool mechanism. In order to support memory reclamation in a safe manner, a concurrent object should guarantee that each memory object that is going to de-allocated should be accessed only by the thread that is going to free it. Generally, de-allocating and thus reclaiming memory is easy in many blocking objects, since there is a lock that protects the de-allocated memory object. Currently, the Synch framework supports memory reclamation for the following concurrent stack and queue implementations:
+- Concurrent Queues:
+    - CC-Queue, DSM-Queue and H-Queue [1]
+    - OsciQueue [3]
+    - CLH-Queue [5,6]
+- Concurrent Stacks:
+    - CC-Stack, DSM-Stack and H-Stack [1]
+    - OsciStack [3]
+    - CLH-Stack [5,6]
+    - SimStack [2,10] (since v2.4.0)
 
-- A modern 64-bit machine. Currently, 32-bit architectures are not supported. The current version of this code is optimized for the x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.).
-- As a compiler, gcc of version 4.8 or greater is recommended, but you may also try to use icx or clang. 
-- Building requires the following development packages:
-    - `libatomic`
-    - `libnuma`
-    - `libpapi` in case that the `_TRACK_CPU_COUNTERS` flag is enabled in `config.h`.
+Note that de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Since v2.4.0, SimStack supports memory reclamation using the functionality of `pool.h` and a technique that is similar to that presented by Blelloch and Weiin in [13]. Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.
 
-For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `config.h` file (see more on Performance/Optimizations Section).
+By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the `POOL_NODE_RECYCLING_DISABLE` option should be enabled in `config.h`.
 
-# Compiling the framework
+The following table shows the memory reclamation characteristics of the provided stack and queues implementations.
 
-In case that you just want to compile the library that provides all the implemented concurrent algorithms
-execute one of the following make commands. This step is not necessary in case that you want to run benchmarks.
+| Concurrent  Object    |        Provided Implementations           | Memory Reclamation                        |
+| --------------------- | ----------------------------------------- | ----------------------------------------- |
+| Concurrent Queues     | CC-Queue, DSM-Queue and H-Queue [1]       | Supported                                 |
+|                       | SimQueue [2,10]                           | Not supported                             |
+|                       | OsciQueue [3]                             | Supported                                 |
+|                       | CLH-Queue [5,6]                           | Supported                                 |
+|                       | MS-Queue [7]                              | Hazard Pointers (not provided by Synch)   |
+|                       | LCRQ [11,12]                              | Hazard Pointers (not provided by Synch)   |
+| Concurrent Stacks     | CC-Stack, DSM-Stack and H-Stack [1]       | Supported                                 |
+|                       | SimStack [2,10]                           | Supported (since v2.4.0)                  |
+|                       | OsciStack [3]                             | Supported                                 |
+|                       | CLH-Stack [5,6]                           | Supported                                 |
+|                       | LF-Stack [8]                              | Hazard Pointers (not provided by Synch)   |
 
-|     Command             |                                Description                                            |
-| ----------------------- | ------------------------------------------------------------------------------------- |
-|  `make`                 |  Auto-detects the current architecture and compiles the source-code for it.           |
-|  `make CC=cc ARCH=arch` |  Compiles the source-code for the current architecture using the cc compiler.         |
-|  `make clang`           |  Compiles the source-code using the clang compiler.                                   |
-|  `make icx`             |  Compiles the source-code using the Intel icx compiler.                               |
-|  `make unknown`         |  Compiles the source-code for architectures other than X86_64, e.g. RISC-V, ARM, etc. |
-|  `make clean`           |  Cleaning-up all binary files.                                                        |
+
+## Memory reclamation limitations
+
+In the current design of the reclamation mechanism, each thread uses a single private pool for reclaiming memory. In a producer-consumer scenario where a set of threads performs only enqueue operations (or push operations in case of stacks) and all other threads perform dequeue operations (or pop operations in case of stacks), insufficient memory reclamation is performed since each memory pool is only accessible by the thread that owns it. We aim to improve this in future versions of the Synch framework.
+
 
 # API - Code example for a simple benchmark
 
@@ -158,58 +209,6 @@ The `StartThreadsN` function (provided by the API defined in `threadtools.h`) in
 The threads executing the `Execute` function use the `Barrier` re-entrant barrier object for simultaneously starting to perform Fetch&Add instructions on the shared variable `object`. This barrier is also re-used before the end of the `Execute` function in order to allow thread with `id = 0` to measure the amount of time that the benchmark needed for completion. The `BarrierSet` function in `main` initializes the `Barrier` object. The `BarrierSet` takes as an argument a pointer to the barrier object and the number of threads `N_THREADS` that are going to use it. Both `BarrierSet` and `BarrierWait` are provided by the API of `barrier.h`
 
 At the end of the benchmark, `main` calculates and prints the average throughput of Fetch&Add operations per second achieved by the benchmark.
-
-# Performance/Optimizations
-
-Getting the best performance from the provided benchmarks is not always an easy task. A useful guide to consider in order to get better performance in a modern multiprocessor follows.
-
-- In case that the target machine is a NUMA machine make sure `NUMA_SUPPORT` is enabled in config.h. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.
-- Whenever the `NUMA_SUPPORT` option is enabled, the runtime will detect the system’s number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the `--numa_nodes` option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting `--numa_nodes` equal to `2`. Notice that the runtime successfully reports that the available NUMA nodes are `8`, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of `--numa_nodes` may be needed.
-- Check the performance impact of the `SYNCH_COMPACT_ALLOCATION` option in config.h. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.
-- Check the cache line size (`CACHE_LINE_SIZE` and `S_CACHE_LINE` options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines behave better with `CACHE_LINE_SIZE` equal or greater than `128`, while most modern AMD machine achieve better performance with a value equal to `64`. Notice that `CACHE_LINE_SIZE` and `S_CACHE_LINE` depend on the `SYNCH_COMPACT_ALLOCATION` option (see includes/system.h).
-- Use backoff if it is available. Many of the provided algorithms could use backoff in order to provide better performance (e.g., sim, lfstack, msqueue, simqueue, simstack, etc.). In this case, it is of crucial importance to use `-b` (and in some cases `-bl` arguments) in order to get the best performance. 
-- Ensure that you are using a recent gcc-compatible compiler, e.g. a `gcc` compiler of version `7.0` or greater is highly recommended.
-- Check the performance impact of the different available compiler optimizations. In most cases, gcc's `-Ofast` option gives the best performance. In addition, some algorithms (i.e., sim, osci, simstack, oscistack, simqueue and osciqueue) benefit by enabling the `-mavx` option (in case that AVX instructions are supported by the hardware).
-- Check if system oversubscription with user-level fibers enhances the performance. Many algorithms (i.e., the Sim and Osci families of algorithms) show tremendous performance boost by using oversubscription with user-level threads [3]. In this case, use the `--fibers` option.
-
-
-# Memory reclamation (stacks and queues)
-
-The Synch framework provides a pool mechanism (see `includes/pool.h`) that efficiently allocates and de-allocates memory for the provided concurrent stack and queue implementations. The allocation mechanism of this pool implementation is low-overhead.  All the provided stack and queue implementations use the functionality of this pool mechanism. In order to support memory reclamation in a safe manner, a concurrent object should guarantee that each memory object that is going to de-allocated should be accessed only by the thread that is going to free it. Generally, de-allocating and thus reclaiming memory is easy in many blocking objects, since there is a lock that protects the de-allocated memory object. Currently, the Synch framework supports memory reclamation for the following concurrent stack and queue implementations:
-- Concurrent Queues:
-    - CC-Queue, DSM-Queue and H-Queue [1]
-    - OsciQueue [3]
-    - CLH-Queue [5,6]
-- Concurrent Stacks:
-    - CC-Stack, DSM-Stack and H-Stack [1]
-    - OsciStack [3]
-    - CLH-Stack [5,6]
-    - SimStack [2,10] (since v2.4.0)
-
-Note that de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Since v2.4.0, SimStack supports memory reclamation using the functionality of `pool.h` and a technique that is similar to that presented by Blelloch and Weiin in [13]. Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.
-
-By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the `POOL_NODE_RECYCLING_DISABLE` option should be enabled in `config.h`.
-
-The following table shows the memory reclamation characteristics of the provided stack and queues implementations.
-
-| Concurrent  Object    |        Provided Implementations           | Memory Reclamation                        |
-| --------------------- | ----------------------------------------- | ----------------------------------------- |
-| Concurrent Queues     | CC-Queue, DSM-Queue and H-Queue [1]       | Supported                                 |
-|                       | SimQueue [2,10]                           | Not supported                             |
-|                       | OsciQueue [3]                             | Supported                                 |
-|                       | CLH-Queue [5,6]                           | Supported                                 |
-|                       | MS-Queue [7]                              | Hazard Pointers (not provided by Synch)   |
-|                       | LCRQ [11,12]                              | Hazard Pointers (not provided by Synch)   |
-| Concurrent Stacks     | CC-Stack, DSM-Stack and H-Stack [1]       | Supported                                 |
-|                       | SimStack [2,10]                           | Supported (since v2.4.0)                  |
-|                       | OsciStack [3]                             | Supported                                 |
-|                       | CLH-Stack [5,6]                           | Supported                                 |
-|                       | LF-Stack [8]                              | Hazard Pointers (not provided by Synch)   |
-
-
-## Memory reclamation limitations
-
-In the current design of the reclamation mechanism, each thread uses a single private pool for reclaiming memory. In a producer-consumer scenario where a set of threads performs only enqueue operations (or push operations in case of stacks) and all other threads perform dequeue operations (or pop operations in case of stacks), insufficient memory reclamation is performed since each memory pool is only accessible by the thread that owns it. We aim to improve this in future versions of the Synch framework.
 
 
 # If you want to cite us
