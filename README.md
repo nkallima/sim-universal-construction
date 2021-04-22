@@ -53,30 +53,36 @@ The following table presents a summary of the concurrent data-structures offered
     - `libatomic`
     - `libnuma`
     - `libpapi` in case that the `_TRACK_CPU_COUNTERS` flag is enabled in `libconcurrent/config.h`.
+- For building the documentation (i.e. man-pages), `doxygen` is required.
 
-For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `config.h` file (see more on Performance/Optimizations Section).
 
-
-# Configuring and compiling the framework
-
-In case that you just want to compile the library that provides all the implemented concurrent algorithms execute one of the following make commands in the root directory of the source files. This step is necessary in case that you want to run benchmarks.
-
-|     Command             |                                Description                                                                    |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------- |
-|  `make`                 |  Auto-detects the current architecture and compiles the source-code for it (this should work for most users). |
-|  `make CC=cc ARCH=arch` |  Compiles the source-code for the current architecture using the cc compiler.                                 |
-|  `make clang`           |  Compiles the source-code using the clang compiler.                                                           |
-|  `make icx`             |  Compiles the source-code using the Intel icx compiler.                                                       |
-|  `make unknown`         |  Compiles the source-code for architectures other than X86_64, e.g. RISC-V, ARM, etc.                         |
-|  `make clean`           |  Cleaning-up all the binary files.                                                                            |
-|  `make docs`            |  Creating the documentation (i.e. man-pages for the framework).                                               |
+# Configuring, compiling and installing the framework
 
 In the `libconcurrent/config.h` file, the user can configure some basic options for the framework, such as:
 - Enable/disable debug mode.
 - Support for Numa machines.
 - Enable performance statistics, etc.
 
-However, the default configuration should work well in many cases.
+The provided default configuration should work well in many cases. However, the default configuration may not provide the best performance. For getting the best performance, modifying the `libconcurrent/config.h` may be needed (see more on Performance/Optimizations Section).
+
+In case that you want to compile the library that provides all the implemented concurrent algorithms just execute `make` in the root directory of the source files. This step is necessary in case that you want to run benchmarks. However, some extra make options are provided in case the user wants to compile the framework with other than system's default compiler, clean the binary files, etc. The following table provides the list with all the available make options.
+
+|     Command             |                                Description                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------- |
+|  `make`                 |  Auto-detects the current architecture and compiles the source-code for it (this should work for most users). |
+|  `make CC=cc ARCH=arch` |  Compiles the source-code for the current architecture using the `cc` compiler.                               |
+|  `make clang`           |  Compiles the source-code using the clang compiler.                                                           |
+|  `make icx`             |  Compiles the source-code using the Intel icx compiler.                                                       |
+|  `make unknown`         |  Compiles the source-code for architectures other than X86_64, e.g. RISC-V, ARM, etc.                         |
+|  `make clean`           |  Cleaning-up all the binary files.                                                                            |
+|  `make docs`            |  Creating the documentation (i.e. man-pages).                                                                 |
+|  `make install`         |  Installing the framework on the default location (i.e. `/opt/synch/`).                                       |
+|  `make install DIR=dir` |  Installing the framework on the `dir/synch/` location.                                                       |
+|  `make uninstall`       |  Uninstalling the framework.                                                                                  |
+
+For building the documentation (i.e. man-pages), the user should execute `make docs`. Notice that for building the documentation the system should be equipped with `doxygen` documentation tool.
+
+For installing the framework, the user should execute `make install`. In this case, the framework will be installed in the default location which is `/opt/synch/`. Notice that in this case, the user should have write access on the `/opt` directory or sudo access. The `make install DIR=dir` command installs the framework in the `dir/synch` path, while the `make uninstall` uninstalls the framework. For accessing the man pages, the user should manually setup the `MANPATH` environmental variable (e.g. `export MANPATH=$MANPATH:/opt/synch/docs/man`).
 
 
 # Running Benchmarks
@@ -88,33 +94,33 @@ Example usage: `./bench.sh FILE.run OPTION1=NUM1 OPTION2=NUM2 ...`
 The following options are available:
 
 |     Option              |                       Description                                                     |
-| ----------------------- | ------------------------------------------------------------------------------------- |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 |  `-t`, `--max_threads`  |  set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system cores |
-|  `-s`, `--step`         |  set the step (extra number of threads to be used) in each set of iterations of the benchmark, default is number of processors/8 or 1 |
-|  `-f`, `--fibers`       |  set the number of user-level threads per posix thread                                |
-|  `-r`, `--repeat`       |  set the total number of operations executed by the benchmark, default is 1000000     |
-|  `-i`, `--iterations`   |  set the number of times that the benchmark should be executed, default is 10         |
-|  `-w`, `--workload`     |  set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64 |
-|  `-l`, `--list`         |  displays the list of the available benchmarks                                        |
-|  `-n`, `numa_nodes`     |  set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account |
-|  `-b`, `--backoff`, `--backoff_high` |  set an upper backoff bound for lock-free and Sim-based algorithms       |
-|  `-bl`, `--backoff_low` |  set a lower backoff bound (only for msqueue, lfstack and lfuobject benchmarks)       |
-|  `-h`, `--help`         |  displays this help and exits                                                         |
+|  `-s`, `--step`         |  set the step (extra number of threads to be used) in each set of iterations of the benchmark, default is number of processors/8 or 1            |
+|  `-f`, `--fibers`       |  set the number of user-level threads per posix thread                                                                                           |
+|  `-r`, `--repeat`       |  set the total number of operations executed by the benchmark, default is 1000000                                                                |
+|  `-i`, `--iterations`   |  set the number of times that the benchmark should be executed, default is 10                                                                    |
+|  `-w`, `--workload`     |  set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64               |
+|  `-l`, `--list`         |  displays the list of the available benchmarks                                                                                                   |
+|  `-n`, `--numa_nodes`   |  set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account                  |
+|  `-b`, `--backoff`, `--backoff_high` |  set an upper backoff bound for lock-free and Sim-based algorithms                                                                  |
+|  `-bl`, `--backoff_low` |  set a lower backoff bound (only for msqueue, lfstack and lfuobject benchmarks)                                                                  |
+|  `-h`, `--help`         |  displays this help and exits                                                                                                                    |
 
 The framework provides the `validate.sh` validation/smoke script. The `validate.sh` script compiles the sources in `DEBUG` mode and runs a big set of benchmarks with various numbers of threads. After running each of the benchmarks, the script evaluates the `DEBUG` output and in case of success it prints `PASS`. In case of a failure, the script simply prints `FAIL`. In order to see all the available options of the validation/smoke script, execute `validate.sh -h`. The following image shows the execution and the default behavior of `validate.sh`.
 
 ![](resources/validate_example.gif)
 
-
 The framework provides another simple fast smoke test: `./run_all.sh`. This will quickly run all available benchmarks with default options and store the results in the `results.txt` file.
+
 
 # Performance/Optimizations
 
-Getting the best performance from the provided benchmarks is not always an easy task. A useful guide to consider in order to get better performance in a modern multiprocessor follows.
+Getting the best performance from the provided benchmarks is not always an easy task. For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `libconcurrent/config.h` file. A useful guide to consider in order to get better performance in a modern multiprocessor follows.
 
-- In case that the target machine is a NUMA machine make sure `NUMA_SUPPORT` is enabled in config.h. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.
-- Whenever the `NUMA_SUPPORT` option is enabled, the runtime will detect the system’s number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the `--numa_nodes` option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting `--numa_nodes` equal to `2`. Notice that the runtime successfully reports that the available NUMA nodes are `8`, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of `--numa_nodes` may be needed.
-- Check the performance impact of the `SYNCH_COMPACT_ALLOCATION` option in config.h. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.
+- In case that the target machine is a NUMA machine make sure `NUMA_SUPPORT` is enabled in `libconcurrent/config.h`. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.
+- Whenever the `NUMA_SUPPORT` option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the `--numa_nodes` option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting `--numa_nodes` equal to `2`. Notice that the runtime successfully reports that the available NUMA nodes are `8`, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of `--numa_nodes` may be needed.
+- Check the performance impact of the `SYNCH_COMPACT_ALLOCATION` option in `libconcurrent/config.h`. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.
 - Check the cache line size (`CACHE_LINE_SIZE` and `S_CACHE_LINE` options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines behave better with `CACHE_LINE_SIZE` equal or greater than `128`, while most modern AMD machine achieve better performance with a value equal to `64`. Notice that `CACHE_LINE_SIZE` and `S_CACHE_LINE` depend on the `SYNCH_COMPACT_ALLOCATION` option (see includes/system.h).
 - Use backoff if it is available. Many of the provided algorithms could use backoff in order to provide better performance (e.g., sim, lfstack, msqueue, simqueue, simstack, etc.). In this case, it is of crucial importance to use `-b` (and in some cases `-bl` arguments) in order to get the best performance. 
 - Ensure that you are using a recent gcc-compatible compiler, e.g. a `gcc` compiler of version `7.0` or greater is highly recommended.
@@ -264,7 +270,7 @@ The Synch framework is provided under the [LGPL-2.1 License](LICENSE).
 
 [11]. Adam Morrison, and Yehuda Afek. "Fast concurrent queues for x86 processors". Proceedings of the 18th ACM SIGPLAN symposium on Principles and practice of parallel programming. 2013.
 
-[12]. Adam Morrison, and Yehuda Afek. Source code for LCRQ. http://mcg.cs.tau.ac.il/projects/lcrq
+[12]. Adam Morrison, and Yehuda Afek. Source code for LCRQ. http://mcg.cs.tau.ac.il/projects/lcrq.
 
 [13]. Guy E. Blelloch, and Yuanhao Wei. "Brief Announcement: Concurrent Fixed-Size Allocation and Free in Constant Time." 34th International Symposium on Distributed Computing (DISC 2020). Schloss Dagstuhl-Leibniz-Zentrum für Informatik, 2020.
 
@@ -272,4 +278,3 @@ The Synch framework is provided under the [LGPL-2.1 License](LICENSE).
 
 For any further information, please do not hesitate to
 send an email at nkallima (at) ics.forth.gr. Feedback is always valuable.
-

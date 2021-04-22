@@ -1,9 +1,12 @@
-COMPILER   = cc
-AR         = gcc-ar
-LDLIBS     = -lpthread -lm -lnuma
-CFLAGS     =
-ARGS       =
-D_ARGS     = 
+COMPILER       = cc
+AR             = gcc-ar
+LDLIBS         = -lpthread -lm -lnuma
+CFLAGS         =
+ARGS           =
+D_ARGS         =
+INSTALL_INFO   = .install_info
+INSTALL_SUFFIX = Sych
+UNINSTALL_DIR  = $(shell cat $(INSTALL_INFO))
 
 # define any directories containing header files other than /usr/include
 INCLUDES   = -Ilibconcurrent/includes
@@ -31,8 +34,10 @@ OBJECTS    = $(SRCS:.c=.o)
 EXECS      = $(BENCHMARKS:.c=.run)
 
 COLOR_CC   = [  \e[32mCC\e[39m  ]
+COLOR_CP   = [  \e[32mCP\e[39m  ]
 COLOR_AR   = [  \e[36mAR\e[39m  ]
 COLOR_RM   = [  \e[31mRM\e[39m  ]
+COLOR_ERR  = [ \e[31mERROR\e[39m ]
 
 .PHONY: all clean
 
@@ -66,6 +71,8 @@ clean: $(SRCS)
 	@rm -rf res.txt results.txt *.log
 	@printf '$(COLOR_RM)\tOld documentation files\n'
 	@rm -rf $(DOCSDIR)/*
+	@printf '$(COLOR_RM)\tInstallation configuration\n'
+	@rm -rf $(INSTALL_INFO)
 
 docs:
 	@printf '$(COLOR_RM)\tOld documentation files\n'
@@ -73,3 +80,33 @@ docs:
 	@printf '$(COLOR_CC)\tGenerating documentation\n'
 	@doxygen resources/Doxyfile >> $(BUILD_LOG)
 	@printf 'Documentation build log is placed in $(BUILD_LOG)\n'
+
+install:	
+	@if [ -d ${INSTALL_DIR} ]; then                                         \
+		if [ -w ${INSTALL_DIR} ]; then                                      \
+			mkdir -p ${INSTALL_DIR};                                        \
+			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/;                     \
+			echo $(INSTALL_DIR) > $(INSTALL_INFO);                          \
+			printf '$(COLOR_CP)\tInstalling the Synch framework\n';         \
+			cp -r ./build/* $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;              \
+		else                                                                \
+			printf '$(COLOR_ERR)\tNo write access at %s \n' ${INSTALL_DIR}; \
+			printf '$(COLOR_ERR)\tYou may need root access\n';              \
+		fi                                                                  \
+	else                                                                    \
+		printf '$(COLOR_ERR)\tThere is no directory: %s\n' ${INSTALL_DIR};  \
+	fi
+
+uninstall:
+	@if [ -d ${UNINSTALL_DIR} ]; then                                         \
+		if [ -w ${UNINSTALL_DIR} ]; then                                      \
+			printf '$(COLOR_RM)\tRemoving installation files\n';              \
+			rm -rf $(UNINSTALL_DIR)/$(INSTALL_SUFFIX)/;                       \
+		else                                                                  \
+	    	echo "Unable to remove " $(UNINSTALL_DIR);                        \
+			echo "You may need root access";                                  \
+		fi                                                                    \
+	else                                                                      \
+		printf '$(COLOR_ERR)\tThere is no directory: %s\n' ${UNINSTALL_DIR};  \
+		printf '$(COLOR_ERR)\tFramework may already uninstalled\n';           \
+	fi

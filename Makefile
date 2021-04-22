@@ -2,6 +2,7 @@ ARCH     = $(shell uname -p)
 NPROC    = $(shell nproc)
 LIBS     = $(shell ./libconcurrent/libdeps.sh)
 CLANG_AR = ar
+DIR      = /opt
 
 all:
 	make $(ARCH)
@@ -26,3 +27,9 @@ clean:
 
 docs:
 	make -f Makefile.generic docs
+
+install:
+	make -f Makefile.generic install INSTALL_DIR=$(DIR)
+
+uninstall:
+	make -f Makefile.generic uninstall

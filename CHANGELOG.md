@@ -6,6 +6,7 @@ v2.5.0
 - Header-files cleanup in order to provide a better and consistent API.
 - Create a `doxygen` configuration file dor auto-generating man-pages/documentation.
 - Extensive documentation of the API.
+- Support for installing the framework.
 
 v2.4.0
 ------
