@@ -76,13 +76,13 @@ In case that you want to compile the library that provides all the implemented c
 |  `make unknown`         |  Compiles the source-code for architectures other than X86_64, e.g. RISC-V, ARM, etc.                         |
 |  `make clean`           |  Cleaning-up all the binary files.                                                                            |
 |  `make docs`            |  Creating the documentation (i.e. man-pages).                                                                 |
-|  `make install`         |  Installing the framework on the default location (i.e. `/opt/synch/`).                                       |
-|  `make install DIR=dir` |  Installing the framework on the `dir/synch/` location.                                                       |
+|  `make install`         |  Installing the framework on the default location (i.e. `/opt/Synch/`).                                       |
+|  `make install DIR=dir` |  Installing the framework on the `dir/Synch/` location.                                                       |
 |  `make uninstall`       |  Uninstalling the framework.                                                                                  |
 
 For building the documentation (i.e. man-pages), the user should execute `make docs`. Notice that for building the documentation the system should be equipped with `doxygen` documentation tool.
 
-For installing the framework, the user should execute `make install`. In this case, the framework will be installed in the default location which is `/opt/synch/`. Notice that in this case, the user should have write access on the `/opt` directory or sudo access. The `make install DIR=dir` command installs the framework in the `dir/synch` path, while the `make uninstall` uninstalls the framework. For accessing the man pages, the user should manually setup the `MANPATH` environmental variable (e.g. `export MANPATH=$MANPATH:/opt/synch/docs/man`).
+For installing the framework, the user should execute `make install`. In this case, the framework will be installed in the default location which is `/opt/Synch/`. Notice that in this case, the user should have write access on the `/opt` directory or sudo access. The `make install DIR=dir` command installs the framework in the `dir/Synch` path, while the `make uninstall` uninstalls the framework. For accessing the man pages, the user should manually setup the `MANPATH` environmental variable (e.g. `export MANPATH=$MANPATH:/opt/Synch/docs/man`).
 
 
 # Running Benchmarks
