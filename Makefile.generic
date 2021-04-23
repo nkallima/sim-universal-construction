@@ -5,7 +5,7 @@ CFLAGS         =
 ARGS           =
 D_ARGS         =
 INSTALL_INFO   = .install_info
-INSTALL_SUFFIX = Sych
+INSTALL_SUFFIX = Synch
 UNINSTALL_DIR  = $(shell cat $(INSTALL_INFO))
 
 # define any directories containing header files other than /usr/include
@@ -81,14 +81,18 @@ docs:
 	@doxygen resources/Doxyfile >> $(BUILD_LOG)
 	@printf 'Documentation build log is placed in $(BUILD_LOG)\n'
 
-install:	
+install:
 	@if [ -d ${INSTALL_DIR} ]; then                                         \
 		if [ -w ${INSTALL_DIR} ]; then                                      \
 			mkdir -p ${INSTALL_DIR};                                        \
 			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/;                     \
-			echo $(INSTALL_DIR) > $(INSTALL_INFO);                          \
+			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build;                \
 			printf '$(COLOR_CP)\tInstalling the Synch framework\n';         \
 			cp -r ./build/* $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;              \
+			cp bench.sh  run_all.sh $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;     \
+			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/bin ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/bin;\
+			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/lib ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/lib;\
+			echo $(INSTALL_DIR) > $(INSTALL_INFO);                          \
 		else                                                                \
 			printf '$(COLOR_ERR)\tNo write access at %s \n' ${INSTALL_DIR}; \
 			printf '$(COLOR_ERR)\tYou may need root access\n';              \
@@ -98,15 +102,15 @@ install:
 	fi
 
 uninstall:
-	@if [ -d ${UNINSTALL_DIR} ]; then                                         \
-		if [ -w ${UNINSTALL_DIR} ]; then                                      \
-			printf '$(COLOR_RM)\tRemoving installation files\n';              \
-			rm -rf $(UNINSTALL_DIR)/$(INSTALL_SUFFIX)/;                       \
-		else                                                                  \
-	    	echo "Unable to remove " $(UNINSTALL_DIR);                        \
-			echo "You may need root access";                                  \
-		fi                                                                    \
-	else                                                                      \
-		printf '$(COLOR_ERR)\tThere is no directory: %s\n' ${UNINSTALL_DIR};  \
-		printf '$(COLOR_ERR)\tFramework may already uninstalled\n';           \
+	@if [ -d ${UNINSTALL_DIR} ]; then                                        \
+		if [ -w ${UNINSTALL_DIR} ]; then                                     \
+			printf '$(COLOR_RM)\tRemoving installation files\n';             \
+			rm -rf $(UNINSTALL_DIR)/$(INSTALL_SUFFIX)/;                      \
+		else                                                                 \
+			echo "Unable to remove " $(UNINSTALL_DIR);                       \
+			echo "You may need root access";                                 \
+		fi                                                                   \
+	else                                                                     \
+		printf '$(COLOR_ERR)\tThere is no directory: %s\n' ${UNINSTALL_DIR}; \
+		printf '$(COLOR_ERR)\tFramework may already uninstalled\n';          \
 	fi
