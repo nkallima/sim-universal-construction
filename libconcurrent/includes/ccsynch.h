@@ -23,35 +23,37 @@ typedef struct HalfCCSynchNode {
     int32_t completed;
 } HalfCCSynchNode;
 
-/// @brief CCSynchNode holds the state of an instance of the CCSynch object.
+/// @brief CCSynchNode stores the data of an announced request.
 typedef struct CCSynchNode {
-    /// @brief Pointer to the next node.
+    /// @brief Pointer to the next request that has been announced.
     struct CCSynchNode *next;
-    /// @brief This variable stores the argument of the operation and the return value after the operation is applied.
+    /// @brief This variable stores the argument of the request and the return value after the request is applied.
     ArgVal arg_ret;
-    /// @brief The pid of the thread.
+    /// @brief The pid of the thread that announced this request.
     int32_t pid;
-    /// @brief Whenever it is equal to false, the thread is the combiner; otherwise the thread waits.
+    /// @brief Whenever it is equal to false, the thread is the combiner; otherwise the thread waits until a combiner apply its request.
     int32_t locked;
-    /// @brief If true, the operation is applied and the thread returns its return value.
+    /// @brief If true, the request is applied and the thread returns its return value.
     int32_t completed;
     /// @brief Padding space.
     char align[PAD_CACHE(sizeof(HalfCCSynchNode))];
 } CCSynchNode;
 
-/// @brief CCSynchThreadState holds each thread's local state for a single instance of CCSynch.
+/// @brief CCSynchThreadState stores each thread's local state for a single instance of CCSynch.
 /// For each instance of CCSynch, a discrete instance of CCSynchThreadState should be used.
 typedef struct CCSynchThreadState {
-    /// @brief pointer to the next request.
+    /// @brief pointer to an empty request that would be used for announcing future requests.
     CCSynchNode *next;
-    /// @brief A toggled used by the CCSynch object.
+    /// @brief A toggle-bit used by the CCSynch object.
     int toggle;
 } CCSynchThreadState;
 
+///  @brief CCSynchStruct stores the state of an instance of the a CCSynch combining object.
+/// CCSynchStruct should be initialized using the CCSynchStructInit function.
 typedef struct CCSynchStruct {
-    /// Tail points to the most recently announced request. Initially, it points to NULL.
+    /// @brief Tail points to the most recently announced request. Initially, it points to NULL.
     volatile CCSynchNode *Tail CACHE_ALIGN;
-    /// Pointer to the pool of nodes used by threads in order to announce their requests.
+    /// @brief Pointer to the pool of nodes used by threads in order to announce their requests.
     CCSynchNode *nodes CACHE_ALIGN;
     /// @brief The number of threads that will use the CCSynch combining object.
     uint32_t nthreads;
@@ -71,7 +73,6 @@ typedef struct CCSynchStruct {
 /// @param nthreads The number of threads that will use the CCSynch combining object.
 void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads);
 
-
 /// @brief This function should be called once before the thread applies any operation to the CCSynch combining object.
 ///
 /// @param l A pointer to an instance of the CCSynch combining object.
@@ -79,12 +80,11 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads);
 /// @param pid The pid of the calling thread.
 void CCSynchThreadStateInit(CCSynchStruct *l, CCSynchThreadState *st_thread, int pid);
 
-
-/// @brief This dunction is called whenever a thread wants to apply an operation to the simulated concurrent object.
+/// @brief This function is called whenever a thread wants to apply an operation to the simulated concurrent object.
 ///
 /// @param l A pointer to an instance of the CCSynch combining object.
 /// @param st_thread A pointer to thread's local state for a specific instance of CCSynch.
-/// @param sfunc A serial function that the CCSynch instance should execute, while applying requests of active threads.
+/// @param sfunc A serial function that the CCSynch instance should execute, while applying requests announced by active threads.
 /// @param state A pointer to the state of the simulated object.
 /// @param arg The argument of the request that the thread wants to apply.
 /// @param pid The pid of the calling thread.
