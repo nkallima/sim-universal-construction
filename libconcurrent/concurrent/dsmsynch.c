@@ -71,11 +71,11 @@ void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
     l->Tail = NULL;
 
-#ifdef SYNCH_COMPACT_ALLOCATION
-    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
-#else
-    l->nodes = NULL;
-#endif
+    if (getMachineModel() == INTEL_X86_MACHINE) {
+        l->nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
+    } else {
+        l->nodes = NULL;
+    }
 
 #ifdef DEBUG
     l->counter = 0;
@@ -84,14 +84,14 @@ void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
 }
 
 void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, int pid) {
-#ifdef SYNCH_COMPACT_ALLOCATION
-    st_thread->MyNodes[0] = &l->nodes[2 * pid];
-    st_thread->MyNodes[1] = &l->nodes[2 * pid + 1];
-#else
-    DSMSynchNode *nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
-    st_thread->MyNodes[0] = &nodes[0];
-    st_thread->MyNodes[1] = &nodes[1];
-#endif
+    if (getMachineModel() == INTEL_X86_MACHINE) {
+        DSMSynchNode *nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
+        st_thread->MyNodes[0] = &nodes[0];
+        st_thread->MyNodes[1] = &nodes[1];
+    } else {
+        st_thread->MyNodes[0] = &l->nodes[2 * pid];
+        st_thread->MyNodes[1] = &l->nodes[2 * pid + 1];
+    }
 
     st_thread->toggle = 0;
 }

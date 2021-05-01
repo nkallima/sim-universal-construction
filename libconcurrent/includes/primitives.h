@@ -8,6 +8,13 @@
 #include <stats.h>
 #include <stddef.h>
 
+#define UNKNOWN_MACHINE       0x0
+#define AMD_X86_MACHINE       0x1
+#define INTEL_X86_MACHINE     0x2
+#define X86_GENERIC_MACHINE   0x3
+#define ARM_GENERIC_MACHINE   0x4
+#define RISCV_GENERIC_MACHINE 0x5
+
 #if defined(__GNUC__) && (__GNUC__ * 10000 + __GNUC_MINOR__ * 100) >= 40100
 #    define __CAS128(A, B0, B1, C0, C1) _CAS128(A, B0, B1, C0, C1)
 #    define __CASPTR(A, B, C)           __sync_bool_compare_and_swap((long *)A, (long)B, (long)C)
@@ -74,6 +81,7 @@ inline void *getMemory(size_t size);
 inline void *getAlignedMemory(size_t align, size_t size);
 inline void freeMemory(void *ptr, size_t size);
 inline int64_t getTimeMillis(void);
+inline uint64_t getMachineModel(void);
 
 #define CAS128(A, B0, B1, C0, C1) _CAS128((uint64_t *)(A), (uint64_t)(B0), (uint64_t)(B1), (uint64_t)(C0), (uint64_t)(C1))
 inline bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t C1);

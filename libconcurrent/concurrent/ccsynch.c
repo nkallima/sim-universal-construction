@@ -56,13 +56,13 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
 void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
 
-#ifdef SYNCH_COMPACT_ALLOCATION
-    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, (nthreads + 1) * sizeof(CCSynchNode));
-    l->Tail = &l->nodes[nthreads];
-#else
-    l->nodes = NULL;
-    l->Tail = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchNode));
-#endif
+    if (getMachineModel() == INTEL_X86_MACHINE) {
+        l->nodes = NULL;
+        l->Tail = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchNode));
+    } else {
+        l->nodes = getAlignedMemory(CACHE_LINE_SIZE, (nthreads + 1) * sizeof(CCSynchNode));
+        l->Tail = &l->nodes[nthreads];
+    }
 
 #ifdef DEBUG
     l->rounds = l->counter = 0;
@@ -76,9 +76,9 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
 }
 
 void CCSynchThreadStateInit(CCSynchStruct *l, CCSynchThreadState *st_thread, int pid) {
-#ifdef SYNCH_COMPACT_ALLOCATION
-    st_thread->next = &l->nodes[pid];
-#else
-    st_thread->next = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchStruct));
-#endif
+    if (getMachineModel() == INTEL_X86_MACHINE) {
+        st_thread->next = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchStruct));
+    } else {
+        st_thread->next = &l->nodes[pid];
+    }
 }
