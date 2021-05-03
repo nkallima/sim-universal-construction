@@ -7,6 +7,7 @@ v2.5.0
 - Create a `doxygen` configuration file dor auto-generating man-pages/documentation.
 - Extensive documentation of the API.
 - Support for installing the framework.
+- Improvements on the build environment.
 
 v2.4.0
 ------

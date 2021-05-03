@@ -15,6 +15,7 @@ INCLUDES   = -Ilibconcurrent/includes
 BINDIR     = build/bin
 LIBDIR     = build/lib
 DOCSDIR    = build/docs
+OBJDIR     = build/objects
 
 LIBNAME    = libconcurrent.a
 LIBNAMESO  = libconcurrent.so
@@ -49,22 +50,21 @@ $(EXECS): %.run : %.c libbuild
 
 .c.o:
 	@printf '$(COLOR_CC)\t$<\n'
-	@$(COMPILER) $(CFLAGS) $(ARGS) $(INCLUDES) $(D_ARGS) -c $< -o $@
+	@$(COMPILER) $(CFLAGS) $(ARGS) $(INCLUDES) $(D_ARGS) -c $< -o $(OBJDIR)/$(notdir $@)
 
 libbuild: $(OBJECTS)
 	@printf '$(COLOR_CC)\t$(LIBDIR)/$(LIBNAMESO)\n'
-	@$(CC) -shared -o $(LIBDIR)/$(LIBNAMESO) $(OBJECTS)
+	@$(COMPILER) -shared -o $(LIBDIR)/$(LIBNAMESO) $(addprefix $(OBJDIR)/,$(notdir $(OBJECTS)))
 	@printf '$(COLOR_AR)\t$(LIBDIR)/$(LIBNAME)\n'
-	@$(AR) rcs $(LIBDIR)/$(LIBNAME) $(OBJECTS)
+	@$(AR) rcs $(LIBDIR)/$(LIBNAME) $(addprefix $(OBJDIR)/,$(notdir $(OBJECTS)))
 
 clean: $(SRCS)
 	@printf '$(COLOR_RM)\t$(LIBDIR)/*.a\n'
 	@rm -rf $(LIBDIR)/*.a
 	@printf '$(COLOR_RM)\t$(LIBDIR)/*.so\n'
 	@rm -rf $(LIBDIR)/*.so
-	@printf '$(COLOR_RM)\tlibconcurrent/primitives/*.o\n'
-	@printf '$(COLOR_RM)\tlibconcurrent/concurrent/*.o\n'
-	@rm -f $(OBJECTS)
+	@printf '$(COLOR_RM)\tObject files\n'
+	@rm -f $(addprefix $(OBJDIR)/,$(notdir $(OBJECTS)))
 	@printf '$(COLOR_RM)\tExecutable files\n'
 	@rm -rf $(BINDIR)/*.run
 	@printf '$(COLOR_RM)\tLog and result files\n'
@@ -76,29 +76,29 @@ clean: $(SRCS)
 
 docs:
 	@printf '$(COLOR_RM)\tOld documentation files\n'
-	@rm -rf $(DOCSDIR)/*
+	@rm -rf $(DOCSDIR)
 	@printf '$(COLOR_CC)\tGenerating documentation\n'
 	@doxygen resources/Doxyfile >> $(BUILD_LOG)
 	@printf 'Documentation build log is placed in $(BUILD_LOG)\n'
 
 install:
-	@if [ -d ${INSTALL_DIR} ]; then                                         \
-		if [ -w ${INSTALL_DIR} ]; then                                      \
-			mkdir -p ${INSTALL_DIR};                                        \
-			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/;                     \
-			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build;                \
-			printf '$(COLOR_CP)\tInstalling the Synch framework\n';         \
-			cp -r ./build/* $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;              \
-			cp bench.sh  run_all.sh $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;     \
-			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/bin ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/bin;\
-			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/lib ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/lib;\
-			echo $(INSTALL_DIR) > $(INSTALL_INFO);                          \
-		else                                                                \
-			printf '$(COLOR_ERR)\tNo write access at %s \n' ${INSTALL_DIR}; \
-			printf '$(COLOR_ERR)\tYou may need root access\n';              \
-		fi                                                                  \
-	else                                                                    \
-		printf '$(COLOR_ERR)\tThere is no directory: %s\n' ${INSTALL_DIR};  \
+	@if [ -d ${INSTALL_DIR} ]; then                                                                \
+		if [ -w ${INSTALL_DIR} ]; then                                                             \
+			mkdir -p ${INSTALL_DIR};                                                               \
+			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/;                                            \
+			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build;                                       \
+			printf '$(COLOR_CP)\tInstalling the Synch framework\n';                                \
+			cp -r ./build/* $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;                                     \
+			cp bench.sh  run_all.sh $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;                             \
+			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/bin ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/bin; \
+			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/lib ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/lib; \
+			echo $(INSTALL_DIR) > $(INSTALL_INFO);                                                 \
+		else                                                                                       \
+			printf '$(COLOR_ERR)\tNo write access at %s \n' ${INSTALL_DIR};                        \
+			printf '$(COLOR_ERR)\tYou may need root access\n';                                     \
+		fi                                                                                         \
+	else                                                                                           \
+		printf '$(COLOR_ERR)\tThere is no directory: %s\n' ${INSTALL_DIR};                         \
 	fi
 
 uninstall:
