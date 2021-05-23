@@ -48,7 +48,7 @@ typedef struct CCSynchThreadState {
     int toggle;
 } CCSynchThreadState;
 
-///  @brief CCSynchStruct stores the state of an instance of the a CCSynch combining object.
+/// @brief CCSynchStruct stores the state of an instance of the a CCSynch combining object.
 /// CCSynchStruct should be initialized using the CCSynchStructInit function.
 typedef struct CCSynchStruct {
     /// @brief Tail points to the most recently announced request. Initially, it points to NULL.

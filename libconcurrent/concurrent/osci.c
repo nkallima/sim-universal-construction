@@ -3,8 +3,6 @@
 
 static const int OSCI_HELP_FACTOR = 10;
 
-enum { _OSCI_DOOR_INIT, _OSCI_DOOR_OPENED, _OSCI_DOOR_LOCKED };
-
 void OsciThreadStateInit(OsciThreadState *st_thread, OsciStruct *l, int pid) {
     int i, j;
 
