@@ -1,6 +1,6 @@
 /// @file barrier.h
 /// @brief This file exposes the API of a simple re-entrant synchronization barrier.
-/// This implementation is a classic two phase re-entrant barrier, i.e. arrive and leave phases.
+/// This implementation is a classic two phase (arrive and leave phases) re-entrant barrier, i.e. arrive and leave phases.
 /// Examples of usage could be found in almost all the provided benchmarks under the benchmarks directory.
 #ifndef _BARRIER_H_
 #define _BARRIER_H_
@@ -8,12 +8,18 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef struct {
-    // @brief This integer is atomically increased by one whenever a thread enters the 
+/// @brief Barrier stores the state of an instance of the a backoff object.
+/// Barrier should be initialized using the BarrierSet function.
+typedef struct Barrier {
+    /// @brief This integer is atomically decreased by one whenever a thread enters the arrive phase of the barrier.
     volatile int32_t arrive;
+    /// @brief This integer is atomically decreased by one whenever a thread enters the leave phase of the barrier.
     volatile int32_t leave;
+    /// @brief This variable is set to true if all the n threads have entered to the arrive phase.
     volatile bool arrive_flag;
+    /// @brief This variable is set to true if all the n threads have entered to the leave phase.
     volatile bool leave_flag;
+    /// @brief The initial value set to arrive and leave variaales.
     volatile int32_t val_at_set;
 } Barrier;
 
