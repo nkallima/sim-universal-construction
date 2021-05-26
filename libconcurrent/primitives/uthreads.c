@@ -1,5 +1,20 @@
 #include <uthreads.h>
 
+#define FIBER_STACK 65536
+
+typedef struct Fiber {
+    ucontext_t context; /* Stores the current context */
+    jmp_buf jmp;
+    bool active;
+} Fiber;
+
+typedef struct FiberData {
+    void *(*func)(void *);
+    jmp_buf *cur;
+    ucontext_t *prev;
+    long arg;
+} FiberData;
+
 inline static void switch_to_fiber(Fiber *prev, Fiber *cur);
 inline static void fiber_start_func(FiberData *context);
 
