@@ -19,7 +19,6 @@ inline static void *Execute(void *Arg) {
     long rnum;
     volatile long j;
 
-    setThreadId(id);
     fastRandomSetSeed(id + 1);
     th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(LFStackThreadState));
     LFStackThreadStateInit(th_state, bench_args.backoff_low, bench_args.backoff_high);

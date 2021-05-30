@@ -88,7 +88,7 @@ void OsciThreadStateInit(OsciThreadState *st_thread, OsciStruct *l, int pid);
 /// @brief This function is called whenever a thread wants to apply an operation to the simulated concurrent object.
 ///
 /// @param l A pointer to an instance of the Osci combining object.
-/// @param st_thread A pointer to thread's local state for a specific instance of OSci.
+/// @param st_thread A pointer to thread's local state for a specific instance of Osci.
 /// @param sfunc A serial function that the Osci instance should execute, while applying requests announced by active fibers (or threads).
 /// @param state A pointer to the state of the simulated object.
 /// @param arg The argument of the request that the thread wants to apply.
