@@ -7,7 +7,6 @@
 /// Panagiota Fatourou, and Nikolaos D. Kallimanis."Revisiting the combining synchronization technique".
 /// ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012.
 /// @copyright Copyright (c) 2021
-
 #ifndef _CCSTACK_H_
 #define _CCSTACK_H_
 
