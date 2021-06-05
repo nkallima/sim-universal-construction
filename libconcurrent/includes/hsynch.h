@@ -97,7 +97,9 @@ typedef struct HSynchStruct {
 ///
 /// @param l A pointer to an instance of the HSynch combining object.
 /// @param nthreads The number of threads that will use the HSynch combining object.
-/// @param numa_regions The number of system's Numa nodes .
+/// @param numa_regions The number of Numa nodes (which may differ with the actual hw numa nodes) that H-Synch should consider.
+/// In case that numa_nodes is equal to HSYNCH_DEFAULT_NUMA_POLICY, the number of Numa nodes provided by the HW is used
+/// (see more on hsynch.h).
 void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions);
 
 /// @brief This function should be called once before the thread applies any operation to the HSynch combining object.
