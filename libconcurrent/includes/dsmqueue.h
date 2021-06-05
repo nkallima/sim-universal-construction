@@ -64,7 +64,7 @@ void DSMQueueThreadStateInit(DSMQueueStruct *object_struct, DSMQueueThreadState 
 /// @param pid The pid of the calling thread.
 void DSMQueueApplyEnqueue(DSMQueueStruct *object_struct, DSMQueueThreadState *lobject_struct, ArgVal arg, int pid);
 
-/// @brief This function removes (i.e. dequeues) an element from the from of queue and returns its value.
+/// @brief This function removes (i.e. dequeues) an element from the front of the queue and returns its value.
 ///
 /// @param object_struct A pointer to an instance of the DSM-Queue concurrent queue implementation.
 /// @param lobject_struct A pointer to thread's local state of DSM-Queue.
