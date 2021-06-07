@@ -27,7 +27,7 @@ typedef struct HStackStruct {
 /// @brief HStackThreadState stores each thread's local state for a single instance of H-Stack.
 /// For each instance of H-Stack, a discrete instance of HStackThreadState should be used.
 typedef struct HStackThreadState {
-    /// @brief A HSynchThreadState for the instance of H-Synch that serves both push and pop operations.
+    /// @brief An HSynchThreadState struct for the instance of H-Synch that serves both push and pop operations.
     HSynchThreadState th_state;
 } HStackThreadState;
 

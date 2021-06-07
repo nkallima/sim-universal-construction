@@ -33,9 +33,9 @@ typedef struct DSMQueueStruct {
 /// @brief DSMQueueThreadState stores each thread's local state for a single instance of DSM-Queue.
 /// For each instance of DSM-Queue, a discrete instance of DSMQueueThreadState should be used.
 typedef struct DSMQueueThreadState {
-    /// @brief A DSMSynchThreadState for the instance of DSM-Synch that serves the enqueue operations.
+    /// @brief A DSMSynchThreadState struct for the instance of DSM-Synch that serves the enqueue operations.
     DSMSynchThreadState enqueue_thread_state;
-    /// @brief A DSMSynchThreadState for the instance of DSM-Synch that serves the dequeue operations.
+    /// @brief A DSMSynchThreadState struct for the instance of DSM-Synch that serves the dequeue operations.
     DSMSynchThreadState dequeue_thread_state;
 } DSMQueueThreadState;
 

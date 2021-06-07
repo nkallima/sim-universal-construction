@@ -26,7 +26,7 @@ typedef struct CCStackStruct {
 /// @brief CCStackThreadState stores each thread's local state for a single instance of CC-Stack.
 /// For each instance of CC-Stack, a discrete instance of CCStackThreadState should be used.
 typedef struct CCStackThreadState {
-    /// @brief A CCSynchThreadState for the instance of CC-Synch that serves both push and pop operations.
+    /// @brief A CCSynchThreadState struct for the instance of CC-Synch that serves both push and pop operations.
     CCSynchThreadState th_state;
 } CCStackThreadState;
 

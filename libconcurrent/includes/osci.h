@@ -49,7 +49,7 @@ typedef struct OsciThreadState {
     int toggle;
 } OsciThreadState;
 
-/// @brief OsciStruct stores the state of an instance of the a Osci combining object.
+/// @brief OsciStruct stores the state of an instance of the an Osci combining object.
 /// OsciStruct should be initialized using the OSciInit function.
 typedef struct OsciStruct {
     /// @brief Tail points to the most recently announced request. Initially, it points to NULL.

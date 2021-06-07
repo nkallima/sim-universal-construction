@@ -32,9 +32,9 @@ typedef struct CCQueueStruct {
 /// @brief CCQueueThreadState stores each thread's local state for a single instance of CC-Queue.
 /// For each instance of CC-Queue, a discrete instance of CCQueueThreadState should be used.
 typedef struct CCQueueThreadState {
-    /// @brief A CCSynchThreadState for the instance of CC-Synch that serves the enqueue operations.
+    /// @brief A CCSynchThreadState struct for the instance of CC-Synch that serves the enqueue operations.
     CCSynchThreadState enqueue_thread_state;
-    /// @brief A CCSynchThreadState for the instance of CC-Synch that serves the dequeue operations.
+    /// @brief A CCSynchThreadState struct for the instance of CC-Synch that serves the dequeue operations.
     CCSynchThreadState dequeue_thread_state;
 } CCQueueThreadState;
 

@@ -27,7 +27,7 @@ typedef struct DSMStackStruct {
 /// @brief DSMStackThreadState stores each thread's local state for a single instance of DSM-Stack.
 /// For each instance of DSM-Stack, a discrete instance of DSMStackThreadState should be used.
 typedef struct DSMStackThreadState {
-    /// @brief A DSMSynchThreadState for the instance of DSM-Synch that serves both push and pop operations.
+    /// @brief A DSMSynchThreadState struct for the instance of DSM-Synch that serves both push and pop operations.
     DSMSynchThreadState th_state;
 } DSMStackThreadState;
 

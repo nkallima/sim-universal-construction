@@ -19,9 +19,9 @@
 /// @brief OsciQueueStruct stores the state of an instance of the OsciQueue concurrent queue implementation.
 /// OsciQueueStruct should be initialized using the OsciQueueStructInit function.
 typedef struct OsciQueueStruct {
-    /// @brief A Osci instance for servicing the enqueue operations.
+    /// @brief An Osci instance for servicing the enqueue operations.
     OsciStruct enqueue_struct CACHE_ALIGN;
-    /// @brief A Osci instance for servicing the dequeue operations.
+    /// @brief An Osci instance for servicing the dequeue operations.
     OsciStruct dequeue_struct CACHE_ALIGN;
     /// @brief A pointer to the last inserted element.
     volatile Node *last CACHE_ALIGN;
@@ -36,9 +36,9 @@ typedef struct OsciQueueStruct {
 /// @brief OsciQueueThreadState stores each thread's local state for a single instance of OsciQueue.
 /// For each instance of OsciQueue, a discrete instance of OsciQueueThreadState should be used.
 typedef struct OsciQueueThreadState {
-    /// @brief A OsciThreadState for the instance of Osci that serves the enqueue operations.
+    /// @brief An OsciThreadState struct for the instance of Osci that serves the enqueue operations.
     OsciThreadState enqueue_thread_state;
-    /// @brief A OsciThreadState for the instance of Osci that serves the dequeue operations.
+    /// @brief An OsciThreadState struct for the instance of Osci that serves the dequeue operations.
     OsciThreadState dequeue_thread_state;
 } OsciQueueThreadState;
 
