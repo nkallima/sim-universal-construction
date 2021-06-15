@@ -40,5 +40,5 @@ uint32_t fastRandomRange32(uint32_t low, uint32_t high) {
 }
 
 long fastRandomRange(long low, long high) {
-    return low + (long)(((double)high) * ((double)fastRandom() / (SIM_RAND_MAX + 1.0)));
+    return low + (long)(((double)high) * ((double)fastRandom() / (SYNCH_RAND_MAX + 1.0)));
 }
