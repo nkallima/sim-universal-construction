@@ -1,7 +1,6 @@
 #!/bin/sh
 
 echo 'Setting up the script...'
-# Exit with nonzero exit code if anything fails
 set -e
 
 
