@@ -1,0 +1,19 @@
+name: Codecov
+on: [push, pull_request]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch
+        uses: actions/checkout@master
+      - name: Install libnuma-dev
+        run: sudo apt-get -y install libnuma-dev
+      - name: Test
+        run: |
+          make clean codecov
+          ./validate.sh
+          gcov build/objects/*.gcda -f libconcurrent/
+      - name: Upload
+        uses: codecov/codecov-action@v1
+        with:
+          files: ./*.gcov
