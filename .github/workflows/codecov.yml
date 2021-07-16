@@ -1,9 +1,4 @@
 name: Codecov
-coverage:
-  range: 65..100
-  round: down
-  precision: 2
-
 on: [push, pull_request]
 jobs:
   run:
