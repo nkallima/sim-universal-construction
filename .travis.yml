@@ -1,0 +1,17 @@
+sudo: false
+
+branches:
+  except:
+    - gh-pages
+
+addons:
+  apt:
+    packages:
+      - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
+
+script:
+  - ./deploy_docs.sh
