@@ -102,7 +102,7 @@ done
 PTHREADS_ARRAY+=($MAX_PTHREADS)
 
 echo -ne "Compiling the sources...\t\t\t\t\t\t"
-make clean debug &> $BUILD_LOG
+make clean codecov &> $BUILD_LOG
 
 if [ $? -eq 0 ]; then
     echo -e $COLOR_PASS
