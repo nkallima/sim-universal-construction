@@ -6,6 +6,8 @@ jobs:
     steps:
       - name: Fetch
         uses: actions/checkout@master
+      - name: Install libnuma-dev
+        run: sudo apt-get -y install libnuma-dev
       - name: Test
         run: |
           make clean codecov
