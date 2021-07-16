@@ -8,12 +8,6 @@ if [ -f $result_file ] ; then
     rm $result_file
 fi
 
-# Stop the script if there is a compile error
-if [ $? -ne 0 ]; then
-   exit
-fi
-printf " Done\n"
-
 # Get a string with all available benchmarks
 benchmarks_string=$($script_path/bench.sh -l)
 
