@@ -31,8 +31,8 @@ echo "" > .nojekyll
 # both exist. This is a good indication that Doxygen did it's work.
 if [ -d "sim-universal-construction/build/docs/html" ] && [ -f "sim-universal-construction/build/docs/html/index.html" ]; then
     echo 'Removing outdated documentation'
-    rm -rf docs
-    mv sim-universal-construction/build/docs/html ./docs
+    rm -rf docs/*
+    cp -r sim-universal-construction/build/docs/html/* ./docs
     rm -rf sim-universal-construction
 
     echo 'Uploading documentation to the gh-pages branch...'
