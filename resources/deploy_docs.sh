@@ -14,12 +14,11 @@ if [ -d "build/docs/html" ] && [ -f "build/docs/html/index.html" ]; then
     echo 'Removing outdated documentation'
     rm -rf docs/*
     cp -r ./build/docs/html/* ./docs
+    make clean
 
     git checkout gh-pages
     echo 'Uploading documentation to the gh-pages branch...'
     git add ./docs/*
-
-    make clean
 
     git commit -m "Documentation upload." 
 
