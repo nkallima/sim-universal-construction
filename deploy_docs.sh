@@ -31,12 +31,10 @@ echo "" > .nojekyll
 # Check this by verifying that the html directory and the file html/index.html
 # both exist. This is a good indication that Doxygen did it's work.
 if [ -d "sim-universal-construction/build/docs/html" ] && [ -f "sim-universal-construction/build/docs/html/index.html" ]; then
-
-    mv sim-universal-construction/build/docs/html ./html
+    echo 'Removing outdated documentation'
+    rm -rf docs
+    mv sim-universal-construction/build/docs/html ./docs
     rm -rf sim-universal-construction
-    rm -rf *.html *.png *.gif *.css *.js *.svg search
-    mv html/* ./
-    rm -rf html
 
     echo 'Uploading documentation to the gh-pages branch...'
     git add --all
