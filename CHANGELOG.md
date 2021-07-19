@@ -4,8 +4,10 @@ Changelog
 v2.5.0
 ------
 - Header-files cleanup in order to provide a better and consistent API.
-- Create a `doxygen` configuration file dor auto-generating man-pages/documentation.
 - Extensive documentation of the API.
+- Create a `doxygen` configuration file dor auto-generating man-pages/documentation.
+- API documentation is now provided at https://nkallima.github.io/sim-universal-construction/index.html.
+- A code coverage report is provided through codecov.io for the validation script.
 - Support for installing the framework.
 - Improvements on the build environment.
 
