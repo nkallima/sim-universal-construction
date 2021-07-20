@@ -6,7 +6,7 @@
 #include <fastrand.h>
 #include <threadtools.h>
 
-LFStack stack CACHE_ALIGN;
+LFStackStruct stack CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 int MIN_BAK, MAX_BAK;
 Barrier bar CACHE_ALIGN;

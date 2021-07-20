@@ -1,6 +1,6 @@
 #include <lfstack.h>
 
-inline void LFStackInit(LFStack *l) {
+inline void LFStackInit(LFStackStruct *l) {
     l->top = NULL;
     FullFence();
 }
@@ -10,7 +10,7 @@ inline void LFStackThreadStateInit(LFStackThreadState *th_state, int min_back, i
     init_pool(&th_state->pool, sizeof(Node));
 }
 
-inline void LFStackPush(LFStack *l, LFStackThreadState *th_state, ArgVal arg) {
+inline void LFStackPush(LFStackStruct *l, LFStackThreadState *th_state, ArgVal arg) {
     Node *n;
 
     n = alloc_obj(&th_state->pool);
@@ -26,7 +26,7 @@ inline void LFStackPush(LFStack *l, LFStackThreadState *th_state, ArgVal arg) {
     } while (true);
 }
 
-inline RetVal LFStackPop(LFStack *l, LFStackThreadState *th_state) {
+inline RetVal LFStackPop(LFStackStruct *l, LFStackThreadState *th_state) {
     reset_backoff(&th_state->backoff);
     do {
         Node *old_top = (Node *)l->top;
