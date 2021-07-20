@@ -93,7 +93,7 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a3bddccdb9975f27275648c3b2034ba97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ccqueue_8h.html#a3bddccdb9975f27275648c3b2034ba97">CCQueueStructInit</a> (<a class="el" href="ccqueue_8h.html#structCCQueueStruct">CCQueueStruct</a> *queue_object_struct, uint32_t nthreads)</td></tr>
-<tr class="memdesc:a3bddccdb9975f27275648c3b2034ba97"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the CC-Queue concurrent queue implementation.  <a href="ccqueue_8h.html#a3bddccdb9975f27275648c3b2034ba97">More...</a><br /></td></tr>
+<tr class="memdesc:a3bddccdb9975f27275648c3b2034ba97"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the CC-Queue concurrent queue implementation. This function should be called once (by a single thread) before any other thread tries to apply any enqueue or dequeue operation.  <a href="ccqueue_8h.html#a3bddccdb9975f27275648c3b2034ba97">More...</a><br /></td></tr>
 <tr class="separator:a3bddccdb9975f27275648c3b2034ba97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a594e74a367af114c08a97305724a85bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ccqueue_8h.html#a594e74a367af114c08a97305724a85bc">CCQueueThreadStateInit</a> (<a class="el" href="ccqueue_8h.html#structCCQueueStruct">CCQueueStruct</a> *object_struct, <a class="el" href="ccqueue_8h.html#structCCQueueThreadState">CCQueueThreadState</a> *lobject_struct, int pid)</td></tr>
 <tr class="memdesc:a594e74a367af114c08a97305724a85bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the CC-Queue concurrent queue implementation.  <a href="ccqueue_8h.html#a594e74a367af114c08a97305724a85bc">More...</a><br /></td></tr>
@@ -182,8 +182,7 @@ A <a class="el" href="ccsynch_8h.html#structCCSynchThreadState" title="CCSynchTh
       </table>
 </div><div class="memdoc">
 
-<p>This function initializes an instance of the CC-Queue concurrent queue implementation. </p>
-<p>This function should be called once (by a single thread) before any other thread tries to apply any enqueue or dequeue operation.</p>
+<p>This function initializes an instance of the CC-Queue concurrent queue implementation. This function should be called once (by a single thread) before any other thread tries to apply any enqueue or dequeue operation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">queue_object_struct</td><td>A pointer to an instance of the CC-Queue concurrent queue implementation. </td></tr>

@@ -77,6 +77,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>This is a slightly modified version of the LCRQ queue implementation by Adam Morrison and Yehuda Afek provided in <a href="http://mcg.cs.tau.ac.il/projects/lcrq">http://mcg.cs.tau.ac.il/projects/lcrq</a>.  
+<a href="#details">More...</a></p>
+
 <p><a href="lcrq_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -86,8 +89,10 @@ Data Structures</h2></td></tr>
 <tr class="memitem:structRingQueue"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcrq_8h.html#structRingQueue">RingQueue</a></td></tr>
 <tr class="separator:structRingQueue"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structLCRQStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcrq_8h.html#structLCRQStruct">LCRQStruct</a></td></tr>
+<tr class="memdesc:structLCRQStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="lcrq_8h.html#structLCRQStruct" title="LCRQStruct stores the state of an instance of the LCRQ concurrent queue implementation....">LCRQStruct</a> stores the state of an instance of the LCRQ concurrent queue implementation. <a class="el" href="lcrq_8h.html#structLCRQStruct" title="LCRQStruct stores the state of an instance of the LCRQ concurrent queue implementation....">LCRQStruct</a> should be initialized using the LCRQStructInit function.  <a href="lcrq_8h.html#structLCRQStruct">More...</a><br /></td></tr>
 <tr class="separator:structLCRQStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structLCRQThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcrq_8h.html#structLCRQThreadState">LCRQThreadState</a></td></tr>
+<tr class="memdesc:structLCRQThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="lcrq_8h.html#structLCRQThreadState" title="LCRQThreadState stores each thread&#39;s local state for a single instance of LCRQ. For each instance of ...">LCRQThreadState</a> stores each thread's local state for a single instance of LCRQ. For each instance of LCRQ, a discrete instance of <a class="el" href="lcrq_8h.html#structLCRQThreadState" title="LCRQThreadState stores each thread&#39;s local state for a single instance of LCRQ. For each instance of ...">LCRQThreadState</a> should be used.  <a href="lcrq_8h.html#structLCRQThreadState">More...</a><br /></td></tr>
 <tr class="separator:structLCRQThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -100,15 +105,23 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a3e5d1c8978fdd6faf21fc73468993741"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcrq_8h.html#a3e5d1c8978fdd6faf21fc73468993741">LCRQInit</a> (<a class="el" href="lcrq_8h.html#structLCRQStruct">LCRQStruct</a> *queue, uint32_t nthreads)</td></tr>
+<tr class="memdesc:a3e5d1c8978fdd6faf21fc73468993741"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the LCRQ concurrent queue implementation. This function should be called once (by a single thread) before any other thread tries to apply any enqueue or dequeue operation.  <a href="lcrq_8h.html#a3e5d1c8978fdd6faf21fc73468993741">More...</a><br /></td></tr>
 <tr class="separator:a3e5d1c8978fdd6faf21fc73468993741"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b5a3ba9ef4e61fe726d26775ee42d1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcrq_8h.html#a6b5a3ba9ef4e61fe726d26775ee42d1d">LCRQThreadStateInit</a> (<a class="el" href="lcrq_8h.html#structLCRQThreadState">LCRQThreadState</a> *thread_state, int pid)</td></tr>
+<tr class="memdesc:a6b5a3ba9ef4e61fe726d26775ee42d1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the LCRQ concurrent queue implementation.  <a href="lcrq_8h.html#a6b5a3ba9ef4e61fe726d26775ee42d1d">More...</a><br /></td></tr>
 <tr class="separator:a6b5a3ba9ef4e61fe726d26775ee42d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae343585a3d04de1e4779cbd851f0ef47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcrq_8h.html#ae343585a3d04de1e4779cbd851f0ef47">LCRQEnqueue</a> (<a class="el" href="lcrq_8h.html#structLCRQStruct">LCRQStruct</a> *queue, <a class="el" href="lcrq_8h.html#structLCRQThreadState">LCRQThreadState</a> *thread_state, ArgVal arg, int pid)</td></tr>
+<tr class="memdesc:ae343585a3d04de1e4779cbd851f0ef47"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function adds (i.e. enqueues) a new element to the back of the queue. This element has a value equal with arg.  <a href="lcrq_8h.html#ae343585a3d04de1e4779cbd851f0ef47">More...</a><br /></td></tr>
 <tr class="separator:ae343585a3d04de1e4779cbd851f0ef47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7058a6a57b5154e41320dc87a2ba2a6"><td class="memItemLeft" align="right" valign="top">RetVal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcrq_8h.html#ad7058a6a57b5154e41320dc87a2ba2a6">LCRQDequeue</a> (<a class="el" href="lcrq_8h.html#structLCRQStruct">LCRQStruct</a> *queue, <a class="el" href="lcrq_8h.html#structLCRQThreadState">LCRQThreadState</a> *thread_state, int pid)</td></tr>
+<tr class="memdesc:ad7058a6a57b5154e41320dc87a2ba2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function removes (i.e. dequeues) an element from the front of the queue and returns its value.  <a href="lcrq_8h.html#ad7058a6a57b5154e41320dc87a2ba2a6">More...</a><br /></td></tr>
 <tr class="separator:ad7058a6a57b5154e41320dc87a2ba2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/><h2 class="groupheader">Data Structure Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This is a slightly modified version of the LCRQ queue implementation by Adam Morrison and Yehuda Afek provided in <a href="http://mcg.cs.tau.ac.il/projects/lcrq">http://mcg.cs.tau.ac.il/projects/lcrq</a>. </p>
+<dl class="section author"><dt>Author</dt><dd>Adam Morrison and Yehuda Afek</dd></dl>
+<p>LCRQ is presented in "Fast concurrent queues for x86 processors", by Adam Morrison, and Yehuda Afek, in PPoPP 2013. This modified version has some minor modifications in order to be compatible with the latest version of the Synch framework. Notice that this algorithm performs exceptionally well in X86 machines that natively support 128-bit Compare&amp;Swap instructions. It is also tested in ARM-V8 and in RISCV machines. This modified version seems to have very similar performance as the original one. The original version of LCRQ is distributed under the New BSD Licence (LGPL-2.1 is compatible with New BSD Licence, more on <a href="https://www.gnu.org/licenses/license-compatibility.html">https://www.gnu.org/licenses/license-compatibility.html</a>). </p><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2021 </dd></dl>
+</div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="structRingNode" id="structRingNode"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#structRingNode">&#9670;&nbsp;</a></span>RingNode</h2>
 
@@ -169,20 +182,21 @@ pad[PAD_CACHE(2 *sizeof(uint64_t))]</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="lcrq_8h.html#structLCRQStruct" title="LCRQStruct stores the state of an instance of the LCRQ concurrent queue implementation....">LCRQStruct</a> stores the state of an instance of the LCRQ concurrent queue implementation. <a class="el" href="lcrq_8h.html#structLCRQStruct" title="LCRQStruct stores the state of an instance of the LCRQ concurrent queue implementation....">LCRQStruct</a> should be initialized using the LCRQStructInit function. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="aa343323c1f1f383d9ce9dd92e71eae4d"></a><a class="el" href="lcrq_8h.html#structRingQueue">RingQueue</a> *</td>
 <td class="fieldname">
 head</td>
 <td class="fielddoc">
-</td></tr>
+A pointer to the head Ring. </td></tr>
 <tr><td class="fieldtype">
 <a id="a06e622fd34b5b198de3d04507f94c575"></a><a class="el" href="lcrq_8h.html#structRingQueue">RingQueue</a> *</td>
 <td class="fieldname">
 tail</td>
 <td class="fielddoc">
-</td></tr>
+A pointer to the tail Ring. </td></tr>
 </table>
 
 </div>
@@ -198,7 +212,8 @@ tail</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="lcrq_8h.html#structLCRQThreadState" title="LCRQThreadState stores each thread&#39;s local state for a single instance of LCRQ. For each instance of ...">LCRQThreadState</a> stores each thread's local state for a single instance of LCRQ. For each instance of LCRQ, a discrete instance of <a class="el" href="lcrq_8h.html#structLCRQThreadState" title="LCRQThreadState stores each thread&#39;s local state for a single instance of LCRQ. For each instance of ...">LCRQThreadState</a> should be used. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="adea0a6f7ebebef428ca33636756a7cb2"></a><a class="el" href="lcrq_8h.html#structRingQueue">RingQueue</a> *</td>
@@ -266,6 +281,15 @@ nrq</td>
       </table>
 </div><div class="memdoc">
 
+<p>This function initializes an instance of the LCRQ concurrent queue implementation. This function should be called once (by a single thread) before any other thread tries to apply any enqueue or dequeue operation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">queue</td><td>A pointer to an instance of the LCRQ concurrent queue implementation. </td></tr>
+    <tr><td class="paramname">nthreads</td><td>The number of threads that will use the LCRQ concurrent queue implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a6b5a3ba9ef4e61fe726d26775ee42d1d"></a>
@@ -293,6 +317,15 @@ nrq</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function should be called once before the thread applies any operation to the LCRQ concurrent queue implementation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">thread_state</td><td>A pointer to thread's local state of LCRQ. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -334,6 +367,17 @@ nrq</td>
       </table>
 </div><div class="memdoc">
 
+<p>This function adds (i.e. enqueues) a new element to the back of the queue. This element has a value equal with arg. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">queue</td><td>A pointer to an instance of the LCRQ concurrent queue implementation. </td></tr>
+    <tr><td class="paramname">thread_state</td><td>A pointer to thread's local state of LCRQ. </td></tr>
+    <tr><td class="paramname">arg</td><td>The enqueue operation will insert a new element to the queue with value equal to arg. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ad7058a6a57b5154e41320dc87a2ba2a6"></a>
@@ -367,6 +411,17 @@ nrq</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function removes (i.e. dequeues) an element from the front of the queue and returns its value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">queue</td><td>A pointer to an instance of the LCRQ concurrent queue implementation. </td></tr>
+    <tr><td class="paramname">thread_state</td><td>A pointer to thread's local state of LCRQ. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of the removed element. </dd></dl>
 
 </div>
 </div>
