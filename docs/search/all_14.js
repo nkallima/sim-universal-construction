@@ -5,6 +5,6 @@ var searchData=
   ['threadpin_391',['threadPin',['../threadtools_8h.html#ab8336b2c753ac326e3212f1c9adafb22',1,'threadtools.h']]],
   ['threadtools_2eh_392',['threadtools.h',['../threadtools_8h.html',1,'']]],
   ['toggle_393',['toggle',['../ccsynch_8h.html#af95f64199dd5f91186bcb7b2d069a937',1,'CCSynchThreadState::toggle()'],['../dsmsynch_8h.html#a6f6f0618cdd5b8eba8100a2cf398cc7d',1,'DSMSynchThreadState::toggle()'],['../osci_8h.html#a70df328c71096c8286cd02bacf9c4415',1,'OsciNode::toggle()'],['../osci_8h.html#a630504fbfa6f630d339962a2fe6ab472',1,'OsciThreadState::toggle()'],['../sim_8h.html#a5dcc60f8f579a8bd75d21d323ae6717d',1,'SimThreadState::toggle()'],['../simstack_8h.html#ab146e25180fa8fd8d1473ef795736dcd',1,'SimStackThreadState::toggle()']]],
-  ['top_394',['top',['../lfstack_8h.html#a6bf05edd7f06e625777c4793bb278826',1,'LFStack']]],
+  ['top_394',['top',['../lfstack_8h.html#ac88ce73beb045ab9c1e7f542118d48b9',1,'LFStackStruct']]],
   ['total_5fruns_395',['total_runs',['../bench__args_8h.html#a0233a7b915a646f8d06f0cfcc6812180',1,'BenchArgs']]]
 ];

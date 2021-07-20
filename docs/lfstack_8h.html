@@ -80,42 +80,49 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:structLFStack"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#structLFStack">LFStack</a></td></tr>
-<tr class="separator:structLFStack"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structLFStackStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#structLFStackStruct">LFStackStruct</a></td></tr>
+<tr class="memdesc:structLFStackStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="lfstack_8h.html#structLFStackStruct" title="LFStackStruct stores the state of an instance of the LF-Stack concurrent stack implementation....">LFStackStruct</a> stores the state of an instance of the LF-Stack concurrent stack implementation. <a class="el" href="lfstack_8h.html#structLFStackStruct" title="LFStackStruct stores the state of an instance of the LF-Stack concurrent stack implementation....">LFStackStruct</a> should be initialized using the LFStackInit function.  <a href="lfstack_8h.html#structLFStackStruct">More...</a><br /></td></tr>
+<tr class="separator:structLFStackStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structLFStackThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#structLFStackThreadState">LFStackThreadState</a></td></tr>
+<tr class="memdesc:structLFStackThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="lfstack_8h.html#structLFStackThreadState" title="LFStackThreadState stores each thread&#39;s local state for a single instance of LF-Stack....">LFStackThreadState</a> stores each thread's local state for a single instance of LF-Stack. For each instance of LF-Stack, a discrete instance of <a class="el" href="lfstack_8h.html#structLFStackThreadState" title="LFStackThreadState stores each thread&#39;s local state for a single instance of LF-Stack....">LFStackThreadState</a> should be used.  <a href="lfstack_8h.html#structLFStackThreadState">More...</a><br /></td></tr>
 <tr class="separator:structLFStackThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:accc06bfeaa9648bc6f4dfea1b56efc99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#accc06bfeaa9648bc6f4dfea1b56efc99">LFStackInit</a> (<a class="el" href="lfstack_8h.html#structLFStack">LFStack</a> *l)</td></tr>
-<tr class="separator:accc06bfeaa9648bc6f4dfea1b56efc99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257179a30f946af626d833734ba7c73b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#a257179a30f946af626d833734ba7c73b">LFStackInit</a> (<a class="el" href="lfstack_8h.html#structLFStackStruct">LFStackStruct</a> *l)</td></tr>
+<tr class="memdesc:a257179a30f946af626d833734ba7c73b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the LF-Stack concurrent stack implementation.  <a href="lfstack_8h.html#a257179a30f946af626d833734ba7c73b">More...</a><br /></td></tr>
+<tr class="separator:a257179a30f946af626d833734ba7c73b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b915ab960d057471deb226cfd125268"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#a5b915ab960d057471deb226cfd125268">LFStackThreadStateInit</a> (<a class="el" href="lfstack_8h.html#structLFStackThreadState">LFStackThreadState</a> *th_state, int min_back, int max_back)</td></tr>
+<tr class="memdesc:a5b915ab960d057471deb226cfd125268"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the LF-Stack concurrent stack implementation.  <a href="lfstack_8h.html#a5b915ab960d057471deb226cfd125268">More...</a><br /></td></tr>
 <tr class="separator:a5b915ab960d057471deb226cfd125268"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e0045bcb39095c6ba4bc5634722f2db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#a8e0045bcb39095c6ba4bc5634722f2db">LFStackPush</a> (<a class="el" href="lfstack_8h.html#structLFStack">LFStack</a> *l, <a class="el" href="lfstack_8h.html#structLFStackThreadState">LFStackThreadState</a> *th_state, ArgVal arg)</td></tr>
-<tr class="separator:a8e0045bcb39095c6ba4bc5634722f2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3561d3003f9e7fc1d622cfad8c9973cf"><td class="memItemLeft" align="right" valign="top">RetVal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#a3561d3003f9e7fc1d622cfad8c9973cf">LFStackPop</a> (<a class="el" href="lfstack_8h.html#structLFStack">LFStack</a> *l, <a class="el" href="lfstack_8h.html#structLFStackThreadState">LFStackThreadState</a> *th_state)</td></tr>
-<tr class="separator:a3561d3003f9e7fc1d622cfad8c9973cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b87f5f1e54673f9be3129636160967b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#a6b87f5f1e54673f9be3129636160967b">LFStackPush</a> (<a class="el" href="lfstack_8h.html#structLFStackStruct">LFStackStruct</a> *l, <a class="el" href="lfstack_8h.html#structLFStackThreadState">LFStackThreadState</a> *th_state, ArgVal arg)</td></tr>
+<tr class="memdesc:a6b87f5f1e54673f9be3129636160967b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function adds (i.e. pushes) a new element to the top of the stack. This element has a value equal with arg.  <a href="lfstack_8h.html#a6b87f5f1e54673f9be3129636160967b">More...</a><br /></td></tr>
+<tr class="separator:a6b87f5f1e54673f9be3129636160967b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08ac2c0a0da53fafefd99290e6f45ee1"><td class="memItemLeft" align="right" valign="top">RetVal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfstack_8h.html#a08ac2c0a0da53fafefd99290e6f45ee1">LFStackPop</a> (<a class="el" href="lfstack_8h.html#structLFStackStruct">LFStackStruct</a> *l, <a class="el" href="lfstack_8h.html#structLFStackThreadState">LFStackThreadState</a> *th_state)</td></tr>
+<tr class="memdesc:a08ac2c0a0da53fafefd99290e6f45ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function removes (i.e. pops) an element from the top of the stack and returns its value.  <a href="lfstack_8h.html#a08ac2c0a0da53fafefd99290e6f45ee1">More...</a><br /></td></tr>
+<tr class="separator:a08ac2c0a0da53fafefd99290e6f45ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structLFStack" id="structLFStack"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structLFStack">&#9670;&nbsp;</a></span>LFStack</h2>
+<a name="structLFStackStruct" id="structLFStackStruct"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structLFStackStruct">&#9670;&nbsp;</a></span>LFStackStruct</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct LFStack</td>
+          <td class="memname">struct LFStackStruct</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="lfstack_8h.html#structLFStackStruct" title="LFStackStruct stores the state of an instance of the LF-Stack concurrent stack implementation....">LFStackStruct</a> stores the state of an instance of the LF-Stack concurrent stack implementation. <a class="el" href="lfstack_8h.html#structLFStackStruct" title="LFStackStruct stores the state of an instance of the LF-Stack concurrent stack implementation....">LFStackStruct</a> should be initialized using the LFStackInit function. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a6bf05edd7f06e625777c4793bb278826"></a>volatile <a class="el" href="queue-stack_8h.html#structNode">Node</a> *</td>
+<a id="ac88ce73beb045ab9c1e7f542118d48b9"></a>volatile <a class="el" href="queue-stack_8h.html#structNode">Node</a> *</td>
 <td class="fieldname">
 top</td>
 <td class="fielddoc">
-</td></tr>
+A pointer to the top element of the stack. </td></tr>
 </table>
 
 </div>
@@ -131,27 +138,28 @@ top</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="lfstack_8h.html#structLFStackThreadState" title="LFStackThreadState stores each thread&#39;s local state for a single instance of LF-Stack....">LFStackThreadState</a> stores each thread's local state for a single instance of LF-Stack. For each instance of LF-Stack, a discrete instance of <a class="el" href="lfstack_8h.html#structLFStackThreadState" title="LFStackThreadState stores each thread&#39;s local state for a single instance of LF-Stack....">LFStackThreadState</a> should be used. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a2e7ec5b441bfea32f64d17fe2c7228b1"></a><a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a></td>
 <td class="fieldname">
 pool</td>
 <td class="fielddoc">
-</td></tr>
+A pool object per thread is used for fast memory allocation. </td></tr>
 <tr><td class="fieldtype">
 <a id="a2b0d5a1f47f780daa378d32933a7bb21"></a><a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a></td>
 <td class="fieldname">
 backoff</td>
 <td class="fielddoc">
-</td></tr>
+A backoff object per thread is used for reducing the contention while accessing the queue. </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="accc06bfeaa9648bc6f4dfea1b56efc99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accc06bfeaa9648bc6f4dfea1b56efc99">&#9670;&nbsp;</a></span>LFStackInit()</h2>
+<a id="a257179a30f946af626d833734ba7c73b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a257179a30f946af626d833734ba7c73b">&#9670;&nbsp;</a></span>LFStackInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,12 +167,21 @@ backoff</td>
         <tr>
           <td class="memname">void LFStackInit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="lfstack_8h.html#structLFStack">LFStack</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="lfstack_8h.html#structLFStackStruct">LFStackStruct</a> *&#160;</td>
           <td class="paramname"><em>l</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function initializes an instance of the LF-Stack concurrent stack implementation. </p>
+<p>This function should be called once (by a single thread) before any other thread tries to apply any push or pop operation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the LF-Stack concurrent stack implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -200,10 +217,19 @@ backoff</td>
       </table>
 </div><div class="memdoc">
 
+<p>This function should be called once before the thread applies any operation to the LF-Stack concurrent stack implementation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the LF-Stack concurrent stack implementation. </td></tr>
+    <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of LF-Stack. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a8e0045bcb39095c6ba4bc5634722f2db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e0045bcb39095c6ba4bc5634722f2db">&#9670;&nbsp;</a></span>LFStackPush()</h2>
+<a id="a6b87f5f1e54673f9be3129636160967b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b87f5f1e54673f9be3129636160967b">&#9670;&nbsp;</a></span>LFStackPush()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,7 +237,7 @@ backoff</td>
         <tr>
           <td class="memname">void LFStackPush </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="lfstack_8h.html#structLFStack">LFStack</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="lfstack_8h.html#structLFStackStruct">LFStackStruct</a> *&#160;</td>
           <td class="paramname"><em>l</em>, </td>
         </tr>
         <tr>
@@ -234,10 +260,20 @@ backoff</td>
       </table>
 </div><div class="memdoc">
 
+<p>This function adds (i.e. pushes) a new element to the top of the stack. This element has a value equal with arg. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the LF-Stack concurrent stack implementation. </td></tr>
+    <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of LF-Stack. </td></tr>
+    <tr><td class="paramname">arg</td><td>The push operation will insert a new element to the stack with value equal to arg. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a3561d3003f9e7fc1d622cfad8c9973cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3561d3003f9e7fc1d622cfad8c9973cf">&#9670;&nbsp;</a></span>LFStackPop()</h2>
+<a id="a08ac2c0a0da53fafefd99290e6f45ee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08ac2c0a0da53fafefd99290e6f45ee1">&#9670;&nbsp;</a></span>LFStackPop()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -245,7 +281,7 @@ backoff</td>
         <tr>
           <td class="memname">RetVal LFStackPop </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="lfstack_8h.html#structLFStack">LFStack</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="lfstack_8h.html#structLFStackStruct">LFStackStruct</a> *&#160;</td>
           <td class="paramname"><em>l</em>, </td>
         </tr>
         <tr>
@@ -261,6 +297,16 @@ backoff</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function removes (i.e. pops) an element from the top of the stack and returns its value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the LF-Stack concurrent stack implementation. </td></tr>
+    <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of LF-Stack. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of the removed element. </dd></dl>
 
 </div>
 </div>
