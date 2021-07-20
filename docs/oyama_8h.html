@@ -76,29 +76,42 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>This file exposes the API of the CC-Synch combining object. An example of use of this API is provided in benchmarks/oyamabench.c file.  
+<a href="#details">More...</a></p>
+
 <p><a href="oyama_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:structHalfOyamaAnnounceNode"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="oyama_8h.html#structHalfOyamaAnnounceNode">HalfOyamaAnnounceNode</a></td></tr>
+<tr class="memdesc:structHalfOyamaAnnounceNode"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="oyama_8h.html#structHalfOyamaAnnounceNode" title="HalfOyamaAnnounceNode should not be directly used by the user. It is internally used for proper align...">HalfOyamaAnnounceNode</a> should not be directly used by the user. It is internally used for proper alignment of the <a class="el" href="oyama_8h.html#structOyamaAnnounceNode" title="OyamaAnnounceNode stores the data of an announced request.">OyamaAnnounceNode</a> struct.  <a href="oyama_8h.html#structHalfOyamaAnnounceNode">More...</a><br /></td></tr>
 <tr class="separator:structHalfOyamaAnnounceNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structOyamaAnnounceNode"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="oyama_8h.html#structOyamaAnnounceNode">OyamaAnnounceNode</a></td></tr>
+<tr class="memdesc:structOyamaAnnounceNode"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="oyama_8h.html#structOyamaAnnounceNode" title="OyamaAnnounceNode stores the data of an announced request.">OyamaAnnounceNode</a> stores the data of an announced request.  <a href="oyama_8h.html#structOyamaAnnounceNode">More...</a><br /></td></tr>
 <tr class="separator:structOyamaAnnounceNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structOyamaStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="oyama_8h.html#structOyamaStruct">OyamaStruct</a></td></tr>
+<tr class="memdesc:structOyamaStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="oyama_8h.html#structOyamaStruct" title="OyamaStruct stores the state of an instance of the Oyama combining object. OyamaStruct should be init...">OyamaStruct</a> stores the state of an instance of the Oyama combining object. <a class="el" href="oyama_8h.html#structOyamaStruct" title="OyamaStruct stores the state of an instance of the Oyama combining object. OyamaStruct should be init...">OyamaStruct</a> should be initialized using the OyamaInit function.  <a href="oyama_8h.html#structOyamaStruct">More...</a><br /></td></tr>
 <tr class="separator:structOyamaStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structOyamaThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="oyama_8h.html#structOyamaThreadState">OyamaThreadState</a></td></tr>
+<tr class="memdesc:structOyamaThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="oyama_8h.html#structOyamaThreadState" title="OyamaThreadState stores each thread&#39;s local state for a single instance of the Oyama combining object...">OyamaThreadState</a> stores each thread's local state for a single instance of the Oyama combining object. For each instance of the Oyama combining object, a discrete instance of <a class="el" href="oyama_8h.html#structOyamaThreadState" title="OyamaThreadState stores each thread&#39;s local state for a single instance of the Oyama combining object...">OyamaThreadState</a> should be used.  <a href="oyama_8h.html#structOyamaThreadState">More...</a><br /></td></tr>
 <tr class="separator:structOyamaThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a329e97fe0800bcbed09cd46079522701"><td class="memItemLeft" align="right" valign="top">RetVal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="oyama_8h.html#a329e97fe0800bcbed09cd46079522701">OyamaApplyOp</a> (volatile <a class="el" href="oyama_8h.html#structOyamaStruct">OyamaStruct</a> *l, <a class="el" href="oyama_8h.html#structOyamaThreadState">OyamaThreadState</a> *th_state, RetVal(*sfunc)(ArgVal, int), ArgVal arg, int pid)</td></tr>
-<tr class="separator:a329e97fe0800bcbed09cd46079522701"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9207fdac513b6e4569d9b6977c5fa32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="oyama_8h.html#ac9207fdac513b6e4569d9b6977c5fa32">OyamaThreadStateInit</a> (<a class="el" href="oyama_8h.html#structOyamaThreadState">OyamaThreadState</a> *th_state)</td></tr>
-<tr class="separator:ac9207fdac513b6e4569d9b6977c5fa32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fcb4c15cbc58b5b9a3e427afdd01aab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="oyama_8h.html#a7fcb4c15cbc58b5b9a3e427afdd01aab">OyamaInit</a> (<a class="el" href="oyama_8h.html#structOyamaStruct">OyamaStruct</a> *l, uint32_t nthreads)</td></tr>
+<tr class="memdesc:a7fcb4c15cbc58b5b9a3e427afdd01aab"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the Oyama combining object.  <a href="oyama_8h.html#a7fcb4c15cbc58b5b9a3e427afdd01aab">More...</a><br /></td></tr>
 <tr class="separator:a7fcb4c15cbc58b5b9a3e427afdd01aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9207fdac513b6e4569d9b6977c5fa32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="oyama_8h.html#ac9207fdac513b6e4569d9b6977c5fa32">OyamaThreadStateInit</a> (<a class="el" href="oyama_8h.html#structOyamaThreadState">OyamaThreadState</a> *th_state)</td></tr>
+<tr class="memdesc:ac9207fdac513b6e4569d9b6977c5fa32"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the Oyama combining object.  <a href="oyama_8h.html#ac9207fdac513b6e4569d9b6977c5fa32">More...</a><br /></td></tr>
+<tr class="separator:ac9207fdac513b6e4569d9b6977c5fa32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a329e97fe0800bcbed09cd46079522701"><td class="memItemLeft" align="right" valign="top">RetVal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="oyama_8h.html#a329e97fe0800bcbed09cd46079522701">OyamaApplyOp</a> (volatile <a class="el" href="oyama_8h.html#structOyamaStruct">OyamaStruct</a> *l, <a class="el" href="oyama_8h.html#structOyamaThreadState">OyamaThreadState</a> *th_state, RetVal(*sfunc)(ArgVal, int), ArgVal arg, int pid)</td></tr>
+<tr class="memdesc:a329e97fe0800bcbed09cd46079522701"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is called whenever a thread wants to apply an operation to the simulated concurrent object.  <a href="oyama_8h.html#a329e97fe0800bcbed09cd46079522701">More...</a><br /></td></tr>
+<tr class="separator:a329e97fe0800bcbed09cd46079522701"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/><h2 class="groupheader">Data Structure Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This file exposes the API of the CC-Synch combining object. An example of use of this API is provided in benchmarks/oyamabench.c file. </p>
+<p>For a more detailed description see the original publication: Yoshihiro Oyama, Kenjiro Taura, and Akinori Yonezawa. "Executing parallel programs with synchronization bottlenecks efficiently". Proceedings of the International Workshop on Parallel and Distributed Computing for Symbolic and Irregular Applications. Vol. 16. 1999. </p>
+</div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="structHalfOyamaAnnounceNode" id="structHalfOyamaAnnounceNode"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#structHalfOyamaAnnounceNode">&#9670;&nbsp;</a></span>HalfOyamaAnnounceNode</h2>
 
@@ -110,7 +123,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="oyama_8h.html#structHalfOyamaAnnounceNode" title="HalfOyamaAnnounceNode should not be directly used by the user. It is internally used for proper align...">HalfOyamaAnnounceNode</a> should not be directly used by the user. It is internally used for proper alignment of the <a class="el" href="oyama_8h.html#structOyamaAnnounceNode" title="OyamaAnnounceNode stores the data of an announced request.">OyamaAnnounceNode</a> struct. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a3dd581326ac2b68d0c09524624b36c89"></a>volatile struct <a class="el" href="oyama_8h.html#structOyamaAnnounceNode">OyamaAnnounceNode</a> *</td>
@@ -151,32 +165,33 @@ completed</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="oyama_8h.html#structOyamaAnnounceNode" title="OyamaAnnounceNode stores the data of an announced request.">OyamaAnnounceNode</a> stores the data of an announced request. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a1a4e53c6f6fe9af1e4d13a4eff87b26c"></a>volatile struct <a class="el" href="oyama_8h.html#structOyamaAnnounceNode">OyamaAnnounceNode</a> *</td>
 <td class="fieldname">
 next</td>
 <td class="fielddoc">
-</td></tr>
+Pointer to the next request that has been announced. </td></tr>
 <tr><td class="fieldtype">
 <a id="a34c1305d04393339247ca0be04040f24"></a>volatile ArgVal</td>
 <td class="fieldname">
 arg_ret</td>
 <td class="fielddoc">
-</td></tr>
+This variable stores the argument of the request and the return value after the request is applied. </td></tr>
 <tr><td class="fieldtype">
 <a id="a6f00a2c82fb21e0c8790073d277a78d1"></a>int32_t</td>
 <td class="fieldname">
 pid</td>
 <td class="fielddoc">
-</td></tr>
+The pid of the thread that announced this request. </td></tr>
 <tr><td class="fieldtype">
 <a id="a42e2b4bd1e14661843ecb2297bb8951a"></a>volatile bool</td>
 <td class="fieldname">
 completed</td>
 <td class="fielddoc">
-</td></tr>
+If true, the request is applied and the thread returns its return value. </td></tr>
 <tr><td class="fieldtype">
 <a id="a185d15a3b0f92cf43ca9000f26cef382"></a>char</td>
 <td class="fieldname">
@@ -198,7 +213,8 @@ align[PAD_CACHE(sizeof(<a class="el" href="oyama_8h.html#structHalfOyamaAnnounce
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div>
+<div class="textblock"><p><a class="el" href="oyama_8h.html#structOyamaStruct" title="OyamaStruct stores the state of an instance of the Oyama combining object. OyamaStruct should be init...">OyamaStruct</a> stores the state of an instance of the Oyama combining object. <a class="el" href="oyama_8h.html#structOyamaStruct" title="OyamaStruct stores the state of an instance of the Oyama combining object. OyamaStruct should be init...">OyamaStruct</a> should be initialized using the OyamaInit function. </p>
+</div>
 </div>
 </div>
 <a name="structOyamaThreadState" id="structOyamaThreadState"></a>
@@ -212,19 +228,84 @@ align[PAD_CACHE(sizeof(<a class="el" href="oyama_8h.html#structHalfOyamaAnnounce
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="oyama_8h.html#structOyamaThreadState" title="OyamaThreadState stores each thread&#39;s local state for a single instance of the Oyama combining object...">OyamaThreadState</a> stores each thread's local state for a single instance of the Oyama combining object. For each instance of the Oyama combining object, a discrete instance of <a class="el" href="oyama_8h.html#structOyamaThreadState" title="OyamaThreadState stores each thread&#39;s local state for a single instance of the Oyama combining object...">OyamaThreadState</a> should be used. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a0a14545a26604a5631272ad2a150baf1"></a><a class="el" href="oyama_8h.html#structOyamaAnnounceNode">OyamaAnnounceNode</a></td>
 <td class="fieldname">
 my_node</td>
 <td class="fielddoc">
-</td></tr>
+A struct for announcing requests. </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a7fcb4c15cbc58b5b9a3e427afdd01aab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fcb4c15cbc58b5b9a3e427afdd01aab">&#9670;&nbsp;</a></span>OyamaInit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OyamaInit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="oyama_8h.html#structOyamaStruct">OyamaStruct</a> *&#160;</td>
+          <td class="paramname"><em>l</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>nthreads</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function initializes an instance of the Oyama combining object. </p>
+<p>This function should be called once (by a single thread) before any other thread tries to apply any request by using the OyamaApplyOp function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the Oyama combining object. </td></tr>
+    <tr><td class="paramname">nthreads</td><td>The number of threads that will use the Oyama combining object. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac9207fdac513b6e4569d9b6977c5fa32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9207fdac513b6e4569d9b6977c5fa32">&#9670;&nbsp;</a></span>OyamaThreadStateInit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OyamaThreadStateInit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="oyama_8h.html#structOyamaThreadState">OyamaThreadState</a> *&#160;</td>
+          <td class="paramname"><em>th_state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function should be called once before the thread applies any operation to the Oyama combining object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of the Oyama combining object. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a329e97fe0800bcbed09cd46079522701"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a329e97fe0800bcbed09cd46079522701">&#9670;&nbsp;</a></span>OyamaApplyOp()</h2>
 
@@ -269,51 +350,19 @@ my_node</td>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="ac9207fdac513b6e4569d9b6977c5fa32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9207fdac513b6e4569d9b6977c5fa32">&#9670;&nbsp;</a></span>OyamaThreadStateInit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void OyamaThreadStateInit </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="oyama_8h.html#structOyamaThreadState">OyamaThreadState</a> *&#160;</td>
-          <td class="paramname"><em>th_state</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7fcb4c15cbc58b5b9a3e427afdd01aab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fcb4c15cbc58b5b9a3e427afdd01aab">&#9670;&nbsp;</a></span>OyamaInit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void OyamaInit </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="oyama_8h.html#structOyamaStruct">OyamaStruct</a> *&#160;</td>
-          <td class="paramname"><em>l</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>nthreads</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>This function is called whenever a thread wants to apply an operation to the simulated concurrent object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the Oyama combining object. </td></tr>
+    <tr><td class="paramname">th_state</td><td>A pointer to thread's local state for a specific instance of the Oyama combining object. </td></tr>
+    <tr><td class="paramname">sfunc</td><td>A serial function that the Oyama combining object instance should execute, while applying requests announced by active threads. </td></tr>
+    <tr><td class="paramname">state</td><td>A pointer to the state of the simulated object. </td></tr>
+    <tr><td class="paramname">arg</td><td>The argument of the request that the thread wants to apply. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>RetVal The return value of the applied request. </dd></dl>
 
 </div>
 </div>
