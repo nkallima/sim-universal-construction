@@ -84,6 +84,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:unionCLHLockNode"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#unionCLHLockNode">CLHLockNode</a></td></tr>
+<tr class="memdesc:unionCLHLockNode"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> used for announcing that a thread wants to acquire the lock.  <a href="clh_8h.html#unionCLHLockNode">More...</a><br /></td></tr>
 <tr class="separator:unionCLHLockNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structCLHLockStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#structCLHLockStruct">CLHLockStruct</a></td></tr>
 <tr class="memdesc:structCLHLockStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> stores the state of an instance of the CLH queue lock implementation. <a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> should be initialized using the CLHLockInit function.  <a href="clh_8h.html#structCLHLockStruct">More...</a><br /></td></tr>
@@ -116,20 +117,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> used for announcing that a thread wants to acquire the lock. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a0332bc01373df7098a3aa65f5195ace3"></a>bool</td>
 <td class="fieldname">
 locked</td>
 <td class="fielddoc">
-</td></tr>
+This is true whenever a thread executes CLHLock and waits until it acquires the lock. </td></tr>
 <tr><td class="fieldtype">
 <a id="a4ecf540857962d66295121453f7bd42d"></a>char</td>
 <td class="fieldname">
 align[CACHE_LINE_SIZE]</td>
 <td class="fielddoc">
-</td></tr>
+Padding space. </td></tr>
 </table>
 
 </div>
@@ -153,7 +155,7 @@ align[CACHE_LINE_SIZE]</td>
 <td class="fieldname">
 MyPred</td>
 <td class="fielddoc">
-An array of nthreads pointers to <a class="el" href="clh_8h.html#unionCLHLockNode">CLHLockNode</a> structs (one struct per thread). Initially, each such pointer points to NULL. </td></tr>
+An array of nthreads pointers to <a class="el" href="clh_8h.html#unionCLHLockNode" title="CLHLockStruct used for announcing that a thread wants to acquire the lock.">CLHLockNode</a> structs (one struct per thread). Initially, each such pointer points to NULL. </td></tr>
 </table>
 
 </div>
@@ -179,7 +181,6 @@ An array of nthreads pointers to <a class="el" href="clh_8h.html#unionCLHLockNod
 <p>This function should be called once (by a single thread) before any other thread tries to use either CLHLock or CLHUnlock.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">l</td><td>A pointer to an instance of the CLH queue lock implementation. </td></tr>
     <tr><td class="paramname">nthreads</td><td>The number of threads that will use the CLH queue lock implementation. </td></tr>
   </table>
   </dd>
@@ -214,6 +215,13 @@ An array of nthreads pointers to <a class="el" href="clh_8h.html#unionCLHLockNod
 </div><div class="memdoc">
 
 <p>This function returns if the lock is available and the calling thread successfully acquires it. In case that the lock is already locked by another thread, the calling thread shall block until the lock becomes available (unlocked) and the calling thread successfully acquires it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the CLH queue lock. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -244,6 +252,13 @@ An array of nthreads pointers to <a class="el" href="clh_8h.html#unionCLHLockNod
 </div><div class="memdoc">
 
 <p>This function makes the lock available (unlocked). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the CLH queue lock. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
