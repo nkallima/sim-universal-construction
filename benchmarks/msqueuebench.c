@@ -13,7 +13,7 @@
 #include <barrier.h>
 #include <bench_args.h>
 
-MSQueue queue CACHE_ALIGN;
+MSQueueStruct queue CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 int MIN_BAK, MAX_BAK;
 Barrier bar CACHE_ALIGN;

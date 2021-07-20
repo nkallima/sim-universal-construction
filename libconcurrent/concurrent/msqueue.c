@@ -1,6 +1,6 @@
 #include <msqueue.h>
 
-void MSQueueInit(MSQueue *l) {
+void MSQueueInit(MSQueueStruct *l) {
     Node *p = getMemory(sizeof(Node));
 
     p->next = NULL;
@@ -14,7 +14,7 @@ void MSQueueThreadStateInit(MSQueueThreadState *th_state, int min_back, int max_
     init_pool(&th_state->pool, sizeof(Node));
 }
 
-void MSQueueEnqueue(MSQueue *l, MSQueueThreadState *th_state, ArgVal arg) {
+void MSQueueEnqueue(MSQueueStruct *l, MSQueueThreadState *th_state, ArgVal arg) {
     Node *p;
     Node *next, *last;
 
@@ -39,7 +39,7 @@ void MSQueueEnqueue(MSQueue *l, MSQueueThreadState *th_state, ArgVal arg) {
     CASPTR(&l->tail, last, p);
 }
 
-RetVal MSQueueDequeue(MSQueue *l, MSQueueThreadState *th_state) {
+RetVal MSQueueDequeue(MSQueueStruct *l, MSQueueThreadState *th_state) {
     Node *first, *last, *next;
     Object value;
 
