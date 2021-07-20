@@ -13,12 +13,15 @@ git config --global push.default simple
 if [ -d "build/docs/html" ] && [ -f "build/docs/html/index.html" ]; then
     echo 'Removing outdated documentation'
     rm -rf docs/*
-    cp -r ./build/docs/html/* ./docs
+    mkdir -p ./docs-tmp
+    cp -r ./build/docs/html/* ./docs-tmp
     make clean
 
     git checkout gh-pages
     echo 'Uploading documentation to the gh-pages branch...'
+    cp -r ./docs-tmp/* ./docs/
     git add ./docs/*
+    rm -rf ./docs-tmp/
 
     git commit -m "Documentation upload." 
 

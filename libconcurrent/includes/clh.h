@@ -12,8 +12,11 @@
 #include <primitives.h>
 #include <stdbool.h>
 
+/// @brief CLHLockStruct used for announcing that a thread wants to acquire the lock.
 typedef union CLHLockNode {
+    /// @brief This is true whenever a thread executes CLHLock and waits until it acquires the lock.
     bool locked;
+    /// @brief Padding space.
     char align[CACHE_LINE_SIZE];
 } CLHLockNode;
 
@@ -34,16 +37,20 @@ typedef struct CLHLockStruct {
 /// This function should be called once (by a single thread) before any other thread tries to
 /// use either CLHLock or CLHUnlock.
 ///
-/// @param l A pointer to an instance of the CLH queue lock implementation.
 /// @param nthreads The number of threads that will use the CLH queue lock implementation.
 CLHLockStruct *CLHLockInit(uint32_t nthreads);
 
 /// @brief This function returns if the lock is available and the calling thread successfully acquires it.
 /// In case that the lock is already locked by another thread, the calling thread shall block until the lock becomes available (unlocked)
 /// and the calling thread successfully acquires it.
+/// 
+/// @param l A pointer to an instance of the CLH queue lock.
+/// @param pid The pid of the calling thread.
 void CLHLock(CLHLockStruct *l, int pid);
 
 /// @brief This function makes the lock available (unlocked).
+/// @param l A pointer to an instance of the CLH queue lock.
+/// @param pid The pid of the calling thread.
 void CLHUnlock(CLHLockStruct *l, int pid);
 
 #endif
