@@ -3,10 +3,6 @@
 echo 'Generating Doxygen code documentation...'
 make clean docs
 
-##### Configure git.
-# Set the push default to simple i.e. push only the current branch.
-git config --global push.default simple
-
 # Only upload if Doxygen successfully created the documentation.
 # Check this by verifying that the html directory and the file html/index.html
 # both exist. This is a good indication that Doxygen did it's work.
@@ -22,6 +18,7 @@ if [ -d "build/docs/html" ] && [ -f "build/docs/html/index.html" ]; then
     cp -r ./docs-tmp/* ./docs/
     git add ./docs/*
     rm -rf ./docs-tmp/
+    rm -rf ./build/
 
     git commit -m "Documentation upload." 
 
