@@ -39,7 +39,6 @@ typedef struct CCQueueThreadState {
 } CCQueueThreadState;
 
 /// @brief This function initializes an instance of the CC-Queue concurrent queue implementation.
-///
 /// This function should be called once (by a single thread) before any other thread tries to
 /// apply any enqueue or dequeue operation.
 ///
