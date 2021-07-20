@@ -12,7 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-/// @brief HalfMCSLockNode used for appropriately padding MCSLockNode.
+/// @brief HalfMCSLockNode should not be directly used by the user.
+/// It is internally used for proper alignment of the MCSLockNode struct.
 typedef struct HalfMCSLockNode {
     volatile bool locked;
     volatile struct MCSLockNode *next;
