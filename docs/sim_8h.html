@@ -77,40 +77,57 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>This file exposes the API of the P-Sim (or Sim) universal construction. An example of use of this API is provided in benchmarks/simbench.c file.  
+<a href="#details">More...</a></p>
+
 <p><a href="sim_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:structHalfSimObjectState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#structHalfSimObjectState">HalfSimObjectState</a></td></tr>
+<tr class="memdesc:structHalfSimObjectState"><td class="mdescLeft">&#160;</td><td class="mdescRight">This should not used directely by user. It is used for padding the <a class="el" href="sim_8h.html#structSimObjectState" title="This struct stores the data for a copy of the simulated object&#39;s state.">SimObjectState</a> struct appropriately.  <a href="sim_8h.html#structHalfSimObjectState">More...</a><br /></td></tr>
 <tr class="separator:structHalfSimObjectState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structSimObjectState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#structSimObjectState">SimObjectState</a></td></tr>
+<tr class="memdesc:structSimObjectState"><td class="mdescLeft">&#160;</td><td class="mdescRight">This struct stores the data for a copy of the simulated object's state.  <a href="sim_8h.html#structSimObjectState">More...</a><br /></td></tr>
 <tr class="separator:structSimObjectState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:unionpointer__t"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#unionpointer__t">pointer_t</a></td></tr>
+<tr class="memdesc:unionpointer__t"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sim_8h.html#unionpointer__t" title="pointer_t should not used directely by user. This struct is used by Sim for pointing to the most resc...">pointer_t</a> should not used directely by user. This struct is used by Sim for pointing to the most rescent and valid copy of the simulated object's state. It also contains a 40-bit sequence number for avoiding the ABA problem.  <a href="sim_8h.html#unionpointer__t">More...</a><br /></td></tr>
 <tr class="separator:unionpointer__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structpointer__t_1_1StructData"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#structpointer__t_1_1StructData">pointer_t::StructData</a></td></tr>
 <tr class="separator:structpointer__t_1_1StructData"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structSimThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#structSimThreadState">SimThreadState</a></td></tr>
+<tr class="memdesc:structSimThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sim_8h.html#structSimThreadState" title="SimThreadState stores each thread&#39;s local state for a single instance of Sim. For each instance of Si...">SimThreadState</a> stores each thread's local state for a single instance of Sim. For each instance of Sim, a discrete instance of <a class="el" href="sim_8h.html#structSimThreadState" title="SimThreadState stores each thread&#39;s local state for a single instance of Sim. For each instance of Si...">SimThreadState</a> should be used.  <a href="sim_8h.html#structSimThreadState">More...</a><br /></td></tr>
 <tr class="separator:structSimThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structSimStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#structSimStruct">SimStruct</a></td></tr>
+<tr class="memdesc:structSimStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sim_8h.html#structSimStruct" title="SimStruct stores the state of an instance of the a Sim combining object. SimStruct should be initiali...">SimStruct</a> stores the state of an instance of the a Sim combining object. <a class="el" href="sim_8h.html#structSimStruct" title="SimStruct stores the state of an instance of the a Sim combining object. SimStruct should be initiali...">SimStruct</a> should be initialized using the SimStructInit function.  <a href="sim_8h.html#structSimStruct">More...</a><br /></td></tr>
 <tr class="separator:structSimStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ad8768a86149afa97d1fd602dd7537016"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#ad8768a86149afa97d1fd602dd7537016">_SIM_LOCAL_POOL_SIZE_</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memdesc:ad8768a86149afa97d1fd602dd7537016"><td class="mdescLeft">&#160;</td><td class="mdescRight">This constant controls the size of pool of <a class="el" href="sim_8h.html#structSimObjectState" title="This struct stores the data for a copy of the simulated object&#39;s state.">SimObjectState</a> structs that each thread maintains. This should be a small integer (i.e, 2 or 4) in order to avoid excess memory consumption.  <a href="sim_8h.html#ad8768a86149afa97d1fd602dd7537016">More...</a><br /></td></tr>
 <tr class="separator:ad8768a86149afa97d1fd602dd7537016"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ae32aa95f68791bef6e8c7e6230d576"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#a2ae32aa95f68791bef6e8c7e6230d576">SimObjectStateSize</a>(nthreads)&#160;&#160;&#160;(sizeof(<a class="el" href="sim_8h.html#structSimObjectState">SimObjectState</a>) + _TVEC_VECTOR_SIZE(nthreads) + (nthreads) * sizeof(<a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>))</td></tr>
+<tr class="memdesc:a2ae32aa95f68791bef6e8c7e6230d576"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro for calculating the size of the <a class="el" href="sim_8h.html#structSimObjectState" title="This struct stores the data for a copy of the simulated object&#39;s state.">SimObjectState</a> struct for a specific amount of threads.  <a href="sim_8h.html#a2ae32aa95f68791bef6e8c7e6230d576">More...</a><br /></td></tr>
 <tr class="separator:a2ae32aa95f68791bef6e8c7e6230d576"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a07af4df88ae66163c01a1999b5ca4d9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#a07af4df88ae66163c01a1999b5ca4d9c">SimInit</a> (<a class="el" href="sim_8h.html#structSimStruct">SimStruct</a> *sim_struct, uint32_t nthreads, int max_backoff)</td></tr>
-<tr class="separator:a07af4df88ae66163c01a1999b5ca4d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a675ac0f8605f3fa09d502b472db1520b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#a675ac0f8605f3fa09d502b472db1520b">SimStructInit</a> (<a class="el" href="sim_8h.html#structSimStruct">SimStruct</a> *sim_struct, uint32_t nthreads, int max_backoff)</td></tr>
+<tr class="memdesc:a675ac0f8605f3fa09d502b472db1520b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the Sim universal construction.  <a href="sim_8h.html#a675ac0f8605f3fa09d502b472db1520b">More...</a><br /></td></tr>
+<tr class="separator:a675ac0f8605f3fa09d502b472db1520b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac13c4734a7b3d32c1036469bad162de9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#ac13c4734a7b3d32c1036469bad162de9">SimThreadStateInit</a> (<a class="el" href="sim_8h.html#structSimThreadState">SimThreadState</a> *th_state, uint32_t nthreads, int pid)</td></tr>
+<tr class="memdesc:ac13c4734a7b3d32c1036469bad162de9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the Sim universal construction.  <a href="sim_8h.html#ac13c4734a7b3d32c1036469bad162de9">More...</a><br /></td></tr>
 <tr class="separator:ac13c4734a7b3d32c1036469bad162de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacf4f63d3452df543bdfee21e59b1a9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a9857328827ae1957544a254406d6c557">Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#aacf4f63d3452df543bdfee21e59b1a9f">SimApplyOp</a> (<a class="el" href="sim_8h.html#structSimStruct">SimStruct</a> *sim_struct, <a class="el" href="sim_8h.html#structSimThreadState">SimThreadState</a> *th_state, <a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>(*sfunc)(void *, <a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a>, int), <a class="el" href="config_8h.html#a9857328827ae1957544a254406d6c557">Object</a> arg, int pid)</td></tr>
+<tr class="memdesc:aacf4f63d3452df543bdfee21e59b1a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is called whenever a thread wants to apply an operation to the simulated concurrent object.  <a href="sim_8h.html#aacf4f63d3452df543bdfee21e59b1a9f">More...</a><br /></td></tr>
 <tr class="separator:aacf4f63d3452df543bdfee21e59b1a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/><h2 class="groupheader">Data Structure Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This file exposes the API of the P-Sim (or Sim) universal construction. An example of use of this API is provided in benchmarks/simbench.c file. </p>
+<dl class="section author"><dt>Author</dt><dd>Nikolaos D. Kallimanis (<a href="#" onclick="location.href='mai'+'lto:'+'nka'+'ll'+'ima'+'@g'+'mai'+'l.'+'com'; return false;">nkall<span style="display: none;">.nosp@m.</span>ima@<span style="display: none;">.nosp@m.</span>gmail<span style="display: none;">.nosp@m.</span>.com</a>)</dd></dl>
+<p>For a more detailed description see the original publication: Panagiota Fatourou, and Nikolaos D. Kallimanis. "A highly-efficient wait-free universal construction". Proceedings of the twenty-third annual ACM symposium on Parallelism in algorithms and architectures (SPAA), 2011. </p><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2021 </dd></dl>
+</div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="structHalfSimObjectState" id="structHalfSimObjectState"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#structHalfSimObjectState">&#9670;&nbsp;</a></span>HalfSimObjectState</h2>
 
@@ -122,7 +139,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p>This should not used directely by user. It is used for padding the <a class="el" href="sim_8h.html#structSimObjectState" title="This struct stores the data for a copy of the simulated object&#39;s state.">SimObjectState</a> struct appropriately. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a1cc7255210805a926b0ef304b9e5444c"></a><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> *</td>
@@ -157,20 +175,21 @@ __flex[1]</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p>This struct stores the data for a copy of the simulated object's state. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a8d348a37167df29cd67e0d8494b267a4"></a><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> *</td>
 <td class="fieldname">
 ret</td>
 <td class="fielddoc">
-</td></tr>
+A pointer to the array of return values. </td></tr>
 <tr><td class="fieldtype">
 <a id="a4bb0adebbb781ae085dd84d98ce1dcaa"></a>ToggleVector</td>
 <td class="fieldname">
 applied</td>
 <td class="fielddoc">
-</td></tr>
+The applied vector of toggles. </td></tr>
 <tr><td class="fieldtype">
 <a id="a84d5a4297b566a75f9b42af2a7a3c5e1"></a>uint64_t</td>
 <td class="fieldname">
@@ -198,7 +217,8 @@ pad[PAD_CACHE(sizeof(<a class="el" href="sim_8h.html#structHalfSimObjectState">H
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="sim_8h.html#unionpointer__t" title="pointer_t should not used directely by user. This struct is used by Sim for pointing to the most resc...">pointer_t</a> should not used directely by user. This struct is used by Sim for pointing to the most rescent and valid copy of the simulated object's state. It also contains a 40-bit sequence number for avoiding the ABA problem. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="ae886a52df0edcb42b89f21cc7ae9bc22"></a>struct <a class="el" href="sim_8h.html#structpointer__t_1_1StructData">StructData</a></td>
@@ -256,7 +276,8 @@ index: 24</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="sim_8h.html#structSimThreadState" title="SimThreadState stores each thread&#39;s local state for a single instance of Sim. For each instance of Si...">SimThreadState</a> stores each thread's local state for a single instance of Sim. For each instance of Sim, a discrete instance of <a class="el" href="sim_8h.html#structSimThreadState" title="SimThreadState stores each thread&#39;s local state for a single instance of Sim. For each instance of Si...">SimThreadState</a> should be used. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a2997a33ea26dc7c848e7b1281d37d0f6"></a>ToggleVector</td>
@@ -293,13 +314,13 @@ l_toggles</td>
 <td class="fieldname">
 local_index</td>
 <td class="fielddoc">
-</td></tr>
+The next. </td></tr>
 <tr><td class="fieldtype">
 <a id="aaf30f4ed947f9a468a5b5c4e01d98ebe"></a>int</td>
 <td class="fieldname">
 backoff</td>
 <td class="fielddoc">
-</td></tr>
+Current backoff value. </td></tr>
 </table>
 
 </div>
@@ -315,38 +336,39 @@ backoff</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="sim_8h.html#structSimStruct" title="SimStruct stores the state of an instance of the a Sim combining object. SimStruct should be initiali...">SimStruct</a> stores the state of an instance of the a Sim combining object. <a class="el" href="sim_8h.html#structSimStruct" title="SimStruct stores the state of an instance of the a Sim combining object. SimStruct should be initiali...">SimStruct</a> should be initialized using the SimStructInit function. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a9c81998572e0b2918188fb5f815b819e"></a>volatile <a class="el" href="sim_8h.html#unionpointer__t">pointer_t</a></td>
 <td class="fieldname">
 sp</td>
 <td class="fielddoc">
-</td></tr>
+Pointer to a <a class="el" href="sim_8h.html#structSimObjectState" title="This struct stores the data for a copy of the simulated object&#39;s state.">SimObjectState</a> structs that contains the most recent and valid copy of simulated object's state. </td></tr>
 <tr><td class="fieldtype">
 <a id="adbf1d8ed09a1daec9dcfe7c1e1573bf7"></a><a class="el" href="sim_8h.html#structSimObjectState">SimObjectState</a> **volatile</td>
 <td class="fieldname">
 pool</td>
 <td class="fielddoc">
-</td></tr>
+An array of pools (one pool per thread) of <a class="el" href="sim_8h.html#structSimObjectState" title="This struct stores the data for a copy of the simulated object&#39;s state.">SimObjectState</a> structs. </td></tr>
 <tr><td class="fieldtype">
 <a id="a5eeca48a6a2d4da44faa8727bd0cd43a"></a><a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a> *volatile</td>
 <td class="fieldname">
 announce</td>
 <td class="fielddoc">
-</td></tr>
+Pointer to an array, where threads announce the requests that want to perform to the object. </td></tr>
 <tr><td class="fieldtype">
 <a id="ab75baf79ba98ca5c38984b7895b95a87"></a>uint32_t</td>
 <td class="fieldname">
 nthreads</td>
 <td class="fielddoc">
-</td></tr>
+The number of threads that use this instance of Sim. </td></tr>
 <tr><td class="fieldtype">
 <a id="a7a9f4cf3f14d0a405be723e0cf66f008"></a>int</td>
 <td class="fieldname">
 MAX_BACK</td>
 <td class="fielddoc">
-</td></tr>
+The maximum backoff value. </td></tr>
 </table>
 
 </div>
@@ -363,6 +385,8 @@ MAX_BACK</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This constant controls the size of pool of <a class="el" href="sim_8h.html#structSimObjectState" title="This struct stores the data for a copy of the simulated object&#39;s state.">SimObjectState</a> structs that each thread maintains. This should be a small integer (i.e, 2 or 4) in order to avoid excess memory consumption. </p>
 
 </div>
 </div>
@@ -382,17 +406,19 @@ MAX_BACK</td>
       </table>
 </div><div class="memdoc">
 
+<p>A macro for calculating the size of the <a class="el" href="sim_8h.html#structSimObjectState" title="This struct stores the data for a copy of the simulated object&#39;s state.">SimObjectState</a> struct for a specific amount of threads. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a07af4df88ae66163c01a1999b5ca4d9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07af4df88ae66163c01a1999b5ca4d9c">&#9670;&nbsp;</a></span>SimInit()</h2>
+<a id="a675ac0f8605f3fa09d502b472db1520b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a675ac0f8605f3fa09d502b472db1520b">&#9670;&nbsp;</a></span>SimStructInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SimInit </td>
+          <td class="memname">void SimStructInit </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="sim_8h.html#structSimStruct">SimStruct</a> *&#160;</td>
           <td class="paramname"><em>sim_struct</em>, </td>
@@ -416,6 +442,17 @@ MAX_BACK</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function initializes an instance of the Sim universal construction. </p>
+<p>This function should be called once (by a single thread) before any other thread tries to apply any request by using the SimStructInit function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the Sim universal construction. </td></tr>
+    <tr><td class="paramname">nthreads</td><td>The number of threads that will use the Sim universal construction. </td></tr>
+    <tr><td class="paramname">max_backoff</td><td>The maximum value for backoff (usually this is much lower than 100). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -450,6 +487,17 @@ MAX_BACK</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function should be called once before the thread applies any operation to the Sim universal construction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the Sim universal construction. </td></tr>
+    <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of Sim. </td></tr>
+    <tr><td class="paramname">nthreads</td><td>The number of threads that will use the Sim universal construction. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -496,6 +544,19 @@ MAX_BACK</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function is called whenever a thread wants to apply an operation to the simulated concurrent object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the Sim universal construction. </td></tr>
+    <tr><td class="paramname">th_state</td><td>A pointer to thread's local state for a specific instance of Sim. </td></tr>
+    <tr><td class="paramname">sfunc</td><td>A serial function that the Sim instance should execute, while applying requests announced by active threads. </td></tr>
+    <tr><td class="paramname">arg</td><td>The argument of the request that the thread wants to apply. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>RetVal The return value of the applied request. </dd></dl>
 
 </div>
 </div>
