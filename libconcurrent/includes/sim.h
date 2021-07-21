@@ -59,7 +59,7 @@ typedef struct SimThreadState {
 typedef struct SimStruct {
     volatile pointer_t sp;
 
-    // Pointers toi shared data
+    // Pointers to shared data
     ToggleVector a_toggles CACHE_ALIGN;
     SimObjectState **volatile pool;
     ArgVal *volatile announce;

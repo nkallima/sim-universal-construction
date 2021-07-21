@@ -867,6 +867,7 @@ WARN_LOGFILE           =
 INPUT                  = README.md \
                          CHANGELOG.md \
                          CONTRIBUTING.md \
+                         libconcurrent/config.h \
                          libconcurrent/includes/
 
 # This tag can be used to specify the character encoding of the source files
