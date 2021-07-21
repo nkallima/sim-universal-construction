@@ -64,7 +64,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_bba3cddd56565a95b77b098fd409d0ab.html">libconcurrent</a></li><li class="navelem"><a class="el" href="dir_3b0504cce330a6e867091f76f8160def.html">includes</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_bba3cddd56565a95b77b098fd409d0ab.html">libconcurrent</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -72,8 +72,39 @@ $(function() {
 <div class="title">config.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="config_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;../config.h&gt;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<a href="config_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef _CONFIG_H_</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#define _CONFIG_H_</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifndef MAX_WORK</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="config_8h.html#a35eef36338c6bb6168202bb5125b07a0">   17</a></span>&#160;<span class="preprocessor">#    define MAX_WORK               64</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="config_8h.html#a78ca0560f6177e029df77ef91a609d50">   23</a></span>&#160;<span class="preprocessor">#define RUNS                       1000000</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//#define DEBUG</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//#define DISABLE_BACKOFF</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="config_8h.html#a9857328827ae1957544a254406d6c557">   35</a></span>&#160;<span class="preprocessor">#define Object                     int64_t</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">   43</a></span>&#160;<span class="preprocessor">#define RetVal                     int64_t</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">   51</a></span>&#160;<span class="preprocessor">#define ArgVal                     int64_t</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="config_8h.html#ace0e9f8ffecdc202dcac5b83bf3f1484">   53</a></span>&#160;<span class="preprocessor">#define NUMA_SUPPORT</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="config_8h.html#afb0618905bd57c9a600e37b1d17c4b3a">   60</a></span>&#160;<span class="preprocessor">#define SYNCH_COMPACT_ALLOCATION</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">//#define POOL_NODE_RECYCLING_DISABLE</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">//#define _TRACK_CPU_COUNTERS</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">//#define _EMULATE_FAA_</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">//#define _EMULATE_SWAP_</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -98,7 +98,7 @@ Data Structures</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ad8768a86149afa97d1fd602dd7537016"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#ad8768a86149afa97d1fd602dd7537016">_SIM_LOCAL_POOL_SIZE_</a>&#160;&#160;&#160;4</td></tr>
 <tr class="separator:ad8768a86149afa97d1fd602dd7537016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ae32aa95f68791bef6e8c7e6230d576"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#a2ae32aa95f68791bef6e8c7e6230d576">SimObjectStateSize</a>(nthreads)&#160;&#160;&#160;(sizeof(<a class="el" href="sim_8h.html#structSimObjectState">SimObjectState</a>) + _TVEC_VECTOR_SIZE(nthreads) + (nthreads) * sizeof(RetVal))</td></tr>
+<tr class="memitem:a2ae32aa95f68791bef6e8c7e6230d576"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#a2ae32aa95f68791bef6e8c7e6230d576">SimObjectStateSize</a>(nthreads)&#160;&#160;&#160;(sizeof(<a class="el" href="sim_8h.html#structSimObjectState">SimObjectState</a>) + _TVEC_VECTOR_SIZE(nthreads) + (nthreads) * sizeof(<a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>))</td></tr>
 <tr class="separator:a2ae32aa95f68791bef6e8c7e6230d576"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -107,7 +107,7 @@ Functions</h2></td></tr>
 <tr class="separator:a07af4df88ae66163c01a1999b5ca4d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac13c4734a7b3d32c1036469bad162de9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#ac13c4734a7b3d32c1036469bad162de9">SimThreadStateInit</a> (<a class="el" href="sim_8h.html#structSimThreadState">SimThreadState</a> *th_state, uint32_t nthreads, int pid)</td></tr>
 <tr class="separator:ac13c4734a7b3d32c1036469bad162de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacf4f63d3452df543bdfee21e59b1a9f"><td class="memItemLeft" align="right" valign="top">Object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#aacf4f63d3452df543bdfee21e59b1a9f">SimApplyOp</a> (<a class="el" href="sim_8h.html#structSimStruct">SimStruct</a> *sim_struct, <a class="el" href="sim_8h.html#structSimThreadState">SimThreadState</a> *th_state, RetVal(*sfunc)(void *, ArgVal, int), Object arg, int pid)</td></tr>
+<tr class="memitem:aacf4f63d3452df543bdfee21e59b1a9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a9857328827ae1957544a254406d6c557">Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sim_8h.html#aacf4f63d3452df543bdfee21e59b1a9f">SimApplyOp</a> (<a class="el" href="sim_8h.html#structSimStruct">SimStruct</a> *sim_struct, <a class="el" href="sim_8h.html#structSimThreadState">SimThreadState</a> *th_state, <a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>(*sfunc)(void *, <a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a>, int), <a class="el" href="config_8h.html#a9857328827ae1957544a254406d6c557">Object</a> arg, int pid)</td></tr>
 <tr class="separator:aacf4f63d3452df543bdfee21e59b1a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -125,7 +125,7 @@ Functions</h2></td></tr>
 <div class="textblock"></div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a1cc7255210805a926b0ef304b9e5444c"></a>RetVal *</td>
+<a id="a1cc7255210805a926b0ef304b9e5444c"></a><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> *</td>
 <td class="fieldname">
 ret</td>
 <td class="fielddoc">
@@ -160,7 +160,7 @@ __flex[1]</td>
 <div class="textblock"></div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a8d348a37167df29cd67e0d8494b267a4"></a>RetVal *</td>
+<a id="a8d348a37167df29cd67e0d8494b267a4"></a><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> *</td>
 <td class="fieldname">
 ret</td>
 <td class="fielddoc">
@@ -330,7 +330,7 @@ pool</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="a5eeca48a6a2d4da44faa8727bd0cd43a"></a>ArgVal *volatile</td>
+<a id="a5eeca48a6a2d4da44faa8727bd0cd43a"></a><a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a> *volatile</td>
 <td class="fieldname">
 announce</td>
 <td class="fielddoc">
@@ -377,7 +377,7 @@ MAX_BACK</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">nthreads</td><td>)</td>
-          <td>&#160;&#160;&#160;(sizeof(<a class="el" href="sim_8h.html#structSimObjectState">SimObjectState</a>) + _TVEC_VECTOR_SIZE(nthreads) + (nthreads) * sizeof(RetVal))</td>
+          <td>&#160;&#160;&#160;(sizeof(<a class="el" href="sim_8h.html#structSimObjectState">SimObjectState</a>) + _TVEC_VECTOR_SIZE(nthreads) + (nthreads) * sizeof(<a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>))</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -460,7 +460,7 @@ MAX_BACK</td>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Object SimApplyOp </td>
+          <td class="memname"><a class="el" href="config_8h.html#a9857328827ae1957544a254406d6c557">Object</a> SimApplyOp </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="sim_8h.html#structSimStruct">SimStruct</a> *&#160;</td>
           <td class="paramname"><em>sim_struct</em>, </td>
@@ -474,13 +474,13 @@ MAX_BACK</td>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RetVal(*)(void *, ArgVal, int)&#160;</td>
+          <td class="paramtype"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>(*)(void *, <a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a>, int)&#160;</td>
           <td class="paramname"><em>sfunc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Object&#160;</td>
+          <td class="paramtype"><a class="el" href="config_8h.html#a9857328827ae1957544a254406d6c557">Object</a>&#160;</td>
           <td class="paramname"><em>arg</em>, </td>
         </tr>
         <tr>

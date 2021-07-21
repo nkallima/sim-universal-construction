@@ -130,19 +130,19 @@ Requirements</h1>
 <li>Building requires the following development packages:<ul>
 <li><code>libatomic</code></li>
 <li><code>libnuma</code></li>
-<li><code>libpapi</code> in case that the <code>_TRACK_CPU_COUNTERS</code> flag is enabled in <code>libconcurrent/config.h</code>.</li>
+<li><code>libpapi</code> in case that the <code>_TRACK_CPU_COUNTERS</code> flag is enabled in <code><a class="el" href="config_8h.html" title="This file provides important parameters and consstant for the benchmarks and the library.">libconcurrent/config.h</a></code>.</li>
 </ul>
 </li>
 <li>For building the documentation (i.e. man-pages), <code>doxygen</code> is required.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md3"></a>
 Configuring, compiling and installing the framework</h1>
-<p>In the <code>libconcurrent/config.h</code> file, the user can configure some basic options for the framework, such as:</p><ul>
+<p>In the <code><a class="el" href="config_8h.html" title="This file provides important parameters and consstant for the benchmarks and the library.">libconcurrent/config.h</a></code> file, the user can configure some basic options for the framework, such as:</p><ul>
 <li>Enable/disable debug mode.</li>
 <li>Support for Numa machines.</li>
 <li>Enable performance statistics, etc.</li>
 </ul>
-<p>The provided default configuration should work well in many cases. However, the default configuration may not provide the best performance. For getting the best performance, modifying the <code>libconcurrent/config.h</code> may be needed (see more on Performance/Optimizations Section).</p>
+<p>The provided default configuration should work well in many cases. However, the default configuration may not provide the best performance. For getting the best performance, modifying the <code><a class="el" href="config_8h.html" title="This file provides important parameters and consstant for the benchmarks and the library.">libconcurrent/config.h</a></code> may be needed (see more on Performance/Optimizations Section).</p>
 <p>In case that you want to compile the library that provides all the implemented concurrent algorithms just execute <code>make</code> in the root directory of the source files. This step is necessary in case that you want to run benchmarks. However, some extra make options are provided in case the user wants to compile the framework with other than system's default compiler, clean the binary files, etc. The following table provides the list with all the available make options.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -206,11 +206,11 @@ Running Benchmarks</h1>
 <p>The framework provides another simple fast smoke test: <code>./run_all.sh</code>. This will quickly run all available benchmarks with default options and store the results in the <code>results.txt</code> file.</p>
 <h1><a class="anchor" id="autotoc_md5"></a>
 Performance/Optimizations</h1>
-<p>Getting the best performance from the provided benchmarks is not always an easy task. For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the <code>libconcurrent/config.h</code> file. A useful guide to consider in order to get better performance in a modern multiprocessor follows.</p>
+<p>Getting the best performance from the provided benchmarks is not always an easy task. For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the <code><a class="el" href="config_8h.html" title="This file provides important parameters and consstant for the benchmarks and the library.">libconcurrent/config.h</a></code> file. A useful guide to consider in order to get better performance in a modern multiprocessor follows.</p>
 <ul>
-<li>In case that the target machine is a NUMA machine make sure <code>NUMA_SUPPORT</code> is enabled in <code>libconcurrent/config.h</code>. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.</li>
+<li>In case that the target machine is a NUMA machine make sure <code>NUMA_SUPPORT</code> is enabled in <code><a class="el" href="config_8h.html" title="This file provides important parameters and consstant for the benchmarks and the library.">libconcurrent/config.h</a></code>. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.</li>
 <li>Whenever the <code>NUMA_SUPPORT</code> option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the <code>--numa_nodes</code> option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting <code>--numa_nodes</code> equal to <code>2</code>. Notice that the runtime successfully reports that the available NUMA nodes are <code>8</code>, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of <code>--numa_nodes</code> may be needed.</li>
-<li>Check the performance impact of the <code>SYNCH_COMPACT_ALLOCATION</code> option in <code>libconcurrent/config.h</code>. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.</li>
+<li>Check the performance impact of the <code>SYNCH_COMPACT_ALLOCATION</code> option in <code><a class="el" href="config_8h.html" title="This file provides important parameters and consstant for the benchmarks and the library.">libconcurrent/config.h</a></code>. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.</li>
 <li>Check the cache line size (<code>CACHE_LINE_SIZE</code> and <code>S_CACHE_LINE</code> options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines behave better with <code>CACHE_LINE_SIZE</code> equal or greater than <code>128</code>, while most modern AMD machine achieve better performance with a value equal to <code>64</code>. Notice that <code>CACHE_LINE_SIZE</code> and <code>S_CACHE_LINE</code> depend on the <code>SYNCH_COMPACT_ALLOCATION</code> option (see includes/system.h).</li>
 <li>Use backoff if it is available. Many of the provided algorithms could use backoff in order to provide better performance (e.g., sim, LF-Stack, MS-Queue, SimQueue, SimStack, etc.). In this case, it is of crucial importance to use <code>-b</code> (and in some cases <code>-bl</code> arguments) in order to get the best performance.</li>
 <li>Ensure that you are using a recent gcc-compatible compiler, e.g. a <code>gcc</code> compiler of version <code>7.0</code> or greater is highly recommended.</li>
@@ -235,7 +235,7 @@ Memory reclamation (stacks and queues)</h1>
 </li>
 </ul>
 <p>Note that de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Since v2.4.0, SimStack supports memory reclamation using the functionality of <code><a class="el" href="pool_8h.html">pool.h</a></code> and a technique that is similar to that presented by Blelloch and Weiin in [13]. Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.</p>
-<p>By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the <code>POOL_NODE_RECYCLING_DISABLE</code> option should be enabled in <code><a class="el" href="config_8h.html">config.h</a></code>.</p>
+<p>By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the <code>POOL_NODE_RECYCLING_DISABLE</code> option should be enabled in <code>config.h</code>.</p>
 <p>The following table shows the memory reclamation characteristics of the provided stack and queues implementations.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -289,7 +289,7 @@ API - Code example for a simple benchmark</h1>
 <div class="line">    <a class="code" href="barrier_8h.html#aba256424ee5ecd2b57adbb9352ae3046">BarrierWait</a>(&amp;bar);</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keywordtype">id</span> == 0) d1 = <a class="code" href="primitives_8h.html#a14afa6a425a2bd3a4ab6c9b365a43087">getTimeMillis</a>();</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">for</span> (i = 0; i &lt; RUNS; i++)</div>
+<div class="line">    <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="config_8h.html#a78ca0560f6177e029df77ef91a609d50">RUNS</a>; i++)</div>
 <div class="line">        <a class="code" href="primitives_8h.html#a06394cec4bbb552d935e03f66a8f01f1">FAA64</a>(&amp;<span class="keywordtype">object</span>, 1);</div>
 <div class="line"> </div>
 <div class="line">    <a class="code" href="barrier_8h.html#aba256424ee5ecd2b57adbb9352ae3046">BarrierWait</a>(&amp;bar);</div>
@@ -306,7 +306,7 @@ API - Code example for a simple benchmark</h1>
 <div class="line">    <a class="code" href="threadtools_8h.html#a4ff5a278bc9559104ddf2eb205f26a88">JoinThreadsN</a>(N_THREADS - 1);</div>
 <div class="line"> </div>
 <div class="line">    printf(<span class="stringliteral">&quot;time: %ld (ms)\tthroughput: %.2f (millions ops/sec)\n&quot;</span>, </div>
-<div class="line">           (d2 - d1), RUNS * N_THREADS / (1000.0 * (d2 - d1)));</div>
+<div class="line">           (d2 - d1), <a class="code" href="config_8h.html#a78ca0560f6177e029df77ef91a609d50">RUNS</a> * N_THREADS / (1000.0 * (d2 - d1)));</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
@@ -314,6 +314,7 @@ API - Code example for a simple benchmark</h1>
 <div class="ttc" id="abarrier_8h_html_aac8ab3af6a412e654adf92d5007b499f"><div class="ttname"><a href="barrier_8h.html#aac8ab3af6a412e654adf92d5007b499f">BarrierSet</a></div><div class="ttdeci">void BarrierSet(Barrier *bar, uint32_t n)</div><div class="ttdoc">This function initializes an instance of an re-entrant barrier object.</div></div>
 <div class="ttc" id="abarrier_8h_html_aba256424ee5ecd2b57adbb9352ae3046"><div class="ttname"><a href="barrier_8h.html#aba256424ee5ecd2b57adbb9352ae3046">BarrierWait</a></div><div class="ttdeci">void BarrierWait(Barrier *bar)</div><div class="ttdoc">Whenever a thread executes this function, it waits without returning until all the other n-1 threads ...</div></div>
 <div class="ttc" id="abarrier_8h_html_structBarrier"><div class="ttname"><a href="barrier_8h.html#structBarrier">Barrier</a></div><div class="ttdoc">Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...</div><div class="ttdef"><b>Definition:</b> barrier.h:13</div></div>
+<div class="ttc" id="aconfig_8h_html_a78ca0560f6177e029df77ef91a609d50"><div class="ttname"><a href="config_8h.html#a78ca0560f6177e029df77ef91a609d50">RUNS</a></div><div class="ttdeci">#define RUNS</div><div class="ttdoc">Define the default total number of the executed operations. Notice that benchmarks for stacks and que...</div><div class="ttdef"><b>Definition:</b> config.h:23</div></div>
 <div class="ttc" id="aprimitives_8h_html"><div class="ttname"><a href="primitives_8h.html">primitives.h</a></div></div>
 <div class="ttc" id="aprimitives_8h_html_a06394cec4bbb552d935e03f66a8f01f1"><div class="ttname"><a href="primitives_8h.html#a06394cec4bbb552d935e03f66a8f01f1">FAA64</a></div><div class="ttdeci">#define FAA64(A, B)</div><div class="ttdef"><b>Definition:</b> primitives.h:104</div></div>
 <div class="ttc" id="aprimitives_8h_html_a14afa6a425a2bd3a4ab6c9b365a43087"><div class="ttname"><a href="primitives_8h.html#a14afa6a425a2bd3a4ab6c9b365a43087">getTimeMillis</a></div><div class="ttdeci">int64_t getTimeMillis(void)</div></div>
