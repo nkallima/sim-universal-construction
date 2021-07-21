@@ -63,10 +63,10 @@ void SimQueueThreadStateInit(SimQueueStruct *queue, SimQueueThreadState *th_stat
     TVEC_NEGATIVE(&th_state->deq_toggle, &th_state->mask);
     th_state->deq_local_index = 0;
     th_state->enq_local_index = 0;
-    th_state->backoff = 1;
+    th_state->max_backoff = 1;
 }
 
-void SimQueueInit(SimQueueStruct *queue, uint32_t nthreads, int max_backoff) {
+void SimQueueStructInit(SimQueueStruct *queue, uint32_t nthreads, int max_backoff) {
     pointer_t tmp_sp;
     int i;
 
@@ -135,7 +135,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
         int backoff_limit;
 
         if (fastRandomRange(1, queue->nthreads) > 1) {
-            backoff_limit = fastRandomRange(th_state->backoff >> 1, th_state->backoff);
+            backoff_limit = fastRandomRange(th_state->max_backoff >> 1, th_state->max_backoff);
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
@@ -193,11 +193,11 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
         if (old_sp.raw_data == queue->enq_sp.raw_data && CAS64(&queue->enq_sp, old_sp.raw_data, new_sp.raw_data)) {
             EnqLinkQueue(queue, lsp_data);
             th_state->enq_local_index = (th_state->enq_local_index + 1) % LOCAL_POOL_SIZE;
-            th_state->backoff = (th_state->backoff >> 1) | 1;
+            th_state->max_backoff = (th_state->max_backoff >> 1) | 1;
             return;
         } else {
-            if (th_state->backoff < queue->MAX_BACK)
-                th_state->backoff <<= 1;
+            if (th_state->max_backoff < queue->MAX_BACK)
+                th_state->max_backoff <<= 1;
             rollback(&th_state->pool_node, enq_counter);
         }
     }
@@ -224,7 +224,7 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
         int backoff_limit;
 
         if (fastRandomRange(1, queue->nthreads) > 1) {
-            backoff_limit = fastRandomRange(th_state->backoff >> 1, th_state->backoff);
+            backoff_limit = fastRandomRange(th_state->max_backoff >> 1, th_state->max_backoff);
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
@@ -271,10 +271,10 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
         new_sp.struct_data.index = pid * LOCAL_POOL_SIZE + th_state->deq_local_index;
         if (old_sp.raw_data == queue->deq_sp.raw_data && CAS64(&queue->deq_sp, old_sp.raw_data, new_sp.raw_data)) {
             th_state->deq_local_index = (th_state->deq_local_index + 1) % LOCAL_POOL_SIZE;
-            th_state->backoff = (th_state->backoff >> 1) | 1;
+            th_state->max_backoff = (th_state->max_backoff >> 1) | 1;
             return lsp_data->ret[pid];
-        } else if (th_state->backoff < queue->MAX_BACK)
-            th_state->backoff <<= 1;
+        } else if (th_state->max_backoff < queue->MAX_BACK)
+            th_state->max_backoff <<= 1;
     }
 
     return queue->deq_pool[queue->deq_sp.struct_data.index]->ret[pid];
