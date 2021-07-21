@@ -76,50 +76,63 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>This file exposes the API of a simple lock-free universal construction (for small objects) that implements the atomic operation provided by the <a class="el" href="fam_8h.html">fam.h</a> file. This lock-free implementation supports backoff for reducing the contention. An example of use of this API is provided in benchmarks/lfuobjectbench.c file.  
+<a href="#details">More...</a></p>
+
 <p><a href="lfuobject_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:unionLFUObject"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfuobject_8h.html#unionLFUObject">LFUObject</a></td></tr>
-<tr class="separator:unionLFUObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:unionLFUObjectStruct"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfuobject_8h.html#unionLFUObjectStruct">LFUObjectStruct</a></td></tr>
+<tr class="memdesc:unionLFUObjectStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="lfuobject_8h.html#unionLFUObjectStruct" title="LFUObjectStruct stores the state of an instance of the a lock-free universal construction....">LFUObjectStruct</a> stores the state of an instance of the a lock-free universal construction. <a class="el" href="lfuobject_8h.html#unionLFUObjectStruct" title="LFUObjectStruct stores the state of an instance of the a lock-free universal construction....">LFUObjectStruct</a> should be initialized using the LFUObjectStructInit function.  <a href="lfuobject_8h.html#unionLFUObjectStruct">More...</a><br /></td></tr>
+<tr class="separator:unionLFUObjectStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structLFUObjectThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfuobject_8h.html#structLFUObjectThreadState">LFUObjectThreadState</a></td></tr>
+<tr class="memdesc:structLFUObjectThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="lfuobject_8h.html#structLFUObjectThreadState" title="LFUObjectThreadState stores each thread&#39;s local state for a single instance of the universal construc...">LFUObjectThreadState</a> stores each thread's local state for a single instance of the universal construction. For each instance of the lock-free universal construction, a discrete instance of <a class="el" href="lfuobject_8h.html#structLFUObjectThreadState" title="LFUObjectThreadState stores each thread&#39;s local state for a single instance of the universal construc...">LFUObjectThreadState</a> should be used.  <a href="lfuobject_8h.html#structLFUObjectThreadState">More...</a><br /></td></tr>
 <tr class="separator:structLFUObjectThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad8628226efc4ad0ebf308c6c3321e7fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfuobject_8h.html#ad8628226efc4ad0ebf308c6c3321e7fa">LFUObjectInit</a> (<a class="el" href="lfuobject_8h.html#unionLFUObject">LFUObject</a> *l, ArgVal value)</td></tr>
-<tr class="separator:ad8628226efc4ad0ebf308c6c3321e7fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6259ddb75c92951eff4e4b8a0d4feb94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfuobject_8h.html#a6259ddb75c92951eff4e4b8a0d4feb94">LFUObjectInit</a> (<a class="el" href="lfuobject_8h.html#unionLFUObjectStruct">LFUObjectStruct</a> *l, ArgVal value)</td></tr>
+<tr class="memdesc:a6259ddb75c92951eff4e4b8a0d4feb94"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the lock-free universal construction.  <a href="lfuobject_8h.html#a6259ddb75c92951eff4e4b8a0d4feb94">More...</a><br /></td></tr>
+<tr class="separator:a6259ddb75c92951eff4e4b8a0d4feb94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d6085eb040665e8b86aadeb1d95d30c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfuobject_8h.html#a6d6085eb040665e8b86aadeb1d95d30c">LFUObjectThreadStateInit</a> (<a class="el" href="lfuobject_8h.html#structLFUObjectThreadState">LFUObjectThreadState</a> *th_state, int min_back, int max_back)</td></tr>
+<tr class="memdesc:a6d6085eb040665e8b86aadeb1d95d30c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the lock-free universal construction.  <a href="lfuobject_8h.html#a6d6085eb040665e8b86aadeb1d95d30c">More...</a><br /></td></tr>
 <tr class="separator:a6d6085eb040665e8b86aadeb1d95d30c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab30e15479408572d91c24d7824095d21"><td class="memItemLeft" align="right" valign="top">RetVal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfuobject_8h.html#ab30e15479408572d91c24d7824095d21">LFUObjectApplyOp</a> (<a class="el" href="lfuobject_8h.html#unionLFUObject">LFUObject</a> *l, <a class="el" href="lfuobject_8h.html#structLFUObjectThreadState">LFUObjectThreadState</a> *th_state, RetVal(*sfunc)(void *, ArgVal, int), ArgVal arg, int pid)</td></tr>
-<tr class="separator:ab30e15479408572d91c24d7824095d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc55da36be1e083038a43534a13c662"><td class="memItemLeft" align="right" valign="top">RetVal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfuobject_8h.html#afbc55da36be1e083038a43534a13c662">LFUObjectApplyOp</a> (<a class="el" href="lfuobject_8h.html#unionLFUObjectStruct">LFUObjectStruct</a> *l, <a class="el" href="lfuobject_8h.html#structLFUObjectThreadState">LFUObjectThreadState</a> *th_state, RetVal(*sfunc)(void *, ArgVal, int), ArgVal arg, int pid)</td></tr>
+<tr class="memdesc:afbc55da36be1e083038a43534a13c662"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is called whenever a thread wants to apply an operation to the simulated concurrent object.  <a href="lfuobject_8h.html#afbc55da36be1e083038a43534a13c662">More...</a><br /></td></tr>
+<tr class="separator:afbc55da36be1e083038a43534a13c662"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="unionLFUObject" id="unionLFUObject"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#unionLFUObject">&#9670;&nbsp;</a></span>LFUObject</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This file exposes the API of a simple lock-free universal construction (for small objects) that implements the atomic operation provided by the <a class="el" href="fam_8h.html">fam.h</a> file. This lock-free implementation supports backoff for reducing the contention. An example of use of this API is provided in benchmarks/lfuobjectbench.c file. </p>
+<dl class="section author"><dt>Author</dt><dd>Nikolaos D. Kallimanis (<a href="#" onclick="location.href='mai'+'lto:'+'nka'+'ll'+'ima'+'@g'+'mai'+'l.'+'com'; return false;">nkall<span style="display: none;">.nosp@m.</span>ima@<span style="display: none;">.nosp@m.</span>gmail<span style="display: none;">.nosp@m.</span>.com</a>)</dd></dl>
+<p>For a more detailed description see the original publication: Panagiota Fatourou, and Nikolaos D. Kallimanis."Revisiting the combining synchronization technique". ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012. </p><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2021 </dd></dl>
+</div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
+<a name="unionLFUObjectStruct" id="unionLFUObjectStruct"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#unionLFUObjectStruct">&#9670;&nbsp;</a></span>LFUObjectStruct</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">union LFUObject</td>
+          <td class="memname">union LFUObjectStruct</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="lfuobject_8h.html#unionLFUObjectStruct" title="LFUObjectStruct stores the state of an instance of the a lock-free universal construction....">LFUObjectStruct</a> stores the state of an instance of the a lock-free universal construction. <a class="el" href="lfuobject_8h.html#unionLFUObjectStruct" title="LFUObjectStruct stores the state of an instance of the a lock-free universal construction....">LFUObjectStruct</a> should be initialized using the LFUObjectStructInit function. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a2b31b0002f3117d345820d97309e68a4"></a>volatile <a class="el" href="fam_8h.html#unionObjectState">ObjectState</a></td>
+<a id="a183af627d998f3b547aaf7e47ca3508c"></a>volatile <a class="el" href="fam_8h.html#unionObjectState">ObjectState</a></td>
 <td class="fieldname">
 state</td>
 <td class="fielddoc">
-</td></tr>
+This field stores the state of the concurrent object. This variable is of type <a class="el" href="fam_8h.html#unionObjectState">ObjectState</a>, which its size is usually 64-bit (defined in <a class="el" href="config_8h.html">config.h</a>). Note that the machine should be provide atomic Read/Write and Compare&amp;Swap (or LL/SC) acceses to this variable type. </td></tr>
 <tr><td class="fieldtype">
-<a id="aef1c9d146f5c01d392d42ef0e4165916"></a>char</td>
+<a id="a6a217e949e2ac0b09965ae77563cc425"></a>char</td>
 <td class="fieldname">
 pad[CACHE_LINE_SIZE]</td>
 <td class="fielddoc">
-</td></tr>
+padding space. </td></tr>
 </table>
 
 </div>
@@ -135,21 +148,22 @@ pad[CACHE_LINE_SIZE]</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p><a class="el" href="lfuobject_8h.html#structLFUObjectThreadState" title="LFUObjectThreadState stores each thread&#39;s local state for a single instance of the universal construc...">LFUObjectThreadState</a> stores each thread's local state for a single instance of the universal construction. For each instance of the lock-free universal construction, a discrete instance of <a class="el" href="lfuobject_8h.html#structLFUObjectThreadState" title="LFUObjectThreadState stores each thread&#39;s local state for a single instance of the universal construc...">LFUObjectThreadState</a> should be used. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="ad9f821c4346c3a4f798e204a8bb9e7a9"></a><a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a></td>
 <td class="fieldname">
 backoff</td>
 <td class="fielddoc">
-</td></tr>
+A backoff object per thread is used for reducing the contention while accessing the object. </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ad8628226efc4ad0ebf308c6c3321e7fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8628226efc4ad0ebf308c6c3321e7fa">&#9670;&nbsp;</a></span>LFUObjectInit()</h2>
+<a id="a6259ddb75c92951eff4e4b8a0d4feb94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6259ddb75c92951eff4e4b8a0d4feb94">&#9670;&nbsp;</a></span>LFUObjectInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,7 +171,7 @@ backoff</td>
         <tr>
           <td class="memname">void LFUObjectInit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="lfuobject_8h.html#unionLFUObject">LFUObject</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="lfuobject_8h.html#unionLFUObjectStruct">LFUObjectStruct</a> *&#160;</td>
           <td class="paramname"><em>l</em>, </td>
         </tr>
         <tr>
@@ -173,6 +187,16 @@ backoff</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function initializes an instance of the lock-free universal construction. </p>
+<p>This function should be called once (by a single thread) before any other thread tries to apply any request by using the LFUObjectApplyOp function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the lock-free universal construction. </td></tr>
+    <tr><td class="paramname">nthreads</td><td>The number of threads that will use the lock-free universal construction. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -208,10 +232,22 @@ backoff</td>
       </table>
 </div><div class="memdoc">
 
+<p>This function should be called once before the thread applies any operation to the lock-free universal construction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the lock-free universal construction. </td></tr>
+    <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of lock-free. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+    <tr><td class="paramname">min_back</td><td>The minimum value for backoff (in most cases 0 is a good start). </td></tr>
+    <tr><td class="paramname">max_back</td><td>The maximum value for backoff (usually this is much lower than 100). </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="ab30e15479408572d91c24d7824095d21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab30e15479408572d91c24d7824095d21">&#9670;&nbsp;</a></span>LFUObjectApplyOp()</h2>
+<a id="afbc55da36be1e083038a43534a13c662"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbc55da36be1e083038a43534a13c662">&#9670;&nbsp;</a></span>LFUObjectApplyOp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -219,7 +255,7 @@ backoff</td>
         <tr>
           <td class="memname">RetVal LFUObjectApplyOp </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="lfuobject_8h.html#unionLFUObject">LFUObject</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="lfuobject_8h.html#unionLFUObjectStruct">LFUObjectStruct</a> *&#160;</td>
           <td class="paramname"><em>l</em>, </td>
         </tr>
         <tr>
@@ -253,6 +289,20 @@ backoff</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function is called whenever a thread wants to apply an operation to the simulated concurrent object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>A pointer to an instance of the lock-free universal construction. </td></tr>
+    <tr><td class="paramname">th_state</td><td>A pointer to thread's local state for a specific instance of lock-free. </td></tr>
+    <tr><td class="paramname">sfunc</td><td>A serial function that the lock-free instance should execute, while applying requests announced by active threads. </td></tr>
+    <tr><td class="paramname">state</td><td>A pointer to the state of the simulated object. </td></tr>
+    <tr><td class="paramname">arg</td><td>The argument of the request that the thread wants to apply. </td></tr>
+    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>RetVal The return value of the applied request. </dd></dl>
 
 </div>
 </div>

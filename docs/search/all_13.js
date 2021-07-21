@@ -29,7 +29,7 @@ var searchData=
   ['sp_378',['sp',['../sim_8h.html#a9c81998572e0b2918188fb5f815b819e',1,'SimStruct']]],
   ['start_5fcpu_5fcounters_379',['start_cpu_counters',['../stats_8h.html#adc5cbae8335263cbfe2bcd3068d2cc7f',1,'stats.h']]],
   ['startthreadsn_380',['StartThreadsN',['../threadtools_8h.html#ab5f37faf54beb488bf7a6865ee83fc12',1,'threadtools.h']]],
-  ['state_381',['state',['../lfuobject_8h.html#a2b31b0002f3117d345820d97309e68a4',1,'LFUObject::state()'],['../fam_8h.html#ab9b348a1cb10a6232a2a02b50b50c2cd',1,'ObjectState::state()']]],
+  ['state_381',['state',['../lfuobject_8h.html#a183af627d998f3b547aaf7e47ca3508c',1,'LFUObjectStruct::state()'],['../fam_8h.html#ab9b348a1cb10a6232a2a02b50b50c2cd',1,'ObjectState::state()']]],
   ['state_5ff_382',['state_f',['../fam_8h.html#a6e4b2b643f207e04dd69984b8e8f26b2',1,'ObjectState']]],
   ['stats_2eh_383',['stats.h',['../stats_8h.html',1,'']]],
   ['stop_5fcpu_5fcounters_384',['stop_cpu_counters',['../stats_8h.html#ac455dd8cb4f0d730f498a0dfa61479ce',1,'stats.h']]],

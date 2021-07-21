@@ -8,7 +8,7 @@ var searchData=
   ['lfstackpop_607',['LFStackPop',['../lfstack_8h.html#a08ac2c0a0da53fafefd99290e6f45ee1',1,'lfstack.h']]],
   ['lfstackpush_608',['LFStackPush',['../lfstack_8h.html#a6b87f5f1e54673f9be3129636160967b',1,'lfstack.h']]],
   ['lfstackthreadstateinit_609',['LFStackThreadStateInit',['../lfstack_8h.html#a5b915ab960d057471deb226cfd125268',1,'lfstack.h']]],
-  ['lfuobjectapplyop_610',['LFUObjectApplyOp',['../lfuobject_8h.html#ab30e15479408572d91c24d7824095d21',1,'lfuobject.h']]],
-  ['lfuobjectinit_611',['LFUObjectInit',['../lfuobject_8h.html#ad8628226efc4ad0ebf308c6c3321e7fa',1,'lfuobject.h']]],
+  ['lfuobjectapplyop_610',['LFUObjectApplyOp',['../lfuobject_8h.html#afbc55da36be1e083038a43534a13c662',1,'lfuobject.h']]],
+  ['lfuobjectinit_611',['LFUObjectInit',['../lfuobject_8h.html#a6259ddb75c92951eff4e4b8a0d4feb94',1,'lfuobject.h']]],
   ['lfuobjectthreadstateinit_612',['LFUObjectThreadStateInit',['../lfuobject_8h.html#a6d6085eb040665e8b86aadeb1d95d30c',1,'lfuobject.h']]]
 ];

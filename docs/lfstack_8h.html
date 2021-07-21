@@ -228,6 +228,8 @@ A backoff object per thread is used for reducing the contention while accessing 
   <table class="params">
     <tr><td class="paramname">l</td><td>A pointer to an instance of the LF-Stack concurrent stack implementation. </td></tr>
     <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of LF-Stack. </td></tr>
+    <tr><td class="paramname">min_back</td><td>The minimum value for backoff (in most cases 0 is a good start). </td></tr>
+    <tr><td class="paramname">max_back</td><td>The maximum value for backoff (usually this is much lower than 100). </td></tr>
   </table>
   </dd>
 </dl>
