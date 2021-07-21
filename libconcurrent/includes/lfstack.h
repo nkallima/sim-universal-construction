@@ -41,6 +41,8 @@ void LFStackInit(LFStackStruct *l);
 ///
 /// @param l A pointer to an instance of the LF-Stack concurrent stack implementation.
 /// @param th_state A pointer to thread's local state of LF-Stack.
+/// @param min_back The minimum value for backoff (in most cases 0 is a good start).
+/// @param max_back The maximum value for backoff (usually this is much lower than 100).
 void LFStackThreadStateInit(LFStackThreadState *th_state, int min_back, int max_back);
 
 /// @brief This function adds (i.e. pushes) a new element to the top of the stack.

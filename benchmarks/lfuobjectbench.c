@@ -14,7 +14,7 @@
 #include <bench_args.h>
 #include <fam.h>
 
-LFUObject lfobject CACHE_ALIGN;
+LFUObjectStruct lfobject CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 int MIN_BAK, MAX_BAK;
 Barrier bar CACHE_ALIGN;

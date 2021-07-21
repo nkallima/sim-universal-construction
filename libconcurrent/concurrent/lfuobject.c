@@ -1,6 +1,6 @@
 #include <lfuobject.h>
 
-void LFUObjectInit(LFUObject *l, ArgVal value) {
+void LFUObjectInit(LFUObjectStruct *l, ArgVal value) {
     l->state.state = value;
     FullFence();
 }
@@ -9,7 +9,7 @@ void LFUObjectThreadStateInit(LFUObjectThreadState *th_state, int min_back, int 
     init_backoff(&th_state->backoff, min_back, max_back, 1);
 }
 
-RetVal LFUObjectApplyOp(LFUObject *l, LFUObjectThreadState *th_state, RetVal (*sfunc)(void *, ArgVal, int), ArgVal arg, int pid) {
+RetVal LFUObjectApplyOp(LFUObjectStruct *l, LFUObjectThreadState *th_state, RetVal (*sfunc)(void *, ArgVal, int), ArgVal arg, int pid) {
     ObjectState new_state, old_state, ret_state;
 
     reset_backoff(&th_state->backoff);
