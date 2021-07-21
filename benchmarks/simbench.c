@@ -43,7 +43,7 @@ inline static void *Execute(void *Arg) {
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
     sim_struct = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStruct));
-    SimInit(sim_struct, bench_args.nthreads, bench_args.backoff_high);
+    SimStructInit(sim_struct, bench_args.nthreads, bench_args.backoff_high);
     BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);

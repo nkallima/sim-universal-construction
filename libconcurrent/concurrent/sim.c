@@ -9,7 +9,7 @@ static inline void SimStateCopy(SimObjectState *dest, SimObjectState *src) {
     memcpy(&dest->state, &src->state, SimObjectStateSize(dest->applied.nthreads) - CACHE_LINE_SIZE);
 }
 
-void SimInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff) {
+void SimStructInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff) {
     int i;
 
     sim_struct->nthreads = nthreads;
