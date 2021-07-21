@@ -1,7 +1,7 @@
 var searchData=
 [
   ['back_25',['back',['../pool_8h.html#ac0dcef7073dd29c6252fec513aca675f',1,'PoolBlockMetadata']]],
-  ['backoff_26',['backoff',['../simstack_8h.html#a8098d0a8dc48681dbae3ce17a3919441',1,'SimStackThreadState::backoff()'],['../simqueue_8h.html#aeb4f1402cb9679d406ba896ab9d886db',1,'SimQueueThreadState::backoff()'],['../sim_8h.html#aaf30f4ed947f9a468a5b5c4e01d98ebe',1,'SimThreadState::backoff()'],['../backoff_8h.html#a55aa292620690e015d9a83b4ed3f3df9',1,'BackoffStruct::backoff()'],['../lfstack_8h.html#a2b0d5a1f47f780daa378d32933a7bb21',1,'LFStackThreadState::backoff()'],['../lfuobject_8h.html#ad9f821c4346c3a4f798e204a8bb9e7a9',1,'LFUObjectThreadState::backoff()'],['../msqueue_8h.html#a4363b1579a9caccae58760d8653f807c',1,'MSQueueThreadState::backoff()']]],
+  ['backoff_26',['backoff',['../simstack_8h.html#a8098d0a8dc48681dbae3ce17a3919441',1,'SimStackThreadState::backoff()'],['../sim_8h.html#aaf30f4ed947f9a468a5b5c4e01d98ebe',1,'SimThreadState::backoff()'],['../msqueue_8h.html#a4363b1579a9caccae58760d8653f807c',1,'MSQueueThreadState::backoff()'],['../backoff_8h.html#a55aa292620690e015d9a83b4ed3f3df9',1,'BackoffStruct::backoff()'],['../lfstack_8h.html#a2b0d5a1f47f780daa378d32933a7bb21',1,'LFStackThreadState::backoff()'],['../lfuobject_8h.html#ad9f821c4346c3a4f798e204a8bb9e7a9',1,'LFUObjectThreadState::backoff()']]],
   ['backoff_2eh_27',['backoff.h',['../backoff_8h.html',1,'']]],
   ['backoff_5faddend_28',['backoff_addend',['../backoff_8h.html#aabbc7d7d9f804a4773c4292f249df2a6',1,'BackoffStruct']]],
   ['backoff_5fbase_29',['backoff_base',['../backoff_8h.html#aa3abb4828be665a873e140155ff1edbe',1,'BackoffStruct']]],
