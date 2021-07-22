@@ -24,7 +24,7 @@ static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src) {
     memcpy(&dest->head, &src->head, SimStackStateSize(dest->applied.nthreads) - sizeof(ToggleVector) - sizeof(Object *));
 }
 
-void SimStackInit(SimStackStruct *stack, uint32_t nthreads, int max_backoff) {
+void SimStackStructInit(SimStackStruct *stack, uint32_t nthreads, int max_backoff) {
     int i;
 
     stack->nthreads = nthreads;

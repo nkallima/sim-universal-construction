@@ -1,6 +1,6 @@
 /// @file simqueue.h
 /// @author Nikolaos D. Kallimanis (nkallima@gmail.com)
-/// @brief This file exposes the API of the SimQueue universal construction.
+/// @brief This file exposes the API of the SimQueue concurrent queue implementation.
 /// An example of use of this API is provided in benchmarks/simqueuebench.c file.
 ///
 /// For a more detailed description see the original publication:
@@ -16,7 +16,7 @@
 #include <sim.h>
 #include <pool.h>
 
-/// @brief This struct stores the data for the state of the enqueue instance. Used by the threads that perform enqueue operations.
+/// @brief This struct stores the data about the state of the enqueue instance. It is used by the threads that perform enqueue operations.
 typedef struct EnqState {
     /// @brief The applied vector of toggles.
     ToggleVector applied;
@@ -66,7 +66,7 @@ typedef struct SimQueueThreadState {
     ToggleVector my_enq_bit;
     ToggleVector diffs;
     ToggleVector l_toggles;
-    /// @brief A pool of Node structs used for fast allocation during the enqueue operations.
+    /// @brief A pool of Node structs used for fast allocation during enqueue operations.
     PoolStruct pool_node;
     /// @brief The next available free copy of EnqState that could be used on an enqueue operation.
     int deq_local_index;
@@ -79,9 +79,9 @@ typedef struct SimQueueThreadState {
 /// @brief SimQueueStruct stores the state of an instance of the SimQueue.
 /// SimQueueStruct should be initialized using the SimQueueStructInit function.
 typedef struct SimQueueStruct {
-    /// @brief Pointer to a EnqState structs that contains the most recent and valid copy of the Sim instance used by the enqueue operations.
+    /// @brief Pointer to a EnqState struct that contains the most recent and valid copy of the SimQueue instance used by the enqueue operations.
     volatile pointer_t enq_sp CACHE_ALIGN;
-    /// @brief Pointer to a DeqState structs that contains the most recent and valid copy of the Sim instance used by the dequeue operations.
+    /// @brief Pointer to a DeqState struct that contains the most recent and valid copy of the SimQueue instance used by the dequeue operations.
     volatile pointer_t deq_sp CACHE_ALIGN;
     /// @brief This queue implementation uses a guard node.
     Node guard CACHE_ALIGN;
@@ -95,7 +95,7 @@ typedef struct SimQueueStruct {
     EnqState **enq_pool;
     /// @brief An array of pools (one pool per thread) of DeqState structs, used by dequeuers.
     DeqState **deq_pool;
-    /// @brief The number of threads that use this instance of Sim.
+    /// @brief The number of threads that use this instance of SimQueue.
     uint32_t nthreads;
     /// @brief The maximum backoff value.
     int MAX_BACK;

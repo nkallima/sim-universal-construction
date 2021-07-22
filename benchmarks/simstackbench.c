@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
 
     stack = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStackStruct));
-    SimStackInit(stack, bench_args.nthreads, bench_args.backoff_high);
+    SimStackStructInit(stack, bench_args.nthreads, bench_args.backoff_high);
     BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     JoinThreadsN(bench_args.nthreads - 1);
