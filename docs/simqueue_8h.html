@@ -77,7 +77,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>This file exposes the API of the SimQueue universal construction. An example of use of this API is provided in benchmarks/simqueuebench.c file.  
+<p>This file exposes the API of the SimQueue concurrent queue implementation. An example of use of this API is provided in benchmarks/simqueuebench.c file.  
 <a href="#details">More...</a></p>
 
 <p><a href="simqueue_8h_source.html">Go to the source code of this file.</a></p>
@@ -85,7 +85,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:structEnqState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simqueue_8h.html#structEnqState">EnqState</a></td></tr>
-<tr class="memdesc:structEnqState"><td class="mdescLeft">&#160;</td><td class="mdescRight">This struct stores the data for the state of the enqueue instance. Used by the threads that perform enqueue operations.  <a href="simqueue_8h.html#structEnqState">More...</a><br /></td></tr>
+<tr class="memdesc:structEnqState"><td class="mdescLeft">&#160;</td><td class="mdescRight">This struct stores the data about the state of the enqueue instance. It is used by the threads that perform enqueue operations.  <a href="simqueue_8h.html#structEnqState">More...</a><br /></td></tr>
 <tr class="separator:structEnqState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structDeqState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simqueue_8h.html#structDeqState">DeqState</a></td></tr>
 <tr class="memdesc:structDeqState"><td class="mdescLeft">&#160;</td><td class="mdescRight">This struct stores the data for the state of the dequeue instance. Used by the threads that perform dequeue operations.  <a href="simqueue_8h.html#structDeqState">More...</a><br /></td></tr>
@@ -100,7 +100,7 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a9234f92eca9b26bec235c06b6835b95a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simqueue_8h.html#a9234f92eca9b26bec235c06b6835b95a">EnqStateSize</a>(N)&#160;&#160;&#160;(sizeof(<a class="el" href="simqueue_8h.html#structEnqState">EnqState</a>) + _TVEC_VECTOR_SIZE(N))</td></tr>
-<tr class="memdesc:a9234f92eca9b26bec235c06b6835b95a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro for calculating the size of the <a class="el" href="simqueue_8h.html#structEnqState" title="This struct stores the data for the state of the enqueue instance. Used by the threads that perform e...">EnqState</a> struct for a specific amount of threads.  <a href="simqueue_8h.html#a9234f92eca9b26bec235c06b6835b95a">More...</a><br /></td></tr>
+<tr class="memdesc:a9234f92eca9b26bec235c06b6835b95a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro for calculating the size of the <a class="el" href="simqueue_8h.html#structEnqState" title="This struct stores the data about the state of the enqueue instance. It is used by the threads that p...">EnqState</a> struct for a specific amount of threads.  <a href="simqueue_8h.html#a9234f92eca9b26bec235c06b6835b95a">More...</a><br /></td></tr>
 <tr class="separator:a9234f92eca9b26bec235c06b6835b95a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e2847d520bcfc390f5b93284ede7615"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simqueue_8h.html#a8e2847d520bcfc390f5b93284ede7615">DeqStateSize</a>(N)&#160;&#160;&#160;(sizeof(<a class="el" href="simqueue_8h.html#structDeqState">DeqState</a>) + _TVEC_VECTOR_SIZE(N) + (N) * sizeof(<a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>))</td></tr>
 <tr class="memdesc:a8e2847d520bcfc390f5b93284ede7615"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro for calculating the size of the <a class="el" href="simqueue_8h.html#structDeqState" title="This struct stores the data for the state of the dequeue instance. Used by the threads that perform d...">DeqState</a> struct for a specific amount of threads.  <a href="simqueue_8h.html#a8e2847d520bcfc390f5b93284ede7615">More...</a><br /></td></tr>
@@ -122,7 +122,7 @@ Functions</h2></td></tr>
 <tr class="separator:a359b393939b697da09a065dc6080d615"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file exposes the API of the SimQueue universal construction. An example of use of this API is provided in benchmarks/simqueuebench.c file. </p>
+<div class="textblock"><p>This file exposes the API of the SimQueue concurrent queue implementation. An example of use of this API is provided in benchmarks/simqueuebench.c file. </p>
 <dl class="section author"><dt>Author</dt><dd>Nikolaos D. Kallimanis (<a href="#" onclick="location.href='mai'+'lto:'+'nka'+'ll'+'ima'+'@g'+'mai'+'l.'+'com'; return false;">nkall<span style="display: none;">.nosp@m.</span>ima@<span style="display: none;">.nosp@m.</span>gmail<span style="display: none;">.nosp@m.</span>.com</a>)</dd></dl>
 <p>For a more detailed description see the original publication: Panagiota Fatourou, and Nikolaos D. Kallimanis. "A highly-efficient wait-free universal construction". Proceedings of the twenty-third annual ACM symposium on Parallelism in algorithms and architectures (SPAA), 2011. </p><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2021 </dd></dl>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -137,7 +137,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p>This struct stores the data for the state of the enqueue instance. Used by the threads that perform enqueue operations. </p>
+<div class="textblock"><p>This struct stores the data about the state of the enqueue instance. It is used by the threads that perform enqueue operations. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -283,13 +283,13 @@ l_toggles</td>
 <td class="fieldname">
 pool_node</td>
 <td class="fielddoc">
-A pool of <a class="el" href="queue-stack_8h.html#structNode">Node</a> structs used for fast allocation during the enqueue operations. </td></tr>
+A pool of <a class="el" href="queue-stack_8h.html#structNode">Node</a> structs used for fast allocation during enqueue operations. </td></tr>
 <tr><td class="fieldtype">
 <a id="a95ef86186b6aa821a702e30cb8ae7df5"></a>int</td>
 <td class="fieldname">
 deq_local_index</td>
 <td class="fielddoc">
-The next available free copy of <a class="el" href="simqueue_8h.html#structEnqState" title="This struct stores the data for the state of the enqueue instance. Used by the threads that perform e...">EnqState</a> that could be used on an enqueue operation. </td></tr>
+The next available free copy of <a class="el" href="simqueue_8h.html#structEnqState" title="This struct stores the data about the state of the enqueue instance. It is used by the threads that p...">EnqState</a> that could be used on an enqueue operation. </td></tr>
 <tr><td class="fieldtype">
 <a id="aaea37b8649b6e5bbdbea5959cc4cc076"></a>int</td>
 <td class="fieldname">
@@ -337,7 +337,7 @@ Pointer to an array, where threads announce only the enqueue requests that want 
 <td class="fieldname">
 enq_pool</td>
 <td class="fielddoc">
-An array of pools (one pool per thread) of <a class="el" href="simqueue_8h.html#structEnqState" title="This struct stores the data for the state of the enqueue instance. Used by the threads that perform e...">EnqState</a> structs, used by the enqueuers. </td></tr>
+An array of pools (one pool per thread) of <a class="el" href="simqueue_8h.html#structEnqState" title="This struct stores the data about the state of the enqueue instance. It is used by the threads that p...">EnqState</a> structs, used by the enqueuers. </td></tr>
 <tr><td class="fieldtype">
 <a id="aa94082ca4b6e2fba868148d68db53504"></a><a class="el" href="simqueue_8h.html#structDeqState">DeqState</a> **</td>
 <td class="fieldname">
@@ -349,7 +349,7 @@ An array of pools (one pool per thread) of <a class="el" href="simqueue_8h.html#
 <td class="fieldname">
 nthreads</td>
 <td class="fielddoc">
-The number of threads that use this instance of Sim. </td></tr>
+The number of threads that use this instance of SimQueue. </td></tr>
 <tr><td class="fieldtype">
 <a id="ab745948bdbd35551528f826a2be9b1ef"></a>int</td>
 <td class="fieldname">
@@ -377,7 +377,7 @@ The maximum backoff value. </td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>A macro for calculating the size of the <a class="el" href="simqueue_8h.html#structEnqState" title="This struct stores the data for the state of the enqueue instance. Used by the threads that perform e...">EnqState</a> struct for a specific amount of threads. </p>
+<p>A macro for calculating the size of the <a class="el" href="simqueue_8h.html#structEnqState" title="This struct stores the data about the state of the enqueue instance. It is used by the threads that p...">EnqState</a> struct for a specific amount of threads. </p>
 
 </div>
 </div>
