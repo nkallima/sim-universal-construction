@@ -193,7 +193,7 @@ A backoff object per thread is used for reducing the contention while accessing 
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">l</td><td>A pointer to an instance of the lock-free universal construction. </td></tr>
-    <tr><td class="paramname">nthreads</td><td>The number of threads that will use the lock-free universal construction. </td></tr>
+    <tr><td class="paramname">value</td><td>The initial value that the simulated object should have. </td></tr>
   </table>
   </dd>
 </dl>
@@ -235,9 +235,7 @@ A backoff object per thread is used for reducing the contention while accessing 
 <p>This function should be called once before the thread applies any operation to the lock-free universal construction. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">l</td><td>A pointer to an instance of the lock-free universal construction. </td></tr>
     <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of lock-free. </td></tr>
-    <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
     <tr><td class="paramname">min_back</td><td>The minimum value for backoff (in most cases 0 is a good start). </td></tr>
     <tr><td class="paramname">max_back</td><td>The maximum value for backoff (usually this is much lower than 100). </td></tr>
   </table>
@@ -296,7 +294,6 @@ A backoff object per thread is used for reducing the contention while accessing 
     <tr><td class="paramname">l</td><td>A pointer to an instance of the lock-free universal construction. </td></tr>
     <tr><td class="paramname">th_state</td><td>A pointer to thread's local state for a specific instance of lock-free. </td></tr>
     <tr><td class="paramname">sfunc</td><td>A serial function that the lock-free instance should execute, while applying requests announced by active threads. </td></tr>
-    <tr><td class="paramname">state</td><td>A pointer to the state of the simulated object. </td></tr>
     <tr><td class="paramname">arg</td><td>The argument of the request that the thread wants to apply. </td></tr>
     <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
   </table>
