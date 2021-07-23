@@ -39,7 +39,6 @@ void LFStackInit(LFStackStruct *l);
 
 /// @brief This function should be called once before the thread applies any operation to the LF-Stack concurrent stack implementation.
 ///
-/// @param l A pointer to an instance of the LF-Stack concurrent stack implementation.
 /// @param th_state A pointer to thread's local state of LF-Stack.
 /// @param min_back The minimum value for backoff (in most cases 0 is a good start).
 /// @param max_back The maximum value for backoff (usually this is much lower than 100).

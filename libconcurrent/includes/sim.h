@@ -106,14 +106,13 @@ typedef struct SimStruct {
 /// This function should be called once (by a single thread) before any other thread tries to
 /// apply any request by using the SimStructInit function.
 ///
-/// @param l A pointer to an instance of the Sim universal construction.
+/// @param sim_struct A pointer to an instance of the Sim universal construction.
 /// @param nthreads The number of threads that will use the Sim universal construction.
 /// @param max_backoff The maximum value for backoff (usually this is much lower than 100).
 void SimStructInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff);
 
 /// @brief This function should be called once before the thread applies any operation to the Sim universal construction.
 ///
-/// @param l A pointer to an instance of the Sim universal construction.
 /// @param th_state A pointer to thread's local state of Sim.
 /// @param nthreads The number of threads that will use the Sim universal construction.
 /// @param pid The pid of the calling thread.
@@ -121,7 +120,7 @@ void SimThreadStateInit(SimThreadState *th_state, uint32_t nthreads, int pid);
 
 /// @brief This function is called whenever a thread wants to apply an operation to the simulated concurrent object.
 ///
-/// @param l A pointer to an instance of the Sim universal construction.
+/// @param sim_struct A pointer to an instance of the Sim universal construction.
 /// @param th_state A pointer to thread's local state for a specific instance of Sim.
 /// @param sfunc A serial function that the Sim instance should execute, while applying requests announced by active threads.
 /// @param arg The argument of the request that the thread wants to apply.

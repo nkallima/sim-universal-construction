@@ -21,7 +21,7 @@ long fastRandom(void);
 uint32_t fastRandom32(void);
 
 /// @brief This function set a new seed to the random generator.
-/// @param  The new seed for the random generator.
+/// @param seed The new seed for the random generator.
 void fastRandomSetSeed(uint32_t seed);
 
 /// @brief This random generators are implementing by following POSIX.1-2001 directives.

@@ -74,7 +74,6 @@ void OyamaThreadStateInit(OyamaThreadState *th_state);
 /// @param l A pointer to an instance of the Oyama combining object.
 /// @param th_state A pointer to thread's local state for a specific instance of the Oyama combining object.
 /// @param sfunc A serial function that the Oyama combining object instance should execute, while applying requests announced by active threads.
-/// @param state A pointer to the state of the simulated object.
 /// @param arg The argument of the request that the thread wants to apply.
 /// @param pid The pid of the calling thread.
 /// @return RetVal The return value of the applied request.

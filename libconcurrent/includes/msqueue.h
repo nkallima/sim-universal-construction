@@ -39,7 +39,6 @@ typedef struct MSQueueThreadState {
 /// apply any enqueue or dequeue operation.
 ///
 /// @param l A pointer to an instance of the MS-Queue concurrent queue implementation.
-/// @param nthreads The number of threads that will use the MS-Queue concurrent queue implementation.
 void MSQueueInit(MSQueueStruct *l);
 
 /// @brief This function should be called once before the thread applies any operation to the MS-Queue concurrent queue implementation.

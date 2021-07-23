@@ -81,7 +81,7 @@ void recycle_obj(PoolStruct *pool, void *obj);
 /// @brief This function cancels the last num_objs consecutive object allocations. Note that no recycle_obj operation 
 /// should have been called for any of the last num_objs consecutive object allocations.
 /// @param pool A pointer to the pool of objects.
-/// @param obj The number of consecutive allocations that should be canceled.
+/// @param num_objs The number of consecutive allocations that should be canceled.
 void rollback(PoolStruct *pool, uint32_t num_objs);
 
 /// @brief This function frees all the memory allocated by the pool object.

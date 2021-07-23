@@ -33,7 +33,7 @@ typedef struct BackoffStruct {
 ///
 /// @param b A pointer to an instance of the backoff object.
 /// @param base_bits The initial value of the backoff scheme is 2^base_bits.
-/// @param caps_bits The maximum value of the backoff scheme is 2^caps_bits.
+/// @param cap_bits The maximum value of the backoff scheme is 2^cap_bits.
 /// @param shift_bits The step of the backoff scheme is 2^shift_bits - 1.
 void init_backoff(BackoffStruct *b, unsigned base_bits, unsigned cap_bits, unsigned shift_bits);
 
