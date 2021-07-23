@@ -240,11 +240,11 @@ An extensive list of the recent releases and their features is provided at [http
 
 # License
 
-The Synch framework is provided under the [LGPL-2.1 License](LICENSE).
+The Synch framework is provided under the [LGPL-2.1 License](https://github.com/nkallima/sim-universal-construction/blob/master/LICENSE).
 
 # Code of conduct
 
-[Code of conduct](.github/CODE_OF_CONDUCT.md).
+[Code of conduct](https://github.com/nkallima/sim-universal-construction/blob/master/.github/CODE_OF_CONDUCT.md).
 
 # References
 
