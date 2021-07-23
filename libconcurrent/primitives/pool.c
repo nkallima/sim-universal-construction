@@ -4,13 +4,15 @@
 #include <pool.h>
 #include <stdio.h>
 
+#define POOL_BLOCK_METADATA_SIZE sizeof(PoolBlockMetadata)
+
 static const uint32_t BLOCK_SIZE = 4096 * 8192;
 
 static void *get_new_block(uint32_t obj_size) {
     PoolBlock *block;
     block = getAlignedMemory(CACHE_LINE_SIZE, BLOCK_SIZE);
-    block->metadata.entries = (BLOCK_SIZE - POOL_BLOCK_METADATA) / obj_size;
-    block->metadata.free_entries = (BLOCK_SIZE - POOL_BLOCK_METADATA) / obj_size;
+    block->metadata.entries = (BLOCK_SIZE - POOL_BLOCK_METADATA_SIZE) / obj_size;
+    block->metadata.free_entries = (BLOCK_SIZE - POOL_BLOCK_METADATA_SIZE) / obj_size;
     block->metadata.cur_entry = 0;
     block->metadata.object_size = obj_size;
     block->metadata.next = NULL;
@@ -22,7 +24,7 @@ static void *get_new_block(uint32_t obj_size) {
 int init_pool(PoolStruct *pool, uint32_t obj_size) {
     PoolBlock *block;
 
-    if (obj_size > BLOCK_SIZE - POOL_BLOCK_METADATA) {
+    if (obj_size > BLOCK_SIZE - POOL_BLOCK_METADATA_SIZE) {
         fprintf(stderr, "ERROR: init_pool: object size unsupported\n");
 
         return POOL_INIT_ERROR;
@@ -33,7 +35,7 @@ int init_pool(PoolStruct *pool, uint32_t obj_size) {
     // Get the first block of the pool
     block = get_new_block(obj_size);
 
-    pool->entries_per_block = (BLOCK_SIZE - POOL_BLOCK_METADATA) / obj_size;
+    pool->entries_per_block = (BLOCK_SIZE - POOL_BLOCK_METADATA_SIZE) / obj_size;
     pool->obj_size = obj_size;
     pool->recycle_list = NULL;
     pool->head_block = block;
