@@ -126,6 +126,7 @@ Collection</h1>
 Requirements</h1>
 <ul>
 <li>A modern 64-bit machine. Currently, 32-bit architectures are not supported. The current version of this code is optimized for the x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&amp;Add instructions (e.g., x86_64, etc.).</li>
+<li>A recent Linux distribution. The Synch environment may also build/run in some other Unix-like systems, (i.e. BSD, etc.). In this case the result is not guaranteed, since the environment is not tested in systems other than Linux.</li>
 <li>As a compiler, gcc of version 4.8 or greater is recommended, but you may also try to use icx or clang.</li>
 <li>Building requires the following development packages:<ul>
 <li><code>libatomic</code></li>
@@ -267,7 +268,10 @@ Memory reclamation (stacks and queues)</h1>
 Memory reclamation limitations</h2>
 <p>In the current design of the reclamation mechanism, each thread uses a single private pool for reclaiming memory. In a producer-consumer scenario where a set of threads performs only enqueue operations (or push operations in case of stacks) and all other threads perform dequeue operations (or pop operations in case of stacks), insufficient memory reclamation is performed since each memory pool is only accessible by the thread that owns it. We aim to improve this in future versions of the Synch framework.</p>
 <h1><a class="anchor" id="autotoc_md8"></a>
-API - Code example for a simple benchmark</h1>
+API documentation</h1>
+<p>A complete API documentation is provided in <a href="https://nkallima.github.io/sim-universal-construction/index.html">https://nkallima.github.io/sim-universal-construction/index.html</a>.</p>
+<h1><a class="anchor" id="autotoc_md9"></a>
+Code example for a simple benchmark</h1>
 <p>We now describe a very simple example-benchmark that uses the Application Programming Interface (API) of the provided runtime. This simple benchmark measures the performance of Fetch&amp;Add instructions in multi-core machines.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
@@ -326,23 +330,23 @@ API - Code example for a simple benchmark</h1>
 <p>The <code>StartThreadsN</code> function (provided by the API defined in <code><a class="el" href="threadtools_8h.html" title="This file exposes a simple API for handling both posix and user-level threads. This API provides func...">threadtools.h</a></code>) in main, creates <code>N_THREADS</code> threads and each of the executes the <code>Execute</code> function declared in the same file. The <code>_DONT_USE_UTHREADS_</code> argument imposes <code>StartThreadsN</code> to create only Posix threads; in case that the user sets the corresponding fibers argument to <code>M</code> &gt; 0, then <code>StartThreadsN</code> will create <code>N_THREADS</code> Posix threads and each of them will create <code>M</code> user-level (i.e. fiber) threads. The <code>JoinThreadsN</code> function (also provided by <code>threadtools. h</code>) waits until all Posix and fiber (if any) threads finish the execution of the <code>Execute</code> function. The Fetch&amp;Add instruction on 64-bit integers is performed by the <code>FAA64</code> function provided by the API of <code><a class="el" href="primitives_8h.html">primitives.h</a></code>.</p>
 <p>The threads executing the <code>Execute</code> function use the <code><a class="el" href="barrier_8h.html#structBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">Barrier</a></code> re-entrant barrier object for simultaneously starting to perform Fetch&amp;Add instructions on the shared variable <code>object</code>. This barrier is also re-used before the end of the <code>Execute</code> function in order to allow thread with <code>id = 0</code> to measure the amount of time that the benchmark needed for completion. The <code>BarrierSet</code> function in <code>main</code> initializes the <code><a class="el" href="barrier_8h.html#structBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">Barrier</a></code> object. The <code>BarrierSet</code> takes as an argument a pointer to the barrier object and the number of threads <code>N_THREADS</code> that are going to use it. Both <code>BarrierSet</code> and <code>BarrierWait</code> are provided by the API of <code><a class="el" href="barrier_8h.html" title="This file exposes the API of a simple re-entrant synchronization barrier. This implementation is a cl...">barrier.h</a></code></p>
 <p>At the end of the benchmark, <code>main</code> calculates and prints the average throughput of Fetch&amp;Add operations per second achieved by the benchmark.</p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 If you want to cite us</h1>
 <div class="fragment"><div class="line">@misc{SynchFramework,</div>
 <div class="line">  title={{Synch: A framework for concurrent data-structures and benchmarks. https://github.com/nkallima/sim-universal-construction}},</div>
 <div class="line">  author={Kallimanis, Nikolaos D.},</div>
 <div class="line">  url={{https://github.com/nkallima/sim-universal-construction}}</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md11"></a>
 Releases</h1>
 <p>An extensive list of the recent releases and their features is provided at <a href="https://github.com/nkallima/sim-universal-construction/releases">https://github.com/nkallima/sim-universal-construction/releases</a></p>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 License</h1>
 <p>The Synch framework is provided under the <a href="https://github.com/nkallima/sim-universal-construction/blob/master/LICENSE">LGPL-2.1 License</a>.</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Code of conduct</h1>
 <p><a href="https://github.com/nkallima/sim-universal-construction/blob/master/.github/CODE_OF_CONDUCT.md">Code of conduct</a>.</p>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md14"></a>
 References</h1>
 <p>[1]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Revisiting the combining synchronization technique". ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012.</p>
 <p>[2]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "A highly-efficient wait-free universal construction". Proceedings of the twenty-third annual ACM symposium on Parallelism in algorithms and architectures (SPAA), 2011.</p>
@@ -357,7 +361,7 @@ References</h1>
 <p>[11]. Adam Morrison, and Yehuda Afek. "Fast concurrent queues for x86 processors". Proceedings of the 18th ACM SIGPLAN symposium on Principles and practice of parallel programming. 2013.</p>
 <p>[12]. Adam Morrison, and Yehuda Afek. Source code for LCRQ. <a href="http://mcg.cs.tau.ac.il/projects/lcrq">http://mcg.cs.tau.ac.il/projects/lcrq</a>.</p>
 <p>[13]. Guy E. Blelloch, and Yuanhao Wei. "Brief Announcement: Concurrent Fixed-Size Allocation and Free in Constant Time." 34th International Symposium on Distributed Computing (DISC 2020). Schloss Dagstuhl-Leibniz-Zentrum für Informatik, 2020.</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Contact</h1>
 <p>For any further information, please do not hesitate to send an email at nkallima (at) ics.forth.gr. Feedback is always valuable. </p>
 </div></div><!-- PageDoc -->
