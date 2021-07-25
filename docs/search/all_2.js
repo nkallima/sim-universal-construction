@@ -24,7 +24,5 @@ var searchData=
   ['bench_5fargs_2eh_46',['bench_args.h',['../bench__args_8h.html',1,'']]],
   ['benchargs_47',['BenchArgs',['../bench__args_8h.html#structBenchArgs',1,'']]],
   ['bittas64_48',['BitTAS64',['../primitives_8h.html#aacb49da46cadc133becde3026db468fb',1,'primitives.h']]],
-  ['blockobject_49',['BlockObject',['../pool_8h.html#structBlockObject',1,'']]],
-  ['bucket_50',['bucket',['../dsmhash_8h.html#ae5c041824fd6aa6e55554b840e6a76e2',1,'HashOperations']]],
-  ['buckets_51',['buckets',['../clhhash_8h.html#a6edd819a94a71696b61e2563fc26d6e6',1,'CLHHash::buckets()'],['../dsmhash_8h.html#aa57f787ebb8c4a0265353ab7814b4f38',1,'DSMHash::buckets()']]]
+  ['blockobject_49',['BlockObject',['../pool_8h.html#structBlockObject',1,'']]]
 ];

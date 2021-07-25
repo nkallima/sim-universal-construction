@@ -75,7 +75,7 @@ $(function() {
 <a href="mcs_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef _MCS_H_</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#define _MCS_H_</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="includes_2config_8h.html">config.h</a>&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="config_8h.html">config.h</a>&gt;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="primitives_8h.html">primitives.h</a>&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
@@ -108,7 +108,7 @@ $(function() {
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="mcs_8h.html#a89042866e56fb10ae4cb07b96a3677a4">   72</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="mcs_8h.html#a89042866e56fb10ae4cb07b96a3677a4">MCSUnlock</a>(<a class="code" href="mcs_8h.html#structMCSLockStruct">MCSLockStruct</a> *l, <a class="code" href="mcs_8h.html#structMCSThreadState">MCSThreadState</a> *thread_state, <span class="keywordtype">int</span> pid);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aincludes_2config_8h_html"><div class="ttname"><a href="includes_2config_8h.html">config.h</a></div></div>
+<div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div><div class="ttdoc">This file provides important parameters and consstant for the benchmarks and the library.</div></div>
 <div class="ttc" id="amcs_8h_html_a01cf4b56395b1a1c9e754d152b632ce2"><div class="ttname"><a href="mcs_8h.html#a01cf4b56395b1a1c9e754d152b632ce2">MCSLockInit</a></div><div class="ttdeci">MCSLockStruct * MCSLockInit(void)</div><div class="ttdoc">This function initializes an instance of the MCS queue lock implementation.</div></div>
 <div class="ttc" id="amcs_8h_html_a147b6cba0b09b0a0b4f590569a7cfd1e"><div class="ttname"><a href="mcs_8h.html#a147b6cba0b09b0a0b4f590569a7cfd1e">MCSLockNode::locked</a></div><div class="ttdeci">volatile bool locked</div><div class="ttdoc">This is true whenever a thread executes MCSLock and waits until it acquires the lock.</div><div class="ttdef"><b>Definition:</b> mcs.h:25</div></div>
 <div class="ttc" id="amcs_8h_html_a3866905a3285c496eb1b19964c26e6bd"><div class="ttname"><a href="mcs_8h.html#a3866905a3285c496eb1b19964c26e6bd">MCSLockNode::pad</a></div><div class="ttdeci">char pad[PAD_CACHE(sizeof(HalfMCSLockNode))]</div><div class="ttdoc">Padding space.</div><div class="ttdef"><b>Definition:</b> mcs.h:29</div></div>

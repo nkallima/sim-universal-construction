@@ -235,7 +235,7 @@ Memory reclamation (stacks and queues)</h1>
 </li>
 </ul>
 <p>Note that de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Since v2.4.0, SimStack supports memory reclamation using the functionality of <code><a class="el" href="pool_8h.html" title="This file exposes a simple API for implementing a very simple pool object. This pool object gives use...">pool.h</a></code> and a technique that is similar to that presented by Blelloch and Weiin in [13]. Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.</p>
-<p>By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the <code>POOL_NODE_RECYCLING_DISABLE</code> option should be enabled in <code>config.h</code>.</p>
+<p>By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the <code>POOL_NODE_RECYCLING_DISABLE</code> option should be enabled in <code><a class="el" href="config_8h.html" title="This file provides important parameters and consstant for the benchmarks and the library.">config.h</a></code>.</p>
 <p>The following table shows the memory reclamation characteristics of the provided stack and queues implementations.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
