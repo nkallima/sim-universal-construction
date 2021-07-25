@@ -48,7 +48,8 @@ The following table presents a summary of the concurrent data-structures offered
 # Requirements
 
 - A modern 64-bit machine. Currently, 32-bit architectures are not supported. The current version of this code is optimized for the x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.).
-- As a compiler, gcc of version 4.8 or greater is recommended, but you may also try to use icx or clang. 
+- A recent Linux distribution. The Synch environment may also build/run in some other Unix-like systems, (i.e. BSD, etc.). In this case the result is not guaranteed, since the environment is not tested in systems other than Linux.
+- As a compiler, gcc of version 4.8 or greater is recommended, but you may also try to use icx or clang.
 - Building requires the following development packages:
     - `libatomic`
     - `libnuma`
@@ -167,8 +168,11 @@ The following table shows the memory reclamation characteristics of the provided
 In the current design of the reclamation mechanism, each thread uses a single private pool for reclaiming memory. In a producer-consumer scenario where a set of threads performs only enqueue operations (or push operations in case of stacks) and all other threads perform dequeue operations (or pop operations in case of stacks), insufficient memory reclamation is performed since each memory pool is only accessible by the thread that owns it. We aim to improve this in future versions of the Synch framework.
 
 
-# API - Code example for a simple benchmark
+# API documentation
 
+A complete API documentation is provided in [https://nkallima.github.io/sim-universal-construction/index.html](https://nkallima.github.io/sim-universal-construction/index.html).
+
+# Code example for a simple benchmark
 We now describe a very simple example-benchmark that uses the Application Programming Interface (API) of the provided runtime. This simple benchmark measures the performance of Fetch&Add instructions in multi-core machines.
 
 ```c
