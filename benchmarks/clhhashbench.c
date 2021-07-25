@@ -69,7 +69,7 @@ inline static void *Execute(void *Arg) {
 
 int main(int argc, char *argv[]) {
     parseArguments(&bench_args, argc, argv);
-    CLHHashInit(&object_struct, N_BUCKETS, bench_args.nthreads);
+    CLHHashStructInit(&object_struct, N_BUCKETS, bench_args.nthreads);
 
     BarrierSet(&bar, bench_args.nthreads);
     StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);

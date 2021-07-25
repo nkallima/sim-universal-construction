@@ -9,7 +9,7 @@ INSTALL_SUFFIX = Synch
 UNINSTALL_DIR  = $(shell cat $(INSTALL_INFO))
 
 # define any directories containing header files other than /usr/include
-INCLUDES   = -Ilibconcurrent/includes
+INCLUDES   = -Ilibconcurrent/includes -Ilibconcurrent
 
 # define the output directory
 BINDIR     = build/bin
