@@ -1,6 +1,6 @@
 /// @file config.h
 /// @author Nikolaos D. Kallimanis (nkallima@gmail.com)
-/// @brief This file provides important parameters and consstant for the benchmarks and the  library.
+/// @brief This file provides important parameters and constants for the benchmarks and the library.
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
@@ -50,6 +50,13 @@
 /// By default, this definition is equal to int64_t
 #define ArgVal                     int64_t
 
+/// @brief Whenever the `NUMA_SUPPORT` option is enabled, the runtime will detect the system's number of NUMA nodes 
+/// and will setup the environment appropriately. However, significant performance benefits have been observed by
+/// manually setting-up the number of NUMA nodes manually (see the `--numa_nodes` option). For example, the performance 
+/// of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads)
+/// is much better by setting `--numa_nodes` equal to `2`. Note that the runtime successfully reports that the available 
+/// NUMA nodes are `8`, but this value is not optimal for H-Synch in this configuration. An experimental analysis for
+/// different values of `--numa_nodes` may be needed.
 #define NUMA_SUPPORT
 
 /// @brief This definition enables some optimizations on memory allocation that seems to greately improve the performance

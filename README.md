@@ -1,4 +1,4 @@
-[![check-build](https://github.com/nkallima/sim-universal-construction/actions/workflows/check-build.yml/badge.svg)](https://github.com/nkallima/sim-universal-construction/actions/workflows/check-build.yml) [![validate](https://github.com/nkallima/sim-universal-construction/actions/workflows/validate.yml/badge.svg)](https://github.com/nkallima/sim-universal-construction/actions/workflows/validate.yml) [![codecov](https://codecov.io/gh/nkallima/sim-universal-construction/branch/codecov/graph/badge.svg?token=1V8A6BOABM)](https://codecov.io/gh/nkallima/sim-universal-construction)
+[![check-build](https://github.com/nkallima/sim-universal-construction/actions/workflows/check-build.yml/badge.svg)](https://github.com/nkallima/sim-universal-construction/actions/workflows/check-build.yml) [![validate](https://github.com/nkallima/sim-universal-construction/actions/workflows/validate.yml/badge.svg)](https://github.com/nkallima/sim-universal-construction/actions/workflows/validate.yml) [![codecov](https://codecov.io/gh/nkallima/sim-universal-construction/branch/codecov/graph/badge.svg?token=1V8A6BOABM)](https://codecov.io/gh/nkallima/sim-universal-construction) [![status](https://joss.theoj.org/papers/07bf35ba1bd72c38cc8076fee6864409/status.svg)](https://joss.theoj.org/papers/07bf35ba1bd72c38cc8076fee6864409)
 
 <p align="center">
     <img src="resources/logo_synch.png" alt="The Synch Framework" width="80%">
@@ -244,11 +244,11 @@ An extensive list of the recent releases and their features is provided at [http
 
 # License
 
-The Synch framework is provided under the [LGPL-2.1 License](https://github.com/nkallima/sim-universal-construction/blob/master/LICENSE).
+The Synch framework is provided under the [LGPL-2.1 License](https://github.com/nkallima/sim-universal-construction/blob/main/LICENSE).
 
 # Code of conduct
 
-[Code of conduct](https://github.com/nkallima/sim-universal-construction/blob/master/.github/CODE_OF_CONDUCT.md).
+[Code of conduct](https://github.com/nkallima/sim-universal-construction/blob/main/.github/CODE_OF_CONDUCT.md).
 
 # References
 
