@@ -75,7 +75,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>This file provides important parameters and consstant for the benchmarks and the library.  
+<p>This file provides important parameters and constants for the benchmarks and the library.  
 <a href="#details">More...</a></p>
 
 <p><a href="config_8h_source.html">Go to the source code of this file.</a></p>
@@ -98,13 +98,14 @@ Macros</h2></td></tr>
 <tr class="memdesc:a0f12dac6e24575ca239f5605e28661ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the type of the argument value of atomic operations provided by the implemented concurrent objects. For example, all push and enqueue operations (implemented by the provided stacks and queue objects) get an argument of type ArgVal. It is assumed that the target architecture is able to atomically read/write this type. If this type is of 32 or 64 bits could be atomically read or written by most machine architectures. However, a value of 128 bits or more may not be supported (in most cases x86_64 supports types of 128 bits). By default, this definition is equal to int64_t.  <a href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">More...</a><br /></td></tr>
 <tr class="separator:a0f12dac6e24575ca239f5605e28661ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace0e9f8ffecdc202dcac5b83bf3f1484"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#ace0e9f8ffecdc202dcac5b83bf3f1484">NUMA_SUPPORT</a></td></tr>
+<tr class="memdesc:ace0e9f8ffecdc202dcac5b83bf3f1484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whenever the <code>NUMA_SUPPORT</code> option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the <code>--numa_nodes</code> option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting <code>--numa_nodes</code> equal to <code>2</code>. Note that the runtime successfully reports that the available NUMA nodes are <code>8</code>, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of <code>--numa_nodes</code> may be needed.  <a href="config_8h.html#ace0e9f8ffecdc202dcac5b83bf3f1484">More...</a><br /></td></tr>
 <tr class="separator:ace0e9f8ffecdc202dcac5b83bf3f1484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb0618905bd57c9a600e37b1d17c4b3a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#afb0618905bd57c9a600e37b1d17c4b3a">SYNCH_COMPACT_ALLOCATION</a></td></tr>
 <tr class="memdesc:afb0618905bd57c9a600e37b1d17c4b3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This definition enables some optimizations on memory allocation that seems to greately improve the performance on AMD Epyc multiprocessors. This flag seems to double the performance in CC-Synch and H-Synch algorithms. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option. By default, this flag is enabled.  <a href="config_8h.html#afb0618905bd57c9a600e37b1d17c4b3a">More...</a><br /></td></tr>
 <tr class="separator:afb0618905bd57c9a600e37b1d17c4b3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file provides important parameters and consstant for the benchmarks and the library. </p>
+<div class="textblock"><p>This file provides important parameters and constants for the benchmarks and the library. </p>
 <dl class="section author"><dt>Author</dt><dd>Nikolaos D. Kallimanis (<a href="#" onclick="location.href='mai'+'lto:'+'nka'+'ll'+'ima'+'@g'+'mai'+'l.'+'com'; return false;">nkall<span style="display: none;">.nosp@m.</span>ima@<span style="display: none;">.nosp@m.</span>gmail<span style="display: none;">.nosp@m.</span>.com</a>) </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a35eef36338c6bb6168202bb5125b07a0"></a>
@@ -199,6 +200,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Whenever the <code>NUMA_SUPPORT</code> option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the <code>--numa_nodes</code> option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting <code>--numa_nodes</code> equal to <code>2</code>. Note that the runtime successfully reports that the available NUMA nodes are <code>8</code>, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of <code>--numa_nodes</code> may be needed. </p>
 
 </div>
 </div>

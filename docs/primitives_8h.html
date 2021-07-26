@@ -76,71 +76,104 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>This file exposes a simple API for basic atomic operations, basic operations for memory management. Moreover, this file provides functionality for finding out the the vendor of the processor and some basic functionality for measuring time.  
+<a href="#details">More...</a></p>
+
 <p><a href="primitives_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:aa15529357563f0b9a0aad63ec235d65f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#aa15529357563f0b9a0aad63ec235d65f">UNKNOWN_MACHINE</a>&#160;&#160;&#160;0x0</td></tr>
+<tr class="memdesc:aa15529357563f0b9a0aad63ec235d65f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vendor of the processor is unknown.  <a href="primitives_8h.html#aa15529357563f0b9a0aad63ec235d65f">More...</a><br /></td></tr>
 <tr class="separator:aa15529357563f0b9a0aad63ec235d65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2aa7955336b58961195e08ccab1ab20"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#af2aa7955336b58961195e08ccab1ab20">AMD_X86_MACHINE</a>&#160;&#160;&#160;0x1</td></tr>
+<tr class="memdesc:af2aa7955336b58961195e08ccab1ab20"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vendor is an AMD x86 processor.  <a href="primitives_8h.html#af2aa7955336b58961195e08ccab1ab20">More...</a><br /></td></tr>
 <tr class="separator:af2aa7955336b58961195e08ccab1ab20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a606e99bfadbeef4a1d36a29d8ce71bb7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a606e99bfadbeef4a1d36a29d8ce71bb7">INTEL_X86_MACHINE</a>&#160;&#160;&#160;0x2</td></tr>
+<tr class="memdesc:a606e99bfadbeef4a1d36a29d8ce71bb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vendor is an Intel X86 processor.  <a href="primitives_8h.html#a606e99bfadbeef4a1d36a29d8ce71bb7">More...</a><br /></td></tr>
 <tr class="separator:a606e99bfadbeef4a1d36a29d8ce71bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae146336f9105681c481e5290b2fd6c52"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ae146336f9105681c481e5290b2fd6c52">X86_GENERIC_MACHINE</a>&#160;&#160;&#160;0x3</td></tr>
+<tr class="memdesc:ae146336f9105681c481e5290b2fd6c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a generic X86 processor.  <a href="primitives_8h.html#ae146336f9105681c481e5290b2fd6c52">More...</a><br /></td></tr>
 <tr class="separator:ae146336f9105681c481e5290b2fd6c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1882a83506ab4aa7a468f040d01c6b34"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a1882a83506ab4aa7a468f040d01c6b34">ARM_GENERIC_MACHINE</a>&#160;&#160;&#160;0x4</td></tr>
+<tr class="memdesc:a1882a83506ab4aa7a468f040d01c6b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a generic ARM processor.  <a href="primitives_8h.html#a1882a83506ab4aa7a468f040d01c6b34">More...</a><br /></td></tr>
 <tr class="separator:a1882a83506ab4aa7a468f040d01c6b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a754d94e01d5800aa9df847bafdd1accb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a754d94e01d5800aa9df847bafdd1accb">RISCV_GENERIC_MACHINE</a>&#160;&#160;&#160;0x5</td></tr>
+<tr class="memdesc:a754d94e01d5800aa9df847bafdd1accb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a generic RISC-V processor.  <a href="primitives_8h.html#a754d94e01d5800aa9df847bafdd1accb">More...</a><br /></td></tr>
 <tr class="separator:a754d94e01d5800aa9df847bafdd1accb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9592777264b5cf8e7bf188766c26bd27"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a9592777264b5cf8e7bf188766c26bd27">Pause</a>()</td></tr>
+<tr class="memdesc:a9592777264b5cf8e7bf188766c26bd27"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro emits a NO-OP instruction.  <a href="primitives_8h.html#a9592777264b5cf8e7bf188766c26bd27">More...</a><br /></td></tr>
 <tr class="separator:a9592777264b5cf8e7bf188766c26bd27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abede7d5ee6f4c8c21dee777bb1a430f7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#abede7d5ee6f4c8c21dee777bb1a430f7">CAS128</a>(A,  B0,  B1,  C0,  C1)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e">_CAS128</a>((uint64_t *)(A), (uint64_t)(B0), (uint64_t)(B1), (uint64_t)(C0), (uint64_t)(C1))</td></tr>
+<tr class="memdesc:abede7d5ee6f4c8c21dee777bb1a430f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CAS128 function. See more on <a class="el" href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e" title="This function is executed atomically. It reads the 128-bit value stored at a memory location pointed ...">_CAS128()</a>.  <a href="primitives_8h.html#abede7d5ee6f4c8c21dee777bb1a430f7">More...</a><br /></td></tr>
 <tr class="separator:abede7d5ee6f4c8c21dee777bb1a430f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55e1410011d991e19eabde143130ef08"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a55e1410011d991e19eabde143130ef08">CASPTR</a>(A,  B,  C)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#acabacf8f76ed1a3498494428894e110a">_CASPTR</a>((void *)(A), (void *)(B), (void *)(C))</td></tr>
+<tr class="memdesc:a55e1410011d991e19eabde143130ef08"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CASPTR function. See more on <a class="el" href="primitives_8h.html#acabacf8f76ed1a3498494428894e110a" title="This function is executed atomically. It reads the pointer stored at a memory location pointed by A....">_CASPTR()</a>.  <a href="primitives_8h.html#a55e1410011d991e19eabde143130ef08">More...</a><br /></td></tr>
 <tr class="separator:a55e1410011d991e19eabde143130ef08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a6cdaf2e500b352b4950897530d8004"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a5a6cdaf2e500b352b4950897530d8004">CAS64</a>(A,  B,  C)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a0c8dc1f3d6bc7c355fb58701b2215409">_CAS64</a>((uint64_t *)(A), (uint64_t)(B), (uint64_t)(C))</td></tr>
+<tr class="memdesc:a5a6cdaf2e500b352b4950897530d8004"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CAS64 function. See more on <a class="el" href="primitives_8h.html#a0c8dc1f3d6bc7c355fb58701b2215409" title="This function is executed atomically. It reads the 64-bit value stored at a memory location pointed b...">_CAS64()</a>.  <a href="primitives_8h.html#a5a6cdaf2e500b352b4950897530d8004">More...</a><br /></td></tr>
 <tr class="separator:a5a6cdaf2e500b352b4950897530d8004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2c073213375b90dbc1734d56f02f730"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#aa2c073213375b90dbc1734d56f02f730">CAS32</a>(A,  B,  C)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#ac14949eaf8106f461872fb06a3d1b68e">_CAS32</a>((uint32_t *)(A), (uint32_t)(B), (uint32_t)(C))</td></tr>
+<tr class="memdesc:aa2c073213375b90dbc1734d56f02f730"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CAS32 function. See more on <a class="el" href="primitives_8h.html#ac14949eaf8106f461872fb06a3d1b68e" title="This function is executed atomically. It reads the 32-bit value stored at a memory location pointed b...">_CAS32()</a>.  <a href="primitives_8h.html#aa2c073213375b90dbc1734d56f02f730">More...</a><br /></td></tr>
 <tr class="separator:aa2c073213375b90dbc1734d56f02f730"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97224473593ed7213db8620dc2df2539"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a97224473593ed7213db8620dc2df2539">SWAP</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a6e200872aa6e8486f0c87f04ae24912a">_SWAP</a>((void *)(A), (void *)(B))</td></tr>
+<tr class="memdesc:a97224473593ed7213db8620dc2df2539"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _SWAP function. See more on <a class="el" href="primitives_8h.html#a6e200872aa6e8486f0c87f04ae24912a" title="This function is executed atomically. It performs an atomic exchange operation on the memory location...">_SWAP()</a>.  <a href="primitives_8h.html#a97224473593ed7213db8620dc2df2539">More...</a><br /></td></tr>
 <tr class="separator:a97224473593ed7213db8620dc2df2539"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b54b50b40a479c116eed924d481fb5e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a6b54b50b40a479c116eed924d481fb5e">FAA32</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a6ca718c188e24e89702cebb39d62cfe7">_FAA32</a>((volatile int32_t *)(A), (int32_t)(B))</td></tr>
+<tr class="memdesc:a6b54b50b40a479c116eed924d481fb5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _FAA32 function. See more on <a class="el" href="primitives_8h.html#a6ca718c188e24e89702cebb39d62cfe7" title="This function is executed atomically. It performs an atomic addition of value B to the value pointed ...">_FAA32()</a>.  <a href="primitives_8h.html#a6b54b50b40a479c116eed924d481fb5e">More...</a><br /></td></tr>
 <tr class="separator:a6b54b50b40a479c116eed924d481fb5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06394cec4bbb552d935e03f66a8f01f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a06394cec4bbb552d935e03f66a8f01f1">FAA64</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a12b12a6f12ad1faefd6977b55c728c97">_FAA64</a>((volatile int64_t *)(A), (int64_t)(B))</td></tr>
+<tr class="memdesc:a06394cec4bbb552d935e03f66a8f01f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _FAA64 function. See more on <a class="el" href="primitives_8h.html#a12b12a6f12ad1faefd6977b55c728c97" title="This function is executed atomically. It performs an atomic addition of value B to the value pointed ...">_FAA64()</a>.  <a href="primitives_8h.html#a06394cec4bbb552d935e03f66a8f01f1">More...</a><br /></td></tr>
 <tr class="separator:a06394cec4bbb552d935e03f66a8f01f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacb49da46cadc133becde3026db468fb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#aacb49da46cadc133becde3026db468fb">BitTAS64</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#add56d81291a75100f7e38639c9cf4aa7">_BitTAS64</a>((volatile uint64_t *)(A), (unsigned char)(B))</td></tr>
+<tr class="memdesc:aacb49da46cadc133becde3026db468fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _BitTAS64 function. See more on <a class="el" href="primitives_8h.html#add56d81291a75100f7e38639c9cf4aa7" title="This function is executed atomically. It performs an atomic Test&amp;Set on the B-th bit of the value poi...">_BitTAS64()</a>.  <a href="primitives_8h.html#aacb49da46cadc133becde3026db468fb">More...</a><br /></td></tr>
 <tr class="separator:aacb49da46cadc133becde3026db468fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab3ebfb79201126e851de8eaf611534a5"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ab3ebfb79201126e851de8eaf611534a5">getMemory</a> (size_t size)</td></tr>
+<tr class="memdesc:ab3ebfb79201126e851de8eaf611534a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#ab3ebfb79201126e851de8eaf611534a5">More...</a><br /></td></tr>
 <tr class="separator:ab3ebfb79201126e851de8eaf611534a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dff53e45d5b45fcd412f808956d189b"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a3dff53e45d5b45fcd412f808956d189b">getAlignedMemory</a> (size_t align, size_t size)</td></tr>
+<tr class="memdesc:a3dff53e45d5b45fcd412f808956d189b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#a3dff53e45d5b45fcd412f808956d189b">More...</a><br /></td></tr>
 <tr class="separator:a3dff53e45d5b45fcd412f808956d189b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab22ff1e59a96198089797170da662b32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ab22ff1e59a96198089797170da662b32">freeMemory</a> (void *ptr, size_t size)</td></tr>
+<tr class="memdesc:ab22ff1e59a96198089797170da662b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees memory allocated with either <a class="el" href="primitives_8h.html#ab3ebfb79201126e851de8eaf611534a5" title="This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in libconcu...">getMemory()</a> or <a class="el" href="primitives_8h.html#a3dff53e45d5b45fcd412f808956d189b" title="This function allocates a memory area of size bytes. The returned address is aligned to an offset equ...">getAlignedMemory()</a> functions.  <a href="primitives_8h.html#ab22ff1e59a96198089797170da662b32">More...</a><br /></td></tr>
 <tr class="separator:ab22ff1e59a96198089797170da662b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14afa6a425a2bd3a4ab6c9b365a43087"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a14afa6a425a2bd3a4ab6c9b365a43087">getTimeMillis</a> (void)</td></tr>
+<tr class="memdesc:a14afa6a425a2bd3a4ab6c9b365a43087"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns the current system's time in milliseconds.  <a href="primitives_8h.html#a14afa6a425a2bd3a4ab6c9b365a43087">More...</a><br /></td></tr>
 <tr class="separator:a14afa6a425a2bd3a4ab6c9b365a43087"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6d4c408d50e2fdcf12aa821c7288f13"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#aa6d4c408d50e2fdcf12aa821c7288f13">getMachineModel</a> (void)</td></tr>
+<tr class="memdesc:aa6d4c408d50e2fdcf12aa821c7288f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns the vendor of the processor that it runs on. The current version of the Synch framework returns any of the following codes:  <a href="primitives_8h.html#aa6d4c408d50e2fdcf12aa821c7288f13">More...</a><br /></td></tr>
 <tr class="separator:aa6d4c408d50e2fdcf12aa821c7288f13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae800f4dd1b3504036b1c07149e64f61e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e">_CAS128</a> (uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t C1)</td></tr>
+<tr class="memdesc:ae800f4dd1b3504036b1c07149e64f61e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed atomically. It reads the 128-bit value stored at a memory location pointed by A. Let A0 be the less significant 64-bits of this memory location and let A1 the most significant. This function computes '(A0 == B0 &amp; A1 == B1) ? &lt;C0,C1&gt; : &lt;A0,A1&gt;' and stores the result at location pointed by A. The function returns in case that (A0 == B0 &amp; A1 == B1) is true. Otherwise, it returns false.  <a href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e">More...</a><br /></td></tr>
 <tr class="separator:ae800f4dd1b3504036b1c07149e64f61e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acabacf8f76ed1a3498494428894e110a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#acabacf8f76ed1a3498494428894e110a">_CASPTR</a> (void *A, void *B, void *C)</td></tr>
+<tr class="memdesc:acabacf8f76ed1a3498494428894e110a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed atomically. It reads the pointer stored at a memory location pointed by A. Let OLD be the pointer of the memory location pointed by A. This function computes '(OLD == B) ? C : OLD' and stores the result at location pointed by A. The function returns in case that (OLD == B) is true. Otherwise, it returns false.  <a href="primitives_8h.html#acabacf8f76ed1a3498494428894e110a">More...</a><br /></td></tr>
 <tr class="separator:acabacf8f76ed1a3498494428894e110a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c8dc1f3d6bc7c355fb58701b2215409"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a0c8dc1f3d6bc7c355fb58701b2215409">_CAS64</a> (uint64_t *A, uint64_t B, uint64_t C)</td></tr>
+<tr class="memdesc:a0c8dc1f3d6bc7c355fb58701b2215409"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed atomically. It reads the 64-bit value stored at a memory location pointed by A. Let OLD be the value of the memory location pointed by A. This function computes '(OLD == B) ? C : OLD' and stores the result at location pointed by A. The function returns in case that (OLD == B) is true. Otherwise, it returns false.  <a href="primitives_8h.html#a0c8dc1f3d6bc7c355fb58701b2215409">More...</a><br /></td></tr>
 <tr class="separator:a0c8dc1f3d6bc7c355fb58701b2215409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac14949eaf8106f461872fb06a3d1b68e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ac14949eaf8106f461872fb06a3d1b68e">_CAS32</a> (uint32_t *A, uint32_t B, uint32_t C)</td></tr>
+<tr class="memdesc:ac14949eaf8106f461872fb06a3d1b68e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed atomically. It reads the 32-bit value stored at a memory location pointed by A. Let OLD be the value of the memory location pointed by A. This function computes '(OLD == B) ? C : OLD' and stores the result at location pointed by A. The function returns in case that (OLD == B) is true. Otherwise, it returns false.  <a href="primitives_8h.html#ac14949eaf8106f461872fb06a3d1b68e">More...</a><br /></td></tr>
 <tr class="separator:ac14949eaf8106f461872fb06a3d1b68e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e200872aa6e8486f0c87f04ae24912a"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a6e200872aa6e8486f0c87f04ae24912a">_SWAP</a> (void *A, void *B)</td></tr>
+<tr class="memdesc:a6e200872aa6e8486f0c87f04ae24912a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed atomically. It performs an atomic exchange operation on the memory location pointed by A, setting B as the new value. It returns the old value of the memory location pointed by A just before the operation.  <a href="primitives_8h.html#a6e200872aa6e8486f0c87f04ae24912a">More...</a><br /></td></tr>
 <tr class="separator:a6e200872aa6e8486f0c87f04ae24912a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ca718c188e24e89702cebb39d62cfe7"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a6ca718c188e24e89702cebb39d62cfe7">_FAA32</a> (volatile int32_t *A, int32_t B)</td></tr>
+<tr class="memdesc:a6ca718c188e24e89702cebb39d62cfe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed atomically. It performs an atomic addition of value B to the value pointed by A. It returns the old value of the memory location pointed by A just before the operation.  <a href="primitives_8h.html#a6ca718c188e24e89702cebb39d62cfe7">More...</a><br /></td></tr>
 <tr class="separator:a6ca718c188e24e89702cebb39d62cfe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12b12a6f12ad1faefd6977b55c728c97"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a12b12a6f12ad1faefd6977b55c728c97">_FAA64</a> (volatile int64_t *A, int64_t B)</td></tr>
+<tr class="memdesc:a12b12a6f12ad1faefd6977b55c728c97"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed atomically. It performs an atomic addition of value B to the value pointed by A. It returns the old value of the memory location pointed by A just before the operation.  <a href="primitives_8h.html#a12b12a6f12ad1faefd6977b55c728c97">More...</a><br /></td></tr>
 <tr class="separator:a12b12a6f12ad1faefd6977b55c728c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add56d81291a75100f7e38639c9cf4aa7"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#add56d81291a75100f7e38639c9cf4aa7">_BitTAS64</a> (volatile uint64_t *A, unsigned char B)</td></tr>
+<tr class="memdesc:add56d81291a75100f7e38639c9cf4aa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed atomically. It performs an atomic Test&amp;Set on the B-th bit of the value pointed by A.  <a href="primitives_8h.html#add56d81291a75100f7e38639c9cf4aa7">More...</a><br /></td></tr>
 <tr class="separator:add56d81291a75100f7e38639c9cf4aa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This file exposes a simple API for basic atomic operations, basic operations for memory management. Moreover, this file provides functionality for finding out the the vendor of the processor and some basic functionality for measuring time. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aa15529357563f0b9a0aad63ec235d65f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa15529357563f0b9a0aad63ec235d65f">&#9670;&nbsp;</a></span>UNKNOWN_MACHINE</h2>
 
@@ -152,6 +185,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>The vendor of the processor is unknown. </p>
 
 </div>
 </div>
@@ -167,6 +202,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>The vendor is an AMD x86 processor. </p>
+
 </div>
 </div>
 <a id="a606e99bfadbeef4a1d36a29d8ce71bb7"></a>
@@ -180,6 +217,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>The vendor is an Intel X86 processor. </p>
 
 </div>
 </div>
@@ -195,6 +234,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>This is a generic X86 processor. </p>
+
 </div>
 </div>
 <a id="a1882a83506ab4aa7a468f040d01c6b34"></a>
@@ -209,6 +250,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>This is a generic ARM processor. </p>
+
 </div>
 </div>
 <a id="a754d94e01d5800aa9df847bafdd1accb"></a>
@@ -222,6 +265,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This is a generic RISC-V processor. </p>
 
 </div>
 </div>
@@ -239,6 +284,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This macro emits a NO-OP instruction. </p>
 
 </div>
 </div>
@@ -286,6 +333,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>A wrapper for the _CAS128 function. See more on <a class="el" href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e" title="This function is executed atomically. It reads the 128-bit value stored at a memory location pointed ...">_CAS128()</a>. </p>
+
 </div>
 </div>
 <a id="a55e1410011d991e19eabde143130ef08"></a>
@@ -319,6 +368,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>A wrapper for the _CASPTR function. See more on <a class="el" href="primitives_8h.html#acabacf8f76ed1a3498494428894e110a" title="This function is executed atomically. It reads the pointer stored at a memory location pointed by A....">_CASPTR()</a>. </p>
 
 </div>
 </div>
@@ -354,6 +405,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>A wrapper for the _CAS64 function. See more on <a class="el" href="primitives_8h.html#a0c8dc1f3d6bc7c355fb58701b2215409" title="This function is executed atomically. It reads the 64-bit value stored at a memory location pointed b...">_CAS64()</a>. </p>
+
 </div>
 </div>
 <a id="aa2c073213375b90dbc1734d56f02f730"></a>
@@ -388,6 +441,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>A wrapper for the _CAS32 function. See more on <a class="el" href="primitives_8h.html#ac14949eaf8106f461872fb06a3d1b68e" title="This function is executed atomically. It reads the 32-bit value stored at a memory location pointed b...">_CAS32()</a>. </p>
+
 </div>
 </div>
 <a id="a97224473593ed7213db8620dc2df2539"></a>
@@ -415,6 +470,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>A wrapper for the _SWAP function. See more on <a class="el" href="primitives_8h.html#a6e200872aa6e8486f0c87f04ae24912a" title="This function is executed atomically. It performs an atomic exchange operation on the memory location...">_SWAP()</a>. </p>
 
 </div>
 </div>
@@ -444,6 +501,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>A wrapper for the _FAA32 function. See more on <a class="el" href="primitives_8h.html#a6ca718c188e24e89702cebb39d62cfe7" title="This function is executed atomically. It performs an atomic addition of value B to the value pointed ...">_FAA32()</a>. </p>
+
 </div>
 </div>
 <a id="a06394cec4bbb552d935e03f66a8f01f1"></a>
@@ -471,6 +530,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>A wrapper for the _FAA64 function. See more on <a class="el" href="primitives_8h.html#a12b12a6f12ad1faefd6977b55c728c97" title="This function is executed atomically. It performs an atomic addition of value B to the value pointed ...">_FAA64()</a>. </p>
 
 </div>
 </div>
@@ -500,6 +561,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>A wrapper for the _BitTAS64 function. See more on <a class="el" href="primitives_8h.html#add56d81291a75100f7e38639c9cf4aa7" title="This function is executed atomically. It performs an atomic Test&amp;Set on the B-th bit of the value poi...">_BitTAS64()</a>. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
@@ -526,6 +589,15 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">size</td><td>The size of the memory area. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>In case of error, NULL is returned. In case of success a pointer to the allocated memory area is returned. </dd></dl>
 
 </div>
 </div>
@@ -563,6 +635,16 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">align</td><td>The alignment size. </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the memory area. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>In case of error, NULL is returned. In case of success a pointer to the allocated memory area is returned. </dd></dl>
+
 </div>
 </div>
 <a id="ab22ff1e59a96198089797170da662b32"></a>
@@ -599,6 +681,15 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>This function frees memory allocated with either <a class="el" href="primitives_8h.html#ab3ebfb79201126e851de8eaf611534a5" title="This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in libconcu...">getMemory()</a> or <a class="el" href="primitives_8h.html#a3dff53e45d5b45fcd412f808956d189b" title="This function allocates a memory area of size bytes. The returned address is aligned to an offset equ...">getAlignedMemory()</a> functions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>A pointer to the memory area to be freed. </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the memory area to be freed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a14afa6a425a2bd3a4ab6c9b365a43087"></a>
@@ -625,6 +716,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>This function returns the current system's time in milliseconds. </p>
+<dl class="section return"><dt>Returns</dt><dd>System's time in milliseconds. </dd></dl>
+
 </div>
 </div>
 <a id="aa6d4c408d50e2fdcf12aa821c7288f13"></a>
@@ -650,6 +744,18 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>This function returns the vendor of the processor that it runs on. The current version of the Synch framework returns any of the following codes: </p>
+<ul>
+<li>AMD_X86_MACHINE</li>
+<li>INTEL_X86_MACHINE</li>
+<li>X86_GENERIC_MACHINE</li>
+<li>ARM_GENERIC_MACHINE</li>
+<li>RISCV_GENERIC_MACHINE</li>
+<li>UNKNOWN_MACHINE</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>It returns a code for the vendor of the processor that it runs on. <br  />
+ </dd></dl>
 
 </div>
 </div>
@@ -705,6 +811,19 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>This function is executed atomically. It reads the 128-bit value stored at a memory location pointed by A. Let A0 be the less significant 64-bits of this memory location and let A1 the most significant. This function computes '(A0 == B0 &amp; A1 == B1) ? &lt;C0,C1&gt; : &lt;A0,A1&gt;' and stores the result at location pointed by A. The function returns in case that (A0 == B0 &amp; A1 == B1) is true. Otherwise, it returns false. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>A pointer to 128-bit value stored to memory. </td></tr>
+    <tr><td class="paramname">B0</td><td>The less significant 64-bits of the old value. </td></tr>
+    <tr><td class="paramname">B1</td><td>The most significant 64-bits of the old value. </td></tr>
+    <tr><td class="paramname">C0</td><td>The less significant 64-bits of the new value. </td></tr>
+    <tr><td class="paramname">C1</td><td>The most significant 64-bits of the new value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>This function computes '(A0 == B0 &amp; A1 == B1) ? &lt;C0,C1&gt; : &lt;A0,A1&gt;' and stores the result at location pointed by A. The function returns in case that (A0 == B0 &amp; A1 == B1) is true. Otherwise, it returns false. </dd></dl>
+
 </div>
 </div>
 <a id="acabacf8f76ed1a3498494428894e110a"></a>
@@ -746,6 +865,17 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>This function is executed atomically. It reads the pointer stored at a memory location pointed by A. Let OLD be the pointer of the memory location pointed by A. This function computes '(OLD == B) ? C : OLD' and stores the result at location pointed by A. The function returns in case that (OLD == B) is true. Otherwise, it returns false. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>A pointer to memory location that stores a memory pointer. </td></tr>
+    <tr><td class="paramname">B</td><td>The old value. </td></tr>
+    <tr><td class="paramname">C</td><td>The new value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The function returns in case that (OLD == B) is true. Otherwise, it returns false. </dd></dl>
 
 </div>
 </div>
@@ -789,6 +919,17 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>This function is executed atomically. It reads the 64-bit value stored at a memory location pointed by A. Let OLD be the value of the memory location pointed by A. This function computes '(OLD == B) ? C : OLD' and stores the result at location pointed by A. The function returns in case that (OLD == B) is true. Otherwise, it returns false. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>A pointer to 64-bit value stored to memory. </td></tr>
+    <tr><td class="paramname">B</td><td>The old value (64-bits). </td></tr>
+    <tr><td class="paramname">C</td><td>The new value (64-bits). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The function returns in case that (OLD == B) is true. Otherwise, it returns false. </dd></dl>
+
 </div>
 </div>
 <a id="ac14949eaf8106f461872fb06a3d1b68e"></a>
@@ -831,6 +972,17 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>This function is executed atomically. It reads the 32-bit value stored at a memory location pointed by A. Let OLD be the value of the memory location pointed by A. This function computes '(OLD == B) ? C : OLD' and stores the result at location pointed by A. The function returns in case that (OLD == B) is true. Otherwise, it returns false. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>A pointer to 32-bit value stored to memory. </td></tr>
+    <tr><td class="paramname">B</td><td>The old value (32-bits). </td></tr>
+    <tr><td class="paramname">C</td><td>The new value (32-bits). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The function returns in case that (OLD == B) is true. Otherwise, it returns false. </dd></dl>
+
 </div>
 </div>
 <a id="a6e200872aa6e8486f0c87f04ae24912a"></a>
@@ -866,6 +1018,16 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>This function is executed atomically. It performs an atomic exchange operation on the memory location pointed by A, setting B as the new value. It returns the old value of the memory location pointed by A just before the operation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>A pointer to memory location that stores a memory pointer. </td></tr>
+    <tr><td class="paramname">B</td><td>The new value to be stored in the memory location pointed by A. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>It returns the old value of the memory location pointed by A just before the operation. </dd></dl>
 
 </div>
 </div>
@@ -903,6 +1065,16 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>This function is executed atomically. It performs an atomic addition of value B to the value pointed by A. It returns the old value of the memory location pointed by A just before the operation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>A pointer to memory location that stores a 32-bit integer. </td></tr>
+    <tr><td class="paramname">B</td><td>A 32-bit integer to be added to the value pointed by A. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>It returns the old 32-bit value of the memory location pointed by A just before the operation. </dd></dl>
+
 </div>
 </div>
 <a id="a12b12a6f12ad1faefd6977b55c728c97"></a>
@@ -939,6 +1111,16 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>This function is executed atomically. It performs an atomic addition of value B to the value pointed by A. It returns the old value of the memory location pointed by A just before the operation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>A pointer to memory location that stores a 64-bit integer. </td></tr>
+    <tr><td class="paramname">B</td><td>A 64-bit integer to be added to the value pointed by A. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>It returns the old 64-bit value of the memory location pointed by A just before the operation. </dd></dl>
+
 </div>
 </div>
 <a id="add56d81291a75100f7e38639c9cf4aa7"></a>
@@ -974,6 +1156,16 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>This function is executed atomically. It performs an atomic Test&amp;Set on the B-th bit of the value pointed by A. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>A pointer to memory location that stores a 64-bit value. </td></tr>
+    <tr><td class="paramname">B</td><td>The B-th bit of the value stored in the memory location pointed by A. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The result of Test&amp;Set on the B-th bit of the value pointed by A. </dd></dl>
 
 </div>
 </div>
