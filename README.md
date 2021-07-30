@@ -240,7 +240,7 @@ At the end of the benchmark, `main` calculates and prints the average throughput
 
 # Releases
 
-An extensive list of the recent releases and their features is provided at [https://github.com/nkallima/sim-universal-construction/releases](https://github.com/nkallima/sim-universal-construction/releases)
+An extensive list of the recent releases and their features is provided at [https://github.com/nkallima/sim-universal-construction/releases](https://github.com/nkallima/sim-universal-construction/releases).
 
 # License
 
