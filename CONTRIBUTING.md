@@ -17,7 +17,8 @@ Before contributing to this repository, you are encouraged to first discuss the 
 - Create a new branch for your patch.
 - Make your updates/changes.
 - Open a pull request.
-- Submit your pull request & get it reviewed.
+- Submit your pull request targeting the current development branch (i.e. the branch with the highest version number).
+- Get it reviewed.
 
 ## Coding conventions
 Before committing a new patch, follow the steps below for checking the coding style of your patch.
