@@ -92,6 +92,8 @@ For running benchmarks use the `bench.sh` script file that is provided in the ma
 
 Example usage: `./bench.sh FILE.run OPTION1=NUM1 OPTION2=NUM2 ...`
 
+Each benchmark reports the time that needs to be completed, the average throughput of operations performed and some performance statistics if `DEBUG` option is enabled during framework build. The `bench.sh` script measures the strong scaling of the benchmark that is executed.
+
 The following options are available:
 
 |     Option              |                       Description                                                     |
@@ -128,6 +130,9 @@ Getting the best performance from the provided benchmarks is not always an easy 
 - Check the performance impact of the different available compiler optimizations. In most cases, gcc's `-Ofast` option gives the best performance. In addition, some algorithms (i.e., sim, osci, simstack, oscistack, simqueue and osciqueue) benefit by enabling the `-mavx` option (in case that AVX instructions are supported by the hardware).
 - Check if system oversubscription with user-level fibers enhances the performance. Many algorithms (i.e., the Sim and Osci families of algorithms) show tremendous performance boost by using oversubscription with user-level threads [3]. In this case, use the `--fibers` option.
 
+## Expected performance
+
+The expected performance of the Synch framework is discussed in the [PERFORMANCE.md](PERFORMANCE.md) file.
 
 # Memory reclamation (stacks and queues)
 
@@ -166,10 +171,6 @@ The following table shows the memory reclamation characteristics of the provided
 ## Memory reclamation limitations
 
 In the current design of the reclamation mechanism, each thread uses a single private pool for reclaiming memory. In a producer-consumer scenario where a set of threads performs only enqueue operations (or push operations in case of stacks) and all other threads perform dequeue operations (or pop operations in case of stacks), insufficient memory reclamation is performed since each memory pool is only accessible by the thread that owns it. We aim to improve this in future versions of the Synch framework.
-
-# Expected performance
-
-The expected performance of the Synch framework is discussed in the [PERFORMANCE.md](PERFORMANCE.md) file.
 
 
 # API documentation
