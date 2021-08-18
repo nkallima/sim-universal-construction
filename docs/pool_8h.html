@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo_synch.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">The Synch framework
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v3.0.0</span>
    </div>
    <div id="projectbrief">An open-source framework for concurrent data-structures and benchmarks</div>
   </td>
@@ -84,18 +84,18 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:structBlockObject"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#structBlockObject">BlockObject</a></td></tr>
-<tr class="memdesc:structBlockObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct for the block object.  <a href="pool_8h.html#structBlockObject">More...</a><br /></td></tr>
-<tr class="separator:structBlockObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structPoolBlockMetadata"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#structPoolBlockMetadata">PoolBlockMetadata</a></td></tr>
-<tr class="memdesc:structPoolBlockMetadata"><td class="mdescLeft">&#160;</td><td class="mdescRight">The metadata information for a single block.  <a href="pool_8h.html#structPoolBlockMetadata">More...</a><br /></td></tr>
-<tr class="separator:structPoolBlockMetadata"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structPoolBlock"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#structPoolBlock">PoolBlock</a></td></tr>
-<tr class="memdesc:structPoolBlock"><td class="mdescLeft">&#160;</td><td class="mdescRight">This struct stores the metadata of the block and all the objects of the block.  <a href="pool_8h.html#structPoolBlock">More...</a><br /></td></tr>
-<tr class="separator:structPoolBlock"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structPoolStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a></td></tr>
-<tr class="memdesc:structPoolStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="pool_8h.html#structPoolStruct" title="PoolStruct stores an instance of the pool object.">PoolStruct</a> stores an instance of the pool object.  <a href="pool_8h.html#structPoolStruct">More...</a><br /></td></tr>
-<tr class="separator:structPoolStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchBlockObject"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#structSynchBlockObject">SynchBlockObject</a></td></tr>
+<tr class="memdesc:structSynchBlockObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct for the block object.  <a href="pool_8h.html#structSynchBlockObject">More...</a><br /></td></tr>
+<tr class="separator:structSynchBlockObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchPoolBlockMetadata"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#structSynchPoolBlockMetadata">SynchPoolBlockMetadata</a></td></tr>
+<tr class="memdesc:structSynchPoolBlockMetadata"><td class="mdescLeft">&#160;</td><td class="mdescRight">The metadata information for a single block.  <a href="pool_8h.html#structSynchPoolBlockMetadata">More...</a><br /></td></tr>
+<tr class="separator:structSynchPoolBlockMetadata"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchPoolBlock"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#structSynchPoolBlock">SynchPoolBlock</a></td></tr>
+<tr class="memdesc:structSynchPoolBlock"><td class="mdescLeft">&#160;</td><td class="mdescRight">This struct stores the metadata of the block and all the objects of the block.  <a href="pool_8h.html#structSynchPoolBlock">More...</a><br /></td></tr>
+<tr class="separator:structSynchPoolBlock"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchPoolStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a></td></tr>
+<tr class="memdesc:structSynchPoolStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight">PoolStruct stores an instance of the pool object.  <a href="pool_8h.html#structSynchPoolStruct">More...</a><br /></td></tr>
+<tr class="separator:structSynchPoolStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -111,33 +111,33 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a063aa93e8908e2473ba2cfdb7b0ad96e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a063aa93e8908e2473ba2cfdb7b0ad96e">init_pool</a> (<a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *pool, uint32_t obj_size)</td></tr>
-<tr class="memdesc:a063aa93e8908e2473ba2cfdb7b0ad96e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes a pool with objects of size obj_size.  <a href="pool_8h.html#a063aa93e8908e2473ba2cfdb7b0ad96e">More...</a><br /></td></tr>
-<tr class="separator:a063aa93e8908e2473ba2cfdb7b0ad96e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82e3e2d89a8c7d8f24fbde02fb0efb1e"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a82e3e2d89a8c7d8f24fbde02fb0efb1e">alloc_obj</a> (<a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *pool)</td></tr>
-<tr class="memdesc:a82e3e2d89a8c7d8f24fbde02fb0efb1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes a pool with objects of size obj_size.  <a href="pool_8h.html#a82e3e2d89a8c7d8f24fbde02fb0efb1e">More...</a><br /></td></tr>
-<tr class="separator:a82e3e2d89a8c7d8f24fbde02fb0efb1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6158fdfc875b6de3d1117bb133a8b4f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a6158fdfc875b6de3d1117bb133a8b4f2">recycle_obj</a> (<a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *pool, void *obj)</td></tr>
-<tr class="memdesc:a6158fdfc875b6de3d1117bb133a8b4f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function recycles the obj object for future use.  <a href="pool_8h.html#a6158fdfc875b6de3d1117bb133a8b4f2">More...</a><br /></td></tr>
-<tr class="separator:a6158fdfc875b6de3d1117bb133a8b4f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a227d517163e86387a44e359b7f2e1ea8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a227d517163e86387a44e359b7f2e1ea8">rollback</a> (<a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *pool, uint32_t num_objs)</td></tr>
-<tr class="memdesc:a227d517163e86387a44e359b7f2e1ea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function cancels the last num_objs consecutive object allocations. Note that no recycle_obj operation should have been called for any of the last num_objs consecutive object allocations.  <a href="pool_8h.html#a227d517163e86387a44e359b7f2e1ea8">More...</a><br /></td></tr>
-<tr class="separator:a227d517163e86387a44e359b7f2e1ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a54dfff28a8331157f6af1cc0ce5eb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a5a54dfff28a8331157f6af1cc0ce5eb9">destroy_pool</a> (<a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *pool)</td></tr>
-<tr class="memdesc:a5a54dfff28a8331157f6af1cc0ce5eb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees all the memory allocated by the pool object.  <a href="pool_8h.html#a5a54dfff28a8331157f6af1cc0ce5eb9">More...</a><br /></td></tr>
-<tr class="separator:a5a54dfff28a8331157f6af1cc0ce5eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e0958c7c6fd1ad128355b31c1348a4e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a6e0958c7c6fd1ad128355b31c1348a4e">synchInitPool</a> (<a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *pool, uint32_t obj_size)</td></tr>
+<tr class="memdesc:a6e0958c7c6fd1ad128355b31c1348a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes a pool with objects of size obj_size.  <a href="pool_8h.html#a6e0958c7c6fd1ad128355b31c1348a4e">More...</a><br /></td></tr>
+<tr class="separator:a6e0958c7c6fd1ad128355b31c1348a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6843f9451bb3bdd74b7525a3350a0cde"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a6843f9451bb3bdd74b7525a3350a0cde">synchAllocObj</a> (<a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *pool)</td></tr>
+<tr class="memdesc:a6843f9451bb3bdd74b7525a3350a0cde"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes a pool with objects of size obj_size.  <a href="pool_8h.html#a6843f9451bb3bdd74b7525a3350a0cde">More...</a><br /></td></tr>
+<tr class="separator:a6843f9451bb3bdd74b7525a3350a0cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a852a122af889cd555b4d94277a74013a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a852a122af889cd555b4d94277a74013a">synchRecycleObj</a> (<a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *pool, void *obj)</td></tr>
+<tr class="memdesc:a852a122af889cd555b4d94277a74013a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function recycles the obj object for future use.  <a href="pool_8h.html#a852a122af889cd555b4d94277a74013a">More...</a><br /></td></tr>
+<tr class="separator:a852a122af889cd555b4d94277a74013a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae569a0d8df246355ff95d8db5ea7a50e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#ae569a0d8df246355ff95d8db5ea7a50e">synchRollback</a> (<a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *pool, uint32_t num_objs)</td></tr>
+<tr class="memdesc:ae569a0d8df246355ff95d8db5ea7a50e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function cancels the last num_objs consecutive object allocations. Note that no recycle_obj operation should have been called for any of the last num_objs consecutive object allocations.  <a href="pool_8h.html#ae569a0d8df246355ff95d8db5ea7a50e">More...</a><br /></td></tr>
+<tr class="separator:ae569a0d8df246355ff95d8db5ea7a50e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a360645dac2c1399b46cab66c9058b47e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a360645dac2c1399b46cab66c9058b47e">synchDestroyPool</a> (<a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *pool)</td></tr>
+<tr class="memdesc:a360645dac2c1399b46cab66c9058b47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees all the memory allocated by the pool object.  <a href="pool_8h.html#a360645dac2c1399b46cab66c9058b47e">More...</a><br /></td></tr>
+<tr class="separator:a360645dac2c1399b46cab66c9058b47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes a simple API for implementing a very simple pool object. This pool object gives user the ability to allocate small chunks of memory (e.g. allocatting nodes for using them in an queue or stack implementation) in a fast and efficient way. The main purpose of this pool implentation is to add minimal overheads while benchmarking concurrent data structures, such as stacks. queues, etc. This object does not provide thread-safe methods for accessing, and thus each of the running threads should use its own instance without directely accessing the pool of any other thread. </p>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structBlockObject" id="structBlockObject"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structBlockObject">&#9670;&nbsp;</a></span>BlockObject</h2>
+<a name="structSynchBlockObject" id="structSynchBlockObject"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchBlockObject">&#9670;&nbsp;</a></span>SynchBlockObject</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct BlockObject</td>
+          <td class="memname">struct SynchBlockObject</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -145,7 +145,7 @@ Functions</h2></td></tr>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a27efa377126685282a4a91f82468fbbd"></a>struct <a class="el" href="pool_8h.html#structBlockObject">BlockObject</a> *</td>
+<a id="a56ee07bb4c45a97cb238fddbaedf9eb3"></a>struct <a class="el" href="pool_8h.html#structSynchBlockObject">SynchBlockObject</a> *</td>
 <td class="fieldname">
 next</td>
 <td class="fielddoc">
@@ -154,14 +154,14 @@ The first field of a block object is a pointer to the next allocated block (if a
 
 </div>
 </div>
-<a name="structPoolBlockMetadata" id="structPoolBlockMetadata"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structPoolBlockMetadata">&#9670;&nbsp;</a></span>PoolBlockMetadata</h2>
+<a name="structSynchPoolBlockMetadata" id="structSynchPoolBlockMetadata"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchPoolBlockMetadata">&#9670;&nbsp;</a></span>SynchPoolBlockMetadata</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct PoolBlockMetadata</td>
+          <td class="memname">struct SynchPoolBlockMetadata</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -169,37 +169,37 @@ The first field of a block object is a pointer to the next allocated block (if a
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a69a09be4a2afe399dd80033144bbea95"></a>uint32_t</td>
+<a id="a9c8e41a6a0302aacee3485f3278f17ef"></a>uint32_t</td>
 <td class="fieldname">
 object_size</td>
 <td class="fielddoc">
 The size of each stored object. </td></tr>
 <tr><td class="fieldtype">
-<a id="a7e330a62cd755c512cc5cb58b18afb51"></a>uint32_t</td>
+<a id="ab62c55a5d84578d20842095ba7c8cdda"></a>uint32_t</td>
 <td class="fieldname">
 entries</td>
 <td class="fielddoc">
 The total number of objects stored in the block. </td></tr>
 <tr><td class="fieldtype">
-<a id="aff36afe80afb8f5ed1df514c6667c08e"></a>uint32_t</td>
+<a id="ac842b51b9c3a01f850abd2a39844400b"></a>uint32_t</td>
 <td class="fieldname">
 free_entries</td>
 <td class="fielddoc">
 The number of free blocks available in the block. </td></tr>
 <tr><td class="fieldtype">
-<a id="afb47a7ebb71da04a7a40d9bd38680beb"></a>uint32_t</td>
+<a id="ac4c7f6d0b5ea0edda4be6e456411eb5a"></a>uint32_t</td>
 <td class="fieldname">
 cur_entry</td>
 <td class="fielddoc">
 The first free block. This should be returned in the next call of alloc_obj. </td></tr>
 <tr><td class="fieldtype">
-<a id="a98b9e9352b75e7af8654b9aaf2d920b4"></a>struct <a class="el" href="pool_8h.html#structPoolBlock">PoolBlock</a> *</td>
+<a id="acd3cd0f1c11b3978b9eb6ad6efd10614"></a>struct <a class="el" href="pool_8h.html#structSynchPoolBlock">SynchPoolBlock</a> *</td>
 <td class="fieldname">
 next</td>
 <td class="fielddoc">
 The next block of objects. </td></tr>
 <tr><td class="fieldtype">
-<a id="ac0dcef7073dd29c6252fec513aca675f"></a>struct <a class="el" href="pool_8h.html#structPoolBlock">PoolBlock</a> *</td>
+<a id="ab47632560b6c4cc53ba4da39faa3d7a4"></a>struct <a class="el" href="pool_8h.html#structSynchPoolBlock">SynchPoolBlock</a> *</td>
 <td class="fieldname">
 back</td>
 <td class="fielddoc">
@@ -208,14 +208,14 @@ The previous block of objects. </td></tr>
 
 </div>
 </div>
-<a name="structPoolBlock" id="structPoolBlock"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structPoolBlock">&#9670;&nbsp;</a></span>PoolBlock</h2>
+<a name="structSynchPoolBlock" id="structSynchPoolBlock"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchPoolBlock">&#9670;&nbsp;</a></span>SynchPoolBlock</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct PoolBlock</td>
+          <td class="memname">struct SynchPoolBlock</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -223,13 +223,13 @@ The previous block of objects. </td></tr>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a6cc2707b96d9177edcfa3170d1921690"></a><a class="el" href="pool_8h.html#structPoolBlockMetadata">PoolBlockMetadata</a></td>
+<a id="a390c6ed379da4891bc216049ad665541"></a><a class="el" href="pool_8h.html#structSynchPoolBlockMetadata">SynchPoolBlockMetadata</a></td>
 <td class="fieldname">
 metadata</td>
 <td class="fielddoc">
 The metadata of the block. </td></tr>
 <tr><td class="fieldtype">
-<a id="a81e93dd551879fbb11ae9d89947feafe"></a>char</td>
+<a id="a7f7107c1e1ecbc5c46982e169b150b47"></a>char</td>
 <td class="fieldname">
 heap[]</td>
 <td class="fielddoc">
@@ -238,46 +238,46 @@ The actual storage space of the block (i.e. the objects of the block). </td></tr
 
 </div>
 </div>
-<a name="structPoolStruct" id="structPoolStruct"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structPoolStruct">&#9670;&nbsp;</a></span>PoolStruct</h2>
+<a name="structSynchPoolStruct" id="structSynchPoolStruct"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchPoolStruct">&#9670;&nbsp;</a></span>SynchPoolStruct</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct PoolStruct</td>
+          <td class="memname">struct SynchPoolStruct</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="pool_8h.html#structPoolStruct" title="PoolStruct stores an instance of the pool object.">PoolStruct</a> stores an instance of the pool object. </p>
+<div class="textblock"><p>PoolStruct stores an instance of the pool object. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a125f469b088468c8803db3fff95cd6bf"></a>uint32_t</td>
+<a id="ae5346d3119deb36dddf1a5e095ba7ef3"></a>uint32_t</td>
 <td class="fieldname">
 obj_size</td>
 <td class="fielddoc">
 The size of the stored object (in bytes). </td></tr>
 <tr><td class="fieldtype">
-<a id="a2e48423f32b77e6a92c40387bd329a42"></a>uint32_t</td>
+<a id="a7124cde87dfd4ddfb81cb21ef2408611"></a>uint32_t</td>
 <td class="fieldname">
 entries_per_block</td>
 <td class="fielddoc">
 The number of objects that each block of the pool contains. </td></tr>
 <tr><td class="fieldtype">
-<a id="a3bff5ec14ffeb0ae89a05e63d743554e"></a><a class="el" href="pool_8h.html#structBlockObject">BlockObject</a> *</td>
+<a id="aa3aac33e12df87639eec4d29c800417f"></a><a class="el" href="pool_8h.html#structSynchBlockObject">SynchBlockObject</a> *</td>
 <td class="fieldname">
 recycle_list</td>
 <td class="fielddoc">
 A list with the recycled items. </td></tr>
 <tr><td class="fieldtype">
-<a id="adbb473181dee8a988242f86f9afae877"></a><a class="el" href="pool_8h.html#structPoolBlock">PoolBlock</a> *</td>
+<a id="a4c1777ad4fe308432fda29d39f884339"></a><a class="el" href="pool_8h.html#structSynchPoolBlock">SynchPoolBlock</a> *</td>
 <td class="fieldname">
 head_block</td>
 <td class="fielddoc">
 The head of the list of blocks, where each block stores a specific amount of objects. </td></tr>
 <tr><td class="fieldtype">
-<a id="ac3fa0b77cad7d21bfecf4d92c94c258d"></a><a class="el" href="pool_8h.html#structPoolBlock">PoolBlock</a> *</td>
+<a id="a2e84005bfd0a69be4bc9443c3676ec56"></a><a class="el" href="pool_8h.html#structSynchPoolBlock">SynchPoolBlock</a> *</td>
 <td class="fieldname">
 cur_block</td>
 <td class="fielddoc">
@@ -336,16 +336,16 @@ The latest allocated block of objects. </td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a063aa93e8908e2473ba2cfdb7b0ad96e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a063aa93e8908e2473ba2cfdb7b0ad96e">&#9670;&nbsp;</a></span>init_pool()</h2>
+<a id="a6e0958c7c6fd1ad128355b31c1348a4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e0958c7c6fd1ad128355b31c1348a4e">&#9670;&nbsp;</a></span>synchInitPool()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int init_pool </td>
+          <td class="memname">int synchInitPool </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *&#160;</td>
           <td class="paramname"><em>pool</em>, </td>
         </tr>
         <tr>
@@ -374,16 +374,16 @@ The latest allocated block of objects. </td></tr>
 
 </div>
 </div>
-<a id="a82e3e2d89a8c7d8f24fbde02fb0efb1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82e3e2d89a8c7d8f24fbde02fb0efb1e">&#9670;&nbsp;</a></span>alloc_obj()</h2>
+<a id="a6843f9451bb3bdd74b7525a3350a0cde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6843f9451bb3bdd74b7525a3350a0cde">&#9670;&nbsp;</a></span>synchAllocObj()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void* alloc_obj </td>
+          <td class="memname">void* synchAllocObj </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *&#160;</td>
           <td class="paramname"><em>pool</em></td><td>)</td>
           <td></td>
         </tr>
@@ -401,16 +401,16 @@ The latest allocated block of objects. </td></tr>
 
 </div>
 </div>
-<a id="a6158fdfc875b6de3d1117bb133a8b4f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6158fdfc875b6de3d1117bb133a8b4f2">&#9670;&nbsp;</a></span>recycle_obj()</h2>
+<a id="a852a122af889cd555b4d94277a74013a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a852a122af889cd555b4d94277a74013a">&#9670;&nbsp;</a></span>synchRecycleObj()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void recycle_obj </td>
+          <td class="memname">void synchRecycleObj </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *&#160;</td>
           <td class="paramname"><em>pool</em>, </td>
         </tr>
         <tr>
@@ -438,16 +438,16 @@ The latest allocated block of objects. </td></tr>
 
 </div>
 </div>
-<a id="a227d517163e86387a44e359b7f2e1ea8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a227d517163e86387a44e359b7f2e1ea8">&#9670;&nbsp;</a></span>rollback()</h2>
+<a id="ae569a0d8df246355ff95d8db5ea7a50e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae569a0d8df246355ff95d8db5ea7a50e">&#9670;&nbsp;</a></span>synchRollback()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void rollback </td>
+          <td class="memname">void synchRollback </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *&#160;</td>
           <td class="paramname"><em>pool</em>, </td>
         </tr>
         <tr>
@@ -475,16 +475,16 @@ The latest allocated block of objects. </td></tr>
 
 </div>
 </div>
-<a id="a5a54dfff28a8331157f6af1cc0ce5eb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a54dfff28a8331157f6af1cc0ce5eb9">&#9670;&nbsp;</a></span>destroy_pool()</h2>
+<a id="a360645dac2c1399b46cab66c9058b47e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a360645dac2c1399b46cab66c9058b47e">&#9670;&nbsp;</a></span>synchDestroyPool()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void destroy_pool </td>
+          <td class="memname">void synchDestroyPool </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a> *&#160;</td>
           <td class="paramname"><em>pool</em></td><td>)</td>
           <td></td>
         </tr>

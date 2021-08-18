@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo_synch.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">The Synch framework
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v3.0.0</span>
    </div>
    <div id="projectbrief">An open-source framework for concurrent data-structures and benchmarks</div>
   </td>
@@ -83,83 +83,83 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:structDSMStackStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#structDSMStackStruct">DSMStackStruct</a></td></tr>
-<tr class="memdesc:structDSMStackStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmstack_8h.html#structDSMStackStruct" title="DSMStackStruct stores the state of an instance of the DSM-Stack concurrent stack implementation....">DSMStackStruct</a> stores the state of an instance of the DSM-Stack concurrent stack implementation. <a class="el" href="dsmstack_8h.html#structDSMStackStruct" title="DSMStackStruct stores the state of an instance of the DSM-Stack concurrent stack implementation....">DSMStackStruct</a> should be initialized using the DSMStackStructInit function.  <a href="dsmstack_8h.html#structDSMStackStruct">More...</a><br /></td></tr>
-<tr class="separator:structDSMStackStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structDSMStackThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#structDSMStackThreadState">DSMStackThreadState</a></td></tr>
-<tr class="memdesc:structDSMStackThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmstack_8h.html#structDSMStackThreadState" title="DSMStackThreadState stores each thread&#39;s local state for a single instance of DSM-Stack....">DSMStackThreadState</a> stores each thread's local state for a single instance of DSM-Stack. For each instance of DSM-Stack, a discrete instance of <a class="el" href="dsmstack_8h.html#structDSMStackThreadState" title="DSMStackThreadState stores each thread&#39;s local state for a single instance of DSM-Stack....">DSMStackThreadState</a> should be used.  <a href="dsmstack_8h.html#structDSMStackThreadState">More...</a><br /></td></tr>
-<tr class="separator:structDSMStackThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchDSMStackStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct">SynchDSMStackStruct</a></td></tr>
+<tr class="memdesc:structSynchDSMStackStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct" title="SynchDSMStackStruct stores the state of an instance of the DSM-Stack concurrent stack implementation....">SynchDSMStackStruct</a> stores the state of an instance of the DSM-Stack concurrent stack implementation. <a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct" title="SynchDSMStackStruct stores the state of an instance of the DSM-Stack concurrent stack implementation....">SynchDSMStackStruct</a> should be initialized using the DSMStackStructInit function.  <a href="dsmstack_8h.html#structSynchDSMStackStruct">More...</a><br /></td></tr>
+<tr class="separator:structSynchDSMStackStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchDSMStackThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState">SynchDSMStackThreadState</a></td></tr>
+<tr class="memdesc:structSynchDSMStackThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState" title="SynchDSMStackThreadState stores each thread&#39;s local state for a single instance of DSM-Stack....">SynchDSMStackThreadState</a> stores each thread's local state for a single instance of DSM-Stack. For each instance of DSM-Stack, a discrete instance of <a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState" title="SynchDSMStackThreadState stores each thread&#39;s local state for a single instance of DSM-Stack....">SynchDSMStackThreadState</a> should be used.  <a href="dsmstack_8h.html#structSynchDSMStackThreadState">More...</a><br /></td></tr>
+<tr class="separator:structSynchDSMStackThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab1429ad0f8f029408faf933eedfbedff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#ab1429ad0f8f029408faf933eedfbedff">DSMSStackInit</a> (<a class="el" href="dsmstack_8h.html#structDSMStackStruct">DSMStackStruct</a> *stack_object_struct, uint32_t nthreads)</td></tr>
-<tr class="memdesc:ab1429ad0f8f029408faf933eedfbedff"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the DSM-Stack concurrent stack implementation.  <a href="dsmstack_8h.html#ab1429ad0f8f029408faf933eedfbedff">More...</a><br /></td></tr>
-<tr class="separator:ab1429ad0f8f029408faf933eedfbedff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f2a14d40b2931c7ce9018d07b45613a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#a3f2a14d40b2931c7ce9018d07b45613a">DSMStackThreadStateInit</a> (<a class="el" href="dsmstack_8h.html#structDSMStackStruct">DSMStackStruct</a> *object_struct, <a class="el" href="dsmstack_8h.html#structDSMStackThreadState">DSMStackThreadState</a> *lobject_struct, int pid)</td></tr>
-<tr class="memdesc:a3f2a14d40b2931c7ce9018d07b45613a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the DSM-Stack concurrent stack implementation.  <a href="dsmstack_8h.html#a3f2a14d40b2931c7ce9018d07b45613a">More...</a><br /></td></tr>
-<tr class="separator:a3f2a14d40b2931c7ce9018d07b45613a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeded248e865bcf70a6eac93c5235e61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#adeded248e865bcf70a6eac93c5235e61">DSMStackPush</a> (<a class="el" href="dsmstack_8h.html#structDSMStackStruct">DSMStackStruct</a> *object_struct, <a class="el" href="dsmstack_8h.html#structDSMStackThreadState">DSMStackThreadState</a> *lobject_struct, <a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a> arg, int pid)</td></tr>
-<tr class="memdesc:adeded248e865bcf70a6eac93c5235e61"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function adds (i.e. pushes) a new element to the top of the stack. This element has a value equal with arg.  <a href="dsmstack_8h.html#adeded248e865bcf70a6eac93c5235e61">More...</a><br /></td></tr>
-<tr class="separator:adeded248e865bcf70a6eac93c5235e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0f832a2c7b90ae29a6d25515896536b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#ab0f832a2c7b90ae29a6d25515896536b">DSMStackPop</a> (<a class="el" href="dsmstack_8h.html#structDSMStackStruct">DSMStackStruct</a> *object_struct, <a class="el" href="dsmstack_8h.html#structDSMStackThreadState">DSMStackThreadState</a> *lobject_struct, int pid)</td></tr>
-<tr class="memdesc:ab0f832a2c7b90ae29a6d25515896536b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function removes (i.e. pops) an element from the top of the stack and returns its value.  <a href="dsmstack_8h.html#ab0f832a2c7b90ae29a6d25515896536b">More...</a><br /></td></tr>
-<tr class="separator:ab0f832a2c7b90ae29a6d25515896536b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79f238e1f582d0e53b38a024cc60145c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#a79f238e1f582d0e53b38a024cc60145c">synchDSMSStackInit</a> (<a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct">SynchDSMStackStruct</a> *stack_object_struct, uint32_t nthreads)</td></tr>
+<tr class="memdesc:a79f238e1f582d0e53b38a024cc60145c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the DSM-Stack concurrent stack implementation.  <a href="dsmstack_8h.html#a79f238e1f582d0e53b38a024cc60145c">More...</a><br /></td></tr>
+<tr class="separator:a79f238e1f582d0e53b38a024cc60145c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9028c55d551904787e03f5944523174"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#ae9028c55d551904787e03f5944523174">synchDSMStackThreadStateInit</a> (<a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct">SynchDSMStackStruct</a> *object_struct, <a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState">SynchDSMStackThreadState</a> *lobject_struct, int pid)</td></tr>
+<tr class="memdesc:ae9028c55d551904787e03f5944523174"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the DSM-Stack concurrent stack implementation.  <a href="dsmstack_8h.html#ae9028c55d551904787e03f5944523174">More...</a><br /></td></tr>
+<tr class="separator:ae9028c55d551904787e03f5944523174"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69f595f725824f957ed9844ff7370320"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#a69f595f725824f957ed9844ff7370320">synchDSMStackPush</a> (<a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct">SynchDSMStackStruct</a> *object_struct, <a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState">SynchDSMStackThreadState</a> *lobject_struct, <a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a> arg, int pid)</td></tr>
+<tr class="memdesc:a69f595f725824f957ed9844ff7370320"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function adds (i.e. pushes) a new element to the top of the stack. This element has a value equal with arg.  <a href="dsmstack_8h.html#a69f595f725824f957ed9844ff7370320">More...</a><br /></td></tr>
+<tr class="separator:a69f595f725824f957ed9844ff7370320"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e7604806e7a89cd1557aa2f7ded6c34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmstack_8h.html#a0e7604806e7a89cd1557aa2f7ded6c34">synchDSMStackPop</a> (<a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct">SynchDSMStackStruct</a> *object_struct, <a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState">SynchDSMStackThreadState</a> *lobject_struct, int pid)</td></tr>
+<tr class="memdesc:a0e7604806e7a89cd1557aa2f7ded6c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function removes (i.e. pops) an element from the top of the stack and returns its value.  <a href="dsmstack_8h.html#a0e7604806e7a89cd1557aa2f7ded6c34">More...</a><br /></td></tr>
+<tr class="separator:a0e7604806e7a89cd1557aa2f7ded6c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes the API of the DSM-Stack concurrent stack implementation. An example of use of this API is provided in benchmarks/dsmstackbench.c file. </p>
 <dl class="section author"><dt>Author</dt><dd>Nikolaos D. Kallimanis (<a href="#" onclick="location.href='mai'+'lto:'+'nka'+'ll'+'ima'+'@g'+'mai'+'l.'+'com'; return false;">nkall<span style="display: none;">.nosp@m.</span>ima@<span style="display: none;">.nosp@m.</span>gmail<span style="display: none;">.nosp@m.</span>.com</a>)</dd></dl>
 <p>For a more detailed description see the original publication: Panagiota Fatourou, and Nikolaos D. Kallimanis."Revisiting the combining synchronization technique". ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012. </p><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2021 </dd></dl>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structDSMStackStruct" id="structDSMStackStruct"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structDSMStackStruct">&#9670;&nbsp;</a></span>DSMStackStruct</h2>
+<a name="structSynchDSMStackStruct" id="structSynchDSMStackStruct"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchDSMStackStruct">&#9670;&nbsp;</a></span>SynchDSMStackStruct</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct DSMStackStruct</td>
+          <td class="memname">struct SynchDSMStackStruct</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="dsmstack_8h.html#structDSMStackStruct" title="DSMStackStruct stores the state of an instance of the DSM-Stack concurrent stack implementation....">DSMStackStruct</a> stores the state of an instance of the DSM-Stack concurrent stack implementation. <a class="el" href="dsmstack_8h.html#structDSMStackStruct" title="DSMStackStruct stores the state of an instance of the DSM-Stack concurrent stack implementation....">DSMStackStruct</a> should be initialized using the DSMStackStructInit function. </p>
+<div class="textblock"><p><a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct" title="SynchDSMStackStruct stores the state of an instance of the DSM-Stack concurrent stack implementation....">SynchDSMStackStruct</a> stores the state of an instance of the DSM-Stack concurrent stack implementation. <a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct" title="SynchDSMStackStruct stores the state of an instance of the DSM-Stack concurrent stack implementation....">SynchDSMStackStruct</a> should be initialized using the DSMStackStructInit function. </p>
 </div>
 </div>
 </div>
-<a name="structDSMStackThreadState" id="structDSMStackThreadState"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structDSMStackThreadState">&#9670;&nbsp;</a></span>DSMStackThreadState</h2>
+<a name="structSynchDSMStackThreadState" id="structSynchDSMStackThreadState"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchDSMStackThreadState">&#9670;&nbsp;</a></span>SynchDSMStackThreadState</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct DSMStackThreadState</td>
+          <td class="memname">struct SynchDSMStackThreadState</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="dsmstack_8h.html#structDSMStackThreadState" title="DSMStackThreadState stores each thread&#39;s local state for a single instance of DSM-Stack....">DSMStackThreadState</a> stores each thread's local state for a single instance of DSM-Stack. For each instance of DSM-Stack, a discrete instance of <a class="el" href="dsmstack_8h.html#structDSMStackThreadState" title="DSMStackThreadState stores each thread&#39;s local state for a single instance of DSM-Stack....">DSMStackThreadState</a> should be used. </p>
+<div class="textblock"><p><a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState" title="SynchDSMStackThreadState stores each thread&#39;s local state for a single instance of DSM-Stack....">SynchDSMStackThreadState</a> stores each thread's local state for a single instance of DSM-Stack. For each instance of DSM-Stack, a discrete instance of <a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState" title="SynchDSMStackThreadState stores each thread&#39;s local state for a single instance of DSM-Stack....">SynchDSMStackThreadState</a> should be used. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a2dbd21fcbbbdfccb83afbb950f9985af"></a><a class="el" href="dsmsynch_8h.html#structDSMSynchThreadState">DSMSynchThreadState</a></td>
+<a id="ac1f7820c83df315191fde34cff11024a"></a><a class="el" href="dsmsynch_8h.html#structSynchDSMSynchThreadState">SynchDSMSynchThreadState</a></td>
 <td class="fieldname">
 th_state</td>
 <td class="fielddoc">
-A <a class="el" href="dsmsynch_8h.html#structDSMSynchThreadState" title="DSMSynchThreadState stores each thread&#39;s local state for a single instance of DSMSynch....">DSMSynchThreadState</a> struct for the instance of DSM-Synch that serves both push and pop operations. </td></tr>
+A <a class="el" href="dsmsynch_8h.html#structSynchDSMSynchThreadState" title="SynchDSMSynchThreadState stores each thread&#39;s local state for a single instance of DSMSynch....">SynchDSMSynchThreadState</a> struct for the instance of DSM-Synch that serves both push and pop operations. </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ab1429ad0f8f029408faf933eedfbedff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1429ad0f8f029408faf933eedfbedff">&#9670;&nbsp;</a></span>DSMSStackInit()</h2>
+<a id="a79f238e1f582d0e53b38a024cc60145c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79f238e1f582d0e53b38a024cc60145c">&#9670;&nbsp;</a></span>synchDSMSStackInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void DSMSStackInit </td>
+          <td class="memname">void synchDSMSStackInit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structDSMStackStruct">DSMStackStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct">SynchDSMStackStruct</a> *&#160;</td>
           <td class="paramname"><em>stack_object_struct</em>, </td>
         </tr>
         <tr>
@@ -188,22 +188,22 @@ A <a class="el" href="dsmsynch_8h.html#structDSMSynchThreadState" title="DSMSync
 
 </div>
 </div>
-<a id="a3f2a14d40b2931c7ce9018d07b45613a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f2a14d40b2931c7ce9018d07b45613a">&#9670;&nbsp;</a></span>DSMStackThreadStateInit()</h2>
+<a id="ae9028c55d551904787e03f5944523174"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9028c55d551904787e03f5944523174">&#9670;&nbsp;</a></span>synchDSMStackThreadStateInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void DSMStackThreadStateInit </td>
+          <td class="memname">void synchDSMStackThreadStateInit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structDSMStackStruct">DSMStackStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct">SynchDSMStackStruct</a> *&#160;</td>
           <td class="paramname"><em>object_struct</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structDSMStackThreadState">DSMStackThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState">SynchDSMStackThreadState</a> *&#160;</td>
           <td class="paramname"><em>lobject_struct</em>, </td>
         </tr>
         <tr>
@@ -232,22 +232,22 @@ A <a class="el" href="dsmsynch_8h.html#structDSMSynchThreadState" title="DSMSync
 
 </div>
 </div>
-<a id="adeded248e865bcf70a6eac93c5235e61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adeded248e865bcf70a6eac93c5235e61">&#9670;&nbsp;</a></span>DSMStackPush()</h2>
+<a id="a69f595f725824f957ed9844ff7370320"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69f595f725824f957ed9844ff7370320">&#9670;&nbsp;</a></span>synchDSMStackPush()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void DSMStackPush </td>
+          <td class="memname">void synchDSMStackPush </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structDSMStackStruct">DSMStackStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct">SynchDSMStackStruct</a> *&#160;</td>
           <td class="paramname"><em>object_struct</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structDSMStackThreadState">DSMStackThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState">SynchDSMStackThreadState</a> *&#160;</td>
           <td class="paramname"><em>lobject_struct</em>, </td>
         </tr>
         <tr>
@@ -283,22 +283,22 @@ A <a class="el" href="dsmsynch_8h.html#structDSMSynchThreadState" title="DSMSync
 
 </div>
 </div>
-<a id="ab0f832a2c7b90ae29a6d25515896536b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0f832a2c7b90ae29a6d25515896536b">&#9670;&nbsp;</a></span>DSMStackPop()</h2>
+<a id="a0e7604806e7a89cd1557aa2f7ded6c34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e7604806e7a89cd1557aa2f7ded6c34">&#9670;&nbsp;</a></span>synchDSMStackPop()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> DSMStackPop </td>
+          <td class="memname"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> synchDSMStackPop </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structDSMStackStruct">DSMStackStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structSynchDSMStackStruct">SynchDSMStackStruct</a> *&#160;</td>
           <td class="paramname"><em>object_struct</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structDSMStackThreadState">DSMStackThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmstack_8h.html#structSynchDSMStackThreadState">SynchDSMStackThreadState</a> *&#160;</td>
           <td class="paramname"><em>lobject_struct</em>, </td>
         </tr>
         <tr>

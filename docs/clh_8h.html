@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo_synch.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">The Synch framework
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v3.0.0</span>
    </div>
    <div id="projectbrief">An open-source framework for concurrent data-structures and benchmarks</div>
   </td>
@@ -83,51 +83,51 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:unionCLHLockNode"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#unionCLHLockNode">CLHLockNode</a></td></tr>
-<tr class="memdesc:unionCLHLockNode"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> used for announcing that a thread wants to acquire the lock.  <a href="clh_8h.html#unionCLHLockNode">More...</a><br /></td></tr>
-<tr class="separator:unionCLHLockNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structCLHLockStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#structCLHLockStruct">CLHLockStruct</a></td></tr>
-<tr class="memdesc:structCLHLockStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> stores the state of an instance of the CLH queue lock implementation. <a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> should be initialized using the CLHLockInit function.  <a href="clh_8h.html#structCLHLockStruct">More...</a><br /></td></tr>
-<tr class="separator:structCLHLockStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:unionSynchCLHLockNode"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#unionSynchCLHLockNode">SynchCLHLockNode</a></td></tr>
+<tr class="memdesc:unionSynchCLHLockNode"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="clh_8h.html#structSynchCLHLockStruct" title="SynchCLHLockStruct stores the state of an instance of the CLH queue lock implementation....">SynchCLHLockStruct</a> used for announcing that a thread wants to acquire the lock.  <a href="clh_8h.html#unionSynchCLHLockNode">More...</a><br /></td></tr>
+<tr class="separator:unionSynchCLHLockNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchCLHLockStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#structSynchCLHLockStruct">SynchCLHLockStruct</a></td></tr>
+<tr class="memdesc:structSynchCLHLockStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="clh_8h.html#structSynchCLHLockStruct" title="SynchCLHLockStruct stores the state of an instance of the CLH queue lock implementation....">SynchCLHLockStruct</a> stores the state of an instance of the CLH queue lock implementation. <a class="el" href="clh_8h.html#structSynchCLHLockStruct" title="SynchCLHLockStruct stores the state of an instance of the CLH queue lock implementation....">SynchCLHLockStruct</a> should be initialized using the synchCLHLockInit function.  <a href="clh_8h.html#structSynchCLHLockStruct">More...</a><br /></td></tr>
+<tr class="separator:structSynchCLHLockStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a87ed0ea782d1879b936592a628efc545"><td class="memItemLeft" align="right" valign="top"><a class="el" href="clh_8h.html#structCLHLockStruct">CLHLockStruct</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#a87ed0ea782d1879b936592a628efc545">CLHLockInit</a> (uint32_t nthreads)</td></tr>
-<tr class="memdesc:a87ed0ea782d1879b936592a628efc545"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the CLH queue lock implementation.  <a href="clh_8h.html#a87ed0ea782d1879b936592a628efc545">More...</a><br /></td></tr>
-<tr class="separator:a87ed0ea782d1879b936592a628efc545"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af010853b6239b0c046d5eb30f44c387c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#af010853b6239b0c046d5eb30f44c387c">CLHLock</a> (<a class="el" href="clh_8h.html#structCLHLockStruct">CLHLockStruct</a> *l, int pid)</td></tr>
-<tr class="memdesc:af010853b6239b0c046d5eb30f44c387c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns if the lock is available and the calling thread successfully acquires it. In case that the lock is already locked by another thread, the calling thread shall block until the lock becomes available (unlocked) and the calling thread successfully acquires it.  <a href="clh_8h.html#af010853b6239b0c046d5eb30f44c387c">More...</a><br /></td></tr>
-<tr class="separator:af010853b6239b0c046d5eb30f44c387c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f0528fbd18f7db85cabaebe7c6111dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#a8f0528fbd18f7db85cabaebe7c6111dd">CLHUnlock</a> (<a class="el" href="clh_8h.html#structCLHLockStruct">CLHLockStruct</a> *l, int pid)</td></tr>
-<tr class="memdesc:a8f0528fbd18f7db85cabaebe7c6111dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function makes the lock available (unlocked).  <a href="clh_8h.html#a8f0528fbd18f7db85cabaebe7c6111dd">More...</a><br /></td></tr>
-<tr class="separator:a8f0528fbd18f7db85cabaebe7c6111dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20ffb15daf559175a2e85359165a1bbb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="clh_8h.html#structSynchCLHLockStruct">SynchCLHLockStruct</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#a20ffb15daf559175a2e85359165a1bbb">synchCLHLockInit</a> (uint32_t nthreads)</td></tr>
+<tr class="memdesc:a20ffb15daf559175a2e85359165a1bbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the CLH queue lock implementation.  <a href="clh_8h.html#a20ffb15daf559175a2e85359165a1bbb">More...</a><br /></td></tr>
+<tr class="separator:a20ffb15daf559175a2e85359165a1bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa291931c7fecff3ee59afd591fba0a44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#aa291931c7fecff3ee59afd591fba0a44">synchCLHLock</a> (<a class="el" href="clh_8h.html#structSynchCLHLockStruct">SynchCLHLockStruct</a> *l, int pid)</td></tr>
+<tr class="memdesc:aa291931c7fecff3ee59afd591fba0a44"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns if the lock is available and the calling thread successfully acquires it. In case that the lock is already locked by another thread, the calling thread shall block until the lock becomes available (unlocked) and the calling thread successfully acquires it.  <a href="clh_8h.html#aa291931c7fecff3ee59afd591fba0a44">More...</a><br /></td></tr>
+<tr class="separator:aa291931c7fecff3ee59afd591fba0a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b7903a8d1a6ac817febb5cc3372c678"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clh_8h.html#a5b7903a8d1a6ac817febb5cc3372c678">synchCLHUnlock</a> (<a class="el" href="clh_8h.html#structSynchCLHLockStruct">SynchCLHLockStruct</a> *l, int pid)</td></tr>
+<tr class="memdesc:a5b7903a8d1a6ac817febb5cc3372c678"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function makes the lock available (unlocked).  <a href="clh_8h.html#a5b7903a8d1a6ac817febb5cc3372c678">More...</a><br /></td></tr>
+<tr class="separator:a5b7903a8d1a6ac817febb5cc3372c678"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes the API of the CLH queue locks. An example of use of this API is provided in benchmarks/clhbench.c file. </p>
 <p>For a more detailed description see the following two publications: (1) Travis S. Craig. "Building FIFO and priority-queueing spin locks from atomic swap". Technical Report TR 93-02-02, Department of Computer Science, University of Washington, February 1993. (2) Peter Magnusson, Anders Landin, and Erik Hagersten. "Queue locks on cache coherent multiprocessors". Parallel Processing Symposium, 1994. Proceedings., Eighth International. IEEE, 1994. </p><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2021 </dd></dl>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="unionCLHLockNode" id="unionCLHLockNode"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#unionCLHLockNode">&#9670;&nbsp;</a></span>CLHLockNode</h2>
+<a name="unionSynchCLHLockNode" id="unionSynchCLHLockNode"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#unionSynchCLHLockNode">&#9670;&nbsp;</a></span>SynchCLHLockNode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">union CLHLockNode</td>
+          <td class="memname">union SynchCLHLockNode</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> used for announcing that a thread wants to acquire the lock. </p>
+<div class="textblock"><p><a class="el" href="clh_8h.html#structSynchCLHLockStruct" title="SynchCLHLockStruct stores the state of an instance of the CLH queue lock implementation....">SynchCLHLockStruct</a> used for announcing that a thread wants to acquire the lock. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a0332bc01373df7098a3aa65f5195ace3"></a>bool</td>
+<a id="aedde9c45a0ed7b6aabf2ae0c64513a76"></a>bool</td>
 <td class="fieldname">
 locked</td>
 <td class="fielddoc">
-This is true whenever a thread executes CLHLock and waits until it acquires the lock. </td></tr>
+This is true whenever a thread executes synchCLHLock and waits until it acquires the lock. </td></tr>
 <tr><td class="fieldtype">
-<a id="a4ecf540857962d66295121453f7bd42d"></a>char</td>
+<a id="aa7e2c06f94d0dc228c2c19579e5a6bd2"></a>char</td>
 <td class="fieldname">
 align[CACHE_LINE_SIZE]</td>
 <td class="fielddoc">
@@ -136,39 +136,39 @@ Padding space. </td></tr>
 
 </div>
 </div>
-<a name="structCLHLockStruct" id="structCLHLockStruct"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structCLHLockStruct">&#9670;&nbsp;</a></span>CLHLockStruct</h2>
+<a name="structSynchCLHLockStruct" id="structSynchCLHLockStruct"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchCLHLockStruct">&#9670;&nbsp;</a></span>SynchCLHLockStruct</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct CLHLockStruct</td>
+          <td class="memname">struct SynchCLHLockStruct</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> stores the state of an instance of the CLH queue lock implementation. <a class="el" href="clh_8h.html#structCLHLockStruct" title="CLHLockStruct stores the state of an instance of the CLH queue lock implementation....">CLHLockStruct</a> should be initialized using the CLHLockInit function. </p>
+<div class="textblock"><p><a class="el" href="clh_8h.html#structSynchCLHLockStruct" title="SynchCLHLockStruct stores the state of an instance of the CLH queue lock implementation....">SynchCLHLockStruct</a> stores the state of an instance of the CLH queue lock implementation. <a class="el" href="clh_8h.html#structSynchCLHLockStruct" title="SynchCLHLockStruct stores the state of an instance of the CLH queue lock implementation....">SynchCLHLockStruct</a> should be initialized using the synchCLHLockInit function. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a388cfc3094603e422dcf17e2ef228aab"></a>volatile <a class="el" href="clh_8h.html#unionCLHLockNode">CLHLockNode</a> **</td>
+<a id="ac9f4b08d4087c335f71b27b337be8ba8"></a>volatile <a class="el" href="clh_8h.html#unionSynchCLHLockNode">SynchCLHLockNode</a> **</td>
 <td class="fieldname">
 MyPred</td>
 <td class="fielddoc">
-An array of nthreads pointers to <a class="el" href="clh_8h.html#unionCLHLockNode" title="CLHLockStruct used for announcing that a thread wants to acquire the lock.">CLHLockNode</a> structs (one struct per thread). Initially, each such pointer points to NULL. </td></tr>
+An array of nthreads pointers to <a class="el" href="clh_8h.html#unionSynchCLHLockNode" title="SynchCLHLockStruct used for announcing that a thread wants to acquire the lock.">SynchCLHLockNode</a> structs (one struct per thread). Initially, each such pointer points to NULL. </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a87ed0ea782d1879b936592a628efc545"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87ed0ea782d1879b936592a628efc545">&#9670;&nbsp;</a></span>CLHLockInit()</h2>
+<a id="a20ffb15daf559175a2e85359165a1bbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20ffb15daf559175a2e85359165a1bbb">&#9670;&nbsp;</a></span>synchCLHLockInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="clh_8h.html#structCLHLockStruct">CLHLockStruct</a>* CLHLockInit </td>
+          <td class="memname"><a class="el" href="clh_8h.html#structSynchCLHLockStruct">SynchCLHLockStruct</a>* synchCLHLockInit </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>nthreads</em></td><td>)</td>
@@ -178,7 +178,7 @@ An array of nthreads pointers to <a class="el" href="clh_8h.html#unionCLHLockNod
 </div><div class="memdoc">
 
 <p>This function initializes an instance of the CLH queue lock implementation. </p>
-<p>This function should be called once (by a single thread) before any other thread tries to use either CLHLock or CLHUnlock.</p>
+<p>This function should be called once (by a single thread) before any other thread tries to use either synchCLHLock or synchCLHUnlock.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nthreads</td><td>The number of threads that will use the CLH queue lock implementation. </td></tr>
@@ -188,16 +188,16 @@ An array of nthreads pointers to <a class="el" href="clh_8h.html#unionCLHLockNod
 
 </div>
 </div>
-<a id="af010853b6239b0c046d5eb30f44c387c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af010853b6239b0c046d5eb30f44c387c">&#9670;&nbsp;</a></span>CLHLock()</h2>
+<a id="aa291931c7fecff3ee59afd591fba0a44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa291931c7fecff3ee59afd591fba0a44">&#9670;&nbsp;</a></span>synchCLHLock()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void CLHLock </td>
+          <td class="memname">void synchCLHLock </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="clh_8h.html#structCLHLockStruct">CLHLockStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="clh_8h.html#structSynchCLHLockStruct">SynchCLHLockStruct</a> *&#160;</td>
           <td class="paramname"><em>l</em>, </td>
         </tr>
         <tr>
@@ -225,16 +225,16 @@ An array of nthreads pointers to <a class="el" href="clh_8h.html#unionCLHLockNod
 
 </div>
 </div>
-<a id="a8f0528fbd18f7db85cabaebe7c6111dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f0528fbd18f7db85cabaebe7c6111dd">&#9670;&nbsp;</a></span>CLHUnlock()</h2>
+<a id="a5b7903a8d1a6ac817febb5cc3372c678"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b7903a8d1a6ac817febb5cc3372c678">&#9670;&nbsp;</a></span>synchCLHUnlock()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void CLHUnlock </td>
+          <td class="memname">void synchCLHUnlock </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="clh_8h.html#structCLHLockStruct">CLHLockStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="clh_8h.html#structSynchCLHLockStruct">SynchCLHLockStruct</a> *&#160;</td>
           <td class="paramname"><em>l</em>, </td>
         </tr>
         <tr>

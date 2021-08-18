@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo_synch.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">The Synch framework
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v3.0.0</span>
    </div>
    <div id="projectbrief">An open-source framework for concurrent data-structures and benchmarks</div>
   </td>
@@ -83,77 +83,77 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:structBenchArgs"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bench__args_8h.html#structBenchArgs">BenchArgs</a></td></tr>
-<tr class="memdesc:structBenchArgs"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="bench__args_8h.html#structBenchArgs" title="BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Sync...">BenchArgs</a> stores the values of the command-line arguments used by the benchmarks provided by the Synch framework. <a class="el" href="bench__args_8h.html#structBenchArgs" title="BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Sync...">BenchArgs</a> should be initialized using the parseArguments function. For the default values, see the <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">config.h</a> file.  <a href="bench__args_8h.html#structBenchArgs">More...</a><br /></td></tr>
-<tr class="separator:structBenchArgs"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchBenchArgs"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bench__args_8h.html#structSynchBenchArgs">SynchBenchArgs</a></td></tr>
+<tr class="memdesc:structSynchBenchArgs"><td class="mdescLeft">&#160;</td><td class="mdescRight">BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Synch framework. BenchArgs should be initialized using the parseArguments function. For the default values, see the <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">config.h</a> file.  <a href="bench__args_8h.html#structSynchBenchArgs">More...</a><br /></td></tr>
+<tr class="separator:structSynchBenchArgs"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8c7205079e2fcec36427dad70b7bcc4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bench__args_8h.html#a8c7205079e2fcec36427dad70b7bcc4f">parseArguments</a> (<a class="el" href="bench__args_8h.html#structBenchArgs">BenchArgs</a> *bench_args, int argc, char *argv[])</td></tr>
-<tr class="memdesc:a8c7205079e2fcec36427dad70b7bcc4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function parses the command-line arguments and stores them in an <a class="el" href="bench__args_8h.html#structBenchArgs" title="BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Sync...">BenchArgs</a> structure.  <a href="bench__args_8h.html#a8c7205079e2fcec36427dad70b7bcc4f">More...</a><br /></td></tr>
-<tr class="separator:a8c7205079e2fcec36427dad70b7bcc4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3d53f0fe801ba4384a7cdd3e17d62f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bench__args_8h.html#ab3d53f0fe801ba4384a7cdd3e17d62f8">synchParseArguments</a> (<a class="el" href="bench__args_8h.html#structSynchBenchArgs">SynchBenchArgs</a> *bench_args, int argc, char *argv[])</td></tr>
+<tr class="memdesc:ab3d53f0fe801ba4384a7cdd3e17d62f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function parses the command-line arguments and stores them in an BenchArgs structure.  <a href="bench__args_8h.html#ab3d53f0fe801ba4384a7cdd3e17d62f8">More...</a><br /></td></tr>
+<tr class="separator:ab3d53f0fe801ba4384a7cdd3e17d62f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes the API of a simple parser for the command-line arguments used by the benchmarks provided by the Synch framework. Examples of usage could be found in almost all the provided benchmarks under the benchmarks directory. </p>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structBenchArgs" id="structBenchArgs"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structBenchArgs">&#9670;&nbsp;</a></span>BenchArgs</h2>
+<a name="structSynchBenchArgs" id="structSynchBenchArgs"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchBenchArgs">&#9670;&nbsp;</a></span>SynchBenchArgs</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct BenchArgs</td>
+          <td class="memname">struct SynchBenchArgs</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="bench__args_8h.html#structBenchArgs" title="BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Sync...">BenchArgs</a> stores the values of the command-line arguments used by the benchmarks provided by the Synch framework. <a class="el" href="bench__args_8h.html#structBenchArgs" title="BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Sync...">BenchArgs</a> should be initialized using the parseArguments function. For the default values, see the <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">config.h</a> file. </p>
+<div class="textblock"><p>BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Synch framework. BenchArgs should be initialized using the parseArguments function. For the default values, see the <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">config.h</a> file. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a2d6cec8e06879d122789279e0faf14d0"></a>uint64_t</td>
+<a id="ac828f9a2a8bb403c4498a153381ebd3c"></a>uint64_t</td>
 <td class="fieldname">
 runs</td>
 <td class="fielddoc">
 The number of the executed operations per thread. Notice that benchmarks for stacks and queues execute runs pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues). </td></tr>
 <tr><td class="fieldtype">
-<a id="a0233a7b915a646f8d06f0cfcc6812180"></a>uint64_t</td>
+<a id="a2428718bfcf929fb81d1c63f616a7844"></a>uint64_t</td>
 <td class="fieldname">
 total_runs</td>
 <td class="fielddoc">
 The total number of the executed operations. Notice that benchmarks for stacks and queues execute total_runs pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues). </td></tr>
 <tr><td class="fieldtype">
-<a id="ab1715b06c3bdceb9f2543290a9ef78f0"></a>uint32_t</td>
+<a id="ac9d44852287f8756fb2ecfec7e3502bc"></a>uint32_t</td>
 <td class="fieldname">
 nthreads</td>
 <td class="fielddoc">
 The number of posix threads that will be used by the benchmark. </td></tr>
 <tr><td class="fieldtype">
-<a id="ac82d16b2d4207821eb283d0ea7f48e09"></a>uint32_t</td>
+<a id="aab955cfa6289817a712f5ef45e3ffd10"></a>uint32_t</td>
 <td class="fieldname">
 fibers_per_thread</td>
 <td class="fielddoc">
 The number of fibers per posix thread that will be used by the benchmark. The default value is equal to 1. </td></tr>
 <tr><td class="fieldtype">
-<a id="a1b828db661708e2d78e7659fb59ca5c5"></a>uint32_t</td>
+<a id="ad28491634b10dd4e83b26441725fff61"></a>uint32_t</td>
 <td class="fieldname">
 max_work</td>
 <td class="fielddoc">
 The value of maximum local work that each thread executes between two consecutive of the benchmarked operation. A zero value means there is no work between two consecutive calls. Large values usually reduce system's contention, i.e. threads perform operations less frequentely. In constrast, small values (but not zero) increase system's contention. Please avoid to set this value equal to zero, since some algorithms may produce unreallistically high performan (i.e. long runs and unrealistic low numbers of cache misses). </td></tr>
 <tr><td class="fieldtype">
-<a id="ab98b5a37c35ef9eb2e981ab9edde942e"></a>uint32_t</td>
+<a id="acee3115a9cf44d44911ddd496e964ff6"></a>uint32_t</td>
 <td class="fieldname">
 numa_nodes</td>
 <td class="fielddoc">
 The number of numa nodes (which may differ with the actual harware numa nodes) that hierarchical algorithms should take account. </td></tr>
 <tr><td class="fieldtype">
-<a id="aae9a6b68b92e046ef26d46496a9ffd3d"></a>uint16_t</td>
+<a id="abe750bd87078ffde57dc2777ca7447e2"></a>uint16_t</td>
 <td class="fieldname">
 backoff_low</td>
 <td class="fielddoc">
 The lower backoff bound used in the experiment. </td></tr>
 <tr><td class="fieldtype">
-<a id="a6a2251356ad63d6342ea766994f3217a"></a>uint16_t</td>
+<a id="ae3afc790d98711244b066b1ae97d8920"></a>uint16_t</td>
 <td class="fieldname">
 backoff_high</td>
 <td class="fielddoc">
@@ -163,16 +163,16 @@ The upper backoff bound used in the experiment. </td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a8c7205079e2fcec36427dad70b7bcc4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c7205079e2fcec36427dad70b7bcc4f">&#9670;&nbsp;</a></span>parseArguments()</h2>
+<a id="ab3d53f0fe801ba4384a7cdd3e17d62f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3d53f0fe801ba4384a7cdd3e17d62f8">&#9670;&nbsp;</a></span>synchParseArguments()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void parseArguments </td>
+          <td class="memname">void synchParseArguments </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="bench__args_8h.html#structBenchArgs">BenchArgs</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="bench__args_8h.html#structSynchBenchArgs">SynchBenchArgs</a> *&#160;</td>
           <td class="paramname"><em>bench_args</em>, </td>
         </tr>
         <tr>
@@ -195,10 +195,10 @@ The upper backoff bound used in the experiment. </td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function parses the command-line arguments and stores them in an <a class="el" href="bench__args_8h.html#structBenchArgs" title="BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Sync...">BenchArgs</a> structure. </p>
+<p>This function parses the command-line arguments and stores them in an BenchArgs structure. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bench_args</td><td>A pointer to an <a class="el" href="bench__args_8h.html#structBenchArgs" title="BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Sync...">BenchArgs</a> structure. </td></tr>
+    <tr><td class="paramname">bench_args</td><td>A pointer to an BenchArgs structure. </td></tr>
     <tr><td class="paramname">argc</td><td>The number of command-line arguments. </td></tr>
     <tr><td class="paramname">argv</td><td>An array of argc command-line arguments (i.e. strings) to be parsed. </td></tr>
   </table>

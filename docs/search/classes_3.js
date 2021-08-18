@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['enqstate_434',['EnqState',['../simqueue_8h.html#structEnqState',1,'']]]
+  ['halfsimstackstate_414',['HalfSimStackState',['../simstack_8h.html#structHalfSimStackState',1,'']]],
+  ['hsynchstruct_415',['HSynchStruct',['../hsynch_8h.html#structHSynchStruct',1,'']]]
 ];

@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo_synch.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">The Synch framework
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v3.0.0</span>
    </div>
    <div id="projectbrief">An open-source framework for concurrent data-structures and benchmarks</div>
   </td>
@@ -77,19 +77,19 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="stats_8h.html#aecd2e3494947f6af9512f5be005d222c">   17</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stats_8h.html#aecd2e3494947f6af9512f5be005d222c">init_cpu_counters</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="stats_8h.html#a3173e07596fcfc2a69627e65218dc22c">   17</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stats_8h.html#a3173e07596fcfc2a69627e65218dc22c">synchInitCPUCounters</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="stats_8h.html#adc5cbae8335263cbfe2bcd3068d2cc7f">   22</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stats_8h.html#adc5cbae8335263cbfe2bcd3068d2cc7f">start_cpu_counters</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="stats_8h.html#a4d464668a500eec83584cb6f96321594">   22</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stats_8h.html#a4d464668a500eec83584cb6f96321594">synchStartCPUCounters</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="stats_8h.html#ac455dd8cb4f0d730f498a0dfa61479ce">   27</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stats_8h.html#ac455dd8cb4f0d730f498a0dfa61479ce">stop_cpu_counters</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="stats_8h.html#a39224d23a91108e079a3f8e3d069bcee">   27</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stats_8h.html#a39224d23a91108e079a3f8e3d069bcee">synchStopCPUCounters</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="stats_8h.html#aea2b8137008ebe388233892cf85f59c0">   36</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stats_8h.html#aea2b8137008ebe388233892cf85f59c0">printStats</a>(uint32_t nthreads, uint64_t runs);</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="stats_8h.html#ad55b42893885df4a3f50a64e879f29b0">   36</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stats_8h.html#ad55b42893885df4a3f50a64e879f29b0">synchPrintStats</a>(uint32_t nthreads, uint64_t runs);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="astats_8h_html_ac455dd8cb4f0d730f498a0dfa61479ce"><div class="ttname"><a href="stats_8h.html#ac455dd8cb4f0d730f498a0dfa61479ce">stop_cpu_counters</a></div><div class="ttdeci">void stop_cpu_counters(int id)</div><div class="ttdoc">This function stops the logging of statistics (usually called after performing the last concurrent op...</div></div>
-<div class="ttc" id="astats_8h_html_adc5cbae8335263cbfe2bcd3068d2cc7f"><div class="ttname"><a href="stats_8h.html#adc5cbae8335263cbfe2bcd3068d2cc7f">start_cpu_counters</a></div><div class="ttdeci">void start_cpu_counters(int id)</div><div class="ttdoc">This function starts the logging of statistics (usually called before performing the first concurrent...</div></div>
-<div class="ttc" id="astats_8h_html_aea2b8137008ebe388233892cf85f59c0"><div class="ttname"><a href="stats_8h.html#aea2b8137008ebe388233892cf85f59c0">printStats</a></div><div class="ttdeci">void printStats(uint32_t nthreads, uint64_t runs)</div><div class="ttdoc">This function prints statistics for all the running threads. This function should be called once afte...</div></div>
-<div class="ttc" id="astats_8h_html_aecd2e3494947f6af9512f5be005d222c"><div class="ttname"><a href="stats_8h.html#aecd2e3494947f6af9512f5be005d222c">init_cpu_counters</a></div><div class="ttdeci">void init_cpu_counters(void)</div><div class="ttdoc">This function initiates the counters for keeping statics. This function should be called once,...</div></div>
+<div class="ttc" id="astats_8h_html_a3173e07596fcfc2a69627e65218dc22c"><div class="ttname"><a href="stats_8h.html#a3173e07596fcfc2a69627e65218dc22c">synchInitCPUCounters</a></div><div class="ttdeci">void synchInitCPUCounters(void)</div><div class="ttdoc">This function initiates the counters for keeping statics. This function should be called once,...</div></div>
+<div class="ttc" id="astats_8h_html_a39224d23a91108e079a3f8e3d069bcee"><div class="ttname"><a href="stats_8h.html#a39224d23a91108e079a3f8e3d069bcee">synchStopCPUCounters</a></div><div class="ttdeci">void synchStopCPUCounters(int id)</div><div class="ttdoc">This function stops the logging of statistics (usually called after performing the last concurrent op...</div></div>
+<div class="ttc" id="astats_8h_html_a4d464668a500eec83584cb6f96321594"><div class="ttname"><a href="stats_8h.html#a4d464668a500eec83584cb6f96321594">synchStartCPUCounters</a></div><div class="ttdeci">void synchStartCPUCounters(int id)</div><div class="ttdoc">This function starts the logging of statistics (usually called before performing the first concurrent...</div></div>
+<div class="ttc" id="astats_8h_html_ad55b42893885df4a3f50a64e879f29b0"><div class="ttname"><a href="stats_8h.html#ad55b42893885df4a3f50a64e879f29b0">synchPrintStats</a></div><div class="ttdeci">void synchPrintStats(uint32_t nthreads, uint64_t runs)</div><div class="ttdoc">This function prints statistics for all the running threads. This function should be called once afte...</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

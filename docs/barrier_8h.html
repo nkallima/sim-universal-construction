@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo_synch.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">The Synch framework
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v3.0.0</span>
    </div>
    <div id="projectbrief">An open-source framework for concurrent data-structures and benchmarks</div>
   </td>
@@ -83,68 +83,68 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:structBarrier"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#structBarrier">Barrier</a></td></tr>
-<tr class="memdesc:structBarrier"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="barrier_8h.html#structBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">Barrier</a> stores the state of an instance of the a backoff object. <a class="el" href="barrier_8h.html#structBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">Barrier</a> should be initialized using the BarrierSet function.  <a href="barrier_8h.html#structBarrier">More...</a><br /></td></tr>
-<tr class="separator:structBarrier"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchBarrier"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#structSynchBarrier">SynchBarrier</a></td></tr>
+<tr class="memdesc:structSynchBarrier"><td class="mdescLeft">&#160;</td><td class="mdescRight">Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using the BarrierSet function.  <a href="barrier_8h.html#structSynchBarrier">More...</a><br /></td></tr>
+<tr class="separator:structSynchBarrier"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aac8ab3af6a412e654adf92d5007b499f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#aac8ab3af6a412e654adf92d5007b499f">BarrierSet</a> (<a class="el" href="barrier_8h.html#structBarrier">Barrier</a> *bar, uint32_t n)</td></tr>
-<tr class="memdesc:aac8ab3af6a412e654adf92d5007b499f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of an re-entrant barrier object.  <a href="barrier_8h.html#aac8ab3af6a412e654adf92d5007b499f">More...</a><br /></td></tr>
-<tr class="separator:aac8ab3af6a412e654adf92d5007b499f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba256424ee5ecd2b57adbb9352ae3046"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#aba256424ee5ecd2b57adbb9352ae3046">BarrierWait</a> (<a class="el" href="barrier_8h.html#structBarrier">Barrier</a> *bar)</td></tr>
-<tr class="memdesc:aba256424ee5ecd2b57adbb9352ae3046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whenever a thread executes this function, it waits without returning until all the other n-1 threads also execute the same function.  <a href="barrier_8h.html#aba256424ee5ecd2b57adbb9352ae3046">More...</a><br /></td></tr>
-<tr class="separator:aba256424ee5ecd2b57adbb9352ae3046"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a036f1d09d9a3f34fb66e6d05d0fd3018"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#a036f1d09d9a3f34fb66e6d05d0fd3018">BarrierLeave</a> (<a class="el" href="barrier_8h.html#structBarrier">Barrier</a> *bar)</td></tr>
-<tr class="memdesc:a036f1d09d9a3f34fb66e6d05d0fd3018"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whenever a thread executes this function, it states that it will no use this barrier instance anymore. Thus, the system may free some resources.  <a href="barrier_8h.html#a036f1d09d9a3f34fb66e6d05d0fd3018">More...</a><br /></td></tr>
-<tr class="separator:a036f1d09d9a3f34fb66e6d05d0fd3018"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba296db8380218834ccb71214329801b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#aba296db8380218834ccb71214329801b">BarrierLastLeave</a> (<a class="el" href="barrier_8h.html#structBarrier">Barrier</a> *bar)</td></tr>
-<tr class="memdesc:aba296db8380218834ccb71214329801b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deprecated functionality. It is only used in the threadtools.c file.  <a href="barrier_8h.html#aba296db8380218834ccb71214329801b">More...</a><br /></td></tr>
-<tr class="separator:aba296db8380218834ccb71214329801b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc29759d93d14b2f5440b60ad9e07b01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#adc29759d93d14b2f5440b60ad9e07b01">synchBarrierSet</a> (<a class="el" href="barrier_8h.html#structSynchBarrier">SynchBarrier</a> *bar, uint32_t n)</td></tr>
+<tr class="memdesc:adc29759d93d14b2f5440b60ad9e07b01"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of an re-entrant barrier object.  <a href="barrier_8h.html#adc29759d93d14b2f5440b60ad9e07b01">More...</a><br /></td></tr>
+<tr class="separator:adc29759d93d14b2f5440b60ad9e07b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37bb08a692b82e09b15d360bf858f949"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#a37bb08a692b82e09b15d360bf858f949">synchBarrierWait</a> (<a class="el" href="barrier_8h.html#structSynchBarrier">SynchBarrier</a> *bar)</td></tr>
+<tr class="memdesc:a37bb08a692b82e09b15d360bf858f949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whenever a thread executes this function, it waits without returning until all the other n-1 threads also execute the same function.  <a href="barrier_8h.html#a37bb08a692b82e09b15d360bf858f949">More...</a><br /></td></tr>
+<tr class="separator:a37bb08a692b82e09b15d360bf858f949"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accf8e4106d642c96254b8565c6642f17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#accf8e4106d642c96254b8565c6642f17">synchBarrierLeave</a> (<a class="el" href="barrier_8h.html#structSynchBarrier">SynchBarrier</a> *bar)</td></tr>
+<tr class="memdesc:accf8e4106d642c96254b8565c6642f17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whenever a thread executes this function, it states that it will no use this barrier instance anymore. Thus, the system may free some resources.  <a href="barrier_8h.html#accf8e4106d642c96254b8565c6642f17">More...</a><br /></td></tr>
+<tr class="separator:accf8e4106d642c96254b8565c6642f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f9f4b8494cd03eb3a79b50e5db01528"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="barrier_8h.html#a4f9f4b8494cd03eb3a79b50e5db01528">synchBarrierLastLeave</a> (<a class="el" href="barrier_8h.html#structSynchBarrier">SynchBarrier</a> *bar)</td></tr>
+<tr class="memdesc:a4f9f4b8494cd03eb3a79b50e5db01528"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deprecated functionality. It is only used in the threadtools.c file.  <a href="barrier_8h.html#a4f9f4b8494cd03eb3a79b50e5db01528">More...</a><br /></td></tr>
+<tr class="separator:a4f9f4b8494cd03eb3a79b50e5db01528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes the API of a simple re-entrant synchronization barrier. This implementation is a classic two phase (arrive and leave phases) re-entrant barrier, i.e. arrive and leave phases. Examples of usage could be found in almost all the provided benchmarks under the benchmarks directory. </p>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structBarrier" id="structBarrier"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structBarrier">&#9670;&nbsp;</a></span>Barrier</h2>
+<a name="structSynchBarrier" id="structSynchBarrier"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchBarrier">&#9670;&nbsp;</a></span>SynchBarrier</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct Barrier</td>
+          <td class="memname">struct SynchBarrier</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="barrier_8h.html#structBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">Barrier</a> stores the state of an instance of the a backoff object. <a class="el" href="barrier_8h.html#structBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">Barrier</a> should be initialized using the BarrierSet function. </p>
+<div class="textblock"><p>Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using the BarrierSet function. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="acccede3c8d1ab90e33ea187750c4ddd5"></a>volatile int32_t</td>
+<a id="ab3ba6d3a623fcaf4b2b454fd73e2df5c"></a>volatile int32_t</td>
 <td class="fieldname">
 arrive</td>
 <td class="fielddoc">
 This integer is atomically decreased by one whenever a thread enters the arrive phase of the barrier. </td></tr>
 <tr><td class="fieldtype">
-<a id="a9ac78cfee474ff38c3e30ec2617e067f"></a>volatile int32_t</td>
+<a id="ae10a5a0277cc9b398fe4665ef9b58cdc"></a>volatile int32_t</td>
 <td class="fieldname">
 leave</td>
 <td class="fielddoc">
 This integer is atomically decreased by one whenever a thread enters the leave phase of the barrier. </td></tr>
 <tr><td class="fieldtype">
-<a id="a3db0c5c6d59a98d79ac4a788a680e457"></a>volatile bool</td>
+<a id="ae5e9d448e34d9fc26a5d6a408ccfbdd5"></a>volatile bool</td>
 <td class="fieldname">
 arrive_flag</td>
 <td class="fielddoc">
 This variable is set to true if all the n threads have entered to the arrive phase. </td></tr>
 <tr><td class="fieldtype">
-<a id="ae20fb063d90267bfbcef46051b1f9545"></a>volatile bool</td>
+<a id="adfc03350d1400c175ce2828523e082e0"></a>volatile bool</td>
 <td class="fieldname">
 leave_flag</td>
 <td class="fielddoc">
 This variable is set to true if all the n threads have entered to the leave phase. </td></tr>
 <tr><td class="fieldtype">
-<a id="a2a7582ec5952a92f31d6920ec4fbb557"></a>volatile int32_t</td>
+<a id="ac22fbd7ff82b24f509cac5c1b6017c32"></a>volatile int32_t</td>
 <td class="fieldname">
 val_at_set</td>
 <td class="fielddoc">
@@ -154,8 +154,8 @@ The initial value set to arrive and leave variaales. </td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aac8ab3af6a412e654adf92d5007b499f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac8ab3af6a412e654adf92d5007b499f">&#9670;&nbsp;</a></span>BarrierSet()</h2>
+<a id="adc29759d93d14b2f5440b60ad9e07b01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc29759d93d14b2f5440b60ad9e07b01">&#9670;&nbsp;</a></span>synchBarrierSet()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,9 +164,9 @@ The initial value set to arrive and leave variaales. </td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void BarrierSet </td>
+          <td class="memname">void synchBarrierSet </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="barrier_8h.html#structBarrier">Barrier</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="barrier_8h.html#structSynchBarrier">SynchBarrier</a> *&#160;</td>
           <td class="paramname"><em>bar</em>, </td>
         </tr>
         <tr>
@@ -200,8 +200,8 @@ The initial value set to arrive and leave variaales. </td></tr>
 
 </div>
 </div>
-<a id="aba256424ee5ecd2b57adbb9352ae3046"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba256424ee5ecd2b57adbb9352ae3046">&#9670;&nbsp;</a></span>BarrierWait()</h2>
+<a id="a37bb08a692b82e09b15d360bf858f949"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37bb08a692b82e09b15d360bf858f949">&#9670;&nbsp;</a></span>synchBarrierWait()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,9 +210,9 @@ The initial value set to arrive and leave variaales. </td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void BarrierWait </td>
+          <td class="memname">void synchBarrierWait </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="barrier_8h.html#structBarrier">Barrier</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="barrier_8h.html#structSynchBarrier">SynchBarrier</a> *&#160;</td>
           <td class="paramname"><em>bar</em></td><td>)</td>
           <td></td>
         </tr>
@@ -234,8 +234,8 @@ The initial value set to arrive and leave variaales. </td></tr>
 
 </div>
 </div>
-<a id="a036f1d09d9a3f34fb66e6d05d0fd3018"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a036f1d09d9a3f34fb66e6d05d0fd3018">&#9670;&nbsp;</a></span>BarrierLeave()</h2>
+<a id="accf8e4106d642c96254b8565c6642f17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accf8e4106d642c96254b8565c6642f17">&#9670;&nbsp;</a></span>synchBarrierLeave()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,9 +244,9 @@ The initial value set to arrive and leave variaales. </td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void BarrierLeave </td>
+          <td class="memname">void synchBarrierLeave </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="barrier_8h.html#structBarrier">Barrier</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="barrier_8h.html#structSynchBarrier">SynchBarrier</a> *&#160;</td>
           <td class="paramname"><em>bar</em></td><td>)</td>
           <td></td>
         </tr>
@@ -268,8 +268,8 @@ The initial value set to arrive and leave variaales. </td></tr>
 
 </div>
 </div>
-<a id="aba296db8380218834ccb71214329801b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba296db8380218834ccb71214329801b">&#9670;&nbsp;</a></span>BarrierLastLeave()</h2>
+<a id="a4f9f4b8494cd03eb3a79b50e5db01528"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f9f4b8494cd03eb3a79b50e5db01528">&#9670;&nbsp;</a></span>synchBarrierLastLeave()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -278,9 +278,9 @@ The initial value set to arrive and leave variaales. </td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void BarrierLastLeave </td>
+          <td class="memname">void synchBarrierLastLeave </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="barrier_8h.html#structBarrier">Barrier</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="barrier_8h.html#structSynchBarrier">SynchBarrier</a> *&#160;</td>
           <td class="paramname"><em>bar</em></td><td>)</td>
           <td></td>
         </tr>

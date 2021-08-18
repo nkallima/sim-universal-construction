@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['val_405',['val',['../lcrq_8h.html#a80df4b31f20461c4cd30f91c3bb45be6',1,'RingNode::val()'],['../queue-stack_8h.html#ab2f9265ac8fbb40a2d011160cb38cd40',1,'Node::val()']]],
-  ['val_5fat_5fset_406',['val_at_set',['../barrier_8h.html#a2a7582ec5952a92f31d6920ec4fbb557',1,'Barrier']]],
-  ['value_407',['value',['../dsmhash_8h.html#ad44320c45da804b1b50003f5ef541eb5',1,'HashNode::value()'],['../dsmhash_8h.html#ac87519e4b68149c54579612eea31fa24',1,'HashOperations::value()']]]
+  ['x86_5fgeneric_5fmachine_408',['X86_GENERIC_MACHINE',['../primitives_8h.html#ae146336f9105681c481e5290b2fd6c52',1,'primitives.h']]]
 ];

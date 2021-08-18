@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo_synch.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">The Synch framework
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v3.0.0</span>
    </div>
    <div id="projectbrief">An open-source framework for concurrent data-structures and benchmarks</div>
   </td>
@@ -83,36 +83,36 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:structHashNode"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#structHashNode">HashNode</a></td></tr>
-<tr class="memdesc:structHashNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">A node (i.e. cell) for the linked-list of cells of &lt;key,value&gt; pair. This should not directely accessed-used by the user.  <a href="dsmhash_8h.html#structHashNode">More...</a><br /></td></tr>
-<tr class="separator:structHashNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structHashOperations"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#structHashOperations">HashOperations</a></td></tr>
-<tr class="memdesc:structHashOperations"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmhash_8h.html#structHashOperations" title="HashOperations describes a hash-table operation, i.e. search, insert or delete. This should not direc...">HashOperations</a> describes a hash-table operation, i.e. search, insert or delete. This should not directely accessed-used by the user.  <a href="dsmhash_8h.html#structHashOperations">More...</a><br /></td></tr>
-<tr class="separator:structHashOperations"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structDSMHash"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a></td></tr>
-<tr class="memdesc:structDSMHash"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmhash_8h.html#structDSMHash" title="DSMHash stores the state of an instance of the a DSM-Hash concurrent hash-table. DSMHash should be in...">DSMHash</a> stores the state of an instance of the a DSM-Hash concurrent hash-table. <a class="el" href="dsmhash_8h.html#structDSMHash" title="DSMHash stores the state of an instance of the a DSM-Hash concurrent hash-table. DSMHash should be in...">DSMHash</a> should be initialized using the DSMHashStructInit function.  <a href="dsmhash_8h.html#structDSMHash">More...</a><br /></td></tr>
-<tr class="separator:structDSMHash"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structDSMHashThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#structDSMHashThreadState">DSMHashThreadState</a></td></tr>
-<tr class="memdesc:structDSMHashThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmhash_8h.html#structDSMHashThreadState" title="DSMHashThreadState stores each thread&#39;s local state for a single instance of DSM-Hash....">DSMHashThreadState</a> stores each thread's local state for a single instance of DSM-Hash. For each instance of DSM-Hash, a discrete instance of <a class="el" href="dsmhash_8h.html#structDSMHashThreadState" title="DSMHashThreadState stores each thread&#39;s local state for a single instance of DSM-Hash....">DSMHashThreadState</a> should be used.  <a href="dsmhash_8h.html#structDSMHashThreadState">More...</a><br /></td></tr>
-<tr class="separator:structDSMHashThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchHashNode"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#structSynchHashNode">SynchHashNode</a></td></tr>
+<tr class="memdesc:structSynchHashNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">A node (i.e. cell) for the linked-list of cells of &lt;key,value&gt; pair. This should not directely accessed-used by the user.  <a href="dsmhash_8h.html#structSynchHashNode">More...</a><br /></td></tr>
+<tr class="separator:structSynchHashNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchHashOperations"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#structSynchHashOperations">SynchHashOperations</a></td></tr>
+<tr class="memdesc:structSynchHashOperations"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmhash_8h.html#structSynchHashOperations" title="SynchHashOperations describes a hash-table operation, i.e. search, insert or delete....">SynchHashOperations</a> describes a hash-table operation, i.e. search, insert or delete. This should not directely accessed-used by the user.  <a href="dsmhash_8h.html#structSynchHashOperations">More...</a><br /></td></tr>
+<tr class="separator:structSynchHashOperations"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchDSMHash"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a></td></tr>
+<tr class="memdesc:structSynchDSMHash"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmhash_8h.html#structSynchDSMHash" title="SynchDSMHash stores the state of an instance of the a DSM-Hash concurrent hash-table....">SynchDSMHash</a> stores the state of an instance of the a DSM-Hash concurrent hash-table. <a class="el" href="dsmhash_8h.html#structSynchDSMHash" title="SynchDSMHash stores the state of an instance of the a DSM-Hash concurrent hash-table....">SynchDSMHash</a> should be initialized using the DSMHashStructInit function.  <a href="dsmhash_8h.html#structSynchDSMHash">More...</a><br /></td></tr>
+<tr class="separator:structSynchDSMHash"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchDSMHashThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState">SynchDSMHashThreadState</a></td></tr>
+<tr class="memdesc:structSynchDSMHashThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState" title="SynchDSMHashThreadState stores each thread&#39;s local state for a single instance of DSM-Hash....">SynchDSMHashThreadState</a> stores each thread's local state for a single instance of DSM-Hash. For each instance of DSM-Hash, a discrete instance of <a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState" title="SynchDSMHashThreadState stores each thread&#39;s local state for a single instance of DSM-Hash....">SynchDSMHashThreadState</a> should be used.  <a href="dsmhash_8h.html#structSynchDSMHashThreadState">More...</a><br /></td></tr>
+<tr class="separator:structSynchDSMHashThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0a9c2bf107ffcd88cf648753e32e472e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#a0a9c2bf107ffcd88cf648753e32e472e">DSMHashInit</a> (<a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *hash, int num_cells, int nthreads)</td></tr>
-<tr class="memdesc:a0a9c2bf107ffcd88cf648753e32e472e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes the DSM-Hash object, i.e. DSM-Hash struct. This function should be called once (by a single thread) before any other thread tries to apply any request on the hash-table.  <a href="dsmhash_8h.html#a0a9c2bf107ffcd88cf648753e32e472e">More...</a><br /></td></tr>
-<tr class="separator:a0a9c2bf107ffcd88cf648753e32e472e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ad2cbbf98dbd5d1577aecbd7a32349c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#a7ad2cbbf98dbd5d1577aecbd7a32349c">DSMHashThreadStateInit</a> (<a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *hash, <a class="el" href="dsmhash_8h.html#structDSMHashThreadState">DSMHashThreadState</a> *th_state, int num_cells, int pid)</td></tr>
-<tr class="memdesc:a7ad2cbbf98dbd5d1577aecbd7a32349c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the DSM-Hash combining object.  <a href="dsmhash_8h.html#a7ad2cbbf98dbd5d1577aecbd7a32349c">More...</a><br /></td></tr>
-<tr class="separator:a7ad2cbbf98dbd5d1577aecbd7a32349c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bf199c1e29dac52e16b6ab79b41cb75"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#a0bf199c1e29dac52e16b6ab79b41cb75">DSMHashInsert</a> (<a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *hash, <a class="el" href="dsmhash_8h.html#structDSMHashThreadState">DSMHashThreadState</a> *th_state, int64_t key, int64_t value, int pid)</td></tr>
-<tr class="memdesc:a0bf199c1e29dac52e16b6ab79b41cb75"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function tries to insert a &lt;key,value&gt; into the hash-table if there is enough space in the corresponding cell. If the key already exists in the hash-table, DSMHashInsert updates the corresponding value.  <a href="dsmhash_8h.html#a0bf199c1e29dac52e16b6ab79b41cb75">More...</a><br /></td></tr>
-<tr class="separator:a0bf199c1e29dac52e16b6ab79b41cb75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c441933733e6f1f869aeecb8f649ee6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#a6c441933733e6f1f869aeecb8f649ee6">DSMHashSearch</a> (<a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *hash, <a class="el" href="dsmhash_8h.html#structDSMHashThreadState">DSMHashThreadState</a> *th_state, int64_t key, int pid)</td></tr>
-<tr class="memdesc:a6c441933733e6f1f869aeecb8f649ee6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function searches for a specifc key in the hash-table. In case that DSMHashSearch finds the key, it returns true. Otherwise, it returns false.  <a href="dsmhash_8h.html#a6c441933733e6f1f869aeecb8f649ee6">More...</a><br /></td></tr>
-<tr class="separator:a6c441933733e6f1f869aeecb8f649ee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c69f7d11c90d1fd5abe0d69ea610449"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#a6c69f7d11c90d1fd5abe0d69ea610449">DSMHashDelete</a> (<a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *hash, <a class="el" href="dsmhash_8h.html#structDSMHashThreadState">DSMHashThreadState</a> *th_state, int64_t key, int pid)</td></tr>
-<tr class="memdesc:a6c69f7d11c90d1fd5abe0d69ea610449"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function searches for a specifc key in the hash-table. In case that DSMHashDelete finds the key, it deletes the corresponding &lt;key,value&gt;.  <a href="dsmhash_8h.html#a6c69f7d11c90d1fd5abe0d69ea610449">More...</a><br /></td></tr>
-<tr class="separator:a6c69f7d11c90d1fd5abe0d69ea610449"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12aa45c3b0d8b284b884e5b81b3de934"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#a12aa45c3b0d8b284b884e5b81b3de934">synchDSMHashInit</a> (<a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *hash, int num_cells, int nthreads)</td></tr>
+<tr class="memdesc:a12aa45c3b0d8b284b884e5b81b3de934"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes the DSM-Hash object, i.e. DSM-Hash struct. This function should be called once (by a single thread) before any other thread tries to apply any request on the hash-table.  <a href="dsmhash_8h.html#a12aa45c3b0d8b284b884e5b81b3de934">More...</a><br /></td></tr>
+<tr class="separator:a12aa45c3b0d8b284b884e5b81b3de934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2313e0c0487ea4478ecc2eda40f95140"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#a2313e0c0487ea4478ecc2eda40f95140">synchDSMHashThreadStateInit</a> (<a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *hash, <a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState">SynchDSMHashThreadState</a> *th_state, int num_cells, int pid)</td></tr>
+<tr class="memdesc:a2313e0c0487ea4478ecc2eda40f95140"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the DSM-Hash combining object.  <a href="dsmhash_8h.html#a2313e0c0487ea4478ecc2eda40f95140">More...</a><br /></td></tr>
+<tr class="separator:a2313e0c0487ea4478ecc2eda40f95140"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73efe0b2e5268a277178a46b88a8b474"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#a73efe0b2e5268a277178a46b88a8b474">synchDSMHashInsert</a> (<a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *hash, <a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState">SynchDSMHashThreadState</a> *th_state, int64_t key, int64_t value, int pid)</td></tr>
+<tr class="memdesc:a73efe0b2e5268a277178a46b88a8b474"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function tries to insert a &lt;key,value&gt; into the hash-table if there is enough space in the corresponding cell. If the key already exists in the hash-table, synchDSMHashInsert updates the corresponding value.  <a href="dsmhash_8h.html#a73efe0b2e5268a277178a46b88a8b474">More...</a><br /></td></tr>
+<tr class="separator:a73efe0b2e5268a277178a46b88a8b474"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac39140fcd3ca34944f7d407fd3b084f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#ac39140fcd3ca34944f7d407fd3b084f5">synchDSMHashSearch</a> (<a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *hash, <a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState">SynchDSMHashThreadState</a> *th_state, int64_t key, int pid)</td></tr>
+<tr class="memdesc:ac39140fcd3ca34944f7d407fd3b084f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function searches for a specifc key in the hash-table. In case that synchDSMHashSearch finds the key, it returns true. Otherwise, it returns false.  <a href="dsmhash_8h.html#ac39140fcd3ca34944f7d407fd3b084f5">More...</a><br /></td></tr>
+<tr class="separator:ac39140fcd3ca34944f7d407fd3b084f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a517cd96476881b2c144280b5a6fc48a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dsmhash_8h.html#a517cd96476881b2c144280b5a6fc48a2">synchDSMHashDelete</a> (<a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *hash, <a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState">SynchDSMHashThreadState</a> *th_state, int64_t key, int pid)</td></tr>
+<tr class="memdesc:a517cd96476881b2c144280b5a6fc48a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function searches for a specifc key in the hash-table. In case that synchDSMHashDelete finds the key, it deletes the corresponding &lt;key,value&gt;.  <a href="dsmhash_8h.html#a517cd96476881b2c144280b5a6fc48a2">More...</a><br /></td></tr>
+<tr class="separator:a517cd96476881b2c144280b5a6fc48a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes the API of the DSM-Hash concurrent hash-table implementation based on the DSM-Synch combining technique [1]. </p>
@@ -121,14 +121,14 @@ Functions</h2></td></tr>
 References</h2>
 <p>[1]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Revisiting the combining synchronization technique". ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012. </p>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structHashNode" id="structHashNode"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structHashNode">&#9670;&nbsp;</a></span>HashNode</h2>
+<a name="structSynchHashNode" id="structSynchHashNode"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchHashNode">&#9670;&nbsp;</a></span>SynchHashNode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct HashNode</td>
+          <td class="memname">struct SynchHashNode</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -136,19 +136,19 @@ References</h2>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a3582e5bf00e74881534d4e0b718fd1a2"></a>struct <a class="el" href="dsmhash_8h.html#structHashNode">HashNode</a> *</td>
+<a id="a3488430b127ebac923a683c213939fff"></a>struct <a class="el" href="dsmhash_8h.html#structSynchHashNode">SynchHashNode</a> *</td>
 <td class="fieldname">
 next</td>
 <td class="fielddoc">
 Pointer to next node (i.e. cell) of the linked list. </td></tr>
 <tr><td class="fieldtype">
-<a id="afd917735d4bb7a7d7e0a34a92ba41864"></a>int64_t</td>
+<a id="adffcecd247c968b6a61a54718abb687b"></a>int64_t</td>
 <td class="fieldname">
 key</td>
 <td class="fielddoc">
 The key of the &lt;key,value&gt; pair for the specific node. </td></tr>
 <tr><td class="fieldtype">
-<a id="ad44320c45da804b1b50003f5ef541eb5"></a>int64_t</td>
+<a id="a130e44fe4075181624e951f54d16ac3e"></a>int64_t</td>
 <td class="fieldname">
 value</td>
 <td class="fielddoc">
@@ -157,46 +157,46 @@ The value of the &lt;key,value&gt; pair for the specific node. </td></tr>
 
 </div>
 </div>
-<a name="structHashOperations" id="structHashOperations"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structHashOperations">&#9670;&nbsp;</a></span>HashOperations</h2>
+<a name="structSynchHashOperations" id="structSynchHashOperations"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchHashOperations">&#9670;&nbsp;</a></span>SynchHashOperations</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct HashOperations</td>
+          <td class="memname">struct SynchHashOperations</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="dsmhash_8h.html#structHashOperations" title="HashOperations describes a hash-table operation, i.e. search, insert or delete. This should not direc...">HashOperations</a> describes a hash-table operation, i.e. search, insert or delete. This should not directely accessed-used by the user. </p>
+<div class="textblock"><p><a class="el" href="dsmhash_8h.html#structSynchHashOperations" title="SynchHashOperations describes a hash-table operation, i.e. search, insert or delete....">SynchHashOperations</a> describes a hash-table operation, i.e. search, insert or delete. This should not directely accessed-used by the user. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a2bbf931fed3542860b341899f5f8f580"></a>int64_t</td>
+<a id="a806f130964541247912c9c114f7054c2"></a>int64_t</td>
 <td class="fieldname">
 key</td>
 <td class="fielddoc">
 The key of the &lt;key,value&gt; pair for the specific request. </td></tr>
 <tr><td class="fieldtype">
-<a id="ac87519e4b68149c54579612eea31fa24"></a>int64_t</td>
+<a id="aef55306683e546e63ba597570cb86b2d"></a>int64_t</td>
 <td class="fieldname">
 value</td>
 <td class="fielddoc">
 The value of the &lt;key,value&gt; pair for the specific request. </td></tr>
 <tr><td class="fieldtype">
-<a id="afeeba43f0e340bb7815036a932ae8c02"></a><a class="el" href="dsmhash_8h.html#structHashNode">HashNode</a> *</td>
+<a id="ae70922d57d7f12c82e4287a68bc0772e"></a><a class="el" href="dsmhash_8h.html#structSynchHashNode">SynchHashNode</a> *</td>
 <td class="fieldname">
 node</td>
 <td class="fielddoc">
 A new cell for the insert operations. </td></tr>
 <tr><td class="fieldtype">
-<a id="af6dbd994d30f812743d9a2ab8578e42f"></a>int32_t</td>
+<a id="a95cf76720ba0c2ba6fd3dda6e9a91e33"></a>int32_t</td>
 <td class="fieldname">
 cell</td>
 <td class="fielddoc">
 This field stores result of the hash function. </td></tr>
 <tr><td class="fieldtype">
-<a id="a01b8abf940d0ed23368716f2ccdc4cb9"></a>int32_t</td>
+<a id="ab7366967bfeb57e261038e8082a77cec"></a>int32_t</td>
 <td class="fieldname">
 op</td>
 <td class="fielddoc">
@@ -205,34 +205,34 @@ The type of hash-table operation, i.e. insert, delete or search. </td></tr>
 
 </div>
 </div>
-<a name="structDSMHash" id="structDSMHash"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structDSMHash">&#9670;&nbsp;</a></span>DSMHash</h2>
+<a name="structSynchDSMHash" id="structSynchDSMHash"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchDSMHash">&#9670;&nbsp;</a></span>SynchDSMHash</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct DSMHash</td>
+          <td class="memname">struct SynchDSMHash</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="dsmhash_8h.html#structDSMHash" title="DSMHash stores the state of an instance of the a DSM-Hash concurrent hash-table. DSMHash should be in...">DSMHash</a> stores the state of an instance of the a DSM-Hash concurrent hash-table. <a class="el" href="dsmhash_8h.html#structDSMHash" title="DSMHash stores the state of an instance of the a DSM-Hash concurrent hash-table. DSMHash should be in...">DSMHash</a> should be initialized using the DSMHashStructInit function. </p>
+<div class="textblock"><p><a class="el" href="dsmhash_8h.html#structSynchDSMHash" title="SynchDSMHash stores the state of an instance of the a DSM-Hash concurrent hash-table....">SynchDSMHash</a> stores the state of an instance of the a DSM-Hash concurrent hash-table. <a class="el" href="dsmhash_8h.html#structSynchDSMHash" title="SynchDSMHash stores the state of an instance of the a DSM-Hash concurrent hash-table....">SynchDSMHash</a> should be initialized using the DSMHashStructInit function. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a1ef6e7bec4827074db99e15433646737"></a><a class="el" href="dsmhash_8h.html#structHashOperations">HashOperations</a> *</td>
+<a id="ace9afb7857e07ed3634f32c1d9312a59"></a><a class="el" href="dsmhash_8h.html#structSynchHashOperations">SynchHashOperations</a> *</td>
 <td class="fieldname">
 announce</td>
 <td class="fielddoc">
 A pointer to the announce array. </td></tr>
 <tr><td class="fieldtype">
-<a id="a973cabc8a85d54623a0e4d9981eda2a0"></a>ptr_aligned_t *</td>
+<a id="a49c104538a44dfeaed53659138655a7d"></a>ptr_aligned_t *</td>
 <td class="fieldname">
 cells</td>
 <td class="fielddoc">
 A pointer to an array of the cells. </td></tr>
 <tr><td class="fieldtype">
-<a id="accde355d93c151417bc8c388e8b9ffcd"></a>int</td>
+<a id="aedaa35197f8bfc5b698a43be327b9a11"></a>int</td>
 <td class="fieldname">
 size</td>
 <td class="fielddoc">
@@ -241,28 +241,28 @@ The size in terms of cells of the hash-table. </td></tr>
 
 </div>
 </div>
-<a name="structDSMHashThreadState" id="structDSMHashThreadState"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structDSMHashThreadState">&#9670;&nbsp;</a></span>DSMHashThreadState</h2>
+<a name="structSynchDSMHashThreadState" id="structSynchDSMHashThreadState"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchDSMHashThreadState">&#9670;&nbsp;</a></span>SynchDSMHashThreadState</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct DSMHashThreadState</td>
+          <td class="memname">struct SynchDSMHashThreadState</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="dsmhash_8h.html#structDSMHashThreadState" title="DSMHashThreadState stores each thread&#39;s local state for a single instance of DSM-Hash....">DSMHashThreadState</a> stores each thread's local state for a single instance of DSM-Hash. For each instance of DSM-Hash, a discrete instance of <a class="el" href="dsmhash_8h.html#structDSMHashThreadState" title="DSMHashThreadState stores each thread&#39;s local state for a single instance of DSM-Hash....">DSMHashThreadState</a> should be used. </p>
+<div class="textblock"><p><a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState" title="SynchDSMHashThreadState stores each thread&#39;s local state for a single instance of DSM-Hash....">SynchDSMHashThreadState</a> stores each thread's local state for a single instance of DSM-Hash. For each instance of DSM-Hash, a discrete instance of <a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState" title="SynchDSMHashThreadState stores each thread&#39;s local state for a single instance of DSM-Hash....">SynchDSMHashThreadState</a> should be used. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a8ef2cf9c9c55aec4c3b6f1a1ffb94560"></a><a class="el" href="dsmsynch_8h.html#structDSMSynchThreadState">DSMSynchThreadState</a> *</td>
+<a id="afaa70d64fce4de63906b44d739fb9d4f"></a><a class="el" href="dsmsynch_8h.html#structSynchDSMSynchThreadState">SynchDSMSynchThreadState</a> *</td>
 <td class="fieldname">
 th_state</td>
 <td class="fielddoc">
 A pointer to the thread's local state for the DSM-Synch instance. </td></tr>
 <tr><td class="fieldtype">
-<a id="a29ed9de622b61ab1eb93655f670a9d4a"></a><a class="el" href="pool_8h.html#structPoolStruct">PoolStruct</a></td>
+<a id="a798a06436722c5b5dac05daebee5862e"></a><a class="el" href="pool_8h.html#structSynchPoolStruct">SynchPoolStruct</a></td>
 <td class="fieldname">
 pool</td>
 <td class="fielddoc">
@@ -272,8 +272,8 @@ A pool of nodes for fast memory allocation.s. </td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a0a9c2bf107ffcd88cf648753e32e472e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a9c2bf107ffcd88cf648753e32e472e">&#9670;&nbsp;</a></span>DSMHashInit()</h2>
+<a id="a12aa45c3b0d8b284b884e5b81b3de934"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12aa45c3b0d8b284b884e5b81b3de934">&#9670;&nbsp;</a></span>synchDSMHashInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,9 +282,9 @@ A pool of nodes for fast memory allocation.s. </td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DSMHashInit </td>
+          <td class="memname">void synchDSMHashInit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *&#160;</td>
           <td class="paramname"><em>hash</em>, </td>
         </tr>
         <tr>
@@ -324,8 +324,8 @@ A pool of nodes for fast memory allocation.s. </td></tr>
 
 </div>
 </div>
-<a id="a7ad2cbbf98dbd5d1577aecbd7a32349c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ad2cbbf98dbd5d1577aecbd7a32349c">&#9670;&nbsp;</a></span>DSMHashThreadStateInit()</h2>
+<a id="a2313e0c0487ea4478ecc2eda40f95140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2313e0c0487ea4478ecc2eda40f95140">&#9670;&nbsp;</a></span>synchDSMHashThreadStateInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -334,15 +334,15 @@ A pool of nodes for fast memory allocation.s. </td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DSMHashThreadStateInit </td>
+          <td class="memname">void synchDSMHashThreadStateInit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *&#160;</td>
           <td class="paramname"><em>hash</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structDSMHashThreadState">DSMHashThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState">SynchDSMHashThreadState</a> *&#160;</td>
           <td class="paramname"><em>th_state</em>, </td>
         </tr>
         <tr>
@@ -383,8 +383,8 @@ A pool of nodes for fast memory allocation.s. </td></tr>
 
 </div>
 </div>
-<a id="a0bf199c1e29dac52e16b6ab79b41cb75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0bf199c1e29dac52e16b6ab79b41cb75">&#9670;&nbsp;</a></span>DSMHashInsert()</h2>
+<a id="a73efe0b2e5268a277178a46b88a8b474"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73efe0b2e5268a277178a46b88a8b474">&#9670;&nbsp;</a></span>synchDSMHashInsert()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -393,15 +393,15 @@ A pool of nodes for fast memory allocation.s. </td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool DSMHashInsert </td>
+          <td class="memname">bool synchDSMHashInsert </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *&#160;</td>
           <td class="paramname"><em>hash</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structDSMHashThreadState">DSMHashThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState">SynchDSMHashThreadState</a> *&#160;</td>
           <td class="paramname"><em>th_state</em>, </td>
         </tr>
         <tr>
@@ -435,13 +435,13 @@ A pool of nodes for fast memory allocation.s. </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>This function tries to insert a &lt;key,value&gt; into the hash-table if there is enough space in the corresponding cell. If the key already exists in the hash-table, DSMHashInsert updates the corresponding value. </p>
+<p>This function tries to insert a &lt;key,value&gt; into the hash-table if there is enough space in the corresponding cell. If the key already exists in the hash-table, synchDSMHashInsert updates the corresponding value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hash</td><td>A pointer to the hash-table instance. </td></tr>
     <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of DSM-Hash. </td></tr>
-    <tr><td class="paramname">key</td><td>The key of the &lt;key,value&gt; pair that DSMHashInsert will try to insert into the hash-table. </td></tr>
-    <tr><td class="paramname">value</td><td>The value of the &lt;key,value&gt; pair that DSMHashInsert will try to insert into the hash-table. </td></tr>
+    <tr><td class="paramname">key</td><td>The key of the &lt;key,value&gt; pair that synchDSMHashInsert will try to insert into the hash-table. </td></tr>
+    <tr><td class="paramname">value</td><td>The value of the &lt;key,value&gt; pair that synchDSMHashInsert will try to insert into the hash-table. </td></tr>
     <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
   </table>
   </dd>
@@ -450,8 +450,8 @@ A pool of nodes for fast memory allocation.s. </td></tr>
 
 </div>
 </div>
-<a id="a6c441933733e6f1f869aeecb8f649ee6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c441933733e6f1f869aeecb8f649ee6">&#9670;&nbsp;</a></span>DSMHashSearch()</h2>
+<a id="ac39140fcd3ca34944f7d407fd3b084f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac39140fcd3ca34944f7d407fd3b084f5">&#9670;&nbsp;</a></span>synchDSMHashSearch()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -460,15 +460,15 @@ A pool of nodes for fast memory allocation.s. </td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> DSMHashSearch </td>
+          <td class="memname"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> synchDSMHashSearch </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *&#160;</td>
           <td class="paramname"><em>hash</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structDSMHashThreadState">DSMHashThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState">SynchDSMHashThreadState</a> *&#160;</td>
           <td class="paramname"><em>th_state</em>, </td>
         </tr>
         <tr>
@@ -496,12 +496,12 @@ A pool of nodes for fast memory allocation.s. </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>This function searches for a specifc key in the hash-table. In case that DSMHashSearch finds the key, it returns true. Otherwise, it returns false. </p>
+<p>This function searches for a specifc key in the hash-table. In case that synchDSMHashSearch finds the key, it returns true. Otherwise, it returns false. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hash</td><td>A pointer to the hash-table instance. </td></tr>
     <tr><td class="paramname">th_state</td><td>A pointer to thread's local state of DSM-Hash. </td></tr>
-    <tr><td class="paramname">key</td><td>The key of the &lt;key,value&gt; pair that DSMHashSearch will search for. </td></tr>
+    <tr><td class="paramname">key</td><td>The key of the &lt;key,value&gt; pair that synchDSMHashSearch will search for. </td></tr>
     <tr><td class="paramname">pid</td><td>The pid of the calling thread. </td></tr>
   </table>
   </dd>
@@ -510,8 +510,8 @@ A pool of nodes for fast memory allocation.s. </td></tr>
 
 </div>
 </div>
-<a id="a6c69f7d11c90d1fd5abe0d69ea610449"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c69f7d11c90d1fd5abe0d69ea610449">&#9670;&nbsp;</a></span>DSMHashDelete()</h2>
+<a id="a517cd96476881b2c144280b5a6fc48a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a517cd96476881b2c144280b5a6fc48a2">&#9670;&nbsp;</a></span>synchDSMHashDelete()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -520,15 +520,15 @@ A pool of nodes for fast memory allocation.s. </td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DSMHashDelete </td>
+          <td class="memname">void synchDSMHashDelete </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structDSMHash">DSMHash</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structSynchDSMHash">SynchDSMHash</a> *&#160;</td>
           <td class="paramname"><em>hash</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structDSMHashThreadState">DSMHashThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="dsmhash_8h.html#structSynchDSMHashThreadState">SynchDSMHashThreadState</a> *&#160;</td>
           <td class="paramname"><em>th_state</em>, </td>
         </tr>
         <tr>
@@ -556,7 +556,7 @@ A pool of nodes for fast memory allocation.s. </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>This function searches for a specifc key in the hash-table. In case that DSMHashDelete finds the key, it deletes the corresponding &lt;key,value&gt;. </p>
+<p>This function searches for a specifc key in the hash-table. In case that synchDSMHashDelete finds the key, it deletes the corresponding &lt;key,value&gt;. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hash</td><td>A pointer to the hash-table instance. </td></tr>

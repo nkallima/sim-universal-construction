@@ -1,20 +1,4 @@
 var searchData=
 [
-  ['halfccsynchnode_435',['HalfCCSynchNode',['../ccsynch_8h.html#structHalfCCSynchNode',1,'']]],
-  ['halfdsmsynchnode_436',['HalfDSMSynchNode',['../dsmsynch_8h.html#structHalfDSMSynchNode',1,'']]],
-  ['halfhsynchnode_437',['HalfHSynchNode',['../hsynch_8h.html#structHalfHSynchNode',1,'']]],
-  ['halfmcslocknode_438',['HalfMCSLockNode',['../mcs_8h.html#structHalfMCSLockNode',1,'']]],
-  ['halfoyamaannouncenode_439',['HalfOyamaAnnounceNode',['../oyama_8h.html#structHalfOyamaAnnounceNode',1,'']]],
-  ['halfsimobjectstate_440',['HalfSimObjectState',['../sim_8h.html#structHalfSimObjectState',1,'']]],
-  ['halfsimstackstate_441',['HalfSimStackState',['../simstack_8h.html#structHalfSimStackState',1,'']]],
-  ['hashnode_442',['HashNode',['../dsmhash_8h.html#structHashNode',1,'']]],
-  ['hashoperations_443',['HashOperations',['../dsmhash_8h.html#structHashOperations',1,'']]],
-  ['hqueuestruct_444',['HQueueStruct',['../hqueue_8h.html#structHQueueStruct',1,'']]],
-  ['hqueuethreadstate_445',['HQueueThreadState',['../hqueue_8h.html#structHQueueThreadState',1,'']]],
-  ['hstackstruct_446',['HStackStruct',['../hstack_8h.html#structHStackStruct',1,'']]],
-  ['hstackthreadstate_447',['HStackThreadState',['../hstack_8h.html#structHStackThreadState',1,'']]],
-  ['hsynchnode_448',['HSynchNode',['../hsynch_8h.html#structHSynchNode',1,'']]],
-  ['hsynchnodeptr_449',['HSynchNodePtr',['../hsynch_8h.html#unionHSynchNodePtr',1,'']]],
-  ['hsynchstruct_450',['HSynchStruct',['../hsynch_8h.html#structHSynchStruct',1,'']]],
-  ['hsynchthreadstate_451',['HSynchThreadState',['../hsynch_8h.html#structHSynchThreadState',1,'']]]
+  ['lfuobjectthreadstate_416',['LFUObjectThreadState',['../lfuobject_8h.html#structLFUObjectThreadState',1,'']]]
 ];

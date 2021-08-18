@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo_synch.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">The Synch framework
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v3.0.0</span>
    </div>
    <div id="projectbrief">An open-source framework for concurrent data-structures and benchmarks</div>
   </td>
@@ -83,83 +83,83 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:structBackoffStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a></td></tr>
-<tr class="memdesc:structBackoffStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="backoff_8h.html#structBackoffStruct" title="BackoffStruct stores the state of an instance of the a backoff object. BackoffStruct should be initia...">BackoffStruct</a> stores the state of an instance of the a backoff object. <a class="el" href="backoff_8h.html#structBackoffStruct" title="BackoffStruct stores the state of an instance of the a backoff object. BackoffStruct should be initia...">BackoffStruct</a> should be initialized using the init_backoff function.  <a href="backoff_8h.html#structBackoffStruct">More...</a><br /></td></tr>
-<tr class="separator:structBackoffStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structSynchBackoffStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a></td></tr>
+<tr class="memdesc:structSynchBackoffStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="backoff_8h.html#structSynchBackoffStruct" title="SynchBackoffStruct stores the state of an instance of the a backoff object. SynchBackoffStruct should...">SynchBackoffStruct</a> stores the state of an instance of the a backoff object. <a class="el" href="backoff_8h.html#structSynchBackoffStruct" title="SynchBackoffStruct stores the state of an instance of the a backoff object. SynchBackoffStruct should...">SynchBackoffStruct</a> should be initialized using the synchInitBackoff function.  <a href="backoff_8h.html#structSynchBackoffStruct">More...</a><br /></td></tr>
+<tr class="separator:structSynchBackoffStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8d3b6af834357c334c5f1fc9309e18ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#a8d3b6af834357c334c5f1fc9309e18ee">init_backoff</a> (<a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *b, unsigned base_bits, unsigned cap_bits, unsigned shift_bits)</td></tr>
-<tr class="memdesc:a8d3b6af834357c334c5f1fc9309e18ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of a backoff object. Each threads should use a different instance of this object for each concurrent data-structure that it accesses. This function should be called by each thread that is going to access.  <a href="backoff_8h.html#a8d3b6af834357c334c5f1fc9309e18ee">More...</a><br /></td></tr>
-<tr class="separator:a8d3b6af834357c334c5f1fc9309e18ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90eb9cbc6fb018bbc1c6d57a8a19ede6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#a90eb9cbc6fb018bbc1c6d57a8a19ede6">reset_backoff</a> (<a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *b)</td></tr>
-<tr class="memdesc:a90eb9cbc6fb018bbc1c6d57a8a19ede6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function resets the current value of the backoff scheme to 2^base_bits.  <a href="backoff_8h.html#a90eb9cbc6fb018bbc1c6d57a8a19ede6">More...</a><br /></td></tr>
-<tr class="separator:a90eb9cbc6fb018bbc1c6d57a8a19ede6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b41833a1404ced7676a379fd653ba41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#a2b41833a1404ced7676a379fd653ba41">backoff_delay</a> (<a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *b)</td></tr>
-<tr class="memdesc:a2b41833a1404ced7676a379fd653ba41"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function applies backoff.  <a href="backoff_8h.html#a2b41833a1404ced7676a379fd653ba41">More...</a><br /></td></tr>
-<tr class="separator:a2b41833a1404ced7676a379fd653ba41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae166d79dc4f7a954c65b95d4cefa63b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#ae166d79dc4f7a954c65b95d4cefa63b4">backoff_reduce</a> (<a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *b)</td></tr>
-<tr class="memdesc:ae166d79dc4f7a954c65b95d4cefa63b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function reduces the current backoff value by 2^shift_bits only in case that the current value is greater than 2^base_bits.  <a href="backoff_8h.html#ae166d79dc4f7a954c65b95d4cefa63b4">More...</a><br /></td></tr>
-<tr class="separator:ae166d79dc4f7a954c65b95d4cefa63b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25f2fe338ebfc275482c10f9b4895270"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#a25f2fe338ebfc275482c10f9b4895270">backoff_increase</a> (<a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *b)</td></tr>
-<tr class="memdesc:a25f2fe338ebfc275482c10f9b4895270"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function increases the current backoff value by 2^shift_bits only in case that the current value is not greater than 2^caps_bits.  <a href="backoff_8h.html#a25f2fe338ebfc275482c10f9b4895270">More...</a><br /></td></tr>
-<tr class="separator:a25f2fe338ebfc275482c10f9b4895270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af144de7ea9752d1e5370efff434ebd64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#af144de7ea9752d1e5370efff434ebd64">synchInitBackoff</a> (<a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *b, unsigned base_bits, unsigned cap_bits, unsigned shift_bits)</td></tr>
+<tr class="memdesc:af144de7ea9752d1e5370efff434ebd64"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of a backoff object. Each threads should use a different instance of this object for each concurrent data-structure that it accesses. This function should be called by each thread that is going to access.  <a href="backoff_8h.html#af144de7ea9752d1e5370efff434ebd64">More...</a><br /></td></tr>
+<tr class="separator:af144de7ea9752d1e5370efff434ebd64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac21f503ab57a635c5aad825880fbcd0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#ac21f503ab57a635c5aad825880fbcd0a">synchResetBackoff</a> (<a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *b)</td></tr>
+<tr class="memdesc:ac21f503ab57a635c5aad825880fbcd0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function resets the current value of the backoff scheme to 2^base_bits.  <a href="backoff_8h.html#ac21f503ab57a635c5aad825880fbcd0a">More...</a><br /></td></tr>
+<tr class="separator:ac21f503ab57a635c5aad825880fbcd0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1bd74b510d21226797652a14a110eab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#ad1bd74b510d21226797652a14a110eab">synchBackoffDelay</a> (<a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *b)</td></tr>
+<tr class="memdesc:ad1bd74b510d21226797652a14a110eab"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function applies backoff.  <a href="backoff_8h.html#ad1bd74b510d21226797652a14a110eab">More...</a><br /></td></tr>
+<tr class="separator:ad1bd74b510d21226797652a14a110eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd4d945d8f092594f6fdf72582069619"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#acd4d945d8f092594f6fdf72582069619">synchBackoffReduce</a> (<a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *b)</td></tr>
+<tr class="memdesc:acd4d945d8f092594f6fdf72582069619"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function reduces the current backoff value by 2^shift_bits only in case that the current value is greater than 2^base_bits.  <a href="backoff_8h.html#acd4d945d8f092594f6fdf72582069619">More...</a><br /></td></tr>
+<tr class="separator:acd4d945d8f092594f6fdf72582069619"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd6f99608754618a61267e6546ec3e4a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="backoff_8h.html#afd6f99608754618a61267e6546ec3e4a">synchBackoffIncrease</a> (<a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *b)</td></tr>
+<tr class="memdesc:afd6f99608754618a61267e6546ec3e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function increases the current backoff value by 2^shift_bits only in case that the current value is not greater than 2^caps_bits.  <a href="backoff_8h.html#afd6f99608754618a61267e6546ec3e4a">More...</a><br /></td></tr>
+<tr class="separator:afd6f99608754618a61267e6546ec3e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes the API of a simple backoff implementation for lock-free and wait-free data-structures. This backoff scheme is based on the backoff implementation proposed by Maged M. Michael, and Michael L. Scott. in "Simple, fast, and practical non-blocking and blocking concurrent queue algorithms", Proceedings of the fifteenth annual ACM symposium on Principles of distributed computing, 1996. Examples of usage could be found in the lock-free stack and queue implementations (i.e. libconcurrent/concurrent/lfstack.c and libconcurrent/concurrent/msqueue.c respectively). </p>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structBackoffStruct" id="structBackoffStruct"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structBackoffStruct">&#9670;&nbsp;</a></span>BackoffStruct</h2>
+<a name="structSynchBackoffStruct" id="structSynchBackoffStruct"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structSynchBackoffStruct">&#9670;&nbsp;</a></span>SynchBackoffStruct</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct BackoffStruct</td>
+          <td class="memname">struct SynchBackoffStruct</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="backoff_8h.html#structBackoffStruct" title="BackoffStruct stores the state of an instance of the a backoff object. BackoffStruct should be initia...">BackoffStruct</a> stores the state of an instance of the a backoff object. <a class="el" href="backoff_8h.html#structBackoffStruct" title="BackoffStruct stores the state of an instance of the a backoff object. BackoffStruct should be initia...">BackoffStruct</a> should be initialized using the init_backoff function. </p>
+<div class="textblock"><p><a class="el" href="backoff_8h.html#structSynchBackoffStruct" title="SynchBackoffStruct stores the state of an instance of the a backoff object. SynchBackoffStruct should...">SynchBackoffStruct</a> stores the state of an instance of the a backoff object. <a class="el" href="backoff_8h.html#structSynchBackoffStruct" title="SynchBackoffStruct stores the state of an instance of the a backoff object. SynchBackoffStruct should...">SynchBackoffStruct</a> should be initialized using the synchInitBackoff function. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a55aa292620690e015d9a83b4ed3f3df9"></a>unsigned</td>
+<a id="a97a93a5fb433c14212342c70d0da17d7"></a>unsigned</td>
 <td class="fieldname">
 backoff</td>
 <td class="fielddoc">
 The current value of the backoff scheme. </td></tr>
 <tr><td class="fieldtype">
-<a id="a89830f50a8738c5f40ad749c96a8e36c"></a>unsigned</td>
+<a id="a61e01f40e26f37e1e31c9634336e45a5"></a>unsigned</td>
 <td class="fieldname">
 backoff_base_bits</td>
 <td class="fielddoc">
 The initial value of the backoff scheme is 2^backoff_base_bits. </td></tr>
 <tr><td class="fieldtype">
-<a id="a6a1a18c65c7e40aae8ddf9c18235962a"></a>unsigned</td>
+<a id="ae26b364427ea2c0fe521fe70b7348ea8"></a>unsigned</td>
 <td class="fieldname">
 backoff_cap_bits</td>
 <td class="fielddoc">
 The maximum value of the backoff scheme is 2^backoff_cap_bits. </td></tr>
 <tr><td class="fieldtype">
-<a id="af0a59d5946f1f3f6ba9e3707366d0cd9"></a>unsigned</td>
+<a id="a8c689f0bcf106706f47e50317d416d45"></a>unsigned</td>
 <td class="fieldname">
 backoff_shift_bits</td>
 <td class="fielddoc">
 The step of the backoff scheme is 2^backoff_shift_bits - 1. </td></tr>
 <tr><td class="fieldtype">
-<a id="aa3abb4828be665a873e140155ff1edbe"></a>unsigned</td>
+<a id="a0df9580de176b6bb26f7f7fbfd662889"></a>unsigned</td>
 <td class="fieldname">
 backoff_base</td>
 <td class="fielddoc">
 The minimum value of the backoff scheme (equal to 2^backoff_base_bits). </td></tr>
 <tr><td class="fieldtype">
-<a id="acdf416fa8beb6943da3167875dd28489"></a>unsigned</td>
+<a id="ac5aa01eb6f188795f34aa1d6fa532be7"></a>unsigned</td>
 <td class="fieldname">
 backoff_cap</td>
 <td class="fielddoc">
 The maximum value of the backoff scheme (equal to 2^backoff_cap_bits). </td></tr>
 <tr><td class="fieldtype">
-<a id="aabbc7d7d9f804a4773c4292f249df2a6"></a>unsigned</td>
+<a id="afbe0ac2d0730254c8b3aca18248098e2"></a>unsigned</td>
 <td class="fieldname">
 backoff_addend</td>
 <td class="fielddoc">
@@ -169,16 +169,16 @@ The step of the backoff scheme is 2^backoff_shift_bits - 1. </td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a8d3b6af834357c334c5f1fc9309e18ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d3b6af834357c334c5f1fc9309e18ee">&#9670;&nbsp;</a></span>init_backoff()</h2>
+<a id="af144de7ea9752d1e5370efff434ebd64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af144de7ea9752d1e5370efff434ebd64">&#9670;&nbsp;</a></span>synchInitBackoff()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void init_backoff </td>
+          <td class="memname">void synchInitBackoff </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
@@ -220,16 +220,16 @@ The step of the backoff scheme is 2^backoff_shift_bits - 1. </td></tr>
 
 </div>
 </div>
-<a id="a90eb9cbc6fb018bbc1c6d57a8a19ede6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90eb9cbc6fb018bbc1c6d57a8a19ede6">&#9670;&nbsp;</a></span>reset_backoff()</h2>
+<a id="ac21f503ab57a635c5aad825880fbcd0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac21f503ab57a635c5aad825880fbcd0a">&#9670;&nbsp;</a></span>synchResetBackoff()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void reset_backoff </td>
+          <td class="memname">void synchResetBackoff </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *&#160;</td>
           <td class="paramname"><em>b</em></td><td>)</td>
           <td></td>
         </tr>
@@ -246,16 +246,16 @@ The step of the backoff scheme is 2^backoff_shift_bits - 1. </td></tr>
 
 </div>
 </div>
-<a id="a2b41833a1404ced7676a379fd653ba41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b41833a1404ced7676a379fd653ba41">&#9670;&nbsp;</a></span>backoff_delay()</h2>
+<a id="ad1bd74b510d21226797652a14a110eab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1bd74b510d21226797652a14a110eab">&#9670;&nbsp;</a></span>synchBackoffDelay()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void backoff_delay </td>
+          <td class="memname">void synchBackoffDelay </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *&#160;</td>
           <td class="paramname"><em>b</em></td><td>)</td>
           <td></td>
         </tr>
@@ -272,16 +272,16 @@ The step of the backoff scheme is 2^backoff_shift_bits - 1. </td></tr>
 
 </div>
 </div>
-<a id="ae166d79dc4f7a954c65b95d4cefa63b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae166d79dc4f7a954c65b95d4cefa63b4">&#9670;&nbsp;</a></span>backoff_reduce()</h2>
+<a id="acd4d945d8f092594f6fdf72582069619"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd4d945d8f092594f6fdf72582069619">&#9670;&nbsp;</a></span>synchBackoffReduce()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void backoff_reduce </td>
+          <td class="memname">void synchBackoffReduce </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *&#160;</td>
           <td class="paramname"><em>b</em></td><td>)</td>
           <td></td>
         </tr>
@@ -298,16 +298,16 @@ The step of the backoff scheme is 2^backoff_shift_bits - 1. </td></tr>
 
 </div>
 </div>
-<a id="a25f2fe338ebfc275482c10f9b4895270"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25f2fe338ebfc275482c10f9b4895270">&#9670;&nbsp;</a></span>backoff_increase()</h2>
+<a id="afd6f99608754618a61267e6546ec3e4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd6f99608754618a61267e6546ec3e4a">&#9670;&nbsp;</a></span>synchBackoffIncrease()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void backoff_increase </td>
+          <td class="memname">void synchBackoffIncrease </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="backoff_8h.html#structBackoffStruct">BackoffStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="backoff_8h.html#structSynchBackoffStruct">SynchBackoffStruct</a> *&#160;</td>
           <td class="paramname"><em>b</em></td><td>)</td>
           <td></td>
         </tr>

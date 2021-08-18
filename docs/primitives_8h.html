@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo_synch.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">The Synch framework
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v3.0.0</span>
    </div>
    <div id="projectbrief">An open-source framework for concurrent data-structures and benchmarks</div>
   </td>
@@ -131,21 +131,21 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab3ebfb79201126e851de8eaf611534a5"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ab3ebfb79201126e851de8eaf611534a5">getMemory</a> (size_t size)</td></tr>
-<tr class="memdesc:ab3ebfb79201126e851de8eaf611534a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#ab3ebfb79201126e851de8eaf611534a5">More...</a><br /></td></tr>
-<tr class="separator:ab3ebfb79201126e851de8eaf611534a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dff53e45d5b45fcd412f808956d189b"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a3dff53e45d5b45fcd412f808956d189b">getAlignedMemory</a> (size_t align, size_t size)</td></tr>
-<tr class="memdesc:a3dff53e45d5b45fcd412f808956d189b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#a3dff53e45d5b45fcd412f808956d189b">More...</a><br /></td></tr>
-<tr class="separator:a3dff53e45d5b45fcd412f808956d189b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab22ff1e59a96198089797170da662b32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ab22ff1e59a96198089797170da662b32">freeMemory</a> (void *ptr, size_t size)</td></tr>
-<tr class="memdesc:ab22ff1e59a96198089797170da662b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees memory allocated with either <a class="el" href="primitives_8h.html#ab3ebfb79201126e851de8eaf611534a5" title="This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in libconcu...">getMemory()</a> or <a class="el" href="primitives_8h.html#a3dff53e45d5b45fcd412f808956d189b" title="This function allocates a memory area of size bytes. The returned address is aligned to an offset equ...">getAlignedMemory()</a> functions.  <a href="primitives_8h.html#ab22ff1e59a96198089797170da662b32">More...</a><br /></td></tr>
-<tr class="separator:ab22ff1e59a96198089797170da662b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14afa6a425a2bd3a4ab6c9b365a43087"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a14afa6a425a2bd3a4ab6c9b365a43087">getTimeMillis</a> (void)</td></tr>
-<tr class="memdesc:a14afa6a425a2bd3a4ab6c9b365a43087"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns the current system's time in milliseconds.  <a href="primitives_8h.html#a14afa6a425a2bd3a4ab6c9b365a43087">More...</a><br /></td></tr>
-<tr class="separator:a14afa6a425a2bd3a4ab6c9b365a43087"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6d4c408d50e2fdcf12aa821c7288f13"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#aa6d4c408d50e2fdcf12aa821c7288f13">getMachineModel</a> (void)</td></tr>
-<tr class="memdesc:aa6d4c408d50e2fdcf12aa821c7288f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns the vendor of the processor that it runs on. The current version of the Synch framework returns any of the following codes:  <a href="primitives_8h.html#aa6d4c408d50e2fdcf12aa821c7288f13">More...</a><br /></td></tr>
-<tr class="separator:aa6d4c408d50e2fdcf12aa821c7288f13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d450a2ee167060016632bba23178aaa"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a1d450a2ee167060016632bba23178aaa">synchGetMemory</a> (size_t size)</td></tr>
+<tr class="memdesc:a1d450a2ee167060016632bba23178aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#a1d450a2ee167060016632bba23178aaa">More...</a><br /></td></tr>
+<tr class="separator:a1d450a2ee167060016632bba23178aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4f5695a6870df657eda4f6f4fa8c379"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#af4f5695a6870df657eda4f6f4fa8c379">synchGetAlignedMemory</a> (size_t align, size_t size)</td></tr>
+<tr class="memdesc:af4f5695a6870df657eda4f6f4fa8c379"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#af4f5695a6870df657eda4f6f4fa8c379">More...</a><br /></td></tr>
+<tr class="separator:af4f5695a6870df657eda4f6f4fa8c379"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab08525b58a8e92c5d92bf874ad065534"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ab08525b58a8e92c5d92bf874ad065534">synchFreeMemory</a> (void *ptr, size_t size)</td></tr>
+<tr class="memdesc:ab08525b58a8e92c5d92bf874ad065534"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees memory allocated with either getMemory() or getAlignedMemory() functions.  <a href="primitives_8h.html#ab08525b58a8e92c5d92bf874ad065534">More...</a><br /></td></tr>
+<tr class="separator:ab08525b58a8e92c5d92bf874ad065534"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd58ecc3ee687922e7ccce8f8d044827"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#afd58ecc3ee687922e7ccce8f8d044827">synchGetTimeMillis</a> (void)</td></tr>
+<tr class="memdesc:afd58ecc3ee687922e7ccce8f8d044827"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns the current system's time in milliseconds.  <a href="primitives_8h.html#afd58ecc3ee687922e7ccce8f8d044827">More...</a><br /></td></tr>
+<tr class="separator:afd58ecc3ee687922e7ccce8f8d044827"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05f907b12247cd11d86aaf7b84d709da"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a05f907b12247cd11d86aaf7b84d709da">synchGetMachineModel</a> (void)</td></tr>
+<tr class="memdesc:a05f907b12247cd11d86aaf7b84d709da"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns the vendor of the processor that it runs on. The current version of the Synch framework returns any of the following codes:  <a href="primitives_8h.html#a05f907b12247cd11d86aaf7b84d709da">More...</a><br /></td></tr>
+<tr class="separator:a05f907b12247cd11d86aaf7b84d709da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae800f4dd1b3504036b1c07149e64f61e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e">_CAS128</a> (uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t C1)</td></tr>
 <tr class="memdesc:ae800f4dd1b3504036b1c07149e64f61e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed atomically. It reads the 128-bit value stored at a memory location pointed by A. Let A0 be the less significant 64-bits of this memory location and let A1 the most significant. This function computes '(A0 == B0 &amp; A1 == B1) ? &lt;C0,C1&gt; : &lt;A0,A1&gt;' and stores the result at location pointed by A. The function returns in case that (A0 == B0 &amp; A1 == B1) is true. Otherwise, it returns false.  <a href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e">More...</a><br /></td></tr>
 <tr class="separator:ae800f4dd1b3504036b1c07149e64f61e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -566,8 +566,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ab3ebfb79201126e851de8eaf611534a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3ebfb79201126e851de8eaf611534a5">&#9670;&nbsp;</a></span>getMemory()</h2>
+<a id="a1d450a2ee167060016632bba23178aaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d450a2ee167060016632bba23178aaa">&#9670;&nbsp;</a></span>synchGetMemory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -576,7 +576,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void* getMemory </td>
+          <td class="memname">void* synchGetMemory </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>size</em></td><td>)</td>
@@ -601,8 +601,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a3dff53e45d5b45fcd412f808956d189b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3dff53e45d5b45fcd412f808956d189b">&#9670;&nbsp;</a></span>getAlignedMemory()</h2>
+<a id="af4f5695a6870df657eda4f6f4fa8c379"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4f5695a6870df657eda4f6f4fa8c379">&#9670;&nbsp;</a></span>synchGetAlignedMemory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -611,7 +611,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void* getAlignedMemory </td>
+          <td class="memname">void* synchGetAlignedMemory </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>align</em>, </td>
@@ -647,8 +647,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab22ff1e59a96198089797170da662b32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab22ff1e59a96198089797170da662b32">&#9670;&nbsp;</a></span>freeMemory()</h2>
+<a id="ab08525b58a8e92c5d92bf874ad065534"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab08525b58a8e92c5d92bf874ad065534">&#9670;&nbsp;</a></span>synchFreeMemory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -657,7 +657,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void freeMemory </td>
+          <td class="memname">void synchFreeMemory </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>ptr</em>, </td>
@@ -681,7 +681,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>This function frees memory allocated with either <a class="el" href="primitives_8h.html#ab3ebfb79201126e851de8eaf611534a5" title="This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in libconcu...">getMemory()</a> or <a class="el" href="primitives_8h.html#a3dff53e45d5b45fcd412f808956d189b" title="This function allocates a memory area of size bytes. The returned address is aligned to an offset equ...">getAlignedMemory()</a> functions. </p>
+<p>This function frees memory allocated with either getMemory() or getAlignedMemory() functions. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ptr</td><td>A pointer to the memory area to be freed. </td></tr>
@@ -692,8 +692,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a14afa6a425a2bd3a4ab6c9b365a43087"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14afa6a425a2bd3a4ab6c9b365a43087">&#9670;&nbsp;</a></span>getTimeMillis()</h2>
+<a id="afd58ecc3ee687922e7ccce8f8d044827"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd58ecc3ee687922e7ccce8f8d044827">&#9670;&nbsp;</a></span>synchGetTimeMillis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -702,7 +702,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int64_t getTimeMillis </td>
+          <td class="memname">int64_t synchGetTimeMillis </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -721,8 +721,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa6d4c408d50e2fdcf12aa821c7288f13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6d4c408d50e2fdcf12aa821c7288f13">&#9670;&nbsp;</a></span>getMachineModel()</h2>
+<a id="a05f907b12247cd11d86aaf7b84d709da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05f907b12247cd11d86aaf7b84d709da">&#9670;&nbsp;</a></span>synchGetMachineModel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -731,7 +731,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t getMachineModel </td>
+          <td class="memname">uint64_t synchGetMachineModel </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -754,8 +754,7 @@ Functions</h2></td></tr>
 <li>RISCV_GENERIC_MACHINE</li>
 <li>UNKNOWN_MACHINE</li>
 </ul>
-<dl class="section return"><dt>Returns</dt><dd>It returns a code for the vendor of the processor that it runs on. <br  />
- </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>It returns a code for the vendor of the processor that it runs on. </dd></dl>
 
 </div>
 </div>
