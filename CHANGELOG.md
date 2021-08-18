@@ -10,7 +10,8 @@ v2.5.0
 - A code coverage report is provided through codecov.io for the validation script.
 - Support for installing the framework.
 - Improvements on the build environment.
-- Expansion of the CONTIBUTING.md.
+- Expansion of the CONTRIBUTING.md.
+- Providing a short discussion (see PERFORMANCE.md) of the expected performance for the various objects provided by the framework.
 
 v2.4.0
 ------

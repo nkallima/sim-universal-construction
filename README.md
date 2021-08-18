@@ -167,6 +167,10 @@ The following table shows the memory reclamation characteristics of the provided
 
 In the current design of the reclamation mechanism, each thread uses a single private pool for reclaiming memory. In a producer-consumer scenario where a set of threads performs only enqueue operations (or push operations in case of stacks) and all other threads perform dequeue operations (or pop operations in case of stacks), insufficient memory reclamation is performed since each memory pool is only accessible by the thread that owns it. We aim to improve this in future versions of the Synch framework.
 
+# Expected performance
+
+The expected performance of the Synch framework is discussed in the [PERFORMANCE.md](PERFORMANCE.md) file.
+
 
 # API documentation
 
