@@ -867,6 +867,7 @@ WARN_LOGFILE           =
 INPUT                  = README.md \
                          CHANGELOG.md \
                          CONTRIBUTING.md \
+                         PERFORMANCE.md \
                          libconcurrent/config.h \
                          libconcurrent/includes/
 
