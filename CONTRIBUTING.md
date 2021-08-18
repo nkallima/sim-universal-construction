@@ -9,7 +9,7 @@ The Concurrent library utilizes the building blocks of the Runtime/Primitives la
     <img src="resources/code_structure.png" alt="The code-structure of the Synch framework" width="50%">
 </p>
 
-## First, discuss your issue, change or contribution
+## First, discuss your issue
 Before contributing to this repository, you are encouraged to first discuss the issue, change or contribution that you wish to make. In order to do this, please open an issue or send an email. We are open to discuss new ideas, improvements or any other contributions. Please note that we have a [Code of conduct](https://github.com/nkallima/sim-universal-construction/blob/main/.github/CODE_OF_CONDUCT.md) that should be considered in all your interactions with the project.
 
 ## Ready to make a change
