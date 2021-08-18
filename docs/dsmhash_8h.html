@@ -117,7 +117,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes the API of the DSM-Hash concurrent hash-table implementation based on the DSM-Synch combining technique [1]. </p>
 <p>This hash-table implementation uses an array of a fixed amount of cells that it is defined during the initialization of the data-structure. Each cell contains at most one &lt;key,value&gt; pair and a pointer to a next cell. For handling collisions this hash-table uses separate chaining. For each cell there is a single instance of DSM-Synch. Whenever a thread wants to search, insert or delete a &lt;key,value&gt; pair in a specific cell, it should use the corresponding DSM-Synch instance. Since this hash-table implementation is not expandable (the initial size of the array is fixed), it may become very slow in cases of storing big amounts of &lt;key,value&gt; pairs. An example of use of this API is provided in benchmarks/dsmhashbench.c file.</p>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md44"></a>
 References</h2>
 <p>[1]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Revisiting the combining synchronization technique". ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012. </p>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>

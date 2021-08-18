@@ -12,5 +12,6 @@ var searchData=
   ['enqueue_5fsuccess_150',['ENQUEUE_SUCCESS',['../queue-stack_8h.html#a2fc9fe1075e2a85fe64ae5e29bdfb82c',1,'queue-stack.h']]],
   ['enqueue_5fthread_5fstate_151',['enqueue_thread_state',['../ccqueue_8h.html#a4eec354d183252610c95eaa5adf2a693',1,'CCQueueThreadState::enqueue_thread_state()'],['../dsmqueue_8h.html#a8459412fbfd1217ce59167a4265ea288',1,'DSMQueueThreadState::enqueue_thread_state()'],['../osciqueue_8h.html#ad5b536ecd3b7d3e52fb57c3ede854597',1,'OsciQueueThreadState::enqueue_thread_state()']]],
   ['entries_152',['entries',['../pool_8h.html#a7e330a62cd755c512cc5cb58b18afb51',1,'PoolBlockMetadata']]],
-  ['entries_5fper_5fblock_153',['entries_per_block',['../pool_8h.html#a2e48423f32b77e6a92c40387bd329a42',1,'PoolStruct']]]
+  ['entries_5fper_5fblock_153',['entries_per_block',['../pool_8h.html#a2e48423f32b77e6a92c40387bd329a42',1,'PoolStruct']]],
+  ['expected_20performance_154',['Expected Performance',['../md_PERFORMANCE.html',1,'']]]
 ];

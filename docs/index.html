@@ -221,7 +221,7 @@ Performance/Optimizations</h1>
 </ul>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Expected performance</h2>
-<p>The expected performance of the Synch framework is discussed in the PERFORMANCE.md file.</p>
+<p>The expected performance of the Synch framework is discussed in the <a class="el" href="md_PERFORMANCE.html">PERFORMANCE.md</a> file.</p>
 <h1><a class="anchor" id="autotoc_md7"></a>
 Memory reclamation (stacks and queues)</h1>
 <p>The Synch framework provides a pool mechanism (see <code><a class="el" href="pool_8h.html" title="This file exposes a simple API for implementing a very simple pool object. This pool object gives use...">includes/pool.h</a></code>) that efficiently allocates and de-allocates memory for the provided concurrent stack and queue implementations. The allocation mechanism of this pool implementation is low-overhead. All the provided stack and queue implementations use the functionality of this pool mechanism. In order to support memory reclamation in a safe manner, a concurrent object should guarantee that each memory object that is going to de-allocated should be accessed only by the thread that is going to free it. Generally, de-allocating and thus reclaiming memory is easy in many blocking objects, since there is a lock that protects the de-allocated memory object. Currently, the Synch framework supports memory reclamation for the following concurrent stack and queue implementations:</p><ul>
