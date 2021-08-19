@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
     Node *first = queue->enq_pool[queue->enq_sp.struct_data.index]->first;
     Node *last = queue->enq_pool[queue->enq_sp.struct_data.index]->last;
     if (first != NULL) {
-        CASPTR(&first->next, NULL, last);
+        synchCASPTR(&first->next, NULL, last);
     }
     fprintf(stderr, "DEBUG: Enqueue: Object state: %ld\n", (long)queue->enq_pool[queue->enq_sp.struct_data.index]->counter);
     fprintf(stderr, "DEBUG: Dequeue: Object state: %ld\n", (long)queue->deq_pool[queue->deq_sp.struct_data.index]->counter);

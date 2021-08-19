@@ -37,7 +37,7 @@ inline static void push(Object arg, int pid) {
 #ifdef DEBUG
     stack_state += 1;
 #endif
-    NonTSOFence();
+    synchNonTSOFence();
     CLHUnlock(lock, pid);
 }
 
@@ -56,7 +56,7 @@ inline static Object pop(int pid) {
 #ifdef DEBUG
     stack_state += 1;
 #endif
-    NonTSOFence();
+    synchNonTSOFence();
     CLHUnlock(lock, pid);
     synchRecycleObj(&pool_node, n);
 

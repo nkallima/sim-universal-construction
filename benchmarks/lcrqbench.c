@@ -42,8 +42,8 @@ inline static void *Execute(void *Arg) {
     if (id == 0) d2 = synchGetTimeMillis();
 
 #ifdef DEBUG
-    FAA64(&queue_object->closes, thread_state.mycloses);
-    FAA64(&queue_object->unsafes, thread_state.myunsafes);
+    synchFAA64(&queue_object->closes, thread_state.mycloses);
+    synchFAA64(&queue_object->unsafes, thread_state.myunsafes);
 #endif
 
     return NULL;

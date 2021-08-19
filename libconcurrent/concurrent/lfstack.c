@@ -2,7 +2,7 @@
 
 inline void LFStackInit(LFStackStruct *l) {
     l->top = NULL;
-    FullFence();
+    synchFullFence();
 }
 
 inline void LFStackThreadStateInit(LFStackThreadState *th_state, int min_back, int max_back) {
@@ -19,7 +19,7 @@ inline void LFStackPush(LFStackStruct *l, LFStackThreadState *th_state, ArgVal a
     do {
         Node *old_top = (Node *)l->top; // top is volatile
         n->next = old_top;
-        if (CASPTR(&l->top, old_top, n) == true)
+        if (synchCASPTR(&l->top, old_top, n) == true)
             break;
         else
             synchBackoffDelay(&th_state->backoff);
@@ -32,7 +32,7 @@ inline RetVal LFStackPop(LFStackStruct *l, LFStackThreadState *th_state) {
         Node *old_top = (Node *)l->top;
         if (old_top == NULL)
             return EMPTY_STACK;
-        if (CASPTR(&l->top, old_top, old_top->next))
+        if (synchCASPTR(&l->top, old_top, old_top->next))
             return old_top->val;
         else
             synchBackoffDelay(&th_state->backoff);

@@ -38,18 +38,18 @@ void synchInitCPUCounters(void) {
 
     while (__cpu_events == NULL) {
         void *ptr = getAlignedMemory(CACHE_LINE_SIZE, synchGetNCores() * sizeof(int));
-        if (CASPTR(&__cpu_events, NULL, ptr) == false) synchFreeMemory(ptr, synchGetNCores() * sizeof(int));
+        if (synchCASPTR(&__cpu_events, NULL, ptr) == false) synchFreeMemory(ptr, synchGetNCores() * sizeof(int));
     }
 
     while (__cpu_values == NULL) {
         void *ptr = getAlignedMemory(CACHE_LINE_SIZE, synchGetNCores() * sizeof(long long *));
-        if (CASPTR(&__cpu_values, NULL, ptr) == false) synchFreeMemory(ptr, synchGetNCores() * sizeof(long long *));
+        if (synchCASPTR(&__cpu_values, NULL, ptr) == false) synchFreeMemory(ptr, synchGetNCores() * sizeof(long long *));
     }
 
     for (i = 0; i < synchGetNCores(); i++) {
         while (__cpu_values[i] == NULL) {
             void *ptr = getAlignedMemory(CACHE_LINE_SIZE, N_CPU_COUNTERS * sizeof(long long));
-            if (CASPTR(&__cpu_values[i], NULL, ptr) == false) synchFreeMemory(ptr, N_CPU_COUNTERS * sizeof(long long));
+            if (synchCASPTR(&__cpu_values[i], NULL, ptr) == false) synchFreeMemory(ptr, N_CPU_COUNTERS * sizeof(long long));
         }
     }
     if ((ret = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT && ret > 0) {
@@ -106,10 +106,10 @@ void synchStartCPUCounters(int id) {
 
 void synchStopCPUCounters(int id) {
 #ifdef DEBUG
-    FAA64(&__total_failed_cas, __failed_cas);
-    FAA64(&__total_executed_cas, __executed_cas);
-    FAA64(&__total_executed_swap, __executed_swap);
-    FAA64(&__total_executed_faa, __executed_faa);
+    synchFAA64(&__total_failed_cas, __failed_cas);
+    synchFAA64(&__total_executed_cas, __executed_cas);
+    synchFAA64(&__total_executed_swap, __executed_swap);
+    synchFAA64(&__total_executed_faa, __executed_faa);
 #endif
 
 #ifdef _TRACK_CPU_COUNTERS

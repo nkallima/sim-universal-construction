@@ -6,7 +6,7 @@ void MSQueueInit(MSQueueStruct *l) {
     p->next = NULL;
     l->head = p;
     l->tail = p;
-    FullFence();
+    synchFullFence();
 }
 
 void MSQueueThreadStateInit(MSQueueThreadState *th_state, int min_back, int max_back) {
@@ -28,15 +28,14 @@ void MSQueueEnqueue(MSQueueStruct *l, MSQueueThreadState *th_state, ArgVal arg) 
         if (last == l->tail) {
             if (next == NULL) {
                 synchResetBackoff(&th_state->backoff);
-                if (CASPTR(&last->next, next, p))
-                    break;
+                if (synchCASPTR(&last->next, next, p)) break;
             } else {
-                CASPTR(&l->tail, last, next);
+                synchCASPTR(&l->tail, last, next);
                 synchBackoffDelay(&th_state->backoff);
             }
         }
     }
-    CASPTR(&l->tail, last, p);
+    synchCASPTR(&l->tail, last, p);
 }
 
 RetVal MSQueueDequeue(MSQueueStruct *l, MSQueueThreadState *th_state) {
@@ -52,12 +51,11 @@ RetVal MSQueueDequeue(MSQueueStruct *l, MSQueueThreadState *th_state) {
             if (first == last) {
                 if (next == NULL)
                     return EMPTY_QUEUE;
-                CASPTR(&l->tail, last, next);
+                synchCASPTR(&l->tail, last, next);
                 synchBackoffDelay(&th_state->backoff);
             } else {
                 value = next->val;
-                if (CASPTR(&l->head, first, next))
-                    break;
+                if (synchCASPTR(&l->head, first, next)) break;
                 synchBackoffDelay(&th_state->backoff);
             }
         }

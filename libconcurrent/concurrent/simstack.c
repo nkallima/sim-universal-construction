@@ -46,7 +46,7 @@ void SimStackStructInit(SimStackStruct *stack, uint32_t nthreads, int max_backof
 #ifdef DEBUG
     stack->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->counter = 0;
 #endif
-    FullFence();
+    synchFullFence();
 }
 
 void SimStackThreadStateInit(SimStackThreadState *th_state, uint32_t nthreads, int pid) {
@@ -140,15 +140,15 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
         TVEC_SET_ZERO(pops);
         int push_counter = 0;
         for (i = 0, prefix = 0; i < diffs->tvec_cells; i++, prefix += _TVEC_BIWORD_SIZE_) {
-            ReadPrefetch(&stack->announce[prefix]);
-            ReadPrefetch(&stack->announce[prefix + 8]);
-            ReadPrefetch(&stack->announce[prefix + 16]);
-            ReadPrefetch(&stack->announce[prefix + 24]);
+            synchReadPrefetch(&stack->announce[prefix]);
+            synchReadPrefetch(&stack->announce[prefix + 8]);
+            synchReadPrefetch(&stack->announce[prefix + 16]);
+            synchReadPrefetch(&stack->announce[prefix + 24]);
 
             while (diffs->cell[i] != 0L) {
                 register int pos, proc_id;
 
-                pos = bitSearchFirst(diffs->cell[i]);
+                pos = synchBitSearchFirst(diffs->cell[i]);
                 proc_id = prefix + pos;
                 diffs->cell[i] ^= ((bitword_t)1) << pos;
                 if (stack->announce[proc_id] == POP) {
@@ -166,11 +166,11 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
             while (pops->cell[i] != 0L) {
                 register int pos, proc_id;
 
-                pos = bitSearchFirst(pops->cell[i]);
+                pos = synchBitSearchFirst(pops->cell[i]);
                 proc_id = prefix + pos;
                 pops->cell[i] ^= ((bitword_t)1) << pos;
                 pop_counter += serialPop(lsp_data, proc_id);
-                NonTSOFence();
+                synchNonTSOFence();
                 if (old_sp.raw_data != stack->sp.raw_data)
                     goto outer;
             }
@@ -179,7 +179,7 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
         TVEC_COPY(&lsp_data->applied, l_toggles);                                       // change applied to be equal to what was read in stack->a_toggles
         new_sp.struct_data.seq = old_sp.struct_data.seq + 1;                            // increase timestamp
         new_sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * pid + th_state->local_index; // store in mod_dw.index the index in stack->pool where lsp_data will be stored
-        if (old_sp.raw_data == stack->sp.raw_data && CAS64(&stack->sp.raw_data, old_sp.raw_data, new_sp.raw_data)) {
+        if (old_sp.raw_data == stack->sp.raw_data && synchCAS64(&stack->sp.raw_data, old_sp.raw_data, new_sp.raw_data)) {
             th_state->local_index = (th_state->local_index + 1) % _SIM_LOCAL_POOL_SIZE_;
             th_state->backoff = (th_state->backoff >> 1) | 1;
             recycleList(&th_state->pool, free_list, pop_counter);

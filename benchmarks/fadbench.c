@@ -26,7 +26,7 @@ inline static void *Execute(void *Arg) {
     if (id == 0) d1 = synchGetTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        FAA64(&object, 1);
+        synchFAA64(&object, 1);
         rnum = synchFastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;

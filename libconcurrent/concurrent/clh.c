@@ -3,20 +3,20 @@
 #include <threadtools.h>
 
 void CLHLock(CLHLockStruct *l, int pid) {
-    NonTSOFence();
+    synchNonTSOFence();
     l->MyNode[pid]->locked = true;
-    l->MyPred[pid] = (CLHLockNode *)SWAP(&l->Tail, (void *)l->MyNode[pid]);
+    l->MyPred[pid] = (CLHLockNode *)synchSWAP(&l->Tail, (void *)l->MyNode[pid]);
     while (l->MyPred[pid]->locked == true) {
         synchResched();
     }
-    FullFence();
+    synchFullFence();
 }
 
 void CLHUnlock(CLHLockStruct *l, int pid) {
-    NonTSOFence();
+    synchNonTSOFence();
     l->MyNode[pid]->locked = false;
     l->MyNode[pid] = l->MyPred[pid];
-    FullFence();
+    synchFullFence();
 }
 
 CLHLockStruct *CLHLockInit(uint32_t nthreads) {
@@ -33,7 +33,7 @@ CLHLockStruct *CLHLockInit(uint32_t nthreads) {
         l->MyNode[j] = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHLockNode));
         l->MyPred[j] = NULL;
     }
-    FullFence();
+    synchFullFence();
 
     return l;
 }

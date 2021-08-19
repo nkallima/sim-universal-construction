@@ -31,8 +31,7 @@ RetVal OsciApplyOp(OsciStruct *l, OsciThreadState *st_thread, RetVal (*sfunc)(vo
     mynode = &st_thread->next_node[st_thread->toggle];
 osci_start:
     do { // Try to acquire the combining point
-        if (l->current_node[group].ptr == NULL)
-            CASPTR(&l->current_node[group].ptr, NULL, mynode);
+        if (l->current_node[group].ptr == NULL) synchCASPTR(&l->current_node[group].ptr, NULL, mynode);
         cur = l->current_node[group].ptr;
     } while (cur == NULL);
 
@@ -46,20 +45,20 @@ osci_start:
         cur->door = _OSCI_DOOR_OPENED;
         synchResched();                    // Scheduling point
         l->current_node[group].ptr = NULL; // Release the combining point
-        while (!CAS32(&cur->door, _OSCI_DOOR_OPENED, _OSCI_DOOR_INIT))
+        while (!synchCAS32(&cur->door, _OSCI_DOOR_OPENED, _OSCI_DOOR_INIT))
             synchResched();
-        pred = SWAP(&l->Tail, cur);
+        pred = synchSWAP(&l->Tail, cur);
 
         if (pred != NULL) {
             pred->next = cur;
-            FullFence();
+            synchFullFence();
             while (cur->rec[offset_id].locked)
                 synchResched();
             if (cur->rec[offset_id].completed) // operation has already applied
                 return cur->rec[offset_id].arg_ret;
         }
     } else {
-        while (!CAS32(&cur->door, _OSCI_DOOR_OPENED, _OSCI_DOOR_LOCKED)) {
+        while (!synchCAS32(&cur->door, _OSCI_DOOR_OPENED, _OSCI_DOOR_LOCKED)) {
             if (cur->door == _OSCI_DOOR_INIT)
                 goto osci_start;
             synchResched();
@@ -81,7 +80,7 @@ osci_start:
 #endif
     p = cur;
     do {
-        StorePrefetch(p->next);
+        synchStorePrefetch(p->next);
         for (i = 0; i < l->fibers_per_thread; i++) {
             if (p->rec[i].completed == false) {
                 p->rec[i].arg_ret = sfunc(state, p->rec[i].arg_ret, p->rec[i].pid);
@@ -99,13 +98,12 @@ osci_start:
     } while (true);
     // End critical section
     if (p->next == NULL) {
-        if (l->Tail == p && CASPTR(&l->Tail, p, NULL) == true)
-            return cur->rec[offset_id].arg_ret;
+        if (l->Tail == p && synchCASPTR(&l->Tail, p, NULL) == true) return cur->rec[offset_id].arg_ret;
         while (p->next == NULL) {
             synchResched();
         }
     }
-    NonTSOFence();
+    synchNonTSOFence();
     i = 0;
     while (i < l->fibers_per_thread) {
         if (p->next->rec[i].completed == false) {
@@ -114,7 +112,7 @@ osci_start:
         }
         i++;
     }
-    FullFence();
+    synchFullFence();
 
     return cur->rec[offset_id].arg_ret;
 }
@@ -135,5 +133,5 @@ void OsciInit(OsciStruct *l, uint32_t nthreads, uint32_t fibers_per_thread) {
     for (i = 0; i < l->groups_of_fibers; i++)
         l->current_node[i].ptr = NULL;
     l->Tail = NULL;
-    StoreFence();
+    synchStoreFence();
 }

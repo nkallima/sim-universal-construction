@@ -136,7 +136,7 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
     __nthreads = nthreads;
     __threads = synchGetMemory(nthreads * sizeof(pthread_t));
     __func = func;
-    StoreFence();
+    synchStoreFence();
     if (uthreads != _DONT_USE_UTHREADS_ && uthreads > 1) {
         __uthreads = uthreads;
         __uthread_sched = true;
@@ -182,7 +182,7 @@ inline int32_t synchGetThreadId(void) {
 
 inline void synchResched(void) {
     if (__noop_resched) {
-        Pause();
+        synchPause();
     } else if (__uthread_sched) {
         synchFiberYield();
     } else {

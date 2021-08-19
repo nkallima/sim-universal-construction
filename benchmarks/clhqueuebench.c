@@ -40,7 +40,7 @@ inline static void enqueue(Object arg, int pid) {
     n->next = NULL;
     CLHLock(ltail, pid);
     Tail->next = n;
-    NonTSOFence();
+    synchNonTSOFence();
     Tail = n;
 #ifdef DEBUG
     enq_state += 1;
@@ -58,7 +58,7 @@ inline static Object dequeue(int pid) {
     else {
         node = (Node *)Head;
         Head = Head->next;
-        NonTSOFence();
+        synchNonTSOFence();
         if (node->val == GUARD_VALUE && Head->next != NULL) {
             Head = Head->next;
             result = EMPTY_QUEUE;

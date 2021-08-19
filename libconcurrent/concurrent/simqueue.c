@@ -11,7 +11,7 @@ static inline void DeqLinkQueue(SimQueueStruct *queue, DeqState *pst);
 
 inline static void EnqLinkQueue(SimQueueStruct *queue, EnqState *pst) {
     if (pst->first != NULL) {
-        CASPTR(&pst->first->next, NULL, pst->last);
+        synchCASPTR(&pst->first->next, NULL, pst->last);
     }
 }
 
@@ -25,9 +25,8 @@ inline static void DeqLinkQueue(SimQueueStruct *queue, DeqState *pst) {
     if (pst->head->next == NULL) {
         volatile Node *last = enq_pst->last;
         volatile Node *first = enq_pst->first;
-        FullFence();
-        if (first != NULL && last != NULL && enq_sp.raw_data == queue->enq_sp.raw_data)
-            CASPTR(&first->next, NULL, last);
+        synchFullFence();
+        if (first != NULL && last != NULL && enq_sp.raw_data == queue->enq_sp.raw_data) synchCASPTR(&first->next, NULL, last);
     }
 }
 
@@ -112,7 +111,7 @@ void SimQueueStructInit(SimQueueStruct *queue, uint32_t nthreads, int max_backof
 #endif
     queue->MAX_BACK = max_backoff * 100;
 
-    FullFence();
+    synchFullFence();
 }
 
 void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVal arg, int pid) {
@@ -170,7 +169,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
             while (diffs->cell[i] != 0L) {
                 register int pos, proc_id;
 
-                pos = bitSearchFirst(diffs->cell[i]);
+                pos = synchBitSearchFirst(diffs->cell[i]);
                 proc_id = prefix + pos;
                 enq_counter++;
 #ifdef DEBUG
@@ -190,7 +189,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
         TVEC_COPY(&lsp_data->applied, l_toggles);
         new_sp.struct_data.seq = old_sp.struct_data.seq + 1;
         new_sp.struct_data.index = pid * LOCAL_POOL_SIZE + th_state->enq_local_index;
-        if (old_sp.raw_data == queue->enq_sp.raw_data && CAS64(&queue->enq_sp, old_sp.raw_data, new_sp.raw_data)) {
+        if (old_sp.raw_data == queue->enq_sp.raw_data && synchCAS64(&queue->enq_sp, old_sp.raw_data, new_sp.raw_data)) {
             EnqLinkQueue(queue, lsp_data);
             th_state->enq_local_index = (th_state->enq_local_index + 1) % LOCAL_POOL_SIZE;
             th_state->max_backoff = (th_state->max_backoff >> 1) | 1;
@@ -250,7 +249,7 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
             while (diffs->cell[i] != 0L) {
                 register int pos, proc_id;
 
-                pos = bitSearchFirst(diffs->cell[i]);
+                pos = synchBitSearchFirst(diffs->cell[i]);
                 proc_id = prefix + pos;
 #ifdef DEBUG
                 lsp_data->counter += 1;
@@ -269,7 +268,7 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
         TVEC_COPY(&lsp_data->applied, l_toggles);
         new_sp.struct_data.seq = old_sp.struct_data.seq + 1;
         new_sp.struct_data.index = pid * LOCAL_POOL_SIZE + th_state->deq_local_index;
-        if (old_sp.raw_data == queue->deq_sp.raw_data && CAS64(&queue->deq_sp, old_sp.raw_data, new_sp.raw_data)) {
+        if (old_sp.raw_data == queue->deq_sp.raw_data && synchCAS64(&queue->deq_sp, old_sp.raw_data, new_sp.raw_data)) {
             th_state->deq_local_index = (th_state->deq_local_index + 1) % LOCAL_POOL_SIZE;
             th_state->max_backoff = (th_state->max_backoff >> 1) | 1;
             return lsp_data->ret[pid];

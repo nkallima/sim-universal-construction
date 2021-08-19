@@ -26,7 +26,7 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         } else {
             RetVal ret = node->val;
             st->top = st->top->next;
-            NonTSOFence();
+            synchNonTSOFence();
             synchRecycleObj(&pool_node, (void *)node);
             return ret;
         }
@@ -38,7 +38,7 @@ inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->next = st->top;
         node->val = arg;
         st->top = node;
-        NonTSOFence();
+        synchNonTSOFence();
         return PUSH_SUCCESS;
     }
 }

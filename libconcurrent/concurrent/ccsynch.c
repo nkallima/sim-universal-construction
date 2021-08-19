@@ -17,7 +17,7 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
     next_node->locked = true;
     next_node->completed = false;
 
-    cur = (CCSynchNode *)SWAP(&l->Tail, next_node);
+    cur = (CCSynchNode *)synchSWAP(&l->Tail, next_node);
     cur->arg_ret = arg;
     cur->pid = pid;
     cur->next = (CCSynchNode *)next_node;
@@ -33,22 +33,22 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
 #endif
     p = cur; // I am not been helped
     while (p->next != NULL && counter < help_bound) {
-        StorePrefetch(p->next);
+        synchStorePrefetch(p->next);
         counter++;
 #ifdef DEBUG
         l->counter++;
 #endif
         tmp_next = p->next;
         p->arg_ret = sfunc(state, p->arg_ret, p->pid);
-        NonTSOFence();
+        synchNonTSOFence();
         p->completed = true;
-        NonTSOFence();
+        synchNonTSOFence();
         p->locked = false;
         p = tmp_next;
     }
-    NonTSOFence();
+    synchNonTSOFence();
     p->locked = false; // Unlock the next one
-    StoreFence();
+    synchStoreFence();
 
     return cur->arg_ret;
 }
@@ -72,7 +72,7 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     l->Tail->locked = false;
     l->Tail->completed = false;
 
-    StoreFence();
+    synchStoreFence();
 }
 
 void CCSynchThreadStateInit(CCSynchStruct *l, CCSynchThreadState *st_thread, int pid) {

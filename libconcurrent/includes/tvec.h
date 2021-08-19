@@ -36,9 +36,9 @@ static inline void TVEC_ATOMIC_COPY_BANKS(ToggleVector *tv1, ToggleVector *tv2, 
 
 static inline void TVEC_ATOMIC_ADD_BANK(volatile ToggleVector *tv1, ToggleVector *tv2, int bank) {
 #    if _TVEC_BIWORD_SIZE_ == 32
-    FAA32(&tv1->cell[bank], tv2->cell[bank]);
+    synchFAA32(&tv1->cell[bank], tv2->cell[bank]);
 #    else
-    FAA64(&tv1->cell[bank], tv2->cell[bank]);
+    synchFAA64(&tv1->cell[bank], tv2->cell[bank]);
 #    endif
 }
 
@@ -140,7 +140,7 @@ static inline int TVEC_COUNT_BITS(ToggleVector *tv) {
     int i, count;
 
     count = 0;
-    LOOP(count += nonZeroBits(tv->cell[i]), i, tv->tvec_cells);
+    LOOP(count += synchNonZeroBits(tv->cell[i]), i, tv->tvec_cells);
 
     return count;
 }

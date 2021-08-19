@@ -8,39 +8,39 @@ inline void synchBarrierSet(SynchBarrier *bar, uint32_t n) {
     bar->arrive_flag = true;
     bar->leave_flag = true;
     bar->val_at_set = n;
-    FullFence();
+    synchFullFence();
 }
 
 inline void synchBarrierWait(SynchBarrier *bar) {
-    if (FAA32(&bar->arrive, -1) > 1) {
+    if (synchFAA32(&bar->arrive, -1) > 1) {
         while (bar->arrive_flag)
             synchResched();
     } else {
         bar->arrive = bar->val_at_set;
-        NonTSOFence();
+        synchNonTSOFence();
         bar->leave_flag = true;
-        NonTSOFence();
+        synchNonTSOFence();
         bar->arrive_flag = false;
-        FullFence();
+        synchFullFence();
     }
 
-    FullFence();
-    if (FAA32(&bar->leave, -1) > 1) {
+    synchFullFence();
+    if (synchFAA32(&bar->leave, -1) > 1) {
         while (bar->leave_flag)
             synchResched();
     } else {
         bar->leave = bar->val_at_set;
-        NonTSOFence();
+        synchNonTSOFence();
         bar->arrive_flag = true;
-        NonTSOFence();
+        synchNonTSOFence();
         bar->leave_flag = false;
-        FullFence();
+        synchFullFence();
     }
 }
 
 inline void synchBarrierLeave(SynchBarrier *bar) {
-    FAA32(&bar->arrive, -1);
-    FAA32(&bar->leave, -1);
+    synchFAA32(&bar->arrive, -1);
+    synchFAA32(&bar->leave, -1);
 }
 
 inline void synchBarrierLastLeave(SynchBarrier *bar) {

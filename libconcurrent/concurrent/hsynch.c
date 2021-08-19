@@ -22,7 +22,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     next_node->locked = true;
     next_node->completed = false;
 
-    cur = (volatile HSynchNode *)SWAP(&l->Tail[node_of_thread].ptr, next_node);
+    cur = (volatile HSynchNode *)synchSWAP(&l->Tail[node_of_thread].ptr, next_node);
     cur->arg_ret = arg;
     cur->pid = pid;
     cur->next = (HSynchNode *)next_node;
@@ -40,16 +40,16 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     l->rounds++;
 #endif
     while (counter < help_bound && p->next != NULL) {
-        ReadPrefetch(p->next);
+        synchReadPrefetch(p->next);
         counter++;
 #ifdef DEBUG
         l->counter++;
 #endif
         tmp_next = p->next;
         p->arg_ret = sfunc(state, p->arg_ret, p->pid);
-        NonTSOFence();
+        synchNonTSOFence();
         p->completed = true;
-        NonTSOFence();
+        synchNonTSOFence();
         p->locked = false;
         p = tmp_next;
     }
@@ -97,11 +97,11 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
         last_node->locked = false;
         last_node->completed = false;
 
-        if (CASPTR(&l->nodes[node_of_thread], NULL, ptr) == false) synchFreeMemory(ptr, (l->numa_node_size + 2) * sizeof(HSynchNode));
+        if (synchCASPTR(&l->nodes[node_of_thread], NULL, ptr) == false) synchFreeMemory(ptr, (l->numa_node_size + 2) * sizeof(HSynchNode));
     }
     last_node = l->nodes[node_of_thread] + l->numa_node_size + 1;
-    CASPTR(&l->Tail[node_of_thread].ptr, NULL, last_node);
-    node_index = FAA32(&l->node_indexes[node_of_thread], 1);
+    synchCASPTR(&l->Tail[node_of_thread].ptr, NULL, last_node);
+    node_index = synchFAA32(&l->node_indexes[node_of_thread], 1);
     st_thread->next_node = l->nodes[node_of_thread] + node_index;
 }
 
@@ -156,5 +156,5 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
 #ifdef DEBUG
     l->rounds = l->counter = 0;
 #endif
-    StoreFence();
+    synchStoreFence();
 }

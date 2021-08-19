@@ -20,10 +20,10 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     mynode->completed = false;
     mynode->pid = pid;
 
-    mypred = (DSMSynchNode *)SWAP(&l->Tail, mynode);
+    mypred = (DSMSynchNode *)synchSWAP(&l->Tail, mynode);
     if (mypred != NULL) {
         mypred->next = (DSMSynchNode *)mynode;
-        FullFence();
+        synchFullFence();
 
         while (mynode->locked) {
             synchResched();
@@ -38,15 +38,15 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     counter = 0;
     p = mynode;
     do { // I surely do it for myself
-        ReadPrefetch(p->next);
+        synchReadPrefetch(p->next);
         counter++;
 #ifdef DEBUG
         l->counter += 1;
 #endif
         p->arg_ret = sfunc(state, p->arg_ret, p->pid);
-        NonTSOFence();
+        synchNonTSOFence();
         p->completed = true;
-        NonTSOFence();
+        synchNonTSOFence();
         p->locked = false;
         if (p->next == NULL || p->next->next == NULL || counter >= help_bound)
             break;
@@ -54,15 +54,14 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     } while (true);
     // End critical section
     if (p->next == NULL) {
-        if (l->Tail == p && CASPTR(&l->Tail, p, NULL) == true)
-            return mynode->arg_ret;
+        if (l->Tail == p && synchCASPTR(&l->Tail, p, NULL) == true) return mynode->arg_ret;
         while (p->next == NULL) {
             synchResched();
         }
     }
-    NonTSOFence();
+    synchNonTSOFence();
     p->next->locked = false;
-    FullFence();
+    synchFullFence();
 
     return mynode->arg_ret;
 }
@@ -80,7 +79,7 @@ void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
 #ifdef DEBUG
     l->counter = 0;
 #endif
-    FullFence();
+    synchFullFence();
 }
 
 void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, int pid) {

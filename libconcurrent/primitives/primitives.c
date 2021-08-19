@@ -95,7 +95,7 @@ inline uint64_t __BitTAS64(volatile uint64_t *A, unsigned char B) {
     return bit;
 }
 
-inline int bitSearchFirst(uint64_t B) {
+inline int synchBitSearchFirst(uint64_t B) {
     uint64_t A;
 
     asm("bsfq %0, %1;" : "=d"(A) : "d"(B));
@@ -103,7 +103,7 @@ inline int bitSearchFirst(uint64_t B) {
     return (int)A;
 }
 
-inline uint64_t nonZeroBits(uint64_t v) {
+inline uint64_t synchNonZeroBits(uint64_t v) {
     uint64_t c;
 
     for (c = 0; v; v >>= 1)
@@ -263,15 +263,14 @@ inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {
 
 inline void *_SWAP(void *A, void *B) {
 #if defined(_EMULATE_SWAP_)
-#    warning SWAP instructions are simulated!
+#    warning synchSWAP instructions are simulated!
     void *old_val;
     void *new_val;
 
     while (true) {
         old_val = (void *)*((volatile long *)A);
         new_val = B;
-        if (((void *)*((volatile long *)A)) == old_val && CASPTR(A, old_val, new_val) == true)
-            break;
+        if (((void *)*((volatile long *)A)) == old_val && synchCASPTR(A, old_val, new_val) == true) break;
     }
 #    ifdef DEBUG
     __executed_swap++;
@@ -297,8 +296,7 @@ inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
     while (true) {
         old_val = *((int32_t *volatile)A);
         new_val = old_val + B;
-        if (*A == old_val && CAS32(A, old_val, new_val) == true)
-            break;
+        if (*A == old_val && synchCAS32(A, old_val, new_val) == true) break;
     }
 #    ifdef DEBUG
     __executed_faa++;
@@ -324,8 +322,7 @@ inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
     while (true) {
         old_val = *((int64_t *volatile)A);
         new_val = old_val + B;
-        if (*A == old_val && CAS64(A, old_val, new_val) == true)
-            break;
+        if (*A == old_val && synchCAS64(A, old_val, new_val) == true) break;
     }
 #    ifdef DEBUG
     __executed_faa++;

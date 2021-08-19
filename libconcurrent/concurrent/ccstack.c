@@ -9,7 +9,7 @@ static __thread SynchPoolStruct pool_node CACHE_ALIGN;
 void CCStackInit(CCStackStruct *stack_object_struct, uint32_t nthreads) {
     CCSynchStructInit(&stack_object_struct->object_struct, nthreads);
     stack_object_struct->top = NULL;
-    StoreFence();
+    synchStoreFence();
 }
 
 void CCStackThreadStateInit(CCStackStruct *object_struct, CCStackThreadState *lobject_struct, int pid) {
@@ -25,7 +25,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         if (st->top != NULL) {
             RetVal ret = node->val;
             st->top = st->top->next;
-            NonTSOFence();
+            synchNonTSOFence();
             synchRecycleObj(&pool_node, (void *)node);
             return ret;
         } else
@@ -38,7 +38,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         node->next = st->top;
         node->val = arg;
         st->top = node;
-        NonTSOFence();
+        synchNonTSOFence();
 
         return PUSH_SUCCESS;
     }

@@ -34,7 +34,7 @@ void synchSimStructInit(SimStruct *sim_struct, uint32_t nthreads, int max_backof
     sim_struct->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->counter = 0;
     sim_struct->pool[_SIM_LOCAL_POOL_SIZE_ * nthreads]->rounds = 0;
 #endif
-    FullFence();
+    synchFullFence();
 }
 
 void SimThreadStateInit(SimThreadState *th_state, uint32_t nthreads, int pid) {
@@ -95,15 +95,15 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
         lsp_data->ret[pid] = sfunc(&lsp_data->state, arg, pid);
         TVEC_REVERSE_BIT(diffs, pid);
         for (i = 0, prefix = 0; i < diffs->tvec_cells; i++, prefix += _TVEC_BIWORD_SIZE_) {
-            ReadPrefetch(&sim_struct->announce[prefix]);
-            ReadPrefetch(&sim_struct->announce[prefix + 8]);
-            ReadPrefetch(&sim_struct->announce[prefix + 16]);
-            ReadPrefetch(&sim_struct->announce[prefix + 24]);
+            synchReadPrefetch(&sim_struct->announce[prefix]);
+            synchReadPrefetch(&sim_struct->announce[prefix + 8]);
+            synchReadPrefetch(&sim_struct->announce[prefix + 16]);
+            synchReadPrefetch(&sim_struct->announce[prefix + 24]);
 
             while (diffs->cell[i] != 0L) {
                 register int pos, proc_id;
 
-                pos = bitSearchFirst(diffs->cell[i]);
+                pos = synchBitSearchFirst(diffs->cell[i]);
                 proc_id = prefix + pos;
                 diffs->cell[i] ^= ((bitword_t)1) << pos;
                 lsp_data->ret[proc_id] = sfunc(&lsp_data->state, sim_struct->announce[proc_id], proc_id);
@@ -115,7 +115,7 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
         TVEC_COPY(&lsp_data->applied, l_toggles);                                       // change applied to be equal to what was read in sim_struct->a_toggles
         new_sp.struct_data.seq = old_sp.struct_data.seq + 1;                            // increase timestamp
         new_sp.struct_data.index = _SIM_LOCAL_POOL_SIZE_ * pid + th_state->local_index; // store in mod_dw.index the index in sim_struct->pool where lsim_struct->sp will be stored
-        if (old_sp.raw_data == sim_struct->sp.raw_data && CAS64(&sim_struct->sp, old_sp.raw_data, new_sp.raw_data)) { // try to change sim_struct->sp to the value mod_dw
+        if (old_sp.raw_data == sim_struct->sp.raw_data && synchCAS64(&sim_struct->sp, old_sp.raw_data, new_sp.raw_data)) {  // try to change sim_struct->sp to the value mod_dw
             th_state->local_index = (th_state->local_index + 1) % _SIM_LOCAL_POOL_SIZE_;                              // if this happens successfully,use next item in pid's sim_struct->pool next time
             th_state->backoff = (th_state->backoff >> 1) | 1;
             return lsp_data->ret[pid];

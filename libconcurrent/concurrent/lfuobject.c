@@ -2,7 +2,7 @@
 
 void LFUObjectInit(LFUObjectStruct *l, ArgVal value) {
     l->state.state = value;
-    FullFence();
+    synchFullFence();
 }
 
 void LFUObjectThreadStateInit(LFUObjectThreadState *th_state, int min_back, int max_back) {
@@ -18,7 +18,7 @@ RetVal LFUObjectApplyOp(LFUObjectStruct *l, LFUObjectThreadState *th_state, RetV
         new_state.state = old_state.state;
         ret_state.state = sfunc(&new_state.state, arg, pid);
 
-        if (CAS64(&l->state.state, old_state.state, new_state.state) == true) {
+        if (synchCAS64(&l->state.state, old_state.state, new_state.state) == true) {
             break;
         } else
             synchBackoffDelay(&th_state->backoff);
