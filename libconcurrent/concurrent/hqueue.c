@@ -4,11 +4,11 @@
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 
-static __thread PoolStruct pool_node CACHE_ALIGN;
+static __thread SynchPoolStruct pool_node CACHE_ALIGN;
 
 void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t numa_nodes) {
-    queue_object_struct->enqueue_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
-    queue_object_struct->dequeue_struct = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
+    queue_object_struct->enqueue_struct = synchGetAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
+    queue_object_struct->dequeue_struct = synchGetAlignedMemory(S_CACHE_LINE_SIZE, sizeof(HSynchStruct));
     HSynchStructInit(queue_object_struct->enqueue_struct, nthreads, numa_nodes);
     HSynchStructInit(queue_object_struct->dequeue_struct, nthreads, numa_nodes);
     queue_object_struct->guard.val = GUARD_VALUE;
@@ -20,14 +20,14 @@ void HQueueInit(HQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t n
 void HQueueThreadStateInit(HQueueStruct *object_struct, HQueueThreadState *lobject_struct, int pid) {
     HSynchThreadStateInit(object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, (int)pid);
     HSynchThreadStateInit(object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, (int)pid);
-    init_pool(&pool_node, sizeof(Node));
+    synchInitPool(&pool_node, sizeof(Node));
 }
 
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     HQueueStruct *st = (HQueueStruct *)state;
     Node *node;
 
-    node = alloc_obj(&pool_node);
+    node = synchAllocObj(&pool_node);
     node->next = NULL;
     node->val = arg;
     st->last->next = node;
@@ -47,7 +47,7 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
         if (node->val == GUARD_VALUE)
             return serialDequeue(state, arg, pid);
         NonTSOFence();
-        recycle_obj(&pool_node, (Node *)prev);
+        synchRecycleObj(&pool_node, (Node *)prev);
         return node->val;
     } else {
         return EMPTY_QUEUE;

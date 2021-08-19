@@ -8,7 +8,7 @@ const int UNLOCKED = 0;
 const int OYAMA_HELP_FACTOR = 10;
 
 static void OyamaWait(void) {
-    resched();
+    synchResched();
 }
 
 RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal (*sfunc)(ArgVal, int), ArgVal arg, int pid) {

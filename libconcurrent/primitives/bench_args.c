@@ -25,7 +25,7 @@ static void printHelp(const char *exec_name) {
             exec_name);
 }
 
-void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
+void synchParseArguments(SynchBenchArgs *bench_args, int argc, char *argv[]) {
     int opt, long_index;
 
     static struct option long_options[] =
@@ -40,7 +40,7 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
              {0, 0, 0, 0}};
 
     // Setting some default values, the user may overide them
-    bench_args->nthreads = getNCores();
+    bench_args->nthreads = synchGetNCores();
     bench_args->runs = RUNS;
     bench_args->fibers_per_thread = _DONT_USE_UTHREADS_;
     bench_args->max_work = MAX_WORK;

@@ -8,9 +8,9 @@
 #ifndef _BACKOFF_H_
 #define _BACKOFF_H_
 
-/// @brief BackoffStruct stores the state of an instance of the a backoff object.
-/// BackoffStruct should be initialized using the init_backoff function.
-typedef struct BackoffStruct {
+/// @brief SynchBackoffStruct stores the state of an instance of the a backoff object.
+/// SynchBackoffStruct should be initialized using the synchInitBackoff function.
+typedef struct SynchBackoffStruct {
     /// @brief The current value of the backoff scheme.
     unsigned backoff;
     /// @brief The initial value of the backoff scheme is 2^backoff_base_bits.
@@ -25,7 +25,7 @@ typedef struct BackoffStruct {
     unsigned backoff_cap;
     /// @brief The step of the backoff scheme is 2^backoff_shift_bits - 1.
     unsigned backoff_addend;
-} BackoffStruct;
+} SynchBackoffStruct;
 
 /// @brief This function initializes an instance of a backoff object. 
 /// Each threads should use a different instance of this object for each concurrent data-structure that it accesses.
@@ -35,28 +35,28 @@ typedef struct BackoffStruct {
 /// @param base_bits The initial value of the backoff scheme is 2^base_bits.
 /// @param cap_bits The maximum value of the backoff scheme is 2^cap_bits.
 /// @param shift_bits The step of the backoff scheme is 2^shift_bits - 1.
-void init_backoff(BackoffStruct *b, unsigned base_bits, unsigned cap_bits, unsigned shift_bits);
+void synchInitBackoff(SynchBackoffStruct *b, unsigned base_bits, unsigned cap_bits, unsigned shift_bits);
 
 /// @brief This function resets the current value of the backoff scheme to 2^base_bits.
 ///
 /// @param b A pointer to an instance of the backoff object.
-void reset_backoff(BackoffStruct *b);
+void synchResetBackoff(SynchBackoffStruct *b);
 
 /// @brief This function applies backoff.
 ///
 /// @param b A pointer to an instance of the backoff object.
-void backoff_delay(BackoffStruct *b);
+void synchBackoffDelay(SynchBackoffStruct *b);
 
 /// @brief This function reduces the current backoff value by 2^shift_bits only in case that the 
 /// current value is greater than 2^base_bits.
 ///
 /// @param b A pointer to an instance of the backoff object.
-void backoff_reduce(BackoffStruct *b);
+void synchBackoffReduce(SynchBackoffStruct *b);
 
 /// @brief This function increases the current backoff value by 2^shift_bits only in case that the 
 /// current value is not greater than 2^caps_bits.
 ///
 /// @param b A pointer to an instance of the backoff object.
-void backoff_increase(BackoffStruct *b);
+void synchBackoffIncrease(SynchBackoffStruct *b);
 
 #endif

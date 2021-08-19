@@ -50,7 +50,7 @@ typedef struct SimStackState {
 /// For each instance of SimStack, a discrete instance of SimStackThreadState should be used.
 typedef struct SimStackThreadState {
     /// @brief A pool of Node structs used for fast allocation during push operations.
-    PoolStruct pool;
+    SynchPoolStruct pool;
     ToggleVector mask;
     ToggleVector toggle;
     ToggleVector my_bit;
@@ -81,7 +81,6 @@ typedef struct SimStackStruct {
     /// @brief A vector of toggle bits used to detect which announced operations are applied or not.
     volatile ToggleVector a_toggles CACHE_ALIGN;
 } SimStackStruct;
-
 
 /// @brief This function initializes an instance of the SimStack concurrent stack implementation.
 ///

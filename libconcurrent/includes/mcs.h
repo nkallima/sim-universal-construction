@@ -42,7 +42,6 @@ typedef struct MCSThreadState {
     volatile MCSLockNode *MyNode CACHE_ALIGN;
 } MCSThreadState;
 
-
 /// @brief This function initializes an instance of the MCS queue lock implementation.
 ///
 /// This function should be called once (by a single thread) before any other thread tries to

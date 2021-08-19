@@ -31,7 +31,7 @@ typedef union LFUObjectStruct {
 /// For each instance of the lock-free universal construction, a discrete instance of LFUObjectThreadState should be used.
 typedef struct LFUObjectThreadState {
     /// @brief A backoff object per thread is used for reducing the contention while accessing the object.
-    BackoffStruct backoff;
+    SynchBackoffStruct backoff;
 } LFUObjectThreadState;
 
 /// @brief This function initializes an instance of the lock-free universal construction.

@@ -103,7 +103,6 @@ typedef struct LCRQThreadState {
 #endif
 } LCRQThreadState;
 
-
 /// @brief This function initializes an instance of the LCRQ concurrent queue implementation.
 /// This function should be called once (by a single thread) before any other thread tries to
 /// apply any enqueue or dequeue operation.

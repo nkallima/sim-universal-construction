@@ -24,12 +24,11 @@ static __thread Fiber *FIBER_RECYCLE = NULL;
 static __thread int MAX_FIBERS = 1;
 static __thread int currentFiber = 0;
 
-
-void initFibers(int max) {
+void synchInitFibers(int max) {
     int i;
 
     MAX_FIBERS = max;
-    FIBER_LIST = getMemory(MAX_FIBERS * sizeof(Fiber));
+    FIBER_LIST = synchGetMemory(MAX_FIBERS * sizeof(Fiber));
     getcontext(&(FIBER_LIST[0].context));
     FIBER_LIST[0].active = true;
     FIBER_LIST[0].context.uc_link = NULL;
@@ -43,7 +42,7 @@ inline static void switch_to_fiber(Fiber *prev, Fiber *cur) {
     }
 }
 
-void fiberYield(void) {
+void synchFiberYield(void) {
     int prev_fiber;
 
     if (N_FIBERS == 1)
@@ -55,7 +54,7 @@ void fiberYield(void) {
     } while (FIBER_LIST[currentFiber].active == false);
     switch_to_fiber(&FIBER_LIST[prev_fiber], &FIBER_LIST[currentFiber]);
     if (FIBER_RECYCLE != NULL) {
-        freeMemory(FIBER_RECYCLE, sizeof(Fiber));
+        synchFreeMemory(FIBER_RECYCLE, sizeof(Fiber));
         FIBER_RECYCLE = NULL;
     }
 }
@@ -84,7 +83,7 @@ static void fiber_start_func(FiberData *context) {
     switch_to_fiber(&FIBER_LIST[prev_fiber], &FIBER_LIST[currentFiber]);
 }
 
-int spawnFiber(void *(*func)(void *), long arg) {
+int synchSpawnFiber(void *(*func)(void *), long arg) {
     ucontext_t tmp;
     FiberData context;
 
@@ -94,7 +93,7 @@ int spawnFiber(void *(*func)(void *), long arg) {
     getcontext(&(FIBER_LIST[N_FIBERS].context));
     FIBER_LIST[N_FIBERS].active = true;
     FIBER_LIST[N_FIBERS].context.uc_link = NULL;
-    FIBER_LIST[N_FIBERS].context.uc_stack.ss_sp = getMemory(FIBER_STACK);
+    FIBER_LIST[N_FIBERS].context.uc_stack.ss_sp = synchGetMemory(FIBER_STACK);
     FIBER_LIST[N_FIBERS].context.uc_stack.ss_size = FIBER_STACK;
     FIBER_LIST[N_FIBERS].context.uc_stack.ss_flags = 0;
 
@@ -108,7 +107,7 @@ int spawnFiber(void *(*func)(void *), long arg) {
     return 1;
 }
 
-void waitForAllFibers(void) { // Execute the fibers until they quit
+void synchWaitForAllFibers(void) {  // Execute the fibers until they quit
     while (N_FIBERS > 1)
-        fiberYield();
+        synchFiberYield();
 }

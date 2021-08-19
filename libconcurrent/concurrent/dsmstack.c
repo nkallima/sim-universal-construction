@@ -4,7 +4,7 @@
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
 static const int POP_OP = INT_MIN;
-static __thread PoolStruct pool_node CACHE_ALIGN;
+static __thread SynchPoolStruct pool_node CACHE_ALIGN;
 
 void DSMSStackInit(DSMStackStruct *stack_object_struct, uint32_t nthreads) {
     DSMSynchStructInit(&stack_object_struct->object_struct, nthreads);
@@ -14,7 +14,7 @@ void DSMSStackInit(DSMStackStruct *stack_object_struct, uint32_t nthreads) {
 
 void DSMStackThreadStateInit(DSMStackStruct *object_struct, DSMStackThreadState *lobject_struct, int pid) {
     DSMSynchThreadStateInit(&object_struct->object_struct, &lobject_struct->th_state, (int)pid);
-    init_pool(&pool_node, sizeof(Node));
+    synchInitPool(&pool_node, sizeof(Node));
 }
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
@@ -26,7 +26,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
             RetVal ret = node->val;
             st->top = st->top->next;
             NonTSOFence();
-            recycle_obj(&pool_node, (void *)node);
+            synchRecycleObj(&pool_node, (void *)node);
             return ret;
         } else
             return EMPTY_STACK;
@@ -34,7 +34,7 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         DSMStackStruct *st = (DSMStackStruct *)state;
         Node *node;
 
-        node = alloc_obj(&pool_node);
+        node = synchAllocObj(&pool_node);
         node->next = st->top;
         node->val = arg;
         st->top = node;

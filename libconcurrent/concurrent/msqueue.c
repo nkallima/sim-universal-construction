@@ -1,7 +1,7 @@
 #include <msqueue.h>
 
 void MSQueueInit(MSQueueStruct *l) {
-    Node *p = getMemory(sizeof(Node));
+    Node *p = synchGetMemory(sizeof(Node));
 
     p->next = NULL;
     l->head = p;
@@ -10,29 +10,29 @@ void MSQueueInit(MSQueueStruct *l) {
 }
 
 void MSQueueThreadStateInit(MSQueueThreadState *th_state, int min_back, int max_back) {
-    init_backoff(&th_state->backoff, min_back, max_back, 1);
-    init_pool(&th_state->pool, sizeof(Node));
+    synchInitBackoff(&th_state->backoff, min_back, max_back, 1);
+    synchInitPool(&th_state->pool, sizeof(Node));
 }
 
 void MSQueueEnqueue(MSQueueStruct *l, MSQueueThreadState *th_state, ArgVal arg) {
     Node *p;
     Node *next, *last;
 
-    p = alloc_obj(&th_state->pool);
+    p = synchAllocObj(&th_state->pool);
     p->val = arg;
     p->next = NULL;
-    reset_backoff(&th_state->backoff);
+    synchResetBackoff(&th_state->backoff);
     while (true) {
         last = (Node *)l->tail;
         next = (Node *)last->next;
         if (last == l->tail) {
             if (next == NULL) {
-                reset_backoff(&th_state->backoff);
+                synchResetBackoff(&th_state->backoff);
                 if (CASPTR(&last->next, next, p))
                     break;
             } else {
                 CASPTR(&l->tail, last, next);
-                backoff_delay(&th_state->backoff);
+                synchBackoffDelay(&th_state->backoff);
             }
         }
     }
@@ -43,7 +43,7 @@ RetVal MSQueueDequeue(MSQueueStruct *l, MSQueueThreadState *th_state) {
     Node *first, *last, *next;
     Object value;
 
-    reset_backoff(&th_state->backoff);
+    synchResetBackoff(&th_state->backoff);
     while (true) {
         first = (Node *)l->head;
         last = (Node *)l->tail;
@@ -53,12 +53,12 @@ RetVal MSQueueDequeue(MSQueueStruct *l, MSQueueThreadState *th_state) {
                 if (next == NULL)
                     return EMPTY_QUEUE;
                 CASPTR(&l->tail, last, next);
-                backoff_delay(&th_state->backoff);
+                synchBackoffDelay(&th_state->backoff);
             } else {
                 value = next->val;
                 if (CASPTR(&l->head, first, next))
                     break;
-                backoff_delay(&th_state->backoff);
+                synchBackoffDelay(&th_state->backoff);
             }
         }
     }

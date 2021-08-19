@@ -17,7 +17,7 @@ void MCSLock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
         NonTSOFence();
     }
     while (thread_state->MyNode->locked == true) {
-        resched();
+        synchResched();
     }
     FullFence();
 }
@@ -29,7 +29,7 @@ void MCSUnlock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
             return;
 
         while (thread_state->MyNode->next == NULL) {
-            resched();
+            synchResched();
         }
     }
     thread_state->MyNode->next->locked = false;
@@ -40,7 +40,7 @@ void MCSUnlock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
 MCSLockStruct *MCSLockInit(void) {
     MCSLockStruct *l;
 
-    l = getAlignedMemory(CACHE_LINE_SIZE, sizeof(MCSLockStruct));
+    l = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(MCSLockStruct));
     l->Tail = NULL;
     FullFence();
 
@@ -48,5 +48,5 @@ MCSLockStruct *MCSLockInit(void) {
 }
 
 void MCSThreadStateInit(MCSThreadState *st_thread, int pid) {
-    st_thread->MyNode = getAlignedMemory(CACHE_LINE_SIZE, sizeof(MCSLockNode));
+    st_thread->MyNode = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(MCSLockNode));
 }

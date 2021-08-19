@@ -27,11 +27,10 @@ typedef struct MSQueueStruct {
 /// For each instance of MS-Queue, a discrete instance of MSQueueThreadState should be used.
 typedef struct MSQueueThreadState {
     /// @brief A pool object per thread is used for fast memory allocation.
-    PoolStruct pool;
+    SynchPoolStruct pool;
     /// @brief A backoff object per thread is used for reducing the contention while accessing the queue.
-    BackoffStruct backoff;
+    SynchBackoffStruct backoff;
 } MSQueueThreadState;
-
 
 /// @brief This function initializes an instance of the MS-Queue concurrent queue implementation.
 ///

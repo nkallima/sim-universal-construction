@@ -9,15 +9,15 @@ static inline void SimStateCopy(SimObjectState *dest, SimObjectState *src) {
     memcpy(&dest->state, &src->state, SimObjectStateSize(dest->applied.nthreads) - CACHE_LINE_SIZE);
 }
 
-void SimStructInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff) {
+void synchSimStructInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff) {
     int i;
 
     sim_struct->nthreads = nthreads;
-    TVEC_INIT_AT((ToggleVector *)&sim_struct->a_toggles, nthreads, getAlignedMemory(CACHE_LINE_SIZE, _TVEC_VECTOR_SIZE(nthreads)));
-    sim_struct->announce = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(ArgVal));
-    sim_struct->pool = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimObjectState *) * (_SIM_LOCAL_POOL_SIZE_ * nthreads + 1));
+    TVEC_INIT_AT((ToggleVector *)&sim_struct->a_toggles, nthreads, synchGetAlignedMemory(CACHE_LINE_SIZE, _TVEC_VECTOR_SIZE(nthreads)));
+    sim_struct->announce = synchGetAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(ArgVal));
+    sim_struct->pool = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(SimObjectState *) * (_SIM_LOCAL_POOL_SIZE_ * nthreads + 1));
     for (i = 0; i < _SIM_LOCAL_POOL_SIZE_ * nthreads + 1; i++) {
-        sim_struct->pool[i] = getAlignedMemory(CACHE_LINE_SIZE, SimObjectStateSize(nthreads));
+        sim_struct->pool[i] = synchGetAlignedMemory(CACHE_LINE_SIZE, SimObjectStateSize(nthreads));
         TVEC_INIT_AT(&sim_struct->pool[i]->applied, nthreads, sim_struct->pool[i]->__flex);
         sim_struct->pool[i]->ret = ((void *)sim_struct->pool[i]->__flex) + _TVEC_VECTOR_SIZE(nthreads);
     }
@@ -64,17 +64,17 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
     lsp_data = (HalfSimObjectState *)sim_struct->pool[pid * _SIM_LOCAL_POOL_SIZE_ + th_state->local_index];
     TVEC_ATOMIC_ADD_BANK(&sim_struct->a_toggles, &th_state->toggle, mybank);            // toggle pid's bit in sim_struct->a_toggles, Fetch&Add acts as a full write-barrier
 
-    if (!isSystemOversubscribed()) {
+    if (!synchIsSystemOversubscribed()) {
         volatile int k;
         int backoff_limit;
 
-        if (fastRandomRange(1, sim_struct->nthreads) > 1) {
+        if (synchFastRandomRange(1, sim_struct->nthreads) > 1) {
             backoff_limit = th_state->backoff;
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
-    } else if (fastRandomRange(1, sim_struct->nthreads) > 4)
-        resched();
+    } else if (synchFastRandomRange(1, sim_struct->nthreads) > 4)
+        synchResched();
 
     for (j = 0; j < 2; j++) {
         old_sp = sim_struct->sp;                                                        // read reference to struct ObjectState

@@ -8,7 +8,7 @@
 
 /// @brief BenchArgs stores the values of the command-line arguments used by the benchmarks provided by the Synch framework.
 /// BenchArgs should be initialized using the parseArguments function. For the default values, see the config.h file.
-typedef struct BenchArgs {
+typedef struct SynchBenchArgs {
     /// @brief The number of the executed operations per thread. Notice that benchmarks for stacks and queues
     /// execute runs pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues).
     uint64_t runs;
@@ -32,13 +32,13 @@ typedef struct BenchArgs {
     uint16_t backoff_low;
     /// @brief The upper backoff bound used in the experiment.
     uint16_t backoff_high;
-} BenchArgs;
+} SynchBenchArgs;
 
 /// @brief This function parses the command-line arguments and stores them in an BenchArgs structure.
 ///
 /// @param bench_args A pointer to an BenchArgs structure.
 /// @param argc The number of command-line arguments.
 /// @param argv An array of argc command-line arguments (i.e. strings) to be parsed.
-void parseArguments(BenchArgs *bench_args, int argc, char *argv[]);
+void synchParseArguments(SynchBenchArgs *bench_args, int argc, char *argv[]);
 
 #endif

@@ -14,8 +14,8 @@
 
 OsciStackStruct object_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-Barrier bar CACHE_ALIGN;
-BenchArgs bench_args CACHE_ALIGN;
+SynchBarrier bar CACHE_ALIGN;
+SynchBenchArgs bench_args CACHE_ALIGN;
 
 inline static void *Execute(void *Arg) {
     OsciStackThreadState *th_state;
@@ -23,40 +23,40 @@ inline static void *Execute(void *Arg) {
     volatile int j;
     long id = (long)Arg;
 
-    fastRandomSetSeed(id);
-    BarrierWait(&bar);
-    if (id == 0) d1 = getTimeMillis();
+    synchFastRandomSetSeed(id);
+    synchBarrierWait(&bar);
+    if (id == 0) d1 = synchGetTimeMillis();
 
-    th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(OsciStackThreadState));
+    th_state = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(OsciStackThreadState));
     OsciStackThreadStateInit(&object_struct, th_state, id);
     for (i = 0; i < bench_args.runs; i++) {
         // perform a push operation
         OsciStackApplyPush(&object_struct, th_state, id, id);
-        rnum = fastRandomRange(1, bench_args.max_work);
+        rnum = synchFastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
         // perform a pop operation
         OsciStackApplyPop(&object_struct, th_state, id);
-        rnum = fastRandomRange(1, bench_args.max_work);
+        rnum = synchFastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
-    BarrierWait(&bar);
-    if (id == 0) d2 = getTimeMillis();
+    synchBarrierWait(&bar);
+    if (id == 0) d2 = synchGetTimeMillis();
 
     return NULL;
 }
 
 int main(int argc, char *argv[]) {
-    parseArguments(&bench_args, argc, argv);
+    synchParseArguments(&bench_args, argc, argv);
 
     OsciStackInit(&object_struct, bench_args.nthreads, bench_args.fibers_per_thread);
-    BarrierSet(&bar, bench_args.nthreads);
-    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
-    JoinThreadsN(bench_args.nthreads - 1);
+    synchBarrierSet(&bar, bench_args.nthreads);
+    synchStartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    synchJoinThreadsN(bench_args.nthreads - 1);
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
-    printStats(bench_args.nthreads, bench_args.total_runs);
+    synchPrintStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: Object state: %ld\n", object_struct.object_struct.counter);

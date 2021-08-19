@@ -10,9 +10,9 @@ inline void DSMHashInit(DSMHash *hash, int num_cells, int nthreads) {
     int i;
 
     hash->size = num_cells;
-    hash->announce = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(HashOperations));
-    hash->synch = getAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(DSMSynchStruct));
-    hash->cells = getAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(ptr_aligned_t));
+    hash->announce = synchGetAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(HashOperations));
+    hash->synch = synchGetAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(DSMSynchStruct));
+    hash->cells = synchGetAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(ptr_aligned_t));
     for (i = 0; i < num_cells; i++) {
         DSMSynchStructInit(&hash->synch[i], nthreads);
         hash->cells[i].ptr = NULL;
@@ -22,8 +22,8 @@ inline void DSMHashInit(DSMHash *hash, int num_cells, int nthreads) {
 inline void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, int num_cells, int pid) {
     int i;
 
-    th_state->th_state = getMemory(num_cells * sizeof(DSMSynchThreadState));
-    init_pool(&th_state->pool, sizeof(HashNode));
+    th_state->th_state = synchGetMemory(num_cells * sizeof(DSMSynchThreadState));
+    synchInitPool(&th_state->pool, sizeof(HashNode));
     for (i = 0; i < num_cells; i++)
         DSMSynchThreadStateInit(&hash->synch[i], &th_state->th_state[i], pid);
 }
@@ -105,7 +105,7 @@ inline bool DSMHashInsert(DSMHash *hash, DSMHashThreadState *th_state, int64_t k
     args.key = key;
     args.value = value;
     args.cell = hash_func(hash, key);
-    args.node = alloc_obj(&th_state->pool);
+    args.node = synchAllocObj(&th_state->pool);
     hash->announce[pid] = args;
     return DSMSynchApplyOp(&hash->synch[args.cell], &th_state->th_state[args.cell], serialOperations, (void *)hash, 0, pid);
 }

@@ -55,7 +55,7 @@ void SimQueueThreadStateInit(SimQueueStruct *queue, SimQueueThreadState *th_stat
     TVEC_REVERSE_BIT(&th_state->my_enq_bit, pid);
     TVEC_SET_BIT(&th_state->mask, pid);
     TVEC_NEGATIVE(&th_state->enq_toggle, &th_state->mask);
-    init_pool(&th_state->pool_node, sizeof(Node));
+    synchInitPool(&th_state->pool_node, sizeof(Node));
 
     TVEC_SET_ZERO(&th_state->mask);
     TVEC_REVERSE_BIT(&th_state->my_deq_bit, pid);
@@ -71,9 +71,9 @@ void SimQueueStructInit(SimQueueStruct *queue, uint32_t nthreads, int max_backof
     int i;
 
     queue->nthreads = nthreads;
-    queue->announce = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(ArgVal));
-    TVEC_INIT_AT(&queue->enqueuers, nthreads, getAlignedMemory(CACHE_LINE_SIZE, _TVEC_VECTOR_SIZE(nthreads)));
-    TVEC_INIT_AT(&queue->dequeuers, nthreads, getAlignedMemory(CACHE_LINE_SIZE, _TVEC_VECTOR_SIZE(nthreads)));
+    queue->announce = synchGetAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(ArgVal));
+    TVEC_INIT_AT(&queue->enqueuers, nthreads, synchGetAlignedMemory(CACHE_LINE_SIZE, _TVEC_VECTOR_SIZE(nthreads)));
+    TVEC_INIT_AT(&queue->dequeuers, nthreads, synchGetAlignedMemory(CACHE_LINE_SIZE, _TVEC_VECTOR_SIZE(nthreads)));
 
     tmp_sp.struct_data.index = LOCAL_POOL_SIZE * nthreads;
     tmp_sp.struct_data.seq = 0L;
@@ -83,12 +83,12 @@ void SimQueueStructInit(SimQueueStruct *queue, uint32_t nthreads, int max_backof
     TVEC_SET_ZERO((ToggleVector *)&queue->enqueuers);
     TVEC_SET_ZERO((ToggleVector *)&queue->dequeuers);
 
-    queue->enq_pool = getAlignedMemory(CACHE_LINE_SIZE, (LOCAL_POOL_SIZE * nthreads + 1) * sizeof(EnqState *));
-    queue->deq_pool = getAlignedMemory(CACHE_LINE_SIZE, (LOCAL_POOL_SIZE * nthreads + 1) * sizeof(DeqState *));
+    queue->enq_pool = synchGetAlignedMemory(CACHE_LINE_SIZE, (LOCAL_POOL_SIZE * nthreads + 1) * sizeof(EnqState *));
+    queue->deq_pool = synchGetAlignedMemory(CACHE_LINE_SIZE, (LOCAL_POOL_SIZE * nthreads + 1) * sizeof(DeqState *));
 
     for (i = 0; i < LOCAL_POOL_SIZE * nthreads + 1; i++) {
-        queue->enq_pool[i] = getAlignedMemory(CACHE_LINE_SIZE, EnqStateSize(nthreads));
-        queue->deq_pool[i] = getAlignedMemory(CACHE_LINE_SIZE, DeqStateSize(nthreads));
+        queue->enq_pool[i] = synchGetAlignedMemory(CACHE_LINE_SIZE, EnqStateSize(nthreads));
+        queue->deq_pool[i] = synchGetAlignedMemory(CACHE_LINE_SIZE, DeqStateSize(nthreads));
 
         TVEC_INIT_AT(&queue->enq_pool[i]->applied, nthreads, queue->enq_pool[i]->__flex);
         TVEC_INIT_AT(&queue->deq_pool[i]->applied, nthreads, queue->deq_pool[i]->__flex);
@@ -130,17 +130,17 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
     lsp_data = queue->enq_pool[pid * LOCAL_POOL_SIZE + th_state->enq_local_index];
     TVEC_ATOMIC_ADD_BANK(&queue->enqueuers, &th_state->enq_toggle, mybank); // toggle pid's bit in a_toggles, Fetch&Add acts as a full write-barrier
 
-    if (!isSystemOversubscribed()) {
+    if (!synchIsSystemOversubscribed()) {
         volatile int k;
         int backoff_limit;
 
-        if (fastRandomRange(1, queue->nthreads) > 1) {
-            backoff_limit = fastRandomRange(th_state->max_backoff >> 1, th_state->max_backoff);
+        if (synchFastRandomRange(1, queue->nthreads) > 1) {
+            backoff_limit = synchFastRandomRange(th_state->max_backoff >> 1, th_state->max_backoff);
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
-    } else if (fastRandomRange(1, queue->nthreads) > 4) {
-        resched();
+    } else if (synchFastRandomRange(1, queue->nthreads) > 4) {
+        synchResched();
     }
 
     for (j = 0; j < 2; j++) {
@@ -158,7 +158,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
 
         EnqLinkQueue(queue, lsp_data);
         enq_counter = 1;
-        node = alloc_obj(&th_state->pool_node);
+        node = synchAllocObj(&th_state->pool_node);
         node->next = NULL;
         node->val = arg;
         llist = node;
@@ -176,7 +176,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
 #ifdef DEBUG
                 lsp_data->counter += 1;
 #endif
-                node->next = alloc_obj(&th_state->pool_node);
+                node->next = synchAllocObj(&th_state->pool_node);
                 node = (Node *)node->next;
                 node->next = NULL;
                 node->val = queue->announce[proc_id];
@@ -198,7 +198,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
         } else {
             if (th_state->max_backoff < queue->MAX_BACK)
                 th_state->max_backoff <<= 1;
-            rollback(&th_state->pool_node, enq_counter);
+            synchRollback(&th_state->pool_node, enq_counter);
         }
     }
 
@@ -219,17 +219,17 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
     lsp_data = queue->deq_pool[pid * LOCAL_POOL_SIZE + th_state->deq_local_index];
     TVEC_ATOMIC_ADD_BANK(&queue->dequeuers, &th_state->deq_toggle, mybank); // toggle pid's bit in a_toggles, Fetch&Add acts as a full write-barrier
 
-    if (!isSystemOversubscribed()) {
+    if (!synchIsSystemOversubscribed()) {
         volatile int k;
         int backoff_limit;
 
-        if (fastRandomRange(1, queue->nthreads) > 1) {
-            backoff_limit = fastRandomRange(th_state->max_backoff >> 1, th_state->max_backoff);
+        if (synchFastRandomRange(1, queue->nthreads) > 1) {
+            backoff_limit = synchFastRandomRange(th_state->max_backoff >> 1, th_state->max_backoff);
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
-    } else if (fastRandomRange(1, queue->nthreads) > 4) {
-        resched();
+    } else if (synchFastRandomRange(1, queue->nthreads) > 4) {
+        synchResched();
     }
 
     for (j = 0; j < 2; j++) {

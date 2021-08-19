@@ -17,7 +17,7 @@ inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_sta
 inline static bool serialPop(HalfSimStackState *st, int pid);
 inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid);
 static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src);
-inline static void recycleList(PoolStruct *pool, Node *head, uint32_t items);
+inline static void recycleList(SynchPoolStruct *pool, Node *head, uint32_t items);
 
 static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src) {
     // copy everything except 'applied' and 'ret' fields
@@ -28,11 +28,11 @@ void SimStackStructInit(SimStackStruct *stack, uint32_t nthreads, int max_backof
     int i;
 
     stack->nthreads = nthreads;
-    stack->a_toggles.cell = getAlignedMemory(CACHE_LINE_SIZE, _TVEC_VECTOR_SIZE(nthreads));
-    stack->announce = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(ArgVal));
-    stack->pool = getAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStackState *) * (_SIM_LOCAL_POOL_SIZE_ * nthreads + 1));
+    stack->a_toggles.cell = synchGetAlignedMemory(CACHE_LINE_SIZE, _TVEC_VECTOR_SIZE(nthreads));
+    stack->announce = synchGetAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(ArgVal));
+    stack->pool = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(SimStackState *) * (_SIM_LOCAL_POOL_SIZE_ * nthreads + 1));
     for (i = 0; i < _SIM_LOCAL_POOL_SIZE_ * nthreads + 1; i++) {
-        stack->pool[i] = getAlignedMemory(CACHE_LINE_SIZE, SimStackStateSize(nthreads));
+        stack->pool[i] = synchGetAlignedMemory(CACHE_LINE_SIZE, SimStackStateSize(nthreads));
         TVEC_INIT_AT(&stack->pool[i]->applied, nthreads, stack->pool[i]->__flex);
         stack->pool[i]->ret = ((void *)stack->pool[i]->__flex) + _TVEC_VECTOR_SIZE(nthreads);
     }
@@ -62,15 +62,15 @@ void SimStackThreadStateInit(SimStackThreadState *th_state, uint32_t nthreads, i
     TVEC_NEGATIVE(&th_state->toggle, &th_state->mask);
     th_state->local_index = 0;
     th_state->backoff = 1;
-    init_pool(&th_state->pool, sizeof(Node));
+    synchInitPool(&th_state->pool, sizeof(Node));
 }
 
-inline static void recycleList(PoolStruct *pool, Node *head, uint32_t items) {
+inline static void recycleList(SynchPoolStruct *pool, Node *head, uint32_t items) {
     while (items > 0) {
         Node *node = head;
         head = (Node *)head->next;
         items--;
-        recycle_obj(pool, node);
+        synchRecycleObj(pool, node);
     }
 }
 
@@ -79,7 +79,7 @@ inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_sta
     st->counter += 1;
 #endif
     Node *n;
-    n = alloc_obj(&th_state->pool);
+    n = synchAllocObj(&th_state->pool);
     n->val = (ArgVal)arg;
     n->next = st->head;
     st->head = n;
@@ -112,17 +112,17 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
     stack->announce[pid] = arg;                                                         // stack->announce the operation
     TVEC_ATOMIC_ADD_BANK(&stack->a_toggles, &th_state->toggle, mybank);                 // toggle pid's bit in stack->a_toggles, Fetch&Add acts as a full write-barrier
 
-    if (!isSystemOversubscribed()) {
+    if (!synchIsSystemOversubscribed()) {
         volatile int k;
         int backoff_limit;
 
-        if (fastRandomRange(1, stack->nthreads) > 1) {
-            backoff_limit = fastRandomRange(th_state->backoff >> 1, th_state->backoff);
+        if (synchFastRandomRange(1, stack->nthreads) > 1) {
+            backoff_limit = synchFastRandomRange(th_state->backoff >> 1, th_state->backoff);
             for (k = 0; k < backoff_limit; k++)
                 ;
         }
     } else
-        resched();
+        synchResched();
 
     for (j = 0; j < 2; j++) {
         old_sp = stack->sp;                                                             // read reference to struct SimStackState

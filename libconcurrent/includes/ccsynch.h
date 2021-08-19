@@ -63,7 +63,6 @@ typedef struct CCSynchStruct {
 #endif
 } CCSynchStruct;
 
-
 /// @brief This function initializes an instance of the CC-Synch combining object.
 ///
 /// This function should be called once (by a single thread) before any other thread tries to

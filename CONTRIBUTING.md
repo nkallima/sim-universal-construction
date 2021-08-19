@@ -35,10 +35,11 @@ In general, please conform your coding styling to the following conventions:
     * Self-explanatory names: a struct `DoubleEndedQueueStruct` will tell the developer what the struct is used for.
     * Use a capital-letter for the first character of the struct.
     * Please use `typedef` for simplifying struct-naming, e.g. `DoubleEndedQueueStruct` instead of `struct DoubleEndedQueueStruct`.
+    * All the public structs provided by the runtime/primitives to the end-user should start with the `Synch` prefix (starting from v.3.0.0), e.g. `SynchMemoryStruct`, etc.
 - functions: for functions the following rules hold:
     * Self-explanatory names: a function `getMemory()` will tell the developer what it returns as well as `getThreadId()`, etc.
     * Avoid using a capital-letter for the first character of the function.
-    * All the public functions provided to the end-user should start with the `synch` prefix (starting from v.3.0.0), i.e. `synchGetMemory`.
+    * All the public functions provided by the runtime/primitives to the end-user should start with the `synch` prefix (starting from v.3.0.0), i.e. `synchGetMemory`.
     * All the internal functions should NOT start with the `synch` prefix, i.e. `getMemory`.
 - memory allocation and alignment:
     * For memory management, please do not use `malloc`, `calloc`, etc. functions directly.

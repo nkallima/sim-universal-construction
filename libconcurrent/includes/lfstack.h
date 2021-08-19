@@ -24,9 +24,9 @@ typedef struct LFStackStruct {
 /// For each instance of LF-Stack, a discrete instance of LFStackThreadState should be used.
 typedef struct LFStackThreadState {
     /// @brief A pool object per thread is used for fast memory allocation.
-    PoolStruct pool;
+    SynchPoolStruct pool;
     /// @brief A backoff object per thread is used for reducing the contention while accessing the queue.
-    BackoffStruct backoff;
+    SynchBackoffStruct backoff;
 } LFStackThreadState;
 
 /// @brief This function initializes an instance of the LF-Stack concurrent stack implementation.

@@ -8,7 +8,7 @@ void OsciThreadStateInit(OsciThreadState *st_thread, OsciStruct *l, int pid) {
 
     st_thread->toggle = 0;
     for (i = 0; i < 2; i++) {
-        st_thread->next_node[i].rec = getMemory(l->fibers_per_thread * sizeof(OsciFiberRec));
+        st_thread->next_node[i].rec = synchGetMemory(l->fibers_per_thread * sizeof(OsciFiberRec));
         for (j = 0; j < l->fibers_per_thread; j++) {
             st_thread->next_node[i].rec[j].arg_ret = 0;
             st_thread->next_node[i].rec[j].pid = -1;
@@ -44,17 +44,17 @@ osci_start:
         cur->rec[offset_id].completed = false;
         cur->next = NULL;
         cur->door = _OSCI_DOOR_OPENED;
-        resched();                         // Scheduling point
+        synchResched();                    // Scheduling point
         l->current_node[group].ptr = NULL; // Release the combining point
         while (!CAS32(&cur->door, _OSCI_DOOR_OPENED, _OSCI_DOOR_INIT))
-            resched();
+            synchResched();
         pred = SWAP(&l->Tail, cur);
 
         if (pred != NULL) {
             pred->next = cur;
             FullFence();
             while (cur->rec[offset_id].locked)
-                resched();
+                synchResched();
             if (cur->rec[offset_id].completed) // operation has already applied
                 return cur->rec[offset_id].arg_ret;
         }
@@ -62,7 +62,7 @@ osci_start:
         while (!CAS32(&cur->door, _OSCI_DOOR_OPENED, _OSCI_DOOR_LOCKED)) {
             if (cur->door == _OSCI_DOOR_INIT)
                 goto osci_start;
-            resched();
+            synchResched();
         }
         cur->rec[offset_id].arg_ret = arg;
         cur->rec[offset_id].pid = pid;
@@ -70,7 +70,7 @@ osci_start:
         cur->rec[offset_id].completed = false;
         cur->door = _OSCI_DOOR_OPENED;
         do {
-            resched();
+            synchResched();
         } while (cur->rec[offset_id].locked);
         if (cur->rec[offset_id].completed) // I have been helped
             return cur->rec[offset_id].arg_ret;
@@ -102,7 +102,7 @@ osci_start:
         if (l->Tail == p && CASPTR(&l->Tail, p, NULL) == true)
             return cur->rec[offset_id].arg_ret;
         while (p->next == NULL) {
-            resched();
+            synchResched();
         }
     }
     NonTSOFence();
@@ -131,7 +131,7 @@ void OsciInit(OsciStruct *l, uint32_t nthreads, uint32_t fibers_per_thread) {
 #ifdef DEBUG
     l->rounds = l->counter = 0;
 #endif
-    l->current_node = getAlignedMemory(CACHE_LINE_SIZE, l->groups_of_fibers * sizeof(ptr_aligned_t));
+    l->current_node = synchGetAlignedMemory(CACHE_LINE_SIZE, l->groups_of_fibers * sizeof(ptr_aligned_t));
     for (i = 0; i < l->groups_of_fibers; i++)
         l->current_node[i].ptr = NULL;
     l->Tail = NULL;

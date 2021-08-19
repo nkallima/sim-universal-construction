@@ -193,19 +193,19 @@ We now describe a very simple example-benchmark that uses the Application Progra
 
 volatile int64_t object CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-Barrier bar CACHE_ALIGN;
+SynchBarrier bar CACHE_ALIGN;
 
 inline static void *Execute(void *Arg) {
     long i, id = (long)Arg;
 
-    BarrierWait(&bar);
-    if (id == 0) d1 = getTimeMillis();
+    synchBarrierWait(&bar);
+    if (id == 0) d1 = synchGetTimeMillis();
 
     for (i = 0; i < RUNS; i++)
         FAA64(&object, 1);
 
-    BarrierWait(&bar);
-    if (id == 0) d2 = getTimeMillis();
+    synchBarrierWait(&bar);
+    if (id == 0) d2 = synchGetTimeMillis();
 
     return NULL;
 }
@@ -213,9 +213,9 @@ inline static void *Execute(void *Arg) {
 int main(int argc, char *argv[]) {
     object = 1;
 
-    BarrierSet(&bar, N_THREADS);
-    StartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
-    JoinThreadsN(N_THREADS - 1);
+    synchBarrierSet(&bar, N_THREADS);
+    synchStartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
+    synchJoinThreadsN(N_THREADS - 1);
 
     printf("time: %ld (ms)\tthroughput: %.2f (millions ops/sec)\n", 
            (d2 - d1), RUNS * N_THREADS / (1000.0 * (d2 - d1)));

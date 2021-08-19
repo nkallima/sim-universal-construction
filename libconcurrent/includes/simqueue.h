@@ -67,7 +67,7 @@ typedef struct SimQueueThreadState {
     ToggleVector diffs;
     ToggleVector l_toggles;
     /// @brief A pool of Node structs used for fast allocation during enqueue operations.
-    PoolStruct pool_node;
+    SynchPoolStruct pool_node;
     /// @brief The next available free copy of EnqState that could be used on an enqueue operation.
     int deq_local_index;
     /// @brief The next available free copy of DeqState that could be used on a dequeue operation.

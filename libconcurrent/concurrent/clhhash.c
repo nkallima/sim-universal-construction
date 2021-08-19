@@ -11,9 +11,9 @@ inline void CLHHashStructInit(CLHHash *hash, int num_cells, int nthreads) {
     int i;
 
     hash->size = num_cells;
-    hash->announce = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(HashOperations));
-    hash->synch = getAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(CLHLockStruct *));
-    hash->cells = getAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(ptr_aligned_t));
+    hash->announce = synchGetAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(HashOperations));
+    hash->synch = synchGetAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(CLHLockStruct *));
+    hash->cells = synchGetAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(ptr_aligned_t));
     for (i = 0; i < num_cells; i++) {
         hash->synch[i] = CLHLockInit(nthreads);
         hash->cells[i].ptr = NULL;
@@ -21,7 +21,7 @@ inline void CLHHashStructInit(CLHHash *hash, int num_cells, int nthreads) {
 }
 
 inline void CLHHashThreadStateInit(CLHHash *hash, CLHHashThreadState *th_state, int num_cells, int pid) {
-    init_pool(&th_state->pool, sizeof(HashNode));
+    synchInitPool(&th_state->pool, sizeof(HashNode));
 }
 
 static inline int64_t hash_func(CLHHash *hash, int64_t key) {
@@ -102,7 +102,7 @@ inline bool CLHHashInsert(CLHHash *hash, CLHHashThreadState *th_state, int64_t k
     args.key = key;
     args.value = value;
     args.cell = hash_func(hash, key);
-    args.node = alloc_obj(&th_state->pool);
+    args.node = synchAllocObj(&th_state->pool);
     hash->announce[pid] = args;
 
     CLHLock(hash->synch[args.cell], pid);
@@ -120,7 +120,7 @@ inline RetVal CLHHashSearch(CLHHash *hash, CLHHashThreadState *th_state, int64_t
     args.key = key;
     args.value = INT_MIN;
     args.cell = hash_func(hash, key);
-    args.node = alloc_obj(&th_state->pool);
+    args.node = synchAllocObj(&th_state->pool);
     hash->announce[pid] = args;
 
     CLHLock(hash->synch[args.cell], pid);
@@ -137,7 +137,7 @@ inline void CLHHashDelete(CLHHash *hash, CLHHashThreadState *th_state, int64_t k
     args.key = key;
     args.value = INT_MIN;
     args.cell = hash_func(hash, key);
-    args.node = alloc_obj(&th_state->pool);
+    args.node = synchAllocObj(&th_state->pool);
     hash->announce[pid] = args;
 
     CLHLock(hash->synch[args.cell], pid);

@@ -21,8 +21,8 @@
 
 CLHHash object_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-Barrier bar CACHE_ALIGN;
-BenchArgs bench_args CACHE_ALIGN;
+SynchBarrier bar CACHE_ALIGN;
+SynchBenchArgs bench_args CACHE_ALIGN;
 
 inline static void *Execute(void *Arg) {
     int64_t key, value;
@@ -31,27 +31,26 @@ inline static void *Execute(void *Arg) {
     volatile int j;
     long id = (long)Arg;
 
-    fastRandomSetSeed(id + 1);
-    th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHHashThreadState));
+    synchFastRandomSetSeed(id + 1);
+    th_state = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHHashThreadState));
     CLHHashThreadStateInit(&object_struct, th_state, N_BUCKETS, (int)id);
     if (id == 0) {
         for (i = 0; i < INITIAL_CAPACITY; i++) {
-            key = fastRandomRange32(1, RANDOM_RANGE);
+            key = synchFastRandomRange32(1, RANDOM_RANGE);
             value = id;
             CLHHashInsert(&object_struct, th_state, key, value, id);
         }
     }
-    BarrierWait(&bar);
-    if (id == 0)
-        d1 = getTimeMillis();
+    synchBarrierWait(&bar);
+    if (id == 0) d1 = synchGetTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
         int imode = i % 10;
 
-        rnum = fastRandomRange(1, bench_args.max_work);
+        rnum = synchFastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
-        key = fastRandomRange32(1, RANDOM_RANGE);
+        key = synchFastRandomRange32(1, RANDOM_RANGE);
         value = id;
         if (imode < 2) {
             CLHHashDelete(&object_struct, th_state, key, id);
@@ -61,22 +60,22 @@ inline static void *Execute(void *Arg) {
             CLHHashSearch(&object_struct, th_state, key, id);
         }
     }
-    BarrierWait(&bar);
-    if (id == 0) d2 = getTimeMillis();
+    synchBarrierWait(&bar);
+    if (id == 0) d2 = synchGetTimeMillis();
 
     return NULL;
 }
 
 int main(int argc, char *argv[]) {
-    parseArguments(&bench_args, argc, argv);
+    synchParseArguments(&bench_args, argc, argv);
     CLHHashStructInit(&object_struct, N_BUCKETS, bench_args.nthreads);
 
-    BarrierSet(&bar, bench_args.nthreads);
-    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
-    JoinThreadsN(bench_args.nthreads - 1);
+    synchBarrierSet(&bar, bench_args.nthreads);
+    synchStartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    synchJoinThreadsN(bench_args.nthreads - 1);
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
-    printStats(bench_args.nthreads, bench_args.total_runs);
+    synchPrintStats(bench_args.nthreads, bench_args.total_runs);
 
     return 0;
 }

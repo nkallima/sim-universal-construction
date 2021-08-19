@@ -24,7 +24,7 @@ typedef struct OsciStackStruct {
     /// @brief A pointer to the top element of the stack.
     volatile Node *top CACHE_ALIGN;
     /// @brief Pointer to an array of pools of nodes (a single pool per fiber). It is used for fast node allocation on push operations.
-    PoolStruct *pool_node CACHE_ALIGN;
+    SynchPoolStruct *pool_node CACHE_ALIGN;
 } OsciStackStruct;
 
 /// @brief OsciStackThreadState stores each thread's local state for a single instance of OsciStack.

@@ -2,7 +2,7 @@
 #include <primitives.h>
 #include <threadtools.h>
 
-inline void BarrierSet(Barrier *bar, uint32_t n) {
+inline void synchBarrierSet(SynchBarrier *bar, uint32_t n) {
     bar->arrive = n;
     bar->leave = n;
     bar->arrive_flag = true;
@@ -11,10 +11,10 @@ inline void BarrierSet(Barrier *bar, uint32_t n) {
     FullFence();
 }
 
-inline void BarrierWait(Barrier *bar) {
+inline void synchBarrierWait(SynchBarrier *bar) {
     if (FAA32(&bar->arrive, -1) > 1) {
         while (bar->arrive_flag)
-            resched();
+            synchResched();
     } else {
         bar->arrive = bar->val_at_set;
         NonTSOFence();
@@ -27,7 +27,7 @@ inline void BarrierWait(Barrier *bar) {
     FullFence();
     if (FAA32(&bar->leave, -1) > 1) {
         while (bar->leave_flag)
-            resched();
+            synchResched();
     } else {
         bar->leave = bar->val_at_set;
         NonTSOFence();
@@ -38,14 +38,14 @@ inline void BarrierWait(Barrier *bar) {
     }
 }
 
-inline void BarrierLeave(Barrier *bar) {
+inline void synchBarrierLeave(SynchBarrier *bar) {
     FAA32(&bar->arrive, -1);
     FAA32(&bar->leave, -1);
 }
 
-inline void BarrierLastLeave(Barrier *bar) {
-    BarrierLeave(bar);
+inline void synchBarrierLastLeave(SynchBarrier *bar) {
+    synchBarrierLeave(bar);
     while (bar->arrive != 0 && bar->leave != 0) {
-        resched();
+        synchResched();
     }
 }

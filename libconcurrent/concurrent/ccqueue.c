@@ -4,7 +4,7 @@
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
 inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 
-static __thread PoolStruct pool_node CACHE_ALIGN;
+static __thread SynchPoolStruct pool_node CACHE_ALIGN;
 
 void CCQueueStructInit(CCQueueStruct *queue_object_struct, uint32_t nthreads) {
     CCSynchStructInit(&queue_object_struct->enqueue_struct, nthreads);
@@ -18,14 +18,14 @@ void CCQueueStructInit(CCQueueStruct *queue_object_struct, uint32_t nthreads) {
 void CCQueueThreadStateInit(CCQueueStruct *object_struct, CCQueueThreadState *lobject_struct, int pid) {
     CCSynchThreadStateInit(&object_struct->enqueue_struct, &lobject_struct->enqueue_thread_state, (int)pid);
     CCSynchThreadStateInit(&object_struct->dequeue_struct, &lobject_struct->dequeue_thread_state, (int)pid);
-    init_pool(&pool_node, sizeof(Node));
+    synchInitPool(&pool_node, sizeof(Node));
 }
 
 inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     CCQueueStruct *st = (CCQueueStruct *)state;
     Node *node;
 
-    node = alloc_obj(&pool_node);
+    node = synchAllocObj(&pool_node);
     node->next = NULL;
     node->val = arg;
     st->last->next = node;
@@ -45,7 +45,7 @@ inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
         if (node->val == GUARD_VALUE)
             return serialDequeue(state, arg, pid);
         NonTSOFence();
-        recycle_obj(&pool_node, (Node *)prev);
+        synchRecycleObj(&pool_node, (Node *)prev);
         return node->val;
     } else {
         return EMPTY_QUEUE;

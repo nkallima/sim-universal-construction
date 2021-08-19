@@ -14,17 +14,17 @@
 
 /// @brief This function initiates the fiber environment inside a posix thread.
 /// @param max The maximum number of fibers that the current posix thread could create.
-void initFibers(int max);
+void synchInitFibers(int max);
 
 /// @brief This function gives the control of the processor to the next fiber of the current posix thread.
-void fiberYield(void);
+void synchFiberYield(void);
 
 /// @brief This function spawns a new fiber inside the current posix thread.
 /// @param func A pointer to a function that newely spawned fiber will execute after its creation.
 /// @param arg An argument passed to the newely created thread.
-int spawnFiber(void *(*func)(void *), long arg);
+int synchSpawnFiber(void *(*func)(void *), long arg);
 
 /// @brief Wait for all of the fibers that are running inside the current posix thread to finish their execution.
-void waitForAllFibers(void);
+void synchWaitForAllFibers(void);
 
 #endif

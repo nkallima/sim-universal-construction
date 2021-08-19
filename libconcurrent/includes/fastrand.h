@@ -7,33 +7,33 @@
 
 #include <stdint.h>
 
-/// @brief The maximum number returned by fastRandom and fastRandomRange functions.
+/// @brief The maximum number returned by synchFastRandom and fastRandomRange functions.
 #define SYNCH_RAND_MAX 32768
 
 /// @brief This random generators are implementing by following POSIX.1-2001 directives.
 /// This function returns a positive integer in the range {0, ..., SYNCH_RAND_MAX}.
-long fastRandom(void);
+long synchFastRandom(void);
 
 /// @brief A simple pseudo-random 32-bit number generator implementing the multiply-with-carry method
 /// invented by George Marsaglia. It is computationally fast and has good properties
 /// (see http://en.wikipedia.org/wiki/Random_number_generation#Computational_methods)
 /// This function returns a positive 32-bit integer.
-uint32_t fastRandom32(void);
+uint32_t synchFastRandom32(void);
 
 /// @brief This function set a new seed to the random generator.
 /// @param seed The new seed for the random generator.
-void fastRandomSetSeed(uint32_t seed);
+void synchFastRandomSetSeed(uint32_t seed);
 
 /// @brief This random generators are implementing by following POSIX.1-2001 directives.
 /// This function returns a positive integer in the range {low, ..., high}.
 /// Notice that high should be less or equal to SYNCH_RAND_MAX; otherwise the behavior is undefined.
 /// Moreover, low should be less than high; otherwise the behavior is undefined.
-long fastRandomRange(long low, long high);
+long synchFastRandomRange(long low, long high);
 
 /// @brief A simple pseudo-random 32-bit number generator implementing the multiply-with-carry method
 /// invented by George Marsaglia. It is computationally fast and has good properties
 /// (see http://en.wikipedia.org/wiki/Random_number_generation#Computational_methods)
 /// This function returns a positive 32-bit integer in the range {low, ..., high}.
-uint32_t fastRandomRange32(uint32_t low, uint32_t high);
+uint32_t synchFastRandomRange32(uint32_t low, uint32_t high);
 
 #endif

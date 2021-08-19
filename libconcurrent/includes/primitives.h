@@ -89,13 +89,12 @@ inline uint64_t nonZeroBits(uint64_t v);
 #    define Pause()
 #endif
 
-
 /// @brief This function allocates a memory area of size bytes.
 /// In case that NUMA_SUPPORT is defined in libconcurrent/config.h, the returned memory is allocated on the local NUMA node.
 ///
 /// @param size The size of the memory area.
-/// @return In case of error, NULL is returned. In case of success a pointer to the allocated memory area is returned. 
-inline void *getMemory(size_t size);
+/// @return In case of error, NULL is returned. In case of success a pointer to the allocated memory area is returned.
+inline void *synchGetMemory(size_t size);
 
 /// @brief This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. 
 /// In case that NUMA_SUPPORT is defined in libconcurrent/config.h, the returned memory is allocated on the local NUMA node.
@@ -103,19 +102,18 @@ inline void *getMemory(size_t size);
 /// @param align The alignment size.
 /// @param size The size of the memory area.
 /// @return In case of error, NULL is returned. In case of success a pointer to the allocated memory area is returned.
-inline void *getAlignedMemory(size_t align, size_t size);
+inline void *synchGetAlignedMemory(size_t align, size_t size);
 
 /// @brief This function frees memory allocated with either getMemory() or getAlignedMemory() functions.
 ///
 /// @param ptr A pointer to the memory area to be freed.
 /// @param size The size of the memory area to be freed.
-inline void freeMemory(void *ptr, size_t size);
+inline void synchFreeMemory(void *ptr, size_t size);
 
 /// @brief This function returns the current system's time in milliseconds.
 ///
 /// @return System's time in milliseconds.
-inline int64_t getTimeMillis(void);
-
+inline int64_t synchGetTimeMillis(void);
 
 /// @brief This function returns the vendor of the processor that it runs on.
 /// The current version of the Synch framework returns any of the following codes:
@@ -126,9 +124,8 @@ inline int64_t getTimeMillis(void);
 /// - RISCV_GENERIC_MACHINE
 /// - UNKNOWN_MACHINE
 ///
-/// @return It returns a code for the vendor of the processor that it runs on.  
-inline uint64_t getMachineModel(void);
-
+/// @return It returns a code for the vendor of the processor that it runs on.
+inline uint64_t synchGetMachineModel(void);
 
 /// A wrapper for the _CAS128 function. See more on _CAS128().
 #define CAS128(A, B0, B1, C0, C1) _CAS128((uint64_t *)(A), (uint64_t)(B0), (uint64_t)(B1), (uint64_t)(C0), (uint64_t)(C1))

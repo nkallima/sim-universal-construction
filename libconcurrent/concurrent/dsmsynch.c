@@ -26,7 +26,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
         FullFence();
 
         while (mynode->locked) {
-            resched();
+            synchResched();
         }
         if (mynode->completed) // operation has already applied
             return mynode->arg_ret;
@@ -57,7 +57,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
         if (l->Tail == p && CASPTR(&l->Tail, p, NULL) == true)
             return mynode->arg_ret;
         while (p->next == NULL) {
-            resched();
+            synchResched();
         }
     }
     NonTSOFence();
@@ -71,8 +71,8 @@ void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
     l->Tail = NULL;
 
-    if (getMachineModel() == INTEL_X86_MACHINE) {
-        l->nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
+    if (synchGetMachineModel() == INTEL_X86_MACHINE) {
+        l->nodes = synchGetAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
     } else {
         l->nodes = NULL;
     }
@@ -84,8 +84,8 @@ void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
 }
 
 void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, int pid) {
-    if (getMachineModel() == INTEL_X86_MACHINE) {
-        DSMSynchNode *nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
+    if (synchGetMachineModel() == INTEL_X86_MACHINE) {
+        DSMSynchNode *nodes = synchGetAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
         st_thread->MyNodes[0] = &nodes[0];
         st_thread->MyNodes[1] = &nodes[1];
     } else {

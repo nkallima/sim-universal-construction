@@ -24,7 +24,7 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
     st_thread->next = (CCSynchNode *)cur;
 
     while (cur->locked) { // spinning
-        resched();
+        synchResched();
     }
     if (cur->completed) // I have been helped
         return cur->arg_ret;
@@ -56,11 +56,11 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
 void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
 
-    if (getMachineModel() == INTEL_X86_MACHINE) {
+    if (synchGetMachineModel() == INTEL_X86_MACHINE) {
         l->nodes = NULL;
-        l->Tail = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchNode));
+        l->Tail = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchNode));
     } else {
-        l->nodes = getAlignedMemory(CACHE_LINE_SIZE, (nthreads + 1) * sizeof(CCSynchNode));
+        l->nodes = synchGetAlignedMemory(CACHE_LINE_SIZE, (nthreads + 1) * sizeof(CCSynchNode));
         l->Tail = &l->nodes[nthreads];
     }
 
@@ -76,8 +76,8 @@ void CCSynchStructInit(CCSynchStruct *l, uint32_t nthreads) {
 }
 
 void CCSynchThreadStateInit(CCSynchStruct *l, CCSynchThreadState *st_thread, int pid) {
-    if (getMachineModel() == INTEL_X86_MACHINE) {
-        st_thread->next = getAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchStruct));
+    if (synchGetMachineModel() == INTEL_X86_MACHINE) {
+        st_thread->next = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(CCSynchStruct));
     } else {
         st_thread->next = &l->nodes[pid];
     }

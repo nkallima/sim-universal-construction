@@ -64,7 +64,7 @@ typedef struct CLHHash {
 /// For each instance of CLH-Hash, a discrete instance of CLHHashThreadState should be used.
 typedef struct CLHHashThreadState {
     /// @brief A pool of nodes for fast memory allocation.
-    PoolStruct pool;
+    SynchPoolStruct pool;
 } CLHHashThreadState;
 
 

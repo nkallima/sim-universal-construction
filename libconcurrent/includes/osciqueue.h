@@ -30,7 +30,7 @@ typedef struct OsciQueueStruct {
     /// @brief A guard node that it is used only at the initialization of the queue.
     Node guard CACHE_ALIGN;
     /// @brief Pointer to an array of pools of nodes (a single pool per fiber). It is used for fast node allocation on enqueue operations.
-    PoolStruct *pool_node CACHE_ALIGN;
+    SynchPoolStruct *pool_node CACHE_ALIGN;
 } OsciQueueStruct;
 
 /// @brief OsciQueueThreadState stores each thread's local state for a single instance of OsciQueue.

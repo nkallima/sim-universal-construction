@@ -31,28 +31,25 @@ static volatile int *__cpu_events = NULL;
 static volatile long long **__cpu_values = NULL;
 #endif
 
-void init_cpu_counters(void) {
+void synchInitCPUCounters(void) {
 #ifdef _TRACK_CPU_COUNTERS
     const PAPI_hw_info_t *hwinfo = NULL;
     int ret, i;
 
     while (__cpu_events == NULL) {
-        void *ptr = getAlignedMemory(CACHE_LINE_SIZE, getNCores() * sizeof(int));
-        if (CASPTR(&__cpu_events, NULL, ptr) == false)
-            freeMemory(ptr, getNCores() * sizeof(int));
+        void *ptr = getAlignedMemory(CACHE_LINE_SIZE, synchGetNCores() * sizeof(int));
+        if (CASPTR(&__cpu_events, NULL, ptr) == false) synchFreeMemory(ptr, synchGetNCores() * sizeof(int));
     }
 
     while (__cpu_values == NULL) {
-        void *ptr = getAlignedMemory(CACHE_LINE_SIZE, getNCores() * sizeof(long long *));
-        if (CASPTR(&__cpu_values, NULL, ptr) == false)
-            freeMemory(ptr, getNCores() * sizeof(long long *));
+        void *ptr = getAlignedMemory(CACHE_LINE_SIZE, synchGetNCores() * sizeof(long long *));
+        if (CASPTR(&__cpu_values, NULL, ptr) == false) synchFreeMemory(ptr, synchGetNCores() * sizeof(long long *));
     }
 
-    for (i = 0; i < getNCores(); i++) {
+    for (i = 0; i < synchGetNCores(); i++) {
         while (__cpu_values[i] == NULL) {
             void *ptr = getAlignedMemory(CACHE_LINE_SIZE, N_CPU_COUNTERS * sizeof(long long));
-            if (CASPTR(&__cpu_values[i], NULL, ptr) == false)
-                freeMemory(ptr, N_CPU_COUNTERS * sizeof(long long));
+            if (CASPTR(&__cpu_values[i], NULL, ptr) == false) synchFreeMemory(ptr, N_CPU_COUNTERS * sizeof(long long));
         }
     }
     if ((ret = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT && ret > 0) {
@@ -69,7 +66,7 @@ void init_cpu_counters(void) {
 #endif
 }
 
-void start_cpu_counters(int id) {
+void synchStartCPUCounters(int id) {
 #ifdef DEBUG
     __failed_cas = 0;
     __executed_cas = 0;
@@ -107,7 +104,7 @@ void start_cpu_counters(int id) {
 #endif
 }
 
-void stop_cpu_counters(int id) {
+void synchStopCPUCounters(int id) {
 #ifdef DEBUG
     FAA64(&__total_failed_cas, __failed_cas);
     FAA64(&__total_executed_cas, __executed_cas);
@@ -127,7 +124,7 @@ void stop_cpu_counters(int id) {
 #endif
 }
 
-void printStats(uint32_t nthreads, uint64_t runs) {
+void synchPrintStats(uint32_t nthreads, uint64_t runs) {
 #ifdef DEBUG
     printf("DEBUG: ");
     printf("failed_CAS_per_op: %f\t", (float)__total_failed_cas / runs);
@@ -148,7 +145,7 @@ void printStats(uint32_t nthreads, uint64_t runs) {
 
     for (j = 0; j < N_CPU_COUNTERS; j++) {
         __total_cpu_values[j] = 0;
-        for (k = 0; k < getNCores(); k++)
+        for (k = 0; k < synchGetNCores(); k++)
             __total_cpu_values[j] += __cpu_values[k][j];
     }
 

@@ -82,7 +82,7 @@ typedef struct SimThreadState {
 } SimThreadState;
 
 /// @brief SimStruct stores the state of an instance of the a Sim combining object.
-/// SimStruct should be initialized using the SimStructInit function.
+/// SimStruct should be initialized using the synchSimStructInit function.
 typedef struct SimStruct {
     /// @brief Pointer to a SimObjectState structs that contains the most recent and valid copy of simulated object's state.
     volatile pointer_t sp;
@@ -100,16 +100,15 @@ typedef struct SimStruct {
     int MAX_BACK;
 } SimStruct;
 
-
 /// @brief This function initializes an instance of the Sim universal construction.
 ///
 /// This function should be called once (by a single thread) before any other thread tries to
-/// apply any request by using the SimStructInit function.
+/// apply any request by using the synchSimStructInit function.
 ///
 /// @param sim_struct A pointer to an instance of the Sim universal construction.
 /// @param nthreads The number of threads that will use the Sim universal construction.
 /// @param max_backoff The maximum value for backoff (usually this is much lower than 100).
-void SimStructInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff);
+void synchSimStructInit(SimStruct *sim_struct, uint32_t nthreads, int max_backoff);
 
 /// @brief This function should be called once before the thread applies any operation to the Sim universal construction.
 ///

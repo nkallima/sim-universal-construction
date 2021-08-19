@@ -60,8 +60,10 @@ inline static void count_unsafe_node(LCRQThreadState *thread_state) {
     thread_state->myunsafes++;
 }
 #else
-inline static void count_closed_crq(LCRQThreadState *thread_state) { }
-inline static void count_unsafe_node(LCRQThreadState *thread_state) { }
+inline static void count_closed_crq(LCRQThreadState *thread_state) {
+}
+inline static void count_unsafe_node(LCRQThreadState *thread_state) {
+}
 #endif
 
 inline static void init_ring(RingQueue *r) {
@@ -124,9 +126,9 @@ inline static int close_crq(RingQueue *rq, const uint64_t t, const int tries) {
 }
 
 void LCRQInit(LCRQStruct *queue, uint32_t nthreads UNUSED_ARG) {
-     RingQueue *rq = getMemory(sizeof(RingQueue));
-     init_ring(rq);
-     queue->head = queue->tail = rq;
+    RingQueue *rq = synchGetMemory(sizeof(RingQueue));
+    init_ring(rq);
+    queue->head = queue->tail = rq;
 }
 
 void LCRQThreadStateInit(LCRQThreadState *thread_state, int pid UNUSED_ARG) {
@@ -149,7 +151,7 @@ void LCRQEnqueue(LCRQStruct *queue, LCRQThreadState *thread_state, ArgVal arg, i
 #endif
 
         RingQueue *next = rq->next;
- 
+
         if (Unlikely(next != NULL)) {
             CASPTR(&queue->tail, rq, next);
             continue;
@@ -160,7 +162,7 @@ void LCRQEnqueue(LCRQStruct *queue, LCRQThreadState *thread_state, ArgVal arg, i
         if (crq_is_closed(t)) {
 alloc:
             if (thread_state->nrq == NULL) {
-                thread_state->nrq = getMemory(sizeof(RingQueue));
+                thread_state->nrq = synchGetMemory(sizeof(RingQueue));
                 init_ring(thread_state->nrq);
             }
 
@@ -174,8 +176,8 @@ alloc:
             }
             continue;
         }
-           
-        RingNode* cell = &rq->array[t & (RING_SIZE-1)];
+
+        RingNode *cell = &rq->array[t & (RING_SIZE - 1)];
         StorePrefetch(cell);
 
         uint64_t idx = cell->idx;
@@ -211,7 +213,7 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid UNU
 
         uint64_t h = FAA64(&rq->head, 1);
 
-        RingNode* cell = &rq->array[h & (RING_SIZE-1)];
+        RingNode *cell = &rq->array[h & (RING_SIZE - 1)];
         StorePrefetch(cell);
 
         uint64_t tt = 0;

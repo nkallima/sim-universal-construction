@@ -137,7 +137,7 @@ inline bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t
     return res;
 }
 
-inline void *getMemory(size_t size) {
+inline void *synchGetMemory(size_t size) {
     void *p;
 
 #ifdef NUMA_SUPPORT
@@ -152,7 +152,7 @@ inline void *getMemory(size_t size) {
         return p;
 }
 
-inline void *getAlignedMemory(size_t align, size_t size) {
+inline void *synchGetAlignedMemory(size_t align, size_t size) {
     void *p;
 
 #ifdef NUMA_SUPPORT
@@ -172,7 +172,7 @@ inline void *getAlignedMemory(size_t align, size_t size) {
         return p;
 }
 
-inline void freeMemory(void *ptr, size_t size) {
+inline void synchFreeMemory(void *ptr, size_t size) {
 #ifdef NUMA_SUPPORT
     numa_free(ptr, size);
 #else
@@ -180,7 +180,7 @@ inline void freeMemory(void *ptr, size_t size) {
 #endif
 }
 
-inline int64_t getTimeMillis(void) {
+inline int64_t synchGetTimeMillis(void) {
     struct timespec tm;
 
     if (clock_gettime(CLOCK_MONOTONIC, &tm) == -1) {
@@ -189,7 +189,7 @@ inline int64_t getTimeMillis(void) {
     } else return tm.tv_sec*1000LL + tm.tv_nsec/1000000LL;
 }
 
-inline uint64_t getMachineModel(void) {
+inline uint64_t synchGetMachineModel(void) {
 #if defined(__amd64__) || defined(__x86_64__)
     char cpu_model[MAX_VENDOR_STR_SIZE] = {'\0'};
 

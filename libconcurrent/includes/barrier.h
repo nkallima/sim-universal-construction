@@ -10,7 +10,7 @@
 
 /// @brief Barrier stores the state of an instance of the a backoff object.
 /// Barrier should be initialized using the BarrierSet function.
-typedef struct Barrier {
+typedef struct SynchBarrier {
     /// @brief This integer is atomically decreased by one whenever a thread enters the arrive phase of the barrier.
     volatile int32_t arrive;
     /// @brief This integer is atomically decreased by one whenever a thread enters the leave phase of the barrier.
@@ -21,7 +21,7 @@ typedef struct Barrier {
     volatile bool leave_flag;
     /// @brief The initial value set to arrive and leave variaales.
     volatile int32_t val_at_set;
-} Barrier;
+} SynchBarrier;
 
 /// @brief This function initializes an instance of an re-entrant barrier object.
 ///
@@ -29,20 +29,20 @@ typedef struct Barrier {
 ///
 /// @param bar A pointer to an instance of the barrier object.
 /// @param n The number of threads that will use the barrier object.
-inline void BarrierSet(Barrier *bar, uint32_t n);
+inline void synchBarrierSet(SynchBarrier *bar, uint32_t n);
 
 /// @brief Whenever a thread executes this function, it waits without returning 
 /// until all the other n-1 threads also execute the same function.
 /// @param bar A pointer to an instance of the barrier object.
-inline void BarrierWait(Barrier *bar);
+inline void synchBarrierWait(SynchBarrier *bar);
 
 /// @brief Whenever a thread executes this function, it states that it will no use this barrier instance anymore. 
 /// Thus, the system may free some resources.
 /// @param bar A pointer to an instance of the barrier object.
-inline void BarrierLeave(Barrier *bar);
+inline void synchBarrierLeave(SynchBarrier *bar);
 
 /// @brief Deprecated functionality. It is only used in the threadtools.c file.
 /// @param bar A pointer to an instance of the barrier object.
-inline void BarrierLastLeave(Barrier *bar);
+inline void synchBarrierLastLeave(SynchBarrier *bar);
 
 #endif

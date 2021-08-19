@@ -62,7 +62,7 @@ static inline void TVEC_INIT(ToggleVector *tv1, uint32_t nthreads) {
 
     tv1->nthreads = nthreads;
     tv1->tvec_cells = _TVEC_CELLS_(nthreads);
-    tv1->cell = getMemory(_TVEC_VECTOR_SIZE(nthreads));
+    tv1->cell = synchGetMemory(_TVEC_VECTOR_SIZE(nthreads));
     LOOP(tv1->cell[i] = 0L, i, tv1->tvec_cells);
 }
 

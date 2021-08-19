@@ -65,9 +65,8 @@ typedef struct DSMHashThreadState {
     /// @brief A pointer to the thread's local state for the DSM-Synch instance.
     DSMSynchThreadState *th_state;
     /// @brief A pool of nodes for fast memory allocation.s
-    PoolStruct pool;
+    SynchPoolStruct pool;
 } DSMHashThreadState;
-
 
 /// @brief This function initializes the DSM-Hash object, i.e. DSM-Hash struct. This function should be called once
 /// (by a single thread) before any other thread tries to apply any request on the hash-table.
