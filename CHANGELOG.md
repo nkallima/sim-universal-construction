@@ -4,11 +4,11 @@ Changelog
 v3.0.0
 ------
 - Header-files cleanup in order to provide a better and consistent API.
-- Adding the `Synch` prefix to all structs provided to the end-user.
-- Adding the `synch` prefix to all functions provided to the end-user.
-- Extensive documentation of the API.
+- Adding the `Synch` prefix to all structs provided by the runtime/primitives to the end-user.
+- Adding the `synch` prefix to all functions provided by the runtime/primitives to the end-user.
+- Extensive documentation for the API.
 - Create a `doxygen` configuration file dor auto-generating man-pages/documentation.
-- API documentation is now provided at https://nkallima.github.io/sim-universal-construction/index.html.
+- API documentation is now provided at GitHub pages: https://nkallima.github.io/sim-universal-construction/index.html.
 - A code coverage report is provided through codecov.io for the validation script.
 - Support for installing the framework.
 - Improvements on the build environment.

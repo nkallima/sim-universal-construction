@@ -89,6 +89,7 @@ install:
 			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build;                                       \
 			printf '$(COLOR_CP)\tInstalling the Synch framework\n';                                \
 			cp -r ./build/* $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;                                     \
+			cp -r ./libconcurrent/includes/ $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;                     \
 			cp bench.sh  run_all.sh $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;                             \
 			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/bin ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/bin; \
 			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/lib ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/lib; \
