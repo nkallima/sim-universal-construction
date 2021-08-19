@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bittas64_778',['BitTAS64',['../primitives_8h.html#aacb49da46cadc133becde3026db468fb',1,'primitives.h']]]
+  ['deqstatesize_778',['DeqStateSize',['../simqueue_8h.html#a8e2847d520bcfc390f5b93284ede7615',1,'simqueue.h']]]
 ];

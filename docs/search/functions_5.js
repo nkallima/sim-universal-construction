@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['fastrandom_582',['fastRandom',['../fastrand_8h.html#a69e142cef1d3c06ca57aa5a2a79c9a01',1,'fastrand.h']]],
-  ['fastrandom32_583',['fastRandom32',['../fastrand_8h.html#a237ef9d08a997ed9617b25e88244ed73',1,'fastrand.h']]],
-  ['fastrandomrange_584',['fastRandomRange',['../fastrand_8h.html#a47eb4d22aef08bc0d940c0a67df74759',1,'fastrand.h']]],
-  ['fastrandomrange32_585',['fastRandomRange32',['../fastrand_8h.html#aa815ee90bf25e0a08443f7c68294ef20',1,'fastrand.h']]],
-  ['fastrandomsetseed_586',['fastRandomSetSeed',['../fastrand_8h.html#a7ed9254a0392563c12b0f4e72776b9a1',1,'fastrand.h']]],
-  ['freememory_587',['freeMemory',['../primitives_8h.html#ab22ff1e59a96198089797170da662b32',1,'primitives.h']]]
+  ['mcslock_595',['MCSLock',['../mcs_8h.html#ab8aa271256eb9f1a5a0113699b9f178c',1,'mcs.h']]],
+  ['mcslockinit_596',['MCSLockInit',['../mcs_8h.html#a01cf4b56395b1a1c9e754d152b632ce2',1,'mcs.h']]],
+  ['mcsthreadstateinit_597',['MCSThreadStateInit',['../mcs_8h.html#abe18f92cdd12bbd0087aecf91bec6c91',1,'mcs.h']]],
+  ['mcsunlock_598',['MCSUnlock',['../mcs_8h.html#a89042866e56fb10ae4cb07b96a3677a4',1,'mcs.h']]],
+  ['msqueuedequeue_599',['MSQueueDequeue',['../msqueue_8h.html#a09fb47175d4222f798ed1b53a9a87b0a',1,'msqueue.h']]],
+  ['msqueueenqueue_600',['MSQueueEnqueue',['../msqueue_8h.html#ad846820701962b0d3f65b17d90874390',1,'msqueue.h']]],
+  ['msqueueinit_601',['MSQueueInit',['../msqueue_8h.html#aa7b69d2da361672fe922f44c51c4f8f4',1,'msqueue.h']]],
+  ['msqueuethreadstateinit_602',['MSQueueThreadStateInit',['../msqueue_8h.html#a2c366ca204d2ea2ef6034984de3d574a',1,'msqueue.h']]]
 ];

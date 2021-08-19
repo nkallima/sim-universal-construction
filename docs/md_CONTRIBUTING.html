@@ -103,16 +103,16 @@ Coding conventions</h1>
 </ul>
 </li>
 <li>structs:<ul>
-<li>Self-explanatory names: a struct <code>SynchDoubleEndedQueueStruct</code> will tell the developer what the struct is used for.</li>
+<li>Self-explanatory names: a struct <code>DoubleEndedQueueStruct</code> will tell the developer what the struct is used for.</li>
 <li>Use a capital-letter for the first character of the struct.</li>
-<li>Please use <code>typedef</code> for simplifying struct-naming, e.g. <code>SynchDoubleEndedQueueStruct</code> instead of <code>struct SynchDoubleEndedQueueStruct</code>.</li>
-<li>All the public structs provided to the end-user should start with the <code>Synch</code> prefix (starting from v.3.0.0), i.e. <code>SynchDoubleEndedQueueStruct</code>.</li>
+<li>Please use <code>typedef</code> for simplifying struct-naming, e.g. <code>DoubleEndedQueueStruct</code> instead of <code>struct DoubleEndedQueueStruct</code>.</li>
+<li>All the public structs provided by the runtime/primitives to the end-user should start with the <code>Synch</code> prefix (starting from v.3.0.0), e.g. <code>SynchMemoryStruct</code>, etc.</li>
 </ul>
 </li>
 <li>functions: for functions the following rules hold:<ul>
 <li>Self-explanatory names: a function <code>getMemory()</code> will tell the developer what it returns as well as <code>getThreadId()</code>, etc.</li>
 <li>Avoid using a capital-letter for the first character of the function.</li>
-<li>All the public functions provided to the end-user should start with the <code>synch</code> prefix (starting from v.3.0.0), i.e. <code>synchGetMemory</code>.</li>
+<li>All the public functions provided by the runtime/primitives to the end-user should start with the <code>synch</code> prefix (starting from v.3.0.0), i.e. <code>synchGetMemory</code>.</li>
 <li>All the internal functions should NOT start with the <code>synch</code> prefix, i.e. <code>getMemory</code>.</li>
 </ul>
 </li>

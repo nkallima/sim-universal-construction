@@ -83,83 +83,83 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:structSynchHStackStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#structSynchHStackStruct">SynchHStackStruct</a></td></tr>
-<tr class="memdesc:structSynchHStackStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="hstack_8h.html#structSynchHStackStruct" title="SynchHStackStruct stores the state of an instance of the H-Stack concurrent stack implementation....">SynchHStackStruct</a> stores the state of an instance of the H-Stack concurrent stack implementation. <a class="el" href="hstack_8h.html#structSynchHStackStruct" title="SynchHStackStruct stores the state of an instance of the H-Stack concurrent stack implementation....">SynchHStackStruct</a> should be initialized using the HStackStructInit function.  <a href="hstack_8h.html#structSynchHStackStruct">More...</a><br /></td></tr>
-<tr class="separator:structSynchHStackStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structSynchHStackThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#structSynchHStackThreadState">SynchHStackThreadState</a></td></tr>
-<tr class="memdesc:structSynchHStackThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="hstack_8h.html#structSynchHStackThreadState" title="SynchHStackThreadState stores each thread&#39;s local state for a single instance of H-Stack....">SynchHStackThreadState</a> stores each thread's local state for a single instance of H-Stack. For each instance of H-Stack, a discrete instance of <a class="el" href="hstack_8h.html#structSynchHStackThreadState" title="SynchHStackThreadState stores each thread&#39;s local state for a single instance of H-Stack....">SynchHStackThreadState</a> should be used.  <a href="hstack_8h.html#structSynchHStackThreadState">More...</a><br /></td></tr>
-<tr class="separator:structSynchHStackThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structHStackStruct"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#structHStackStruct">HStackStruct</a></td></tr>
+<tr class="memdesc:structHStackStruct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="hstack_8h.html#structHStackStruct" title="HStackStruct stores the state of an instance of the H-Stack concurrent stack implementation....">HStackStruct</a> stores the state of an instance of the H-Stack concurrent stack implementation. <a class="el" href="hstack_8h.html#structHStackStruct" title="HStackStruct stores the state of an instance of the H-Stack concurrent stack implementation....">HStackStruct</a> should be initialized using the HStackStructInit function.  <a href="hstack_8h.html#structHStackStruct">More...</a><br /></td></tr>
+<tr class="separator:structHStackStruct"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structHStackThreadState"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#structHStackThreadState">HStackThreadState</a></td></tr>
+<tr class="memdesc:structHStackThreadState"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="hstack_8h.html#structHStackThreadState" title="HStackThreadState stores each thread&#39;s local state for a single instance of H-Stack....">HStackThreadState</a> stores each thread's local state for a single instance of H-Stack. For each instance of H-Stack, a discrete instance of <a class="el" href="hstack_8h.html#structHStackThreadState" title="HStackThreadState stores each thread&#39;s local state for a single instance of H-Stack....">HStackThreadState</a> should be used.  <a href="hstack_8h.html#structHStackThreadState">More...</a><br /></td></tr>
+<tr class="separator:structHStackThreadState"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:acae23c7c4839f2167c526c53438ee538"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#acae23c7c4839f2167c526c53438ee538">synchHStackInit</a> (<a class="el" href="hstack_8h.html#structSynchHStackStruct">SynchHStackStruct</a> *stack_object_struct, uint32_t nthreads, uint32_t numa_nodes)</td></tr>
-<tr class="memdesc:acae23c7c4839f2167c526c53438ee538"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the H-Stack concurrent stack implementation.  <a href="hstack_8h.html#acae23c7c4839f2167c526c53438ee538">More...</a><br /></td></tr>
-<tr class="separator:acae23c7c4839f2167c526c53438ee538"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab29b10fd77bcf894f61bff31410eda8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#aab29b10fd77bcf894f61bff31410eda8">synchHStackThreadStateInit</a> (<a class="el" href="hstack_8h.html#structSynchHStackStruct">SynchHStackStruct</a> *object_struct, <a class="el" href="hstack_8h.html#structSynchHStackThreadState">SynchHStackThreadState</a> *lobject_struct, int pid)</td></tr>
-<tr class="memdesc:aab29b10fd77bcf894f61bff31410eda8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the H-Stack concurrent stack implementation.  <a href="hstack_8h.html#aab29b10fd77bcf894f61bff31410eda8">More...</a><br /></td></tr>
-<tr class="separator:aab29b10fd77bcf894f61bff31410eda8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78ecb13078d402905698a7b10a9660e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#a78ecb13078d402905698a7b10a9660e6">synchHStackPush</a> (<a class="el" href="hstack_8h.html#structSynchHStackStruct">SynchHStackStruct</a> *object_struct, <a class="el" href="hstack_8h.html#structSynchHStackThreadState">SynchHStackThreadState</a> *lobject_struct, <a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a> arg, int pid)</td></tr>
-<tr class="memdesc:a78ecb13078d402905698a7b10a9660e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function adds (i.e. pushes) a new element to the top of the stack. This element has a value equal with arg.  <a href="hstack_8h.html#a78ecb13078d402905698a7b10a9660e6">More...</a><br /></td></tr>
-<tr class="separator:a78ecb13078d402905698a7b10a9660e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a796701a8cf6ae4fdbaf959c723dc058c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#a796701a8cf6ae4fdbaf959c723dc058c">synchHStackPop</a> (<a class="el" href="hstack_8h.html#structSynchHStackStruct">SynchHStackStruct</a> *object_struct, <a class="el" href="hstack_8h.html#structSynchHStackThreadState">SynchHStackThreadState</a> *lobject_struct, int pid)</td></tr>
-<tr class="memdesc:a796701a8cf6ae4fdbaf959c723dc058c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function removes (i.e. pops) an element from the top of the stack and returns its value.  <a href="hstack_8h.html#a796701a8cf6ae4fdbaf959c723dc058c">More...</a><br /></td></tr>
-<tr class="separator:a796701a8cf6ae4fdbaf959c723dc058c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a66109b24c5b6a039dfd0927a29529"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#ad0a66109b24c5b6a039dfd0927a29529">HStackInit</a> (<a class="el" href="hstack_8h.html#structHStackStruct">HStackStruct</a> *stack_object_struct, uint32_t nthreads, uint32_t numa_nodes)</td></tr>
+<tr class="memdesc:ad0a66109b24c5b6a039dfd0927a29529"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes an instance of the H-Stack concurrent stack implementation.  <a href="hstack_8h.html#ad0a66109b24c5b6a039dfd0927a29529">More...</a><br /></td></tr>
+<tr class="separator:ad0a66109b24c5b6a039dfd0927a29529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae518006db96a4717ff1c8cfdd8bc23d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#ae518006db96a4717ff1c8cfdd8bc23d6">HStackThreadStateInit</a> (<a class="el" href="hstack_8h.html#structHStackStruct">HStackStruct</a> *object_struct, <a class="el" href="hstack_8h.html#structHStackThreadState">HStackThreadState</a> *lobject_struct, int pid)</td></tr>
+<tr class="memdesc:ae518006db96a4717ff1c8cfdd8bc23d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function should be called once before the thread applies any operation to the H-Stack concurrent stack implementation.  <a href="hstack_8h.html#ae518006db96a4717ff1c8cfdd8bc23d6">More...</a><br /></td></tr>
+<tr class="separator:ae518006db96a4717ff1c8cfdd8bc23d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b4bd0a409d7e4bea4a85752688416d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#a90b4bd0a409d7e4bea4a85752688416d">HStackPush</a> (<a class="el" href="hstack_8h.html#structHStackStruct">HStackStruct</a> *object_struct, <a class="el" href="hstack_8h.html#structHStackThreadState">HStackThreadState</a> *lobject_struct, <a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a> arg, int pid)</td></tr>
+<tr class="memdesc:a90b4bd0a409d7e4bea4a85752688416d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function adds (i.e. pushes) a new element to the top of the stack. This element has a value equal with arg.  <a href="hstack_8h.html#a90b4bd0a409d7e4bea4a85752688416d">More...</a><br /></td></tr>
+<tr class="separator:a90b4bd0a409d7e4bea4a85752688416d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71fc853b815b5f04b86b489ecf437262"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hstack_8h.html#a71fc853b815b5f04b86b489ecf437262">HStackPop</a> (<a class="el" href="hstack_8h.html#structHStackStruct">HStackStruct</a> *object_struct, <a class="el" href="hstack_8h.html#structHStackThreadState">HStackThreadState</a> *lobject_struct, int pid)</td></tr>
+<tr class="memdesc:a71fc853b815b5f04b86b489ecf437262"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function removes (i.e. pops) an element from the top of the stack and returns its value.  <a href="hstack_8h.html#a71fc853b815b5f04b86b489ecf437262">More...</a><br /></td></tr>
+<tr class="separator:a71fc853b815b5f04b86b489ecf437262"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes the API of the H-Stack concurrent stack implementation. An example of use of this API is provided in benchmarks/hstackbench.c file. </p>
 <dl class="section author"><dt>Author</dt><dd>Nikolaos D. Kallimanis (<a href="#" onclick="location.href='mai'+'lto:'+'nka'+'ll'+'ima'+'@g'+'mai'+'l.'+'com'; return false;">nkall<span style="display: none;">.nosp@m.</span>ima@<span style="display: none;">.nosp@m.</span>gmail<span style="display: none;">.nosp@m.</span>.com</a>)</dd></dl>
 <p>For a more detailed description see the original publication: Panagiota Fatourou, and Nikolaos D. Kallimanis."Revisiting the combining synchronization technique". ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012. </p><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2021 </dd></dl>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structSynchHStackStruct" id="structSynchHStackStruct"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structSynchHStackStruct">&#9670;&nbsp;</a></span>SynchHStackStruct</h2>
+<a name="structHStackStruct" id="structHStackStruct"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structHStackStruct">&#9670;&nbsp;</a></span>HStackStruct</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct SynchHStackStruct</td>
+          <td class="memname">struct HStackStruct</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="hstack_8h.html#structSynchHStackStruct" title="SynchHStackStruct stores the state of an instance of the H-Stack concurrent stack implementation....">SynchHStackStruct</a> stores the state of an instance of the H-Stack concurrent stack implementation. <a class="el" href="hstack_8h.html#structSynchHStackStruct" title="SynchHStackStruct stores the state of an instance of the H-Stack concurrent stack implementation....">SynchHStackStruct</a> should be initialized using the HStackStructInit function. </p>
+<div class="textblock"><p><a class="el" href="hstack_8h.html#structHStackStruct" title="HStackStruct stores the state of an instance of the H-Stack concurrent stack implementation....">HStackStruct</a> stores the state of an instance of the H-Stack concurrent stack implementation. <a class="el" href="hstack_8h.html#structHStackStruct" title="HStackStruct stores the state of an instance of the H-Stack concurrent stack implementation....">HStackStruct</a> should be initialized using the HStackStructInit function. </p>
 </div>
 </div>
 </div>
-<a name="structSynchHStackThreadState" id="structSynchHStackThreadState"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structSynchHStackThreadState">&#9670;&nbsp;</a></span>SynchHStackThreadState</h2>
+<a name="structHStackThreadState" id="structHStackThreadState"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structHStackThreadState">&#9670;&nbsp;</a></span>HStackThreadState</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct SynchHStackThreadState</td>
+          <td class="memname">struct HStackThreadState</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p><a class="el" href="hstack_8h.html#structSynchHStackThreadState" title="SynchHStackThreadState stores each thread&#39;s local state for a single instance of H-Stack....">SynchHStackThreadState</a> stores each thread's local state for a single instance of H-Stack. For each instance of H-Stack, a discrete instance of <a class="el" href="hstack_8h.html#structSynchHStackThreadState" title="SynchHStackThreadState stores each thread&#39;s local state for a single instance of H-Stack....">SynchHStackThreadState</a> should be used. </p>
+<div class="textblock"><p><a class="el" href="hstack_8h.html#structHStackThreadState" title="HStackThreadState stores each thread&#39;s local state for a single instance of H-Stack....">HStackThreadState</a> stores each thread's local state for a single instance of H-Stack. For each instance of H-Stack, a discrete instance of <a class="el" href="hstack_8h.html#structHStackThreadState" title="HStackThreadState stores each thread&#39;s local state for a single instance of H-Stack....">HStackThreadState</a> should be used. </p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a4b2201cdea7f276b9ed276e2dcfc9cc3"></a><a class="el" href="hsynch_8h.html#structSynchHSynchThreadState">SynchHSynchThreadState</a></td>
+<a id="ac66ccd60d0ad34355fc7c782be86bd2c"></a><a class="el" href="hsynch_8h.html#structHSynchThreadState">HSynchThreadState</a></td>
 <td class="fieldname">
 th_state</td>
 <td class="fielddoc">
-An <a class="el" href="hsynch_8h.html#structSynchHSynchThreadState" title="SynchHSynchThreadState stores each thread&#39;s local state for a single instance of HSynch....">SynchHSynchThreadState</a> struct for the instance of H-Synch that serves both push and pop operations. </td></tr>
+An <a class="el" href="hsynch_8h.html#structHSynchThreadState" title="HSynchThreadState stores each thread&#39;s local state for a single instance of HSynch....">HSynchThreadState</a> struct for the instance of H-Synch that serves both push and pop operations. </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="acae23c7c4839f2167c526c53438ee538"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acae23c7c4839f2167c526c53438ee538">&#9670;&nbsp;</a></span>synchHStackInit()</h2>
+<a id="ad0a66109b24c5b6a039dfd0927a29529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0a66109b24c5b6a039dfd0927a29529">&#9670;&nbsp;</a></span>HStackInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void synchHStackInit </td>
+          <td class="memname">void HStackInit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="hstack_8h.html#structSynchHStackStruct">SynchHStackStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="hstack_8h.html#structHStackStruct">HStackStruct</a> *&#160;</td>
           <td class="paramname"><em>stack_object_struct</em>, </td>
         </tr>
         <tr>
@@ -195,22 +195,22 @@ An <a class="el" href="hsynch_8h.html#structSynchHSynchThreadState" title="Synch
 
 </div>
 </div>
-<a id="aab29b10fd77bcf894f61bff31410eda8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab29b10fd77bcf894f61bff31410eda8">&#9670;&nbsp;</a></span>synchHStackThreadStateInit()</h2>
+<a id="ae518006db96a4717ff1c8cfdd8bc23d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae518006db96a4717ff1c8cfdd8bc23d6">&#9670;&nbsp;</a></span>HStackThreadStateInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void synchHStackThreadStateInit </td>
+          <td class="memname">void HStackThreadStateInit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="hstack_8h.html#structSynchHStackStruct">SynchHStackStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="hstack_8h.html#structHStackStruct">HStackStruct</a> *&#160;</td>
           <td class="paramname"><em>object_struct</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="hstack_8h.html#structSynchHStackThreadState">SynchHStackThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="hstack_8h.html#structHStackThreadState">HStackThreadState</a> *&#160;</td>
           <td class="paramname"><em>lobject_struct</em>, </td>
         </tr>
         <tr>
@@ -239,22 +239,22 @@ An <a class="el" href="hsynch_8h.html#structSynchHSynchThreadState" title="Synch
 
 </div>
 </div>
-<a id="a78ecb13078d402905698a7b10a9660e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78ecb13078d402905698a7b10a9660e6">&#9670;&nbsp;</a></span>synchHStackPush()</h2>
+<a id="a90b4bd0a409d7e4bea4a85752688416d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b4bd0a409d7e4bea4a85752688416d">&#9670;&nbsp;</a></span>HStackPush()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void synchHStackPush </td>
+          <td class="memname">void HStackPush </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="hstack_8h.html#structSynchHStackStruct">SynchHStackStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="hstack_8h.html#structHStackStruct">HStackStruct</a> *&#160;</td>
           <td class="paramname"><em>object_struct</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="hstack_8h.html#structSynchHStackThreadState">SynchHStackThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="hstack_8h.html#structHStackThreadState">HStackThreadState</a> *&#160;</td>
           <td class="paramname"><em>lobject_struct</em>, </td>
         </tr>
         <tr>
@@ -290,22 +290,22 @@ An <a class="el" href="hsynch_8h.html#structSynchHSynchThreadState" title="Synch
 
 </div>
 </div>
-<a id="a796701a8cf6ae4fdbaf959c723dc058c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a796701a8cf6ae4fdbaf959c723dc058c">&#9670;&nbsp;</a></span>synchHStackPop()</h2>
+<a id="a71fc853b815b5f04b86b489ecf437262"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71fc853b815b5f04b86b489ecf437262">&#9670;&nbsp;</a></span>HStackPop()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> synchHStackPop </td>
+          <td class="memname"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a> HStackPop </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="hstack_8h.html#structSynchHStackStruct">SynchHStackStruct</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="hstack_8h.html#structHStackStruct">HStackStruct</a> *&#160;</td>
           <td class="paramname"><em>object_struct</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="hstack_8h.html#structSynchHStackThreadState">SynchHStackThreadState</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="hstack_8h.html#structHStackThreadState">HStackThreadState</a> *&#160;</td>
           <td class="paramname"><em>lobject_struct</em>, </td>
         </tr>
         <tr>

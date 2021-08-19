@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['cas128_779',['CAS128',['../primitives_8h.html#abede7d5ee6f4c8c21dee777bb1a430f7',1,'primitives.h']]],
-  ['cas32_780',['CAS32',['../primitives_8h.html#aa2c073213375b90dbc1734d56f02f730',1,'primitives.h']]],
-  ['cas64_781',['CAS64',['../primitives_8h.html#a5a6cdaf2e500b352b4950897530d8004',1,'primitives.h']]],
-  ['casptr_782',['CASPTR',['../primitives_8h.html#a55e1410011d991e19eabde143130ef08',1,'primitives.h']]]
+  ['empty_5fqueue_779',['EMPTY_QUEUE',['../queue-stack_8h.html#acc86c7a7077c8f933effbfa19ad948ce',1,'queue-stack.h']]],
+  ['empty_5fstack_780',['EMPTY_STACK',['../queue-stack_8h.html#a8bd7f816e2b1eb404e52d17af1a6236f',1,'queue-stack.h']]],
+  ['enqstatesize_781',['EnqStateSize',['../simqueue_8h.html#a9234f92eca9b26bec235c06b6835b95a',1,'simqueue.h']]],
+  ['enqueue_5ffail_782',['ENQUEUE_FAIL',['../queue-stack_8h.html#a9d6d41c56e906e951244d98b9120b130',1,'queue-stack.h']]],
+  ['enqueue_5fsuccess_783',['ENQUEUE_SUCCESS',['../queue-stack_8h.html#a2fc9fe1075e2a85fe64ae5e29bdfb82c',1,'queue-stack.h']]]
 ];

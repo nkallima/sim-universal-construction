@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['faa32_789',['FAA32',['../primitives_8h.html#a6b54b50b40a479c116eed924d481fb5e',1,'primitives.h']]],
-  ['faa64_790',['FAA64',['../primitives_8h.html#a06394cec4bbb552d935e03f66a8f01f1',1,'primitives.h']]]
+  ['intel_5fx86_5fmachine_786',['INTEL_X86_MACHINE',['../primitives_8h.html#a606e99bfadbeef4a1d36a29d8ce71bb7',1,'primitives.h']]]
 ];

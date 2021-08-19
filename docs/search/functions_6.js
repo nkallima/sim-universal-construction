@@ -1,10 +1,17 @@
 var searchData=
 [
-  ['getalignedmemory_588',['getAlignedMemory',['../primitives_8h.html#a3dff53e45d5b45fcd412f808956d189b',1,'primitives.h']]],
-  ['getmachinemodel_589',['getMachineModel',['../primitives_8h.html#aa6d4c408d50e2fdcf12aa821c7288f13',1,'primitives.h']]],
-  ['getmemory_590',['getMemory',['../primitives_8h.html#ab3ebfb79201126e851de8eaf611534a5',1,'primitives.h']]],
-  ['getncores_591',['getNCores',['../threadtools_8h.html#a2788ed2826919be77d002274af696b72',1,'threadtools.h']]],
-  ['getpreferedcore_592',['getPreferedCore',['../threadtools_8h.html#a8c5fbc313323acfd93c31b6082942892',1,'threadtools.h']]],
-  ['getthreadid_593',['getThreadId',['../threadtools_8h.html#a923f80a64ad20e9b952c05e63dc392ec',1,'threadtools.h']]],
-  ['gettimemillis_594',['getTimeMillis',['../primitives_8h.html#a14afa6a425a2bd3a4ab6c9b365a43087',1,'primitives.h']]]
+  ['osciapplyop_603',['OsciApplyOp',['../osci_8h.html#ad8192041f31e8e6196d7cb6fafe706ff',1,'osci.h']]],
+  ['osciinit_604',['OsciInit',['../osci_8h.html#a4a4c3d73c5f1f0e617b93b273f6f88dc',1,'osci.h']]],
+  ['osciqueueapplydequeue_605',['OsciQueueApplyDequeue',['../osciqueue_8h.html#a58d96b6be35b05d4bddedc5d823c2b32',1,'osciqueue.h']]],
+  ['osciqueueapplyenqueue_606',['OsciQueueApplyEnqueue',['../osciqueue_8h.html#ab5b4b04077d85d98816880d5c514fcbf',1,'osciqueue.h']]],
+  ['osciqueueinit_607',['OsciQueueInit',['../osciqueue_8h.html#a5cf0f32683e4fc5a12444a58e3c285a0',1,'osciqueue.h']]],
+  ['osciqueuethreadstateinit_608',['OsciQueueThreadStateInit',['../osciqueue_8h.html#a4163bcf94553bab64fa98fddae544abb',1,'osciqueue.h']]],
+  ['oscistackapplypop_609',['OsciStackApplyPop',['../oscistack_8h.html#a7db49e3ab9629dfedd55c496839dac3c',1,'oscistack.h']]],
+  ['oscistackapplypush_610',['OsciStackApplyPush',['../oscistack_8h.html#aadd00e15bc025b5ee0d673d88d731e6a',1,'oscistack.h']]],
+  ['oscistackinit_611',['OsciStackInit',['../oscistack_8h.html#abd722d36f50fe639a76cafe31c14a722',1,'oscistack.h']]],
+  ['oscistackthreadstateinit_612',['OsciStackThreadStateInit',['../oscistack_8h.html#a66ab92c0b4ff34aec32bf608348e539a',1,'oscistack.h']]],
+  ['oscithreadstateinit_613',['OsciThreadStateInit',['../osci_8h.html#a64489bbbaaa36fa680f9c3d3771db99c',1,'osci.h']]],
+  ['oyamaapplyop_614',['OyamaApplyOp',['../oyama_8h.html#a329e97fe0800bcbed09cd46079522701',1,'oyama.h']]],
+  ['oyamainit_615',['OyamaInit',['../oyama_8h.html#a7fcb4c15cbc58b5b9a3e427afdd01aab',1,'oyama.h']]],
+  ['oyamathreadstateinit_616',['OyamaThreadStateInit',['../oyama_8h.html#ac9207fdac513b6e4569d9b6977c5fa32',1,'oyama.h']]]
 ];

@@ -101,33 +101,33 @@ Macros</h2></td></tr>
 <tr class="memitem:a754d94e01d5800aa9df847bafdd1accb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a754d94e01d5800aa9df847bafdd1accb">RISCV_GENERIC_MACHINE</a>&#160;&#160;&#160;0x5</td></tr>
 <tr class="memdesc:a754d94e01d5800aa9df847bafdd1accb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a generic RISC-V processor.  <a href="primitives_8h.html#a754d94e01d5800aa9df847bafdd1accb">More...</a><br /></td></tr>
 <tr class="separator:a754d94e01d5800aa9df847bafdd1accb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9592777264b5cf8e7bf188766c26bd27"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a9592777264b5cf8e7bf188766c26bd27">Pause</a>()</td></tr>
-<tr class="memdesc:a9592777264b5cf8e7bf188766c26bd27"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro emits a NO-OP instruction.  <a href="primitives_8h.html#a9592777264b5cf8e7bf188766c26bd27">More...</a><br /></td></tr>
-<tr class="separator:a9592777264b5cf8e7bf188766c26bd27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abede7d5ee6f4c8c21dee777bb1a430f7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#abede7d5ee6f4c8c21dee777bb1a430f7">CAS128</a>(A,  B0,  B1,  C0,  C1)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e">_CAS128</a>((uint64_t *)(A), (uint64_t)(B0), (uint64_t)(B1), (uint64_t)(C0), (uint64_t)(C1))</td></tr>
-<tr class="memdesc:abede7d5ee6f4c8c21dee777bb1a430f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CAS128 function. See more on <a class="el" href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e" title="This function is executed atomically. It reads the 128-bit value stored at a memory location pointed ...">_CAS128()</a>.  <a href="primitives_8h.html#abede7d5ee6f4c8c21dee777bb1a430f7">More...</a><br /></td></tr>
-<tr class="separator:abede7d5ee6f4c8c21dee777bb1a430f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55e1410011d991e19eabde143130ef08"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a55e1410011d991e19eabde143130ef08">CASPTR</a>(A,  B,  C)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#acabacf8f76ed1a3498494428894e110a">_CASPTR</a>((void *)(A), (void *)(B), (void *)(C))</td></tr>
-<tr class="memdesc:a55e1410011d991e19eabde143130ef08"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CASPTR function. See more on <a class="el" href="primitives_8h.html#acabacf8f76ed1a3498494428894e110a" title="This function is executed atomically. It reads the pointer stored at a memory location pointed by A....">_CASPTR()</a>.  <a href="primitives_8h.html#a55e1410011d991e19eabde143130ef08">More...</a><br /></td></tr>
-<tr class="separator:a55e1410011d991e19eabde143130ef08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a6cdaf2e500b352b4950897530d8004"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a5a6cdaf2e500b352b4950897530d8004">CAS64</a>(A,  B,  C)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a0c8dc1f3d6bc7c355fb58701b2215409">_CAS64</a>((uint64_t *)(A), (uint64_t)(B), (uint64_t)(C))</td></tr>
-<tr class="memdesc:a5a6cdaf2e500b352b4950897530d8004"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CAS64 function. See more on <a class="el" href="primitives_8h.html#a0c8dc1f3d6bc7c355fb58701b2215409" title="This function is executed atomically. It reads the 64-bit value stored at a memory location pointed b...">_CAS64()</a>.  <a href="primitives_8h.html#a5a6cdaf2e500b352b4950897530d8004">More...</a><br /></td></tr>
-<tr class="separator:a5a6cdaf2e500b352b4950897530d8004"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2c073213375b90dbc1734d56f02f730"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#aa2c073213375b90dbc1734d56f02f730">CAS32</a>(A,  B,  C)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#ac14949eaf8106f461872fb06a3d1b68e">_CAS32</a>((uint32_t *)(A), (uint32_t)(B), (uint32_t)(C))</td></tr>
-<tr class="memdesc:aa2c073213375b90dbc1734d56f02f730"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CAS32 function. See more on <a class="el" href="primitives_8h.html#ac14949eaf8106f461872fb06a3d1b68e" title="This function is executed atomically. It reads the 32-bit value stored at a memory location pointed b...">_CAS32()</a>.  <a href="primitives_8h.html#aa2c073213375b90dbc1734d56f02f730">More...</a><br /></td></tr>
-<tr class="separator:aa2c073213375b90dbc1734d56f02f730"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97224473593ed7213db8620dc2df2539"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a97224473593ed7213db8620dc2df2539">SWAP</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a6e200872aa6e8486f0c87f04ae24912a">_SWAP</a>((void *)(A), (void *)(B))</td></tr>
-<tr class="memdesc:a97224473593ed7213db8620dc2df2539"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _SWAP function. See more on <a class="el" href="primitives_8h.html#a6e200872aa6e8486f0c87f04ae24912a" title="This function is executed atomically. It performs an atomic exchange operation on the memory location...">_SWAP()</a>.  <a href="primitives_8h.html#a97224473593ed7213db8620dc2df2539">More...</a><br /></td></tr>
-<tr class="separator:a97224473593ed7213db8620dc2df2539"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b54b50b40a479c116eed924d481fb5e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a6b54b50b40a479c116eed924d481fb5e">FAA32</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a6ca718c188e24e89702cebb39d62cfe7">_FAA32</a>((volatile int32_t *)(A), (int32_t)(B))</td></tr>
-<tr class="memdesc:a6b54b50b40a479c116eed924d481fb5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _FAA32 function. See more on <a class="el" href="primitives_8h.html#a6ca718c188e24e89702cebb39d62cfe7" title="This function is executed atomically. It performs an atomic addition of value B to the value pointed ...">_FAA32()</a>.  <a href="primitives_8h.html#a6b54b50b40a479c116eed924d481fb5e">More...</a><br /></td></tr>
-<tr class="separator:a6b54b50b40a479c116eed924d481fb5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06394cec4bbb552d935e03f66a8f01f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a06394cec4bbb552d935e03f66a8f01f1">FAA64</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a12b12a6f12ad1faefd6977b55c728c97">_FAA64</a>((volatile int64_t *)(A), (int64_t)(B))</td></tr>
-<tr class="memdesc:a06394cec4bbb552d935e03f66a8f01f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _FAA64 function. See more on <a class="el" href="primitives_8h.html#a12b12a6f12ad1faefd6977b55c728c97" title="This function is executed atomically. It performs an atomic addition of value B to the value pointed ...">_FAA64()</a>.  <a href="primitives_8h.html#a06394cec4bbb552d935e03f66a8f01f1">More...</a><br /></td></tr>
-<tr class="separator:a06394cec4bbb552d935e03f66a8f01f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacb49da46cadc133becde3026db468fb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#aacb49da46cadc133becde3026db468fb">BitTAS64</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#add56d81291a75100f7e38639c9cf4aa7">_BitTAS64</a>((volatile uint64_t *)(A), (unsigned char)(B))</td></tr>
-<tr class="memdesc:aacb49da46cadc133becde3026db468fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _BitTAS64 function. See more on <a class="el" href="primitives_8h.html#add56d81291a75100f7e38639c9cf4aa7" title="This function is executed atomically. It performs an atomic Test&amp;Set on the B-th bit of the value poi...">_BitTAS64()</a>.  <a href="primitives_8h.html#aacb49da46cadc133becde3026db468fb">More...</a><br /></td></tr>
-<tr class="separator:aacb49da46cadc133becde3026db468fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fa240a2651209643859b0f5879a21dc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a9fa240a2651209643859b0f5879a21dc">synchPause</a>()</td></tr>
+<tr class="memdesc:a9fa240a2651209643859b0f5879a21dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro emits a NO-OP instruction.  <a href="primitives_8h.html#a9fa240a2651209643859b0f5879a21dc">More...</a><br /></td></tr>
+<tr class="separator:a9fa240a2651209643859b0f5879a21dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04986a7f373ed445cb0edf317f87ec5e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a04986a7f373ed445cb0edf317f87ec5e">synchCAS128</a>(A,  B0,  B1,  C0,  C1)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e">_CAS128</a>((uint64_t *)(A), (uint64_t)(B0), (uint64_t)(B1), (uint64_t)(C0), (uint64_t)(C1))</td></tr>
+<tr class="memdesc:a04986a7f373ed445cb0edf317f87ec5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CAS128 function. See more on <a class="el" href="primitives_8h.html#ae800f4dd1b3504036b1c07149e64f61e" title="This function is executed atomically. It reads the 128-bit value stored at a memory location pointed ...">_CAS128()</a>.  <a href="primitives_8h.html#a04986a7f373ed445cb0edf317f87ec5e">More...</a><br /></td></tr>
+<tr class="separator:a04986a7f373ed445cb0edf317f87ec5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e8a32931f5fd4454add91745c5e0fea"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a2e8a32931f5fd4454add91745c5e0fea">synchCASPTR</a>(A,  B,  C)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#acabacf8f76ed1a3498494428894e110a">_CASPTR</a>((void *)(A), (void *)(B), (void *)(C))</td></tr>
+<tr class="memdesc:a2e8a32931f5fd4454add91745c5e0fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CASPTR function. See more on <a class="el" href="primitives_8h.html#acabacf8f76ed1a3498494428894e110a" title="This function is executed atomically. It reads the pointer stored at a memory location pointed by A....">_CASPTR()</a>.  <a href="primitives_8h.html#a2e8a32931f5fd4454add91745c5e0fea">More...</a><br /></td></tr>
+<tr class="separator:a2e8a32931f5fd4454add91745c5e0fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8d89d515b23e89c154a21b19de4e1b0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ae8d89d515b23e89c154a21b19de4e1b0">synchCAS64</a>(A,  B,  C)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a0c8dc1f3d6bc7c355fb58701b2215409">_CAS64</a>((uint64_t *)(A), (uint64_t)(B), (uint64_t)(C))</td></tr>
+<tr class="memdesc:ae8d89d515b23e89c154a21b19de4e1b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CAS64 function. See more on <a class="el" href="primitives_8h.html#a0c8dc1f3d6bc7c355fb58701b2215409" title="This function is executed atomically. It reads the 64-bit value stored at a memory location pointed b...">_CAS64()</a>.  <a href="primitives_8h.html#ae8d89d515b23e89c154a21b19de4e1b0">More...</a><br /></td></tr>
+<tr class="separator:ae8d89d515b23e89c154a21b19de4e1b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9b3d09db4d79b15a1899609fb0c00c3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ae9b3d09db4d79b15a1899609fb0c00c3">synchCAS32</a>(A,  B,  C)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#ac14949eaf8106f461872fb06a3d1b68e">_CAS32</a>((uint32_t *)(A), (uint32_t)(B), (uint32_t)(C))</td></tr>
+<tr class="memdesc:ae9b3d09db4d79b15a1899609fb0c00c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _CAS32 function. See more on <a class="el" href="primitives_8h.html#ac14949eaf8106f461872fb06a3d1b68e" title="This function is executed atomically. It reads the 32-bit value stored at a memory location pointed b...">_CAS32()</a>.  <a href="primitives_8h.html#ae9b3d09db4d79b15a1899609fb0c00c3">More...</a><br /></td></tr>
+<tr class="separator:ae9b3d09db4d79b15a1899609fb0c00c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aead19eddbba36e00f39aa40d42fc6e87"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#aead19eddbba36e00f39aa40d42fc6e87">synchSWAP</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a6e200872aa6e8486f0c87f04ae24912a">_SWAP</a>((void *)(A), (void *)(B))</td></tr>
+<tr class="memdesc:aead19eddbba36e00f39aa40d42fc6e87"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _SWAP function. See more on <a class="el" href="primitives_8h.html#a6e200872aa6e8486f0c87f04ae24912a" title="This function is executed atomically. It performs an atomic exchange operation on the memory location...">_SWAP()</a>.  <a href="primitives_8h.html#aead19eddbba36e00f39aa40d42fc6e87">More...</a><br /></td></tr>
+<tr class="separator:aead19eddbba36e00f39aa40d42fc6e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd8a4e97bb019a76c7455d7cec82d015"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#abd8a4e97bb019a76c7455d7cec82d015">synchFAA32</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a6ca718c188e24e89702cebb39d62cfe7">_FAA32</a>((volatile int32_t *)(A), (int32_t)(B))</td></tr>
+<tr class="memdesc:abd8a4e97bb019a76c7455d7cec82d015"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _FAA32 function. See more on <a class="el" href="primitives_8h.html#a6ca718c188e24e89702cebb39d62cfe7" title="This function is executed atomically. It performs an atomic addition of value B to the value pointed ...">_FAA32()</a>.  <a href="primitives_8h.html#abd8a4e97bb019a76c7455d7cec82d015">More...</a><br /></td></tr>
+<tr class="separator:abd8a4e97bb019a76c7455d7cec82d015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eafabd062337043d4ba2225a6effa97"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a2eafabd062337043d4ba2225a6effa97">synchFAA64</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#a12b12a6f12ad1faefd6977b55c728c97">_FAA64</a>((volatile int64_t *)(A), (int64_t)(B))</td></tr>
+<tr class="memdesc:a2eafabd062337043d4ba2225a6effa97"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _FAA64 function. See more on <a class="el" href="primitives_8h.html#a12b12a6f12ad1faefd6977b55c728c97" title="This function is executed atomically. It performs an atomic addition of value B to the value pointed ...">_FAA64()</a>.  <a href="primitives_8h.html#a2eafabd062337043d4ba2225a6effa97">More...</a><br /></td></tr>
+<tr class="separator:a2eafabd062337043d4ba2225a6effa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04e7267ce3844a84fe5a20c267cc59f4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a04e7267ce3844a84fe5a20c267cc59f4">synchBitTAS64</a>(A,  B)&#160;&#160;&#160;<a class="el" href="primitives_8h.html#add56d81291a75100f7e38639c9cf4aa7">_BitTAS64</a>((volatile uint64_t *)(A), (unsigned char)(B))</td></tr>
+<tr class="memdesc:a04e7267ce3844a84fe5a20c267cc59f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for the _BitTAS64 function. See more on <a class="el" href="primitives_8h.html#add56d81291a75100f7e38639c9cf4aa7" title="This function is executed atomically. It performs an atomic Test&amp;Set on the B-th bit of the value poi...">_BitTAS64()</a>.  <a href="primitives_8h.html#a04e7267ce3844a84fe5a20c267cc59f4">More...</a><br /></td></tr>
+<tr class="separator:a04e7267ce3844a84fe5a20c267cc59f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -270,14 +270,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9592777264b5cf8e7bf188766c26bd27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9592777264b5cf8e7bf188766c26bd27">&#9670;&nbsp;</a></span>Pause</h2>
+<a id="a9fa240a2651209643859b0f5879a21dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fa240a2651209643859b0f5879a21dc">&#9670;&nbsp;</a></span>synchPause</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define Pause</td>
+          <td class="memname">#define synchPause</td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -289,14 +289,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abede7d5ee6f4c8c21dee777bb1a430f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abede7d5ee6f4c8c21dee777bb1a430f7">&#9670;&nbsp;</a></span>CAS128</h2>
+<a id="a04986a7f373ed445cb0edf317f87ec5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04986a7f373ed445cb0edf317f87ec5e">&#9670;&nbsp;</a></span>synchCAS128</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CAS128</td>
+          <td class="memname">#define synchCAS128</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">A, </td>
@@ -337,14 +337,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a55e1410011d991e19eabde143130ef08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55e1410011d991e19eabde143130ef08">&#9670;&nbsp;</a></span>CASPTR</h2>
+<a id="a2e8a32931f5fd4454add91745c5e0fea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e8a32931f5fd4454add91745c5e0fea">&#9670;&nbsp;</a></span>synchCASPTR</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CASPTR</td>
+          <td class="memname">#define synchCASPTR</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">A, </td>
@@ -373,14 +373,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5a6cdaf2e500b352b4950897530d8004"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a6cdaf2e500b352b4950897530d8004">&#9670;&nbsp;</a></span>CAS64</h2>
+<a id="ae8d89d515b23e89c154a21b19de4e1b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8d89d515b23e89c154a21b19de4e1b0">&#9670;&nbsp;</a></span>synchCAS64</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CAS64</td>
+          <td class="memname">#define synchCAS64</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">A, </td>
@@ -409,14 +409,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa2c073213375b90dbc1734d56f02f730"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2c073213375b90dbc1734d56f02f730">&#9670;&nbsp;</a></span>CAS32</h2>
+<a id="ae9b3d09db4d79b15a1899609fb0c00c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9b3d09db4d79b15a1899609fb0c00c3">&#9670;&nbsp;</a></span>synchCAS32</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CAS32</td>
+          <td class="memname">#define synchCAS32</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">A, </td>
@@ -445,14 +445,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a97224473593ed7213db8620dc2df2539"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97224473593ed7213db8620dc2df2539">&#9670;&nbsp;</a></span>SWAP</h2>
+<a id="aead19eddbba36e00f39aa40d42fc6e87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aead19eddbba36e00f39aa40d42fc6e87">&#9670;&nbsp;</a></span>synchSWAP</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SWAP</td>
+          <td class="memname">#define synchSWAP</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">A, </td>
@@ -475,14 +475,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6b54b50b40a479c116eed924d481fb5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b54b50b40a479c116eed924d481fb5e">&#9670;&nbsp;</a></span>FAA32</h2>
+<a id="abd8a4e97bb019a76c7455d7cec82d015"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd8a4e97bb019a76c7455d7cec82d015">&#9670;&nbsp;</a></span>synchFAA32</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define FAA32</td>
+          <td class="memname">#define synchFAA32</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">A, </td>
@@ -505,14 +505,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a06394cec4bbb552d935e03f66a8f01f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06394cec4bbb552d935e03f66a8f01f1">&#9670;&nbsp;</a></span>FAA64</h2>
+<a id="a2eafabd062337043d4ba2225a6effa97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eafabd062337043d4ba2225a6effa97">&#9670;&nbsp;</a></span>synchFAA64</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define FAA64</td>
+          <td class="memname">#define synchFAA64</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">A, </td>
@@ -535,14 +535,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aacb49da46cadc133becde3026db468fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacb49da46cadc133becde3026db468fb">&#9670;&nbsp;</a></span>BitTAS64</h2>
+<a id="a04e7267ce3844a84fe5a20c267cc59f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04e7267ce3844a84fe5a20c267cc59f4">&#9670;&nbsp;</a></span>synchBitTAS64</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BitTAS64</td>
+          <td class="memname">#define synchBitTAS64</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">A, </td>

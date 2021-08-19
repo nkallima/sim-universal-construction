@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hsynch_5fdefault_5fnuma_5fpolicy_792',['HSYNCH_DEFAULT_NUMA_POLICY',['../hsynch_8h.html#ab0c62b0836025c0499d9a5b624cd1870',1,'hsynch.h']]]
+  ['numa_5fsupport_788',['NUMA_SUPPORT',['../config_8h.html#ace0e9f8ffecdc202dcac5b83bf3f1484',1,'config.h']]]
 ];

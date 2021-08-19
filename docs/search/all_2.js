@@ -1,7 +1,7 @@
 var searchData=
 [
   ['back_24',['back',['../pool_8h.html#ab47632560b6c4cc53ba4da39faa3d7a4',1,'SynchPoolBlockMetadata']]],
-  ['backoff_25',['backoff',['../simstack_8h.html#a71e5bef12f1633c42b02cd281b6cb083',1,'SynchSimStackThreadState::backoff()'],['../sim_8h.html#a460d730c9601783f92de0f779a5eb34f',1,'SynchSimThreadState::backoff()'],['../backoff_8h.html#a97a93a5fb433c14212342c70d0da17d7',1,'SynchBackoffStruct::backoff()'],['../lfstack_8h.html#a865101e1c6ca37c9461cac1ab64c47b9',1,'SynchLFStackThreadState::backoff()'],['../lfuobject_8h.html#a543876bdb6b9fe9b6dd2a24cca91001d',1,'LFUObjectThreadState::backoff()'],['../msqueue_8h.html#af13c82a2144725f8fe17d3a0e0ea5538',1,'SynchMSQueueThreadState::backoff()']]],
+  ['backoff_25',['backoff',['../backoff_8h.html#a97a93a5fb433c14212342c70d0da17d7',1,'SynchBackoffStruct::backoff()'],['../lfstack_8h.html#a3f00a094c59c3b8e1d9a86deae816a86',1,'LFStackThreadState::backoff()'],['../lfuobject_8h.html#a543876bdb6b9fe9b6dd2a24cca91001d',1,'LFUObjectThreadState::backoff()'],['../msqueue_8h.html#a55dbafdff988aaf44c2d70ffb4914636',1,'MSQueueThreadState::backoff()'],['../sim_8h.html#aaf30f4ed947f9a468a5b5c4e01d98ebe',1,'SimThreadState::backoff()'],['../simstack_8h.html#a8098d0a8dc48681dbae3ce17a3919441',1,'SimStackThreadState::backoff()']]],
   ['backoff_2eh_26',['backoff.h',['../backoff_8h.html',1,'']]],
   ['backoff_5faddend_27',['backoff_addend',['../backoff_8h.html#afbe0ac2d0730254c8b3aca18248098e2',1,'SynchBackoffStruct']]],
   ['backoff_5fbase_28',['backoff_base',['../backoff_8h.html#a0df9580de176b6bb26f7f7fbfd662889',1,'SynchBackoffStruct']]],
@@ -12,6 +12,5 @@ var searchData=
   ['backoff_5flow_33',['backoff_low',['../bench__args_8h.html#abe750bd87078ffde57dc2777ca7447e2',1,'SynchBenchArgs']]],
   ['backoff_5fshift_5fbits_34',['backoff_shift_bits',['../backoff_8h.html#a8c689f0bcf106706f47e50317d416d45',1,'SynchBackoffStruct']]],
   ['barrier_2eh_35',['barrier.h',['../barrier_8h.html',1,'']]],
-  ['bench_5fargs_2eh_36',['bench_args.h',['../bench__args_8h.html',1,'']]],
-  ['bittas64_37',['BitTAS64',['../primitives_8h.html#aacb49da46cadc133becde3026db468fb',1,'primitives.h']]]
+  ['bench_5fargs_2eh_36',['bench_args.h',['../bench__args_8h.html',1,'']]]
 ];

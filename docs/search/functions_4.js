@@ -1,20 +1,14 @@
 var searchData=
 [
-  ['destroy_5fpool_565',['destroy_pool',['../pool_8h.html#a5a54dfff28a8331157f6af1cc0ce5eb9',1,'pool.h']]],
-  ['dsmhashdelete_566',['DSMHashDelete',['../dsmhash_8h.html#a6c69f7d11c90d1fd5abe0d69ea610449',1,'dsmhash.h']]],
-  ['dsmhashinit_567',['DSMHashInit',['../dsmhash_8h.html#a0a9c2bf107ffcd88cf648753e32e472e',1,'dsmhash.h']]],
-  ['dsmhashinsert_568',['DSMHashInsert',['../dsmhash_8h.html#a0bf199c1e29dac52e16b6ab79b41cb75',1,'dsmhash.h']]],
-  ['dsmhashsearch_569',['DSMHashSearch',['../dsmhash_8h.html#a6c441933733e6f1f869aeecb8f649ee6',1,'dsmhash.h']]],
-  ['dsmhashthreadstateinit_570',['DSMHashThreadStateInit',['../dsmhash_8h.html#a7ad2cbbf98dbd5d1577aecbd7a32349c',1,'dsmhash.h']]],
-  ['dsmqueueapplydequeue_571',['DSMQueueApplyDequeue',['../dsmqueue_8h.html#aacd7ab18619fec76480e3c6c7cc11761',1,'dsmqueue.h']]],
-  ['dsmqueueapplyenqueue_572',['DSMQueueApplyEnqueue',['../dsmqueue_8h.html#a7492c0a71b35d19f357d675a40a0013a',1,'dsmqueue.h']]],
-  ['dsmqueuestructinit_573',['DSMQueueStructInit',['../dsmqueue_8h.html#abfca0018d199ac800d45b145512dec3b',1,'dsmqueue.h']]],
-  ['dsmqueuethreadstateinit_574',['DSMQueueThreadStateInit',['../dsmqueue_8h.html#a2b65ad65df1c3deefc460c70bca3964a',1,'dsmqueue.h']]],
-  ['dsmsstackinit_575',['DSMSStackInit',['../dsmstack_8h.html#ab1429ad0f8f029408faf933eedfbedff',1,'dsmstack.h']]],
-  ['dsmstackpop_576',['DSMStackPop',['../dsmstack_8h.html#ab0f832a2c7b90ae29a6d25515896536b',1,'dsmstack.h']]],
-  ['dsmstackpush_577',['DSMStackPush',['../dsmstack_8h.html#adeded248e865bcf70a6eac93c5235e61',1,'dsmstack.h']]],
-  ['dsmstackthreadstateinit_578',['DSMStackThreadStateInit',['../dsmstack_8h.html#a3f2a14d40b2931c7ce9018d07b45613a',1,'dsmstack.h']]],
-  ['dsmsynchapplyop_579',['DSMSynchApplyOp',['../dsmsynch_8h.html#a2235feb2186b273a4f016ef2073350e9',1,'dsmsynch.h']]],
-  ['dsmsynchstructinit_580',['DSMSynchStructInit',['../dsmsynch_8h.html#aee4c9e2a3861589a679e6d3cc7609f7a',1,'dsmsynch.h']]],
-  ['dsmsynchthreadstateinit_581',['DSMSynchThreadStateInit',['../dsmsynch_8h.html#a52e25920e9c77d8cdc50c919cf604aa2',1,'dsmsynch.h']]]
+  ['lcrqdequeue_584',['LCRQDequeue',['../lcrq_8h.html#ad7058a6a57b5154e41320dc87a2ba2a6',1,'lcrq.h']]],
+  ['lcrqenqueue_585',['LCRQEnqueue',['../lcrq_8h.html#ae343585a3d04de1e4779cbd851f0ef47',1,'lcrq.h']]],
+  ['lcrqinit_586',['LCRQInit',['../lcrq_8h.html#a3e5d1c8978fdd6faf21fc73468993741',1,'lcrq.h']]],
+  ['lcrqthreadstateinit_587',['LCRQThreadStateInit',['../lcrq_8h.html#a6b5a3ba9ef4e61fe726d26775ee42d1d',1,'lcrq.h']]],
+  ['lfstackinit_588',['LFStackInit',['../lfstack_8h.html#a257179a30f946af626d833734ba7c73b',1,'lfstack.h']]],
+  ['lfstackpop_589',['LFStackPop',['../lfstack_8h.html#a08ac2c0a0da53fafefd99290e6f45ee1',1,'lfstack.h']]],
+  ['lfstackpush_590',['LFStackPush',['../lfstack_8h.html#a6b87f5f1e54673f9be3129636160967b',1,'lfstack.h']]],
+  ['lfstackthreadstateinit_591',['LFStackThreadStateInit',['../lfstack_8h.html#a5b915ab960d057471deb226cfd125268',1,'lfstack.h']]],
+  ['lfuobjectapplyop_592',['LFUObjectApplyOp',['../lfuobject_8h.html#afbc55da36be1e083038a43534a13c662',1,'lfuobject.h']]],
+  ['lfuobjectinit_593',['LFUObjectInit',['../lfuobject_8h.html#a6259ddb75c92951eff4e4b8a0d4feb94',1,'lfuobject.h']]],
+  ['lfuobjectthreadstateinit_594',['LFUObjectThreadStateInit',['../lfuobject_8h.html#a6d6085eb040665e8b86aadeb1d95d30c',1,'lfuobject.h']]]
 ];
