@@ -90,9 +90,13 @@ The Synch framework (\autoref{fig:code_structure}) consists of 3 main parts, i.e
 
 ## Related work
 
-- [@FC;@FCurl]
-- [@scal]
-- [@CDSurl]
+Scal [@scal] is another open-source framework that implements a set of concurrent data-structures. Besides that, Scal provides workloads for benchmarking the implemented data-structures and the appropriate infrastructure for developing concurrent data-structures. The provided data-structures types are limited to stacks, queues, dequeues and pools. The Scal framework does not provide any contemporary combining object, or more sophisticated data-structures, e.g. hash-tables, etc.
+
+In [@FCurl], a few concurrent implementations for stacks and queues are provided. Moreover, a concurrent pairing-heap implementation is provided by [@FCurl]. The [@FCurl] provides a stack, a queue and a pairing-heap implementations based on the flat-combining synchronization technique [@FC].
+
+The Concurrent Data Structures (CDS) library [@CDSurl] provides several implementations for stacks, queues, hash-tables, and locks. Moreover, the CDS library provides an implementation of flat-combining [@FC], an implementation of a skip-list and an AVL tree implementation. Although the CDS library provides a rich set of concurrent data-structures, it does not provide any functionality for benchmarking.
+
+The Boost libraries [@Boost] provide a limited set of concurrent data-structures. More specifically, the Boost.Lockfree library provides simple lock-free implementations for a queue, a stack, and a wait-free single-producer/single-consumer queue.
 
 # Acknowledgments
 
