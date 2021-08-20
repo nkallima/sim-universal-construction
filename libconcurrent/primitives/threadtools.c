@@ -10,7 +10,7 @@
 #include <pthread.h>
 #include <stdio.h>
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
 #    include <numa.h>
 #endif
 
@@ -61,7 +61,7 @@ inline static void *kthreadWrapper(void *arg) {
 
 inline uint32_t synchPreferedCoreOfThread(uint32_t pid) {
     uint32_t prefered_core = 0;
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
     int ncpus = numa_num_configured_cpus();
     int nodes = numa_num_task_nodes();
     int node_size = ncpus / nodes;
@@ -97,7 +97,7 @@ int synchThreadPin(int32_t cpu_id) {
     CPU_ZERO(&mask);
     __prefered_core = synchPreferedCoreOfThread(cpu_id);
     CPU_SET(__prefered_core, &mask);
-#if defined(DEBUG) && defined(NUMA_SUPPORT)
+#if defined(DEBUG) && defined(SYNCH_NUMA_SUPPORT)
     fprintf(stderr, "DEBUG: thread: %d -- numa_node: %d -- core: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core);
 #endif
     ret = sched_setaffinity(0, len, &mask);
@@ -137,7 +137,7 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
     __threads = synchGetMemory(nthreads * sizeof(pthread_t));
     __func = func;
     synchStoreFence();
-    if (uthreads != _DONT_USE_UTHREADS_ && uthreads > 1) {
+    if (uthreads != SYNCH_DONT_USE_UTHREADS && uthreads > 1) {
         __uthreads = uthreads;
         __uthread_sched = true;
         __system_oversubscription = true;

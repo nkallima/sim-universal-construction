@@ -10,15 +10,15 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define _DONT_USE_UTHREADS_ 1
+#define SYNCH_DONT_USE_UTHREADS 1
 
 /// @brief This function creates nthreads posix threads, where each posix thread executes
 /// uthreads user-level threads (fibers). Thus, the total amount of threads and fibers is nthreads * uthreads.
-/// Each of the created threads executes the func function, the function has as an argument 
+/// Each of the created threads executes the func function, the function has as an argument
 /// the id of the created thread, which is a unique integer in {0, ..., nthreads * uthreads - 1}.
-/// In case, the user does not want to create any fiber, uthreads should be equal to _DONT_USE_UTHREADS_.
+/// In case, the user does not want to create any fiber, uthreads should be equal to SYNCH_DONT_USE_UTHREADS.
 /// @param nthreads The number of posix threads.
-/// @param func A function that each fiber and posix thread should execute. This function has 
+/// @param func A function that each fiber and posix thread should execute. This function has
 /// as a single argument the unique id of the thread.
 /// @param uthreads The number of fibers that each posix thread should execute.
 int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads);

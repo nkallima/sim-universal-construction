@@ -32,7 +32,7 @@ void synchStopCPUCounters(int id);
 /// under the benchmarks directory.).
 /// @param nthreads The total number of threads that have executed concurrent operations.
 /// @param runs The total number of the executed operations. Notice that benchmarks for stacks and queues
-/// execute RUNS pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues).
+/// execute SYNCH_RUNS pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues).
 void synchPrintStats(uint32_t nthreads, uint64_t runs);
 
 #endif

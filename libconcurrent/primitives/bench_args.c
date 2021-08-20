@@ -41,9 +41,9 @@ void synchParseArguments(SynchBenchArgs *bench_args, int argc, char *argv[]) {
 
     // Setting some default values, the user may overide them
     bench_args->nthreads = synchGetNCores();
-    bench_args->runs = RUNS;
-    bench_args->fibers_per_thread = _DONT_USE_UTHREADS_;
-    bench_args->max_work = MAX_WORK;
+    bench_args->runs = SYNCH_RUNS;
+    bench_args->fibers_per_thread = SYNCH_DONT_USE_UTHREADS;
+    bench_args->max_work = SYNCH_MAX_WORK;
     bench_args->backoff_high = 0;
     bench_args->backoff_low = 0;
     bench_args->numa_nodes = HSYNCH_DEFAULT_NUMA_POLICY;
@@ -86,8 +86,7 @@ void synchParseArguments(SynchBenchArgs *bench_args, int argc, char *argv[]) {
         }
     }
     // Set the correct number for total number of threads
-    if (bench_args->fibers_per_thread != _DONT_USE_UTHREADS_)
-        bench_args->nthreads *= bench_args->fibers_per_thread;
+    if (bench_args->fibers_per_thread != SYNCH_DONT_USE_UTHREADS) bench_args->nthreads *= bench_args->fibers_per_thread;
 
     bench_args->total_runs = bench_args->runs;
     bench_args->runs /= bench_args->nthreads;

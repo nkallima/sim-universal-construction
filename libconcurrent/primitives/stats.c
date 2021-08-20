@@ -19,7 +19,7 @@ volatile int64_t __total_executed_faa = 0;
 
 #endif
 
-#ifdef _TRACK_CPU_COUNTERS
+#ifdef SYNCH_TRACK_CPU_COUNTERS
 #    include <system.h>
 #    include <stdlib.h>
 #    include <pthread.h>
@@ -32,7 +32,7 @@ static volatile long long **__cpu_values = NULL;
 #endif
 
 void synchInitCPUCounters(void) {
-#ifdef _TRACK_CPU_COUNTERS
+#ifdef SYNCH_TRACK_CPU_COUNTERS
     const PAPI_hw_info_t *hwinfo = NULL;
     int ret, i;
 
@@ -74,7 +74,7 @@ void synchStartCPUCounters(int id) {
     __executed_faa = 0;
 #endif
 
-#ifdef _TRACK_CPU_COUNTERS
+#ifdef SYNCH_TRACK_CPU_COUNTERS
     __cpu_events[id] = PAPI_NULL;
 
     if (PAPI_create_eventset((int *)&__cpu_events[id]) != PAPI_OK) {
@@ -112,7 +112,7 @@ void synchStopCPUCounters(int id) {
     synchFAA64(&__total_executed_faa, __executed_faa);
 #endif
 
-#ifdef _TRACK_CPU_COUNTERS
+#ifdef SYNCH_TRACK_CPU_COUNTERS
     if (PAPI_read(__cpu_events[id], (long long *)__cpu_values[id]) != PAPI_OK) {
         fprintf(stderr, "PAPI ERROR: unable to read counters\n");
         exit(EXIT_FAILURE);
@@ -138,7 +138,7 @@ void synchPrintStats(uint32_t nthreads, uint64_t runs) {
 #endif
     printf("\n");
 
-#ifdef _TRACK_CPU_COUNTERS
+#ifdef SYNCH_TRACK_CPU_COUNTERS
     long long __total_cpu_values[N_CPU_COUNTERS];
     int k, j;
     double ops = runs * nthreads;

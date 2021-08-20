@@ -53,7 +53,7 @@ The following table presents a summary of the concurrent data-structures offered
 - Building requires the following development packages:
     - `libatomic`
     - `libnuma`
-    - `libpapi` in case that the `_TRACK_CPU_COUNTERS` flag is enabled in `libconcurrent/config.h`.
+    - `libpapi` in case that the `SYNCH_TRACK_CPU_COUNTERS` flag is enabled in `libconcurrent/config.h`.
 - For building the documentation (i.e. man-pages), `doxygen` is required.
 
 
@@ -121,8 +121,8 @@ The framework provides another simple fast smoke test: `./run_all.sh`. This will
 
 Getting the best performance from the provided benchmarks is not always an easy task. For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `libconcurrent/config.h` file. A useful guide to consider in order to get better performance in a modern multiprocessor follows.
 
-- In case that the target machine is a NUMA machine make sure `NUMA_SUPPORT` is enabled in `libconcurrent/config.h`. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.
-- Whenever the `NUMA_SUPPORT` option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the `--numa_nodes` option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting `--numa_nodes` equal to `2`. Notice that the runtime successfully reports that the available NUMA nodes are `8`, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of `--numa_nodes` may be needed.
+- In case that the target machine is a NUMA machine make sure `SYNCH_NUMA_SUPPORT` is enabled in `libconcurrent/config.h`. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.
+- Whenever the `SYNCH_NUMA_SUPPORT` option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the `--numa_nodes` option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting `--numa_nodes` equal to `2`. Notice that the runtime successfully reports that the available NUMA nodes are `8`, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of `--numa_nodes` may be needed.
 - Check the performance impact of the `SYNCH_COMPACT_ALLOCATION` option in `libconcurrent/config.h`. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.
 - Check the cache line size (`CACHE_LINE_SIZE` and `S_CACHE_LINE` options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines behave better with `CACHE_LINE_SIZE` equal or greater than `128`, while most modern AMD machine achieve better performance with a value equal to `64`. Notice that `CACHE_LINE_SIZE` and `S_CACHE_LINE` depend on the `SYNCH_COMPACT_ALLOCATION` option (see includes/system.h).
 - Use backoff if it is available. Many of the provided algorithms could use backoff in order to provide better performance (e.g., sim, LF-Stack, MS-Queue, SimQueue, SimStack, etc.). In this case, it is of crucial importance to use `-b` (and in some cases `-bl` arguments) in order to get the best performance. 
@@ -149,7 +149,7 @@ The Synch framework provides a pool mechanism (see `includes/pool.h`) that effic
 
 Note that de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Since v2.4.0, SimStack supports memory reclamation using the functionality of `pool.h` and a technique that is similar to that presented by Blelloch and Weiin in [13]. Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.
 
-By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the `POOL_NODE_RECYCLING_DISABLE` option should be enabled in `config.h`.
+By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the `SYNCH_POOL_NODE_RECYCLING_DISABLE` option should be enabled in `config.h`.
 
 The following table shows the memory reclamation characteristics of the provided stack and queues implementations.
 
@@ -214,7 +214,7 @@ int main(int argc, char *argv[]) {
     object = 1;
 
     synchBarrierSet(&bar, N_THREADS);
-    synchStartThreadsN(N_THREADS, Execute, _DONT_USE_UTHREADS_);
+    synchStartThreadsN(N_THREADS, Execute, SYNCH_DONT_USE_UTHREADS);
     synchJoinThreadsN(N_THREADS - 1);
 
     printf("time: %ld (ms)\tthroughput: %.2f (millions ops/sec)\n", 
@@ -226,7 +226,7 @@ int main(int argc, char *argv[]) {
 
 This example-benchmark creates `N_THREADS`, where each of them executes `RUNS` Fetch&Add operations in a shared 64-bit integer. At the end of the benchmark the throughput (i.e. Fetch&Add operations per second) is calculated.
 
-The `StartThreadsN` function (provided by the API defined in `threadtools.h`) in main, creates `N_THREADS` threads and each of the executes the `Execute` function declared in the same file. The `_DONT_USE_UTHREADS_` argument imposes `StartThreadsN` to create only Posix threads; in case that the user sets the corresponding fibers argument to `M` > 0, then `StartThreadsN` will create `N_THREADS` Posix threads and each of them will create `M` user-level (i.e. fiber) threads. The `JoinThreadsN` function (also provided by `threadtools. h`) waits until all Posix and fiber (if any) threads finish the execution of the `Execute` function. The Fetch&Add instruction on 64-bit integers is performed by the `FAA64` function provided by the API of `primitives.h`.
+The `StartThreadsN` function (provided by the API defined in `threadtools.h`) in main, creates `N_THREADS` threads and each of the executes the `Execute` function declared in the same file. The `SYNCH_DONT_USE_UTHREADS` argument imposes `StartThreadsN` to create only Posix threads; in case that the user sets the corresponding fibers argument to `M` > 0, then `StartThreadsN` will create `N_THREADS` Posix threads and each of them will create `M` user-level (i.e. fiber) threads. The `JoinThreadsN` function (also provided by `threadtools. h`) waits until all Posix and fiber (if any) threads finish the execution of the `Execute` function. The Fetch&Add instruction on 64-bit integers is performed by the `FAA64` function provided by the API of `primitives.h`.
 
 The threads executing the `Execute` function use the `Barrier` re-entrant barrier object for simultaneously starting to perform Fetch&Add instructions on the shared variable `object`. This barrier is also re-used before the end of the `Execute` function in order to allow thread with `id = 0` to measure the amount of time that the benchmark needed for completion. The `BarrierSet` function in `main` initializes the `Barrier` object. The `BarrierSet` takes as an argument a pointer to the barrier object and the number of threads `N_THREADS` that are going to use it. Both `BarrierSet` and `BarrierWait` are provided by the API of `barrier.h`
 

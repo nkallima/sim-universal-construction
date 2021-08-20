@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
 #    include <numa.h>
 #endif
 
@@ -140,7 +140,7 @@ inline bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t
 inline void *synchGetMemory(size_t size) {
     void *p;
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
     p = numa_alloc_local(size);
 #else
     p = malloc(size);
@@ -155,7 +155,7 @@ inline void *synchGetMemory(size_t size) {
 inline void *synchGetAlignedMemory(size_t align, size_t size) {
     void *p;
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
     p = numa_alloc_local(size + align);
     long plong = (long)p;
     plong += align;
@@ -173,7 +173,7 @@ inline void *synchGetAlignedMemory(size_t align, size_t size) {
 }
 
 inline void synchFreeMemory(void *ptr, size_t size) {
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
     numa_free(ptr, size);
 #else
     free(ptr);

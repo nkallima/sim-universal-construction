@@ -20,7 +20,7 @@ void synchBackoffDelay(SynchBackoffStruct *b) {
     if (synchIsSystemOversubscribed()) {
         sched_yield();
     } else {
-#ifndef DISABLE_BACKOFF
+#ifndef SYNCH_DISABLE_BACKOFF
         volatile unsigned i;
 
         for (i = 0; i < b->backoff; i++)

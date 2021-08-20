@@ -41,6 +41,9 @@ In general, please conform your coding styling to the following conventions:
     * Avoid using a capital-letter for the first character of the function.
     * All the public functions provided by the runtime/primitives to the end-user should start with the `synch` prefix (starting from v.3.0.0), i.e. `synchGetMemory`.
     * All the internal functions should NOT start with the `synch` prefix, i.e. `getMemory`.
+- definitions:
+    * Use capital letters for all the definitions.
+    * It is strongly recommended all the public definitions to start with the `SYNCH_` prefix.
 - memory allocation and alignment:
     * For memory management, please do not use `malloc`, `calloc`, etc. functions directly.
     * Please use the memory management functionality provided by `primitives.h`.

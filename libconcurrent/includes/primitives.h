@@ -90,14 +90,14 @@ inline uint64_t synchNonZeroBits(uint64_t v);
 #endif
 
 /// @brief This function allocates a memory area of size bytes.
-/// In case that NUMA_SUPPORT is defined in libconcurrent/config.h, the returned memory is allocated on the local NUMA node.
+/// In case that SYNCH_NUMA_SUPPORT is defined in libconcurrent/config.h, the returned memory is allocated on the local NUMA node.
 ///
 /// @param size The size of the memory area.
 /// @return In case of error, NULL is returned. In case of success a pointer to the allocated memory area is returned.
 inline void *synchGetMemory(size_t size);
 
-/// @brief This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. 
-/// In case that NUMA_SUPPORT is defined in libconcurrent/config.h, the returned memory is allocated on the local NUMA node.
+/// @brief This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes.
+/// In case that SYNCH_NUMA_SUPPORT is defined in libconcurrent/config.h, the returned memory is allocated on the local NUMA node.
 ///
 /// @param align The alignment size.
 /// @param size The size of the memory area.

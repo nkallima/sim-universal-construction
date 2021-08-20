@@ -1,7 +1,7 @@
 #include <hsynch.h>
 #include <threadtools.h>
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
 #    include <numa.h>
 #endif
 
@@ -63,7 +63,7 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
     HSynchNode *last_node = NULL;
     uint32_t node_index = 0;
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
     if (l->numa_policy) {
         if (synchGetPreferedCore() != -1) {
             node_of_thread = numa_node_of_cpu(synchGetPreferedCore());
@@ -127,7 +127,7 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
         // better performance. The user usually overides HSYNCH_DEFAULT_NUMA_POLICY
         // by setting the '-n' argument in the executable of the benchmarks.
         l->numa_policy = true;
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
         l->numa_nodes = numa_num_task_nodes();
         l->numa_node_size = nthreads / l->numa_nodes + (nthreads % l->numa_nodes);
 #else
