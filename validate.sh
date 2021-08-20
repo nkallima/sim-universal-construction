@@ -10,6 +10,7 @@ STEP_THREADS=1
 WORKLOAD="-w 64"
 FIBERS=""
 NUMA_NODES=""
+CODECOV=0
 PASS_STATUS=1
 
 function usage()
@@ -68,6 +69,9 @@ while [ "$1" != "" ]; do
         -r | --runs)
             RUNS_PER_THREAD=$VALUE
             ;;
+        --codecov)
+            CODECOV=1
+            ;;
         -*)
             echo "ERROR: unknown parameter \"$PARAM\""
             usage
@@ -102,7 +106,11 @@ done
 PTHREADS_ARRAY+=($MAX_PTHREADS)
 
 echo -ne "Compiling the sources...\t\t\t\t\t\t"
-make clean codecov &> $BUILD_LOG
+if [ $CODECOV -eq 1 ]; then
+    make clean codecov &> $BUILD_LOG
+else
+    make clean debug &> $BUILD_LOG
+fi
 
 if [ $? -eq 0 ]; then
     echo -e $COLOR_PASS

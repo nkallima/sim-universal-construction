@@ -11,7 +11,7 @@ jobs:
       - name: Test
         run: |
           make clean codecov
-          ./validate.sh
+          ./validate.sh --codecov
           gcov build/objects/*.gcda -f libconcurrent/
       - name: Upload
         uses: codecov/codecov-action@v1
