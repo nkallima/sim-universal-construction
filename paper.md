@@ -32,7 +32,7 @@ Synch is an open-source framework that not only provides some common high-perfor
 ## Statement of need
 
 
-The Synch framework aims to provide researchers with the appropriate tools for implementing and evaluating state-of-the-art  concurrent objects and synchronization mechanisms. Moreover, the Synch framework provides a substantial set of concurrent data-structures giving researchers/developers the ability not only to implement their own concurrent data-structures, but to compare with some state-of-the-art data-structures. The Synch framework has been extensively used for implementing and evaluating concurrent data-structures and synchronization techniques in papers, such as [@FK2011;@FK2012;@AKD12;@FK2014;@FK2017;@FKR2018].
+The Synch framework aims to provide researchers with the appropriate tools for implementing and evaluating state-of-the-art concurrent objects and synchronization mechanisms. Moreover, the Synch framework provides a substantial set of concurrent data-structures giving researchers/developers the ability not only to implement their own concurrent data-structures, but to compare with some state-of-the-art data-structures. Synch provides many state-of-the-art concurrent objects that are thoroughly tested targeting x86_64 POSIX systems. Moreover, extensive and comprehensive documentation is provided for the first-time. Developers will find a comprehensive set of tests to ensure quality and reproducibility of the results. The Synch framework has been extensively used for implementing and evaluating concurrent data-structures and synchronization techniques in papers, such as [@FK2011;@FK2012;@AKD12;@FK2014;@FK2017;@FKR2018].
 
 ## Provided concurrent data-structures
 
@@ -56,6 +56,7 @@ The following table presents a summary of the concurrent data-structures offered
 |                       | OsciQueue [@FK2017]                                                                   |
 |                       | CLH-Queue [@C93;@MLH94]                                                               |
 |                       | MS-Queue [@MS96]                                                                      |
+|                       | LCRQ [@LCRQ;@LCRQurl]                                                                 |
 | Concurrent Stacks     | CC-Stack, DSM-Stack and H-Stack [@FK2012]                                             |
 |                       | SimStack [@FK2011;@FK2014]                                                            |
 |                       | OsciStack [@FK2017]                                                                   |
@@ -86,6 +87,12 @@ The Synch framework (\autoref{fig:code_structure}) consists of 3 main parts, i.e
     - `libpapi` in the case that the user wants to measure performance using CPU performance counters.
     - `libnuma`
 
+
+## Related work
+
+- [@FC;@FCurl]
+- [@scal]
+- [@CDSurl]
 
 # Acknowledgments
 
