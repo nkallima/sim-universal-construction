@@ -26,13 +26,15 @@ bibliography: paper.bib
 
 The recent advancements in multicore machines highlight the need to simplify concurrent programming in order to leverage their computational power. One way to achieve this is by designing efficient concurrent data structures (e.g. stacks, queues, hash-tables, etc.) and synchronization techniques (e.g. locks, combining techniques, etc.) that perform well in machines with large amounts of cores. In contrast to ordinary, sequential data-structures, the concurrent data-structures allow multiple threads to simultaneously access and/or modify them.
 
-Synch is an open-source framework that not only provides some common high-performant concurrent data-structures, but it also provides researchers with the tools for designing and benchmarking high performant concurrent data-structures. The Synch framework contains a substantial set of concurrent data-structures such as queues, stacks, combining-objects, hash-tables, locks, etc. and it provides a user-friendly runtime for developing and benchmarking concurrent data-structures. Among other features, the provided runtime provides functionality for creating threads easily (both POSIX and user-level threads), tools for measuring performance, etc. Moreover, the provided concurrent data-structures and the runtime are highly optimized for contemporary NUMA multiprocessors such as AMD Epyc and Intel Xeon.
+Synch is an open-source framework that not only provides some common high-performant concurrent data-structures, but it also provides researchers with the tools for designing and benchmarking high performant concurrent data-structures. The Synch framework contains a substantial set of concurrent data-structures such as queues, stacks, combining-objects, hash-tables, locks, etc. and it provides a user-friendly runtime for developing and benchmarking concurrent data-structures. Among other features, the provided runtime provides functionality for creating threads easily (both POSIX and user-level threads), tools for measuring performance, etc. The Synch environment provides extensive and comprehensive documentation for all the implemented concurrent data-structures and developers will find a comprehensive set of tests to ensure quality and reproducibility of the results. Moreover, the provided concurrent data-structures and the runtime are highly optimized for contemporary NUMA multiprocessors, such as AMD Epyc and Intel Xeon.
 
 
 ## Statement of need
 
 
-The Synch framework aims to provide researchers with the appropriate tools for implementing and evaluating state-of-the-art concurrent objects and synchronization mechanisms. Moreover, the Synch framework provides a substantial set of concurrent data-structures giving researchers/developers the ability not only to implement their own concurrent data-structures, but to compare with some state-of-the-art data-structures. Synch provides many state-of-the-art concurrent objects that are thoroughly tested targeting x86_64 POSIX systems. Moreover, extensive and comprehensive documentation is provided for the first-time. Developers will find a comprehensive set of tests to ensure quality and reproducibility of the results. The Synch framework has been extensively used for implementing and evaluating concurrent data-structures and synchronization techniques in papers, such as [@FK2011;@FK2012;@AKD12;@FK2014;@FK2017;@FKR2018].
+The Synch framework aims to provide researchers with the appropriate tools for implementing and evaluating state-of-the-art concurrent objects and synchronization mechanisms. Moreover, the Synch framework provides a substantial set of concurrent data-structures giving researchers/developers the ability not only to implement their own concurrent data-structures, but to compare with some state-of-the-art data-structures. Synch provides many state-of-the-art concurrent objects that are thoroughly tested targeting x86_64 POSIX systems.
+
+The Synch framework has been extensively used for implementing and evaluating concurrent data-structures and synchronization techniques in papers, such as [@FK2011;@FK2012;@AKD12;@FK2014;@FK2017;@FKR2018].
 
 ## Provided concurrent data-structures
 
@@ -82,11 +84,13 @@ The Synch framework (\autoref{fig:code_structure}) consists of 3 main parts, i.e
 ## Requirements
 
 - A modern 64-bit multi-core machine. Currently, 32-bit architectures are not supported. The current version of this code is optimized for the x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.). For the case of x86_64  architecture, the code has been evaluated in numerous Intel and AMD multicore machines. In the case of ARM-V8 architecture, the code has been successfully evaluated in a Trenz Zynq UltraScale+ board (4 A53 Cortex cores) and in a Raspberry Pi 3 board(4 Cortex A53 cores). For the RISC-V architecture, the code has been evaluated in a SiFive HiFive Unleashed (4 U54 RISC‑V cores) respectively.
-- As a compiler, gcc of version 4.3 or greater is recommended, but the framework has been successfully built with icx and clang. 
-- Building requires the following development packages:
-    - `libpapi` in the case that the user wants to measure performance using CPU performance counters.
-    - `libnuma`
-
+- A recent Linux distribution.
+- As a compiler, gcc of version 4.8 or greater is recommended, but users may also try to use icx or clang.
+- Building the environment requires the following development packages:
+  - `libatomic`
+  - `libnuma`
+  - `libpapi` in case that the user wants to get some performance statistics for the provided benchmarks.
+- For building the documentation (i.e. man-pages), `doxygen` is required.
 
 ## Related work
 
