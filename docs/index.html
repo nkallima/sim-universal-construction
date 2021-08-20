@@ -330,43 +330,26 @@ Code example for a simple benchmark</h1>
 <div class="ttc" id="athreadtools_8h_html_ab271ce770f682a143aad0a6d671a407c"><div class="ttname"><a href="threadtools_8h.html#ab271ce770f682a143aad0a6d671a407c">synchStartThreadsN</a></div><div class="ttdeci">int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads)</div><div class="ttdoc">This function creates nthreads posix threads, where each posix thread executes uthreads user-level th...</div></div>
 <div class="ttc" id="athreadtools_8h_html_af4308af25d549ba165c86987cecedd93"><div class="ttname"><a href="threadtools_8h.html#af4308af25d549ba165c86987cecedd93">synchJoinThreadsN</a></div><div class="ttdeci">void synchJoinThreadsN(uint32_t nthreads)</div><div class="ttdoc">This function returns whenever all the created posix threads and fibers spawned by StartThreadsN have...</div></div>
 </div><!-- fragment --><p>This example-benchmark creates <code>N_THREADS</code>, where each of them executes <code>RUNS</code> Fetch&amp;Add operations in a shared 64-bit integer. At the end of the benchmark the throughput (i.e. Fetch&amp;Add operations per second) is calculated. By seting varous values for <code>N_THREADS</code>, this benchmark is able to measure strong scaling.</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD </p>
-<h1><a class="anchor" id="autotoc_md11"></a>
-The &lt;tt&gt;StartThreadsN&lt;/tt&gt; function (provided by the API defined in &lt;tt&gt;threadtools.h&lt;/tt&gt;) in main, creates &lt;tt&gt;N_THREADS&lt;/tt&gt; threads and each of the executes the &lt;tt&gt;Execute&lt;/tt&gt; function declared in the same file. The &lt;tt&gt;SYNCH_DONT_USE_UTHREADS&lt;/tt&gt; argument imposes &lt;tt&gt;StartThreadsN&lt;/tt&gt; to create only Posix threads; in case that the user sets the corresponding fibers argument to &lt;tt&gt;M&lt;/tt&gt; &gt; 0, then &lt;tt&gt;StartThreadsN&lt;/tt&gt; will create &lt;tt&gt;N_THREADS&lt;/tt&gt; Posix threads and each of them will create &lt;tt&gt;M&lt;/tt&gt; user-level (i.e. fiber) threads. The &lt;tt&gt;JoinThreadsN&lt;/tt&gt; function (also provided by &lt;tt&gt;threadtools. h&lt;/tt&gt;) waits until all Posix and fiber (if any) threads finish the execution of the &lt;tt&gt;Execute&lt;/tt&gt; function. The Fetch&amp;Add instruction on 64-bit integers is performed by the &lt;tt&gt;FAA64&lt;/tt&gt; function provided by the API of &lt;tt&gt;primitives.h&lt;/tt&gt;.</h1>
-<p>The <code>synchStartThreadsN</code> function (provided by the API defined in <code><a class="el" href="threadtools_8h.html" title="This file exposes a simple API for handling both posix and user-level threads. This API provides func...">threadtools.h</a></code>) in main, creates <code>N_THREADS</code> threads and each of the executes the <code>Execute</code> function declared in the same file. The <code>_DONT_USE_UTHREADS_</code> argument imposes <code>synchStartThreadsN</code> to create only Posix threads; in case that the user sets the corresponding fibers argument to <code>M</code> &gt; 0, then <code>StartThreadsN</code> will create <code>N_THREADS</code> Posix threads and each of them will create <code>M</code> user-level (i.e. fiber) threads. The <code>synchJoinThreadsN</code> function (also provided by <code>threadtools. h</code>) waits until all Posix and fiber (if any) threads finish the execution of the <code>Execute</code> function. The Fetch&amp;Add instruction on 64-bit integers is performed by the <code>synchFAA64</code> function provided by the API of <code><a class="el" href="primitives_8h.html" title="This file exposes a simple API for basic atomic operations, basic operations for memory management....">primitives.h</a></code>. </p><blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<p>37d9803a0fb9444e413dcae23a8cc4a84ab24506 </p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>The <code>synchStartThreadsN</code> function (provided by the API defined in <code><a class="el" href="threadtools_8h.html" title="This file exposes a simple API for handling both posix and user-level threads. This API provides func...">threadtools.h</a></code>) in main, creates <code>N_THREADS</code> threads and each of the executes the <code>Execute</code> function declared in the same file. The <code>_DONT_USE_UTHREADS_</code> argument imposes <code>synchStartThreadsN</code> to create only Posix threads; in case that the user sets the corresponding fibers argument to <code>M</code> &gt; 0, then <code>StartThreadsN</code> will create <code>N_THREADS</code> Posix threads and each of them will create <code>M</code> user-level (i.e. fiber) threads. The <code>synchJoinThreadsN</code> function (also provided by <code>threadtools. h</code>) waits until all Posix and fiber (if any) threads finish the execution of the <code>Execute</code> function. The Fetch&amp;Add instruction on 64-bit integers is performed by the <code>synchFAA64</code> function provided by the API of <code><a class="el" href="primitives_8h.html" title="This file exposes a simple API for basic atomic operations, basic operations for memory management....">primitives.h</a></code>.</p>
 <p>The threads executing the <code>Execute</code> function use the <code><a class="el" href="barrier_8h.html#structSynchBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">SynchBarrier</a></code> re-entrant barrier object for simultaneously starting to perform Fetch&amp;Add instructions on the shared variable <code>object</code>. This barrier is also re-used before the end of the <code>Execute</code> function in order to allow thread with <code>id = 0</code> to measure the amount of time that the benchmark needed for completion. The <code>synchBarrierSet</code> function in <code>main</code> initializes the <code><a class="el" href="barrier_8h.html#structSynchBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">SynchBarrier</a></code> object. The <code>synchBarrierSet</code> takes as an argument a pointer to the barrier object and the number of threads <code>N_THREADS</code> that are going to use it. Both <code>synchBarrierSet</code> and <code>synchBarrierWait</code> are provided by the API of <code><a class="el" href="barrier_8h.html" title="This file exposes the API of a simple re-entrant synchronization barrier. This implementation is a cl...">barrier.h</a></code></p>
 <p>At the end of the benchmark, <code>main</code> calculates and prints the average throughput of Fetch&amp;Add operations per second achieved by the benchmark.</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 If you want to cite us</h1>
 <div class="fragment"><div class="line">@misc{SynchFramework,</div>
 <div class="line">  title={{Synch: A framework for concurrent data-structures and benchmarks. https://github.com/nkallima/sim-universal-construction}},</div>
 <div class="line">  author={Kallimanis, Nikolaos D.},</div>
 <div class="line">  url={{https://github.com/nkallima/sim-universal-construction}}</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md12"></a>
 Releases</h1>
 <p>An extensive list of the recent releases and their features is provided at <a href="https://github.com/nkallima/sim-universal-construction/releases">https://github.com/nkallima/sim-universal-construction/releases</a>.</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 License</h1>
 <p>The Synch framework is provided under the <a href="https://github.com/nkallima/sim-universal-construction/blob/main/LICENSE">LGPL-2.1 License</a>.</p>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md14"></a>
 Code of conduct</h1>
 <p><a href="https://github.com/nkallima/sim-universal-construction/blob/main/.github/CODE_OF_CONDUCT.md">Code of conduct</a>.</p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 References</h1>
 <p>[1]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Revisiting the combining synchronization technique". ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012.</p>
 <p>[2]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "A highly-efficient wait-free universal construction". Proceedings of the twenty-third annual ACM symposium on Parallelism in algorithms and architectures (SPAA), 2011.</p>
@@ -381,7 +364,7 @@ References</h1>
 <p>[11]. Adam Morrison, and Yehuda Afek. "Fast concurrent queues for x86 processors". Proceedings of the 18th ACM SIGPLAN symposium on Principles and practice of parallel programming. 2013.</p>
 <p>[12]. Adam Morrison, and Yehuda Afek. Source code for LCRQ. <a href="http://mcg.cs.tau.ac.il/projects/lcrq">http://mcg.cs.tau.ac.il/projects/lcrq</a>.</p>
 <p>[13]. Guy E. Blelloch, and Yuanhao Wei. "Brief Announcement: Concurrent Fixed-Size Allocation and Free in Constant Time." 34th International Symposium on Distributed Computing (DISC 2020). Schloss Dagstuhl-Leibniz-Zentrum für Informatik, 2020.</p>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Contact</h1>
 <p>For any further information, please do not hesitate to send an email at nkallima (at) ics.forth.gr. Feedback is always valuable. </p>
 </div></div><!-- PageDoc -->
