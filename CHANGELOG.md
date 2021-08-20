@@ -14,6 +14,7 @@ v3.0.0
 - Improvements on the build environment.
 - Expansion of the CONTRIBUTING.md.
 - Providing a short discussion (see PERFORMANCE.md) of the expected performance for the various objects provided by the framework.
+- The `bench.sh` and `validate.sh` scripts use similar arguments as the provided benchmarks.
 
 v2.4.0
 ------

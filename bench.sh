@@ -2,7 +2,7 @@
 
 function usage()
 {
-    echo -e "Usage: ./bench.sh FILE.run OPTION=NUM ...";
+    echo -e "Usage: ./bench.sh FILE.run OPTION1 VALUE1 OPTION2 VALUE2 ...";
     echo -e "This script runs the algorithm of FILE.run multiple times for various number of POSIX threads and calculates the average throughput (operations/second)";
     echo -e ""
     echo -e "The following options are available."
@@ -36,44 +36,63 @@ SCRIPTPATH=$(dirname ${BASH_SOURCE[0]})
 
 if [ "$#" = "0" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     usage;
-    exit;
+    exit
 fi
 
+if [ $1 = "-l" ] || [ $1 = "--list" ]; then
+   cd $SCRIPTPATH/build/bin;
+   ls -lafr *.run
+   exit
+fi
+
+FILE=$1
+shift
+
 while [ "$1" != "" ]; do
-    PARAM=`echo $1 | awk -F= '{print $1}'`
-    VALUE=`echo $1 | awk -F= '{print $2}'`
+    PARAM=`echo $1`
+    VALUE=`echo $2`
+    SHIFT=0
     case $PARAM in
         -h | --help)
-            usage;
-            exit;
+            usage
+            exit
             ;;
         -s | --step_threads)
             STEP_THREADS=$VALUE
             STEP_SELETCTED=1
+            SHIFT=1
             ;;
         -t | --max_threads)
             MAX_PTHREADS=$VALUE
+            SHIFT=1
             ;;
         -f | --fibers)
             FIBERS="-f $VALUE"
+            SHIFT=1
             ;;
         -b | --backoff | --backoff_high)
             BACKOFF="-b $VALUE"
+            SHIFT=1
             ;;
         -bl | --backoff_low)
             MIN_BACKOFF="-l $VALUE"
+            SHIFT=1
             ;;
         -i | --iterations)
             ITERATIONS=$VALUE
+            SHIFT=1
             ;;
         -w | --max_work)
             WORKLOAD="-w $VALUE"
+            SHIFT=1
             ;;
         -n | --numa_nodes)
             NUMA_NODES="-n $VALUE"
+            SHIFT=1
             ;;
         -r | --runs)
             RUNS="-r $VALUE"
+            SHIFT=1
             ;;
         -l | --list)
             LIST=1
@@ -81,27 +100,31 @@ while [ "$1" != "" ]; do
         -*)
             echo "ERROR: unknown parameter \"$PARAM\""
             usage
-            exit 1
-            ;;
-	*)
-	    FILE=$PARAM
-	    ;;
+            exit -1
     esac
     shift
+    if [ $SHIFT = "1" ]; then
+        shift
+        if [ "$VALUE" = "" ]; then
+            echo "ERROR: no value set for \"$PARAM\""
+            usage;
+            exit -1
+        fi
+    fi
 done
 
 if [ $LIST = "1" ]; then
-   cd $SCRIPTPATH/build/bin;
+   cd $SCRIPTPATH/build/bin
    ls -lafr *.run
-   exit -1;
+   exit -1
 fi
 
 if [ ! -e $SCRIPTPATH/build/bin/$FILE ]; then
    echo -e "\n" $FILE "is not available for benchmarking.\n"
    echo -e "Available files for benchmarking: "
-   cd $SCRIPTPATH/build/bin;
+   cd $SCRIPTPATH/build/bin
    ls -lafr *.run
-   exit -1;
+   exit -1
 fi
 
 set -e 

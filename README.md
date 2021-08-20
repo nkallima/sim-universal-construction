@@ -90,7 +90,7 @@ For installing the framework, the user should execute `make install`. In this ca
 
 For running benchmarks use the `bench.sh` script file that is provided in the main directory of this source tree.
 
-Example usage: `./bench.sh FILE.run OPTION1=NUM1 OPTION2=NUM2 ...`
+Example usage: `./bench.sh FILE.run OPTION1 VALUE1 OPTION2 VALUE2 ...`
 
 Each benchmark reports the time that needs to be completed, the average throughput of operations performed and some performance statistics if `DEBUG` option is enabled during framework build. The `bench.sh` script measures the strong scaling of the benchmark that is executed.
 
@@ -110,7 +110,7 @@ The following options are available:
 |  `-bl`, `--backoff_low` |  set a lower backoff bound (only for msqueuebench, lfstackbench and lfuobjectbench benchmarks)                                                                  |
 |  `-h`, `--help`         |  displays this help and exits                                                                                                                    |
 
-The framework provides the `validate.sh` validation/smoke script. The `validate.sh` script compiles the sources in `DEBUG` mode and runs a big set of benchmarks with various numbers of threads. After running each of the benchmarks, the script evaluates the `DEBUG` output and in case of success it prints `PASS`. In case of a failure, the script simply prints `FAIL`. In order to see all the available options of the validation/smoke script, execute `validate.sh -h`. Given that the `validate.sh` validation/smoke script depends on binaries that are compiled in `DEBUG` mode, it is not installed while executing `make install`. The following image shows the execution and the default behavior of `validate.sh`.
+The framework provides the `validate.sh` validation/smoke script. The `validate.sh` script compiles the sources in `DEBUG` mode and runs a big set of benchmarks with various numbers of threads. After running each of the benchmarks, the script evaluates the `DEBUG` output and in case of success it prints `PASS`. In case of a failure, the script simply prints `FAIL`. In order to see all the available options of the validation/smoke script, execute `validate.sh -h`. Given that the `validate.sh` validation/smoke script depends on binaries that are compiled in `DEBUG` mode, it is not installed while using `make install`. The following image shows the execution and the default behavior of `validate.sh`.
 
 ![](resources/validate_example.gif)
 
