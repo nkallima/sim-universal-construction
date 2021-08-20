@@ -14,13 +14,13 @@
 /// and unrealistic low numbers of cache misses).
 /// Default value is 64.
 #ifndef SYNCH_MAX_WORK
-#    define SYNCH_MAX_WORK 64
+#    define SYNCH_MAX_WORK         64
 #endif
 
 /// @brief Defines the default total number of the executed operations. Notice that benchmarks for stacks and queues
 /// execute SYNCH_RUNS pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues).
 /// Default value is 1000000.
-#define SYNCH_RUNS 1000000
+#define SYNCH_RUNS                 1000000
 
 /// @brief Define DEBUG, in case you want to debug some parts of the code or to get some  useful performance statistics.
 /// Note that the validation.sh script enables this definition by default. In some cases, this may introduces
