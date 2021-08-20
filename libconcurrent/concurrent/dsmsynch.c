@@ -71,9 +71,9 @@ void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
     l->Tail = NULL;
 
     if (synchGetMachineModel() == INTEL_X86_MACHINE) {
-        l->nodes = synchGetAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
-    } else {
         l->nodes = NULL;
+    } else {
+        l->nodes = synchGetAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
     }
 
 #ifdef DEBUG
