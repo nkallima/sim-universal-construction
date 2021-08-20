@@ -82,24 +82,24 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a35eef36338c6bb6168202bb5125b07a0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a35eef36338c6bb6168202bb5125b07a0">MAX_WORK</a>&#160;&#160;&#160;64</td></tr>
-<tr class="memdesc:a35eef36338c6bb6168202bb5125b07a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the default value of maximum local work that each thread executes between two consecutive of the benchmarked operation. A zero value means there is no work between two consecutive calls. Large values usually reduce system's contention, i.e. threads perform operations less frequentely. In constrast, small values (but not zero) increase system's contention. Please avoid to set this value equal to zero, since some algorithms may produce unreallistically high performan (i.e. long runs and unrealistic low numbers of cache misses). Default value is 64.  <a href="config_8h.html#a35eef36338c6bb6168202bb5125b07a0">More...</a><br /></td></tr>
-<tr class="separator:a35eef36338c6bb6168202bb5125b07a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78ca0560f6177e029df77ef91a609d50"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a78ca0560f6177e029df77ef91a609d50">RUNS</a>&#160;&#160;&#160;1000000</td></tr>
-<tr class="memdesc:a78ca0560f6177e029df77ef91a609d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the default total number of the executed operations. Notice that benchmarks for stacks and queues execute RUNS pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues). Default value is 1000000.  <a href="config_8h.html#a78ca0560f6177e029df77ef91a609d50">More...</a><br /></td></tr>
-<tr class="separator:a78ca0560f6177e029df77ef91a609d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a146443f3f1bbeaf5b7c4a57cc55967f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a146443f3f1bbeaf5b7c4a57cc55967f3">SYNCH_MAX_WORK</a>&#160;&#160;&#160;64</td></tr>
+<tr class="memdesc:a146443f3f1bbeaf5b7c4a57cc55967f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the default value of maximum local work that each thread executes between two consecutive of the benchmarked operation. A zero value means there is no work between two consecutive calls. Large values usually reduce system's contention, i.e. threads perform operations less frequentely. In constrast, small values (but not zero) increase system's contention. Please avoid to set this value equal to zero, since some algorithms may produce unreallistically high performan (i.e. long runs and unrealistic low numbers of cache misses). Default value is 64.  <a href="config_8h.html#a146443f3f1bbeaf5b7c4a57cc55967f3">More...</a><br /></td></tr>
+<tr class="separator:a146443f3f1bbeaf5b7c4a57cc55967f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adeda151d3554f5dfd7089119511e946c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#adeda151d3554f5dfd7089119511e946c">SYNCH_RUNS</a>&#160;&#160;&#160;1000000</td></tr>
+<tr class="memdesc:adeda151d3554f5dfd7089119511e946c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the default total number of the executed operations. Notice that benchmarks for stacks and queues execute SYNCH_RUNS pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues). Default value is 1000000.  <a href="config_8h.html#adeda151d3554f5dfd7089119511e946c">More...</a><br /></td></tr>
+<tr class="separator:adeda151d3554f5dfd7089119511e946c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9857328827ae1957544a254406d6c557"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a9857328827ae1957544a254406d6c557">Object</a>&#160;&#160;&#160;int64_t</td></tr>
 <tr class="memdesc:a9857328827ae1957544a254406d6c557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define DEBUG, in case you want to debug some parts of the code or to get some useful performance statistics. Note that the validation.sh script enables this definition by default. In some cases, this may introduces some performance loses. Thus, in case you want to perform benchmarking keeps this undefined. By default, this flag is disabled.  <a href="config_8h.html#a9857328827ae1957544a254406d6c557">More...</a><br /></td></tr>
 <tr class="separator:a9857328827ae1957544a254406d6c557"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90de61a5a3c15d145ffc6403426befd3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">RetVal</a>&#160;&#160;&#160;int64_t</td></tr>
-<tr class="memdesc:a90de61a5a3c15d145ffc6403426befd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the type of the return value that most operations in the provided benchmarks return. For instance, the return values of all pop and dequeue operations (implemented by the provided stacks and queue objects) return a value of type RetVal. It is assumed that the target architecture is able to atomically read/write this type If this type is of 32 or 64 bits could be atomically read or written by most machine architectures. However, a value of 128 bits or more may not be supported (in most cases x86_64 supports types of 128 bits). By default, this definition is equal to int64_t.  <a href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">More...</a><br /></td></tr>
+<tr class="memdesc:a90de61a5a3c15d145ffc6403426befd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the type of the return value that most operations in the provided benchmarks return. For instance, the return values of all pop and dequeue operations (implemented by the provided stacks and queue objects) return a value of type RetVal. It is assumed that the target architecture is able to atomically read/write this type If this type is of 32 or 64 bits could be atomically read or written by most machine architectures. However, a value of 128 bits or more may not be supported (in most cases x86_64 supports types of 128 bits). By default, this definition is equal to int64_t.  <a href="config_8h.html#a90de61a5a3c15d145ffc6403426befd3">More...</a><br /></td></tr>
 <tr class="separator:a90de61a5a3c15d145ffc6403426befd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f12dac6e24575ca239f5605e28661ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">ArgVal</a>&#160;&#160;&#160;int64_t</td></tr>
-<tr class="memdesc:a0f12dac6e24575ca239f5605e28661ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the type of the argument value of atomic operations provided by the implemented concurrent objects. For example, all push and enqueue operations (implemented by the provided stacks and queue objects) get an argument of type ArgVal. It is assumed that the target architecture is able to atomically read/write this type. If this type is of 32 or 64 bits could be atomically read or written by most machine architectures. However, a value of 128 bits or more may not be supported (in most cases x86_64 supports types of 128 bits). By default, this definition is equal to int64_t.  <a href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">More...</a><br /></td></tr>
+<tr class="memdesc:a0f12dac6e24575ca239f5605e28661ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the type of the argument value of atomic operations provided by the implemented concurrent objects. For example, all push and enqueue operations (implemented by the provided stacks and queue objects) get an argument of type ArgVal. It is assumed that the target architecture is able to atomically read/write this type. If this type is of 32 or 64 bits could be atomically read or written by most machine architectures. However, a value of 128 bits or more may not be supported (in most cases x86_64 supports types of 128 bits). By default, this definition is equal to int64_t.  <a href="config_8h.html#a0f12dac6e24575ca239f5605e28661ff">More...</a><br /></td></tr>
 <tr class="separator:a0f12dac6e24575ca239f5605e28661ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace0e9f8ffecdc202dcac5b83bf3f1484"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#ace0e9f8ffecdc202dcac5b83bf3f1484">NUMA_SUPPORT</a></td></tr>
-<tr class="memdesc:ace0e9f8ffecdc202dcac5b83bf3f1484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whenever the <code>NUMA_SUPPORT</code> option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the <code>--numa_nodes</code> option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting <code>--numa_nodes</code> equal to <code>2</code>. Note that the runtime successfully reports that the available NUMA nodes are <code>8</code>, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of <code>--numa_nodes</code> may be needed.  <a href="config_8h.html#ace0e9f8ffecdc202dcac5b83bf3f1484">More...</a><br /></td></tr>
-<tr class="separator:ace0e9f8ffecdc202dcac5b83bf3f1484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c44d43fcba9871ff62fb274c6b376f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a7c44d43fcba9871ff62fb274c6b376f8">SYNCH_NUMA_SUPPORT</a></td></tr>
+<tr class="memdesc:a7c44d43fcba9871ff62fb274c6b376f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whenever the <code>SYNCH_NUMA_SUPPORT</code> option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the <code>--numa_nodes</code> option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting <code>--numa_nodes</code> equal to <code>2</code>. Note that the runtime successfully reports that the available NUMA nodes are <code>8</code>, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of <code>--numa_nodes</code> may be needed.  <a href="config_8h.html#a7c44d43fcba9871ff62fb274c6b376f8">More...</a><br /></td></tr>
+<tr class="separator:a7c44d43fcba9871ff62fb274c6b376f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb0618905bd57c9a600e37b1d17c4b3a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#afb0618905bd57c9a600e37b1d17c4b3a">SYNCH_COMPACT_ALLOCATION</a></td></tr>
 <tr class="memdesc:afb0618905bd57c9a600e37b1d17c4b3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This definition enables some optimizations on memory allocation that seems to greately improve the performance on AMD Epyc multiprocessors. This flag seems to double the performance in CC-Synch and H-Synch algorithms. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option. By default, this flag is enabled.  <a href="config_8h.html#afb0618905bd57c9a600e37b1d17c4b3a">More...</a><br /></td></tr>
 <tr class="separator:afb0618905bd57c9a600e37b1d17c4b3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -108,35 +108,35 @@ Macros</h2></td></tr>
 <div class="textblock"><p>This file provides important parameters and constants for the benchmarks and the library. </p>
 <dl class="section author"><dt>Author</dt><dd>Nikolaos D. Kallimanis (<a href="#" onclick="location.href='mai'+'lto:'+'nka'+'ll'+'ima'+'@g'+'mai'+'l.'+'com'; return false;">nkall<span style="display: none;">.nosp@m.</span>ima@<span style="display: none;">.nosp@m.</span>gmail<span style="display: none;">.nosp@m.</span>.com</a>) </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a35eef36338c6bb6168202bb5125b07a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35eef36338c6bb6168202bb5125b07a0">&#9670;&nbsp;</a></span>MAX_WORK</h2>
+<a id="a146443f3f1bbeaf5b7c4a57cc55967f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a146443f3f1bbeaf5b7c4a57cc55967f3">&#9670;&nbsp;</a></span>SYNCH_MAX_WORK</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MAX_WORK&#160;&#160;&#160;64</td>
+          <td class="memname">#define SYNCH_MAX_WORK&#160;&#160;&#160;64</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Define the default value of maximum local work that each thread executes between two consecutive of the benchmarked operation. A zero value means there is no work between two consecutive calls. Large values usually reduce system's contention, i.e. threads perform operations less frequentely. In constrast, small values (but not zero) increase system's contention. Please avoid to set this value equal to zero, since some algorithms may produce unreallistically high performan (i.e. long runs and unrealistic low numbers of cache misses). Default value is 64. </p>
+<p>Defines the default value of maximum local work that each thread executes between two consecutive of the benchmarked operation. A zero value means there is no work between two consecutive calls. Large values usually reduce system's contention, i.e. threads perform operations less frequentely. In constrast, small values (but not zero) increase system's contention. Please avoid to set this value equal to zero, since some algorithms may produce unreallistically high performan (i.e. long runs and unrealistic low numbers of cache misses). Default value is 64. </p>
 
 </div>
 </div>
-<a id="a78ca0560f6177e029df77ef91a609d50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78ca0560f6177e029df77ef91a609d50">&#9670;&nbsp;</a></span>RUNS</h2>
+<a id="adeda151d3554f5dfd7089119511e946c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adeda151d3554f5dfd7089119511e946c">&#9670;&nbsp;</a></span>SYNCH_RUNS</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define RUNS&#160;&#160;&#160;1000000</td>
+          <td class="memname">#define SYNCH_RUNS&#160;&#160;&#160;1000000</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Define the default total number of the executed operations. Notice that benchmarks for stacks and queues execute RUNS pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues). Default value is 1000000. </p>
+<p>Defines the default total number of the executed operations. Notice that benchmarks for stacks and queues execute SYNCH_RUNS pairs of operations (i.e. pairs of push/pops or pairs of enqueues/dequeues). Default value is 1000000. </p>
 
 </div>
 </div>
@@ -169,7 +169,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Define the type of the return value that most operations in the provided benchmarks return. For instance, the return values of all pop and dequeue operations (implemented by the provided stacks and queue objects) return a value of type RetVal. It is assumed that the target architecture is able to atomically read/write this type If this type is of 32 or 64 bits could be atomically read or written by most machine architectures. However, a value of 128 bits or more may not be supported (in most cases x86_64 supports types of 128 bits). By default, this definition is equal to int64_t. </p>
+<p>Defines the type of the return value that most operations in the provided benchmarks return. For instance, the return values of all pop and dequeue operations (implemented by the provided stacks and queue objects) return a value of type RetVal. It is assumed that the target architecture is able to atomically read/write this type If this type is of 32 or 64 bits could be atomically read or written by most machine architectures. However, a value of 128 bits or more may not be supported (in most cases x86_64 supports types of 128 bits). By default, this definition is equal to int64_t. </p>
 
 </div>
 </div>
@@ -185,23 +185,23 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Define the type of the argument value of atomic operations provided by the implemented concurrent objects. For example, all push and enqueue operations (implemented by the provided stacks and queue objects) get an argument of type ArgVal. It is assumed that the target architecture is able to atomically read/write this type. If this type is of 32 or 64 bits could be atomically read or written by most machine architectures. However, a value of 128 bits or more may not be supported (in most cases x86_64 supports types of 128 bits). By default, this definition is equal to int64_t. </p>
+<p>Defines the type of the argument value of atomic operations provided by the implemented concurrent objects. For example, all push and enqueue operations (implemented by the provided stacks and queue objects) get an argument of type ArgVal. It is assumed that the target architecture is able to atomically read/write this type. If this type is of 32 or 64 bits could be atomically read or written by most machine architectures. However, a value of 128 bits or more may not be supported (in most cases x86_64 supports types of 128 bits). By default, this definition is equal to int64_t. </p>
 
 </div>
 </div>
-<a id="ace0e9f8ffecdc202dcac5b83bf3f1484"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace0e9f8ffecdc202dcac5b83bf3f1484">&#9670;&nbsp;</a></span>NUMA_SUPPORT</h2>
+<a id="a7c44d43fcba9871ff62fb274c6b376f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c44d43fcba9871ff62fb274c6b376f8">&#9670;&nbsp;</a></span>SYNCH_NUMA_SUPPORT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define NUMA_SUPPORT</td>
+          <td class="memname">#define SYNCH_NUMA_SUPPORT</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Whenever the <code>NUMA_SUPPORT</code> option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the <code>--numa_nodes</code> option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting <code>--numa_nodes</code> equal to <code>2</code>. Note that the runtime successfully reports that the available NUMA nodes are <code>8</code>, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of <code>--numa_nodes</code> may be needed. </p>
+<p>Whenever the <code>SYNCH_NUMA_SUPPORT</code> option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the <code>--numa_nodes</code> option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting <code>--numa_nodes</code> equal to <code>2</code>. Note that the runtime successfully reports that the available NUMA nodes are <code>8</code>, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of <code>--numa_nodes</code> may be needed. </p>
 
 </div>
 </div>

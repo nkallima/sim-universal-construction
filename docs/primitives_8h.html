@@ -132,10 +132,10 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a1d450a2ee167060016632bba23178aaa"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#a1d450a2ee167060016632bba23178aaa">synchGetMemory</a> (size_t size)</td></tr>
-<tr class="memdesc:a1d450a2ee167060016632bba23178aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#a1d450a2ee167060016632bba23178aaa">More...</a><br /></td></tr>
+<tr class="memdesc:a1d450a2ee167060016632bba23178aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. In case that SYNCH_NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#a1d450a2ee167060016632bba23178aaa">More...</a><br /></td></tr>
 <tr class="separator:a1d450a2ee167060016632bba23178aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4f5695a6870df657eda4f6f4fa8c379"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#af4f5695a6870df657eda4f6f4fa8c379">synchGetAlignedMemory</a> (size_t align, size_t size)</td></tr>
-<tr class="memdesc:af4f5695a6870df657eda4f6f4fa8c379"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#af4f5695a6870df657eda4f6f4fa8c379">More...</a><br /></td></tr>
+<tr class="memdesc:af4f5695a6870df657eda4f6f4fa8c379"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. In case that SYNCH_NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#af4f5695a6870df657eda4f6f4fa8c379">More...</a><br /></td></tr>
 <tr class="separator:af4f5695a6870df657eda4f6f4fa8c379"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab08525b58a8e92c5d92bf874ad065534"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ab08525b58a8e92c5d92bf874ad065534">synchFreeMemory</a> (void *ptr, size_t size)</td></tr>
 <tr class="memdesc:ab08525b58a8e92c5d92bf874ad065534"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees memory allocated with either getMemory() or getAlignedMemory() functions.  <a href="primitives_8h.html#ab08525b58a8e92c5d92bf874ad065534">More...</a><br /></td></tr>
@@ -590,7 +590,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>This function allocates a memory area of size bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node. </p>
+<p>This function allocates a memory area of size bytes. In case that SYNCH_NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">size</td><td>The size of the memory area. </td></tr>
@@ -635,7 +635,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. In case that NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node. </p>
+<p>This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. In case that SYNCH_NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">align</td><td>The alignment size. </td></tr>

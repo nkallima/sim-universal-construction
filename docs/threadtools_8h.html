@@ -83,13 +83,13 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a7e980764c80526092c72c9fe58f2924a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="threadtools_8h.html#a7e980764c80526092c72c9fe58f2924a">_DONT_USE_UTHREADS_</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:a7e980764c80526092c72c9fe58f2924a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9644b82322ca074853e0fb757a5ef56a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="threadtools_8h.html#a9644b82322ca074853e0fb757a5ef56a">SYNCH_DONT_USE_UTHREADS</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a9644b82322ca074853e0fb757a5ef56a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab271ce770f682a143aad0a6d671a407c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="threadtools_8h.html#ab271ce770f682a143aad0a6d671a407c">synchStartThreadsN</a> (uint32_t nthreads, void *(*func)(void *), uint32_t uthreads)</td></tr>
-<tr class="memdesc:ab271ce770f682a143aad0a6d671a407c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function creates nthreads posix threads, where each posix thread executes uthreads user-level threads (fibers). Thus, the total amount of threads and fibers is nthreads * uthreads. Each of the created threads executes the func function, the function has as an argument the id of the created thread, which is a unique integer in {0, ..., nthreads * uthreads - 1}. In case, the user does not want to create any fiber, uthreads should be equal to <em>DONT_USE_UTHREADS</em>.  <a href="threadtools_8h.html#ab271ce770f682a143aad0a6d671a407c">More...</a><br /></td></tr>
+<tr class="memdesc:ab271ce770f682a143aad0a6d671a407c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function creates nthreads posix threads, where each posix thread executes uthreads user-level threads (fibers). Thus, the total amount of threads and fibers is nthreads * uthreads. Each of the created threads executes the func function, the function has as an argument the id of the created thread, which is a unique integer in {0, ..., nthreads * uthreads - 1}. In case, the user does not want to create any fiber, uthreads should be equal to SYNCH_DONT_USE_UTHREADS.  <a href="threadtools_8h.html#ab271ce770f682a143aad0a6d671a407c">More...</a><br /></td></tr>
 <tr class="separator:ab271ce770f682a143aad0a6d671a407c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4308af25d549ba165c86987cecedd93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="threadtools_8h.html#af4308af25d549ba165c86987cecedd93">synchJoinThreadsN</a> (uint32_t nthreads)</td></tr>
 <tr class="memdesc:af4308af25d549ba165c86987cecedd93"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns whenever all the created posix threads and fibers spawned by StartThreadsN have completed the execution.  <a href="threadtools_8h.html#af4308af25d549ba165c86987cecedd93">More...</a><br /></td></tr>
@@ -119,14 +119,14 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file exposes a simple API for handling both posix and user-level threads. This API provides functionality for creating new threads (both posix and user-level), functionality for setting affinities, functionality for yielding the processor, etc. Examples of usage could be found in almost all the provided benchmarks under the benchmarks directory. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a7e980764c80526092c72c9fe58f2924a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e980764c80526092c72c9fe58f2924a">&#9670;&nbsp;</a></span>_DONT_USE_UTHREADS_</h2>
+<a id="a9644b82322ca074853e0fb757a5ef56a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9644b82322ca074853e0fb757a5ef56a">&#9670;&nbsp;</a></span>SYNCH_DONT_USE_UTHREADS</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define _DONT_USE_UTHREADS_&#160;&#160;&#160;1</td>
+          <td class="memname">#define SYNCH_DONT_USE_UTHREADS&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -166,7 +166,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function creates nthreads posix threads, where each posix thread executes uthreads user-level threads (fibers). Thus, the total amount of threads and fibers is nthreads * uthreads. Each of the created threads executes the func function, the function has as an argument the id of the created thread, which is a unique integer in {0, ..., nthreads * uthreads - 1}. In case, the user does not want to create any fiber, uthreads should be equal to <em>DONT_USE_UTHREADS</em>. </p>
+<p>This function creates nthreads posix threads, where each posix thread executes uthreads user-level threads (fibers). Thus, the total amount of threads and fibers is nthreads * uthreads. Each of the created threads executes the func function, the function has as an argument the id of the created thread, which is a unique integer in {0, ..., nthreads * uthreads - 1}. In case, the user does not want to create any fiber, uthreads should be equal to SYNCH_DONT_USE_UTHREADS. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nthreads</td><td>The number of posix threads. </td></tr>

@@ -131,7 +131,7 @@ Requirements</h1>
 <li>Building requires the following development packages:<ul>
 <li><code>libatomic</code></li>
 <li><code>libnuma</code></li>
-<li><code>libpapi</code> in case that the <code>_TRACK_CPU_COUNTERS</code> flag is enabled in <code><a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a></code>.</li>
+<li><code>libpapi</code> in case that the <code>SYNCH_TRACK_CPU_COUNTERS</code> flag is enabled in <code><a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a></code>.</li>
 </ul>
 </li>
 <li>For building the documentation (i.e. man-pages), <code>doxygen</code> is required.</li>
@@ -210,8 +210,8 @@ Running Benchmarks</h1>
 Performance/Optimizations</h1>
 <p>Getting the best performance from the provided benchmarks is not always an easy task. For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the <code><a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a></code> file. A useful guide to consider in order to get better performance in a modern multiprocessor follows.</p>
 <ul>
-<li>In case that the target machine is a NUMA machine make sure <code>NUMA_SUPPORT</code> is enabled in <code><a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a></code>. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.</li>
-<li>Whenever the <code>NUMA_SUPPORT</code> option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the <code>--numa_nodes</code> option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting <code>--numa_nodes</code> equal to <code>2</code>. Notice that the runtime successfully reports that the available NUMA nodes are <code>8</code>, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of <code>--numa_nodes</code> may be needed.</li>
+<li>In case that the target machine is a NUMA machine make sure <code>SYNCH_NUMA_SUPPORT</code> is enabled in <code><a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a></code>. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.</li>
+<li>Whenever the <code>SYNCH_NUMA_SUPPORT</code> option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the <code>--numa_nodes</code> option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting <code>--numa_nodes</code> equal to <code>2</code>. Notice that the runtime successfully reports that the available NUMA nodes are <code>8</code>, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of <code>--numa_nodes</code> may be needed.</li>
 <li>Check the performance impact of the <code>SYNCH_COMPACT_ALLOCATION</code> option in <code><a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a></code>. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.</li>
 <li>Check the cache line size (<code>CACHE_LINE_SIZE</code> and <code>S_CACHE_LINE</code> options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines behave better with <code>CACHE_LINE_SIZE</code> equal or greater than <code>128</code>, while most modern AMD machine achieve better performance with a value equal to <code>64</code>. Notice that <code>CACHE_LINE_SIZE</code> and <code>S_CACHE_LINE</code> depend on the <code>SYNCH_COMPACT_ALLOCATION</code> option (see includes/system.h).</li>
 <li>Use backoff if it is available. Many of the provided algorithms could use backoff in order to provide better performance (e.g., sim, LF-Stack, MS-Queue, SimQueue, SimStack, etc.). In this case, it is of crucial importance to use <code>-b</code> (and in some cases <code>-bl</code> arguments) in order to get the best performance.</li>
@@ -240,7 +240,7 @@ Memory reclamation (stacks and queues)</h1>
 </li>
 </ul>
 <p>Note that de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Since v2.4.0, SimStack supports memory reclamation using the functionality of <code><a class="el" href="pool_8h.html" title="This file exposes a simple API for implementing a very simple pool object. This pool object gives use...">pool.h</a></code> and a technique that is similar to that presented by Blelloch and Weiin in [13]. Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.</p>
-<p>By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the <code>POOL_NODE_RECYCLING_DISABLE</code> option should be enabled in <code><a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">config.h</a></code>.</p>
+<p>By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the <code>SYNCH_POOL_NODE_RECYCLING_DISABLE</code> option should be enabled in <code><a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">config.h</a></code>.</p>
 <p>The following table shows the memory reclamation characteristics of the provided stack and queues implementations.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -276,7 +276,7 @@ API documentation</h1>
 <p>A complete API documentation is provided in <a href="https://nkallima.github.io/sim-universal-construction/index.html">https://nkallima.github.io/sim-universal-construction/index.html</a>.</p>
 <h1><a class="anchor" id="autotoc_md10"></a>
 Code example for a simple benchmark</h1>
-<p>We now describe a very simple example-benchmark that uses the Application Programming Interface (API) of the provided runtime. This simple benchmark measures the performance of Fetch&amp;Add instructions in multi-core machines.</p>
+<p>We now describe a very simple example-benchmark that uses the Application Programming Interface (API) of the provided runtime. This simple benchmark measures the performance of Fetch&amp;Add instructions in multi-core machines. The purpose of this simple benchmark is to measure the performance of Fetch&amp;Add implementations (hardware or software).</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"> </div>
@@ -297,8 +297,8 @@ Code example for a simple benchmark</h1>
 <div class="line">    <a class="code" href="barrier_8h.html#a37bb08a692b82e09b15d360bf858f949">synchBarrierWait</a>(&amp;bar);</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keywordtype">id</span> == 0) d1 = <a class="code" href="primitives_8h.html#afd58ecc3ee687922e7ccce8f8d044827">synchGetTimeMillis</a>();</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="config_8h.html#a78ca0560f6177e029df77ef91a609d50">RUNS</a>; i++)</div>
-<div class="line">        FAA64(&amp;<span class="keywordtype">object</span>, 1);</div>
+<div class="line">    <span class="keywordflow">for</span> (i = 0; i &lt; RUNS; i++)</div>
+<div class="line">        <a class="code" href="primitives_8h.html#a2eafabd062337043d4ba2225a6effa97">synchFAA64</a>(&amp;<span class="keywordtype">object</span>, 1);</div>
 <div class="line"> </div>
 <div class="line">    <a class="code" href="barrier_8h.html#a37bb08a692b82e09b15d360bf858f949">synchBarrierWait</a>(&amp;bar);</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keywordtype">id</span> == 0) d2 = <a class="code" href="primitives_8h.html#afd58ecc3ee687922e7ccce8f8d044827">synchGetTimeMillis</a>();</div>
@@ -310,11 +310,11 @@ Code example for a simple benchmark</h1>
 <div class="line">    <span class="keywordtype">object</span> = 1;</div>
 <div class="line"> </div>
 <div class="line">    <a class="code" href="barrier_8h.html#adc29759d93d14b2f5440b60ad9e07b01">synchBarrierSet</a>(&amp;bar, N_THREADS);</div>
-<div class="line">    <a class="code" href="threadtools_8h.html#ab271ce770f682a143aad0a6d671a407c">synchStartThreadsN</a>(N_THREADS, Execute, <a class="code" href="threadtools_8h.html#a7e980764c80526092c72c9fe58f2924a">_DONT_USE_UTHREADS_</a>);</div>
+<div class="line">    <a class="code" href="threadtools_8h.html#ab271ce770f682a143aad0a6d671a407c">synchStartThreadsN</a>(N_THREADS, Execute, <a class="code" href="threadtools_8h.html#a9644b82322ca074853e0fb757a5ef56a">SYNCH_DONT_USE_UTHREADS</a>);</div>
 <div class="line">    <a class="code" href="threadtools_8h.html#af4308af25d549ba165c86987cecedd93">synchJoinThreadsN</a>(N_THREADS - 1);</div>
 <div class="line"> </div>
 <div class="line">    printf(<span class="stringliteral">&quot;time: %ld (ms)\tthroughput: %.2f (millions ops/sec)\n&quot;</span>, </div>
-<div class="line">           (d2 - d1), <a class="code" href="config_8h.html#a78ca0560f6177e029df77ef91a609d50">RUNS</a> * N_THREADS / (1000.0 * (d2 - d1)));</div>
+<div class="line">           (d2 - d1), RUNS * N_THREADS / (1000.0 * (d2 - d1)));</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
@@ -322,34 +322,51 @@ Code example for a simple benchmark</h1>
 <div class="ttc" id="abarrier_8h_html_a37bb08a692b82e09b15d360bf858f949"><div class="ttname"><a href="barrier_8h.html#a37bb08a692b82e09b15d360bf858f949">synchBarrierWait</a></div><div class="ttdeci">void synchBarrierWait(SynchBarrier *bar)</div><div class="ttdoc">Whenever a thread executes this function, it waits without returning until all the other n-1 threads ...</div></div>
 <div class="ttc" id="abarrier_8h_html_adc29759d93d14b2f5440b60ad9e07b01"><div class="ttname"><a href="barrier_8h.html#adc29759d93d14b2f5440b60ad9e07b01">synchBarrierSet</a></div><div class="ttdeci">void synchBarrierSet(SynchBarrier *bar, uint32_t n)</div><div class="ttdoc">This function initializes an instance of an re-entrant barrier object.</div></div>
 <div class="ttc" id="abarrier_8h_html_structSynchBarrier"><div class="ttname"><a href="barrier_8h.html#structSynchBarrier">SynchBarrier</a></div><div class="ttdoc">Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...</div><div class="ttdef"><b>Definition:</b> barrier.h:13</div></div>
-<div class="ttc" id="aconfig_8h_html_a78ca0560f6177e029df77ef91a609d50"><div class="ttname"><a href="config_8h.html#a78ca0560f6177e029df77ef91a609d50">RUNS</a></div><div class="ttdeci">#define RUNS</div><div class="ttdoc">Define the default total number of the executed operations. Notice that benchmarks for stacks and que...</div><div class="ttdef"><b>Definition:</b> config.h:23</div></div>
 <div class="ttc" id="aprimitives_8h_html"><div class="ttname"><a href="primitives_8h.html">primitives.h</a></div><div class="ttdoc">This file exposes a simple API for basic atomic operations, basic operations for memory management....</div></div>
+<div class="ttc" id="aprimitives_8h_html_a2eafabd062337043d4ba2225a6effa97"><div class="ttname"><a href="primitives_8h.html#a2eafabd062337043d4ba2225a6effa97">synchFAA64</a></div><div class="ttdeci">#define synchFAA64(A, B)</div><div class="ttdoc">A wrapper for the _FAA64 function. See more on _FAA64().</div><div class="ttdef"><b>Definition:</b> primitives.h:203</div></div>
 <div class="ttc" id="aprimitives_8h_html_afd58ecc3ee687922e7ccce8f8d044827"><div class="ttname"><a href="primitives_8h.html#afd58ecc3ee687922e7ccce8f8d044827">synchGetTimeMillis</a></div><div class="ttdeci">int64_t synchGetTimeMillis(void)</div><div class="ttdoc">This function returns the current system's time in milliseconds.</div></div>
 <div class="ttc" id="athreadtools_8h_html"><div class="ttname"><a href="threadtools_8h.html">threadtools.h</a></div><div class="ttdoc">This file exposes a simple API for handling both posix and user-level threads. This API provides func...</div></div>
-<div class="ttc" id="athreadtools_8h_html_a7e980764c80526092c72c9fe58f2924a"><div class="ttname"><a href="threadtools_8h.html#a7e980764c80526092c72c9fe58f2924a">_DONT_USE_UTHREADS_</a></div><div class="ttdeci">#define _DONT_USE_UTHREADS_</div><div class="ttdef"><b>Definition:</b> threadtools.h:13</div></div>
+<div class="ttc" id="athreadtools_8h_html_a9644b82322ca074853e0fb757a5ef56a"><div class="ttname"><a href="threadtools_8h.html#a9644b82322ca074853e0fb757a5ef56a">SYNCH_DONT_USE_UTHREADS</a></div><div class="ttdeci">#define SYNCH_DONT_USE_UTHREADS</div><div class="ttdef"><b>Definition:</b> threadtools.h:13</div></div>
 <div class="ttc" id="athreadtools_8h_html_ab271ce770f682a143aad0a6d671a407c"><div class="ttname"><a href="threadtools_8h.html#ab271ce770f682a143aad0a6d671a407c">synchStartThreadsN</a></div><div class="ttdeci">int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads)</div><div class="ttdoc">This function creates nthreads posix threads, where each posix thread executes uthreads user-level th...</div></div>
 <div class="ttc" id="athreadtools_8h_html_af4308af25d549ba165c86987cecedd93"><div class="ttname"><a href="threadtools_8h.html#af4308af25d549ba165c86987cecedd93">synchJoinThreadsN</a></div><div class="ttdeci">void synchJoinThreadsN(uint32_t nthreads)</div><div class="ttdoc">This function returns whenever all the created posix threads and fibers spawned by StartThreadsN have...</div></div>
-</div><!-- fragment --><p>This example-benchmark creates <code>N_THREADS</code>, where each of them executes <code>RUNS</code> Fetch&amp;Add operations in a shared 64-bit integer. At the end of the benchmark the throughput (i.e. Fetch&amp;Add operations per second) is calculated.</p>
-<p>The <code>StartThreadsN</code> function (provided by the API defined in <code><a class="el" href="threadtools_8h.html" title="This file exposes a simple API for handling both posix and user-level threads. This API provides func...">threadtools.h</a></code>) in main, creates <code>N_THREADS</code> threads and each of the executes the <code>Execute</code> function declared in the same file. The <code>_DONT_USE_UTHREADS_</code> argument imposes <code>StartThreadsN</code> to create only Posix threads; in case that the user sets the corresponding fibers argument to <code>M</code> &gt; 0, then <code>StartThreadsN</code> will create <code>N_THREADS</code> Posix threads and each of them will create <code>M</code> user-level (i.e. fiber) threads. The <code>JoinThreadsN</code> function (also provided by <code>threadtools. h</code>) waits until all Posix and fiber (if any) threads finish the execution of the <code>Execute</code> function. The Fetch&amp;Add instruction on 64-bit integers is performed by the <code>FAA64</code> function provided by the API of <code><a class="el" href="primitives_8h.html" title="This file exposes a simple API for basic atomic operations, basic operations for memory management....">primitives.h</a></code>.</p>
-<p>The threads executing the <code>Execute</code> function use the <code>Barrier</code> re-entrant barrier object for simultaneously starting to perform Fetch&amp;Add instructions on the shared variable <code>object</code>. This barrier is also re-used before the end of the <code>Execute</code> function in order to allow thread with <code>id = 0</code> to measure the amount of time that the benchmark needed for completion. The <code>BarrierSet</code> function in <code>main</code> initializes the <code>Barrier</code> object. The <code>BarrierSet</code> takes as an argument a pointer to the barrier object and the number of threads <code>N_THREADS</code> that are going to use it. Both <code>BarrierSet</code> and <code>BarrierWait</code> are provided by the API of <code><a class="el" href="barrier_8h.html" title="This file exposes the API of a simple re-entrant synchronization barrier. This implementation is a cl...">barrier.h</a></code></p>
-<p>At the end of the benchmark, <code>main</code> calculates and prints the average throughput of Fetch&amp;Add operations per second achieved by the benchmark.</p>
+</div><!-- fragment --><p>This example-benchmark creates <code>N_THREADS</code>, where each of them executes <code>RUNS</code> Fetch&amp;Add operations in a shared 64-bit integer. At the end of the benchmark the throughput (i.e. Fetch&amp;Add operations per second) is calculated. By seting varous values for <code>N_THREADS</code>, this benchmark is able to measure strong scaling.</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD </p>
 <h1><a class="anchor" id="autotoc_md11"></a>
+The &lt;tt&gt;StartThreadsN&lt;/tt&gt; function (provided by the API defined in &lt;tt&gt;threadtools.h&lt;/tt&gt;) in main, creates &lt;tt&gt;N_THREADS&lt;/tt&gt; threads and each of the executes the &lt;tt&gt;Execute&lt;/tt&gt; function declared in the same file. The &lt;tt&gt;SYNCH_DONT_USE_UTHREADS&lt;/tt&gt; argument imposes &lt;tt&gt;StartThreadsN&lt;/tt&gt; to create only Posix threads; in case that the user sets the corresponding fibers argument to &lt;tt&gt;M&lt;/tt&gt; &gt; 0, then &lt;tt&gt;StartThreadsN&lt;/tt&gt; will create &lt;tt&gt;N_THREADS&lt;/tt&gt; Posix threads and each of them will create &lt;tt&gt;M&lt;/tt&gt; user-level (i.e. fiber) threads. The &lt;tt&gt;JoinThreadsN&lt;/tt&gt; function (also provided by &lt;tt&gt;threadtools. h&lt;/tt&gt;) waits until all Posix and fiber (if any) threads finish the execution of the &lt;tt&gt;Execute&lt;/tt&gt; function. The Fetch&amp;Add instruction on 64-bit integers is performed by the &lt;tt&gt;FAA64&lt;/tt&gt; function provided by the API of &lt;tt&gt;primitives.h&lt;/tt&gt;.</h1>
+<p>The <code>synchStartThreadsN</code> function (provided by the API defined in <code><a class="el" href="threadtools_8h.html" title="This file exposes a simple API for handling both posix and user-level threads. This API provides func...">threadtools.h</a></code>) in main, creates <code>N_THREADS</code> threads and each of the executes the <code>Execute</code> function declared in the same file. The <code>_DONT_USE_UTHREADS_</code> argument imposes <code>synchStartThreadsN</code> to create only Posix threads; in case that the user sets the corresponding fibers argument to <code>M</code> &gt; 0, then <code>StartThreadsN</code> will create <code>N_THREADS</code> Posix threads and each of them will create <code>M</code> user-level (i.e. fiber) threads. The <code>synchJoinThreadsN</code> function (also provided by <code>threadtools. h</code>) waits until all Posix and fiber (if any) threads finish the execution of the <code>Execute</code> function. The Fetch&amp;Add instruction on 64-bit integers is performed by the <code>synchFAA64</code> function provided by the API of <code><a class="el" href="primitives_8h.html" title="This file exposes a simple API for basic atomic operations, basic operations for memory management....">primitives.h</a></code>. </p><blockquote class="doxtable">
+<blockquote class="doxtable">
+<blockquote class="doxtable">
+<blockquote class="doxtable">
+<blockquote class="doxtable">
+<blockquote class="doxtable">
+<blockquote class="doxtable">
+<p>37d9803a0fb9444e413dcae23a8cc4a84ab24506 </p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>The threads executing the <code>Execute</code> function use the <code><a class="el" href="barrier_8h.html#structSynchBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">SynchBarrier</a></code> re-entrant barrier object for simultaneously starting to perform Fetch&amp;Add instructions on the shared variable <code>object</code>. This barrier is also re-used before the end of the <code>Execute</code> function in order to allow thread with <code>id = 0</code> to measure the amount of time that the benchmark needed for completion. The <code>synchBarrierSet</code> function in <code>main</code> initializes the <code><a class="el" href="barrier_8h.html#structSynchBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">SynchBarrier</a></code> object. The <code>synchBarrierSet</code> takes as an argument a pointer to the barrier object and the number of threads <code>N_THREADS</code> that are going to use it. Both <code>synchBarrierSet</code> and <code>synchBarrierWait</code> are provided by the API of <code><a class="el" href="barrier_8h.html" title="This file exposes the API of a simple re-entrant synchronization barrier. This implementation is a cl...">barrier.h</a></code></p>
+<p>At the end of the benchmark, <code>main</code> calculates and prints the average throughput of Fetch&amp;Add operations per second achieved by the benchmark.</p>
+<h1><a class="anchor" id="autotoc_md12"></a>
 If you want to cite us</h1>
 <div class="fragment"><div class="line">@misc{SynchFramework,</div>
 <div class="line">  title={{Synch: A framework for concurrent data-structures and benchmarks. https://github.com/nkallima/sim-universal-construction}},</div>
 <div class="line">  author={Kallimanis, Nikolaos D.},</div>
 <div class="line">  url={{https://github.com/nkallima/sim-universal-construction}}</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
 Releases</h1>
 <p>An extensive list of the recent releases and their features is provided at <a href="https://github.com/nkallima/sim-universal-construction/releases">https://github.com/nkallima/sim-universal-construction/releases</a>.</p>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md14"></a>
 License</h1>
 <p>The Synch framework is provided under the <a href="https://github.com/nkallima/sim-universal-construction/blob/main/LICENSE">LGPL-2.1 License</a>.</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Code of conduct</h1>
 <p><a href="https://github.com/nkallima/sim-universal-construction/blob/main/.github/CODE_OF_CONDUCT.md">Code of conduct</a>.</p>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 References</h1>
 <p>[1]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Revisiting the combining synchronization technique". ACM SIGPLAN Notices. Vol. 47. No. 8. ACM, PPoPP 2012.</p>
 <p>[2]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "A highly-efficient wait-free universal construction". Proceedings of the twenty-third annual ACM symposium on Parallelism in algorithms and architectures (SPAA), 2011.</p>
@@ -364,7 +381,7 @@ References</h1>
 <p>[11]. Adam Morrison, and Yehuda Afek. "Fast concurrent queues for x86 processors". Proceedings of the 18th ACM SIGPLAN symposium on Principles and practice of parallel programming. 2013.</p>
 <p>[12]. Adam Morrison, and Yehuda Afek. Source code for LCRQ. <a href="http://mcg.cs.tau.ac.il/projects/lcrq">http://mcg.cs.tau.ac.il/projects/lcrq</a>.</p>
 <p>[13]. Guy E. Blelloch, and Yuanhao Wei. "Brief Announcement: Concurrent Fixed-Size Allocation and Free in Constant Time." 34th International Symposium on Distributed Computing (DISC 2020). Schloss Dagstuhl-Leibniz-Zentrum für Informatik, 2020.</p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Contact</h1>
 <p>For any further information, please do not hesitate to send an email at nkallima (at) ics.forth.gr. Feedback is always valuable. </p>
 </div></div><!-- PageDoc -->
