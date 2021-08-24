@@ -16,6 +16,7 @@ if [ -d "build/docs/html" ] && [ -f "build/docs/html/index.html" ]; then
     git checkout gh-pages
     echo 'Uploading documentation to the gh-pages branch...'
     cp -r ./docs-tmp/* ./docs/
+    cp -r ./resources ./docs
     git add ./docs/*
     rm -rf ./docs-tmp/
     rm -rf ./build/
