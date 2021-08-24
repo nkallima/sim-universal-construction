@@ -1,30 +1,24 @@
 #!/bin/sh
 
-echo 'Setting up the script...'
-set -e
-
 echo 'Generating Doxygen code documentation...'
-cd sim-universal-construction
 make clean docs
-cd ..
-
-##### Configure git.
-# Set the push default to simple i.e. push only the current branch.
-git config --global push.default simple
 
 # Only upload if Doxygen successfully created the documentation.
 # Check this by verifying that the html directory and the file html/index.html
 # both exist. This is a good indication that Doxygen did it's work.
-if [ -d "sim-universal-construction/build/docs/html" ] && [ -f "sim-universal-construction/build/docs/html/index.html" ]; then
+if [ -d "build/docs/html" ] && [ -f "build/docs/html/index.html" ]; then
     echo 'Removing outdated documentation'
     rm -rf docs/*
-    cp -r ./build/docs/html/* ./docs
+    mkdir -p ./docs-tmp
+    cp -r ./build/docs/html/* ./docs-tmp
+    make clean
 
     git checkout gh-pages
     echo 'Uploading documentation to the gh-pages branch...'
+    cp -r ./docs-tmp/* ./docs/
     git add ./docs/*
-
-    make clean
+    rm -rf ./docs-tmp/
+    rm -rf ./build/
 
     git commit -m "Documentation upload." 
 
