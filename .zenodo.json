@@ -18,11 +18,6 @@
             "scheme": "url", 
             "identifier": "https://github.com/nkallima/sim-universal-construction/tree/v3.0.0", 
             "relation": "isSupplementTo"
-        }, 
-        {
-            "scheme": "doi", 
-            "identifier": "10.5281/zenodo.5347894", 
-            "relation": "isVersionOf"
         }
     ]
 }
