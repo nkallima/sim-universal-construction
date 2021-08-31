@@ -34,7 +34,7 @@ Synch is an open-source framework that not only provides some common high-perfor
 
 The Synch framework aims to provide researchers with the appropriate tools for implementing and evaluating state-of-the-art concurrent objects and synchronization mechanisms. Moreover, the Synch framework provides a substantial set of concurrent data-structures giving researchers/developers the ability not only to implement their own concurrent data-structures, but to compare with some state-of-the-art data-structures. Synch provides many state-of-the-art concurrent objects that are thoroughly tested targeting x86_64 POSIX systems.
 
-The Synch framework has been extensively used for implementing and evaluating concurrent data-structures and synchronization techniques in papers, such as @FK2011;@FK2012;@AKD12;@FK2014;@FK2017;@FKR2018.
+The Synch framework has been extensively used for implementing and evaluating concurrent data-structures and synchronization techniques in papers, such as @FK2011, @FK2012, @AKD12, @FK2014, @FK2017, and @FKR2018.
 
 ## Provided concurrent data-structures
 
@@ -43,7 +43,7 @@ The current version of the Synch framework provides a large set of high-performa
 In terms of concurrent queues, the Synch framework provides the SimQueue [@FK2011;@FK2014] wait-free queue implementation that is based on the PSim combining object, and the CC-Queue, DSM-Queue and H-Queue [@FK2012] blocking queue implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. A blocking queue implementation based on the CLH locks [@C93;@MLH94] and the lock-free implementation presented in @MS96 are also provided. In terms of concurrent stacks, the Synch framework provides the SimStack [@FK2011;@FK2014] wait-free stack implementation that is based on the PSim combining object, and the CC-Stack, DSM-Stack and H-Stack [@FK2012] blocking stack implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. Moreover, the lock-free stack implementation of @T86 and the blocking implementation based on the CLH locks [@C93;@MLH94] are provided.
 The Synch framework also provides concurrent queue and stacks implementations (OsciQueue and OsciStack implementations) that achieve very high performance using user-level threads [@FK2017].
 
-Furthermore, the Synch framework provides a few scalable lock implementations: the MCS queue-lock presented in @MCS91 and the CLH queue-lock presented in @C93;@MLH94. Finally, the Synch framework provides two example-implementations of concurrent hash-tables. More specifically, it provides a simple implementation based on CLH queue-locks [@C93;@MLH94] and an implementation based on the DSM-Synch [@FK2012] combining technique.
+Furthermore, the Synch framework provides a few scalable lock implementations: the MCS queue-lock presented in @MCS91 and the CLH queue-lock presented in @C93 and @MLH94. Finally, the Synch framework provides two example-implementations of concurrent hash-tables. More specifically, it provides a simple implementation based on CLH queue-locks [@C93;@MLH94] and an implementation based on the DSM-Synch [@FK2012] combining technique.
 
 The following table presents a summary of the concurrent data-structures offered by the Synch framework.
 
