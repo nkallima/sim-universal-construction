@@ -1,0 +1,28 @@
+{
+    "description": "<p>This release introduces the following changes/improvements:</p>\n<ul>\n<li>Header-files cleanup in order to provide a better and consistent API.</li>\n<li>Adding the <code>Synch</code> prefix to all structs provided by the runtime/primitives to the end-user.</li>\n<li>Adding the <code>synch</code> prefix to all functions provided by the runtime/primitives to the end-user.</li>\n<li>Extensive documentation for the API.</li>\n<li>Create a <code>doxygen</code> configuration file for auto-generating man-pages/documentation.</li>\n<li>API documentation is now provided at GitHub pages: <a href=\"https://nkallima.github.io/sim-universal-construction/index.html\">https://nkallima.github.io/sim-universal-construction/index.html</a>.</li>\n<li>A code coverage report is provided through codecov.io for the validation script.</li>\n<li>Support for installing the framework.</li>\n<li>Improvements on the build environment.</li>\n<li>Expansion of the CONTRIBUTING.md.</li>\n<li>Providing a short discussion (see PERFORMANCE.md) of the expected performance for the various objects provided by the framework.</li>\n<li>The <code>bench.sh</code> and <code>validate.sh</code> scripts use similar arguments as the provided benchmarks.</li>\n</ul>", 
+    "license": "other-open", 
+    "title": "Synch: A framework for concurrent data-structures and benchmarks", 
+    "version": "v3.0.0", 
+    "upload_type": "software", 
+    "publication_date": "2021-08-31", 
+    "creators": [
+        {
+            "affiliation": "Institute of Computer Science - Foundation for Research and Technology-Hellas (FORTH-ICS)", 
+            "name": "Nikolaos D. Kallimanis",
+            "orcid": "0000-0002-0331-1475"
+        }
+    ], 
+    "access_right": "open", 
+    "related_identifiers": [
+        {
+            "scheme": "url", 
+            "identifier": "https://github.com/nkallima/sim-universal-construction/tree/v3.0.0", 
+            "relation": "isSupplementTo"
+        }, 
+        {
+            "scheme": "doi", 
+            "identifier": "10.5281/zenodo.5347894", 
+            "relation": "isVersionOf"
+        }
+    ]
+}
