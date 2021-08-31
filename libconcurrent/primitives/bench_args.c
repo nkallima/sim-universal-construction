@@ -1,10 +1,13 @@
 #include <unistd.h>
 #include <getopt.h>
+#include <stdio.h>
 
 #include <bench_args.h>
 #include <primitives.h>
 #include <config.h>
 #include <hsynch.h>
+#include <threadtools.h>
+#include <stdlib.h>
 
 static void printHelp(const char *exec_name) {
     fprintf(stderr,
@@ -22,7 +25,7 @@ static void printHelp(const char *exec_name) {
             exec_name);
 }
 
-void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
+void synchParseArguments(SynchBenchArgs *bench_args, int argc, char *argv[]) {
     int opt, long_index;
 
     static struct option long_options[] =
@@ -37,10 +40,10 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
              {0, 0, 0, 0}};
 
     // Setting some default values, the user may overide them
-    bench_args->nthreads = getNCores();
-    bench_args->runs = RUNS;
-    bench_args->fibers_per_thread = _DONT_USE_UTHREADS_;
-    bench_args->max_work = MAX_WORK;
+    bench_args->nthreads = synchGetNCores();
+    bench_args->runs = SYNCH_RUNS;
+    bench_args->fibers_per_thread = SYNCH_DONT_USE_UTHREADS;
+    bench_args->max_work = SYNCH_MAX_WORK;
     bench_args->backoff_high = 0;
     bench_args->backoff_low = 0;
     bench_args->numa_nodes = HSYNCH_DEFAULT_NUMA_POLICY;
@@ -83,8 +86,7 @@ void parseArguments(BenchArgs *bench_args, int argc, char *argv[]) {
         }
     }
     // Set the correct number for total number of threads
-    if (bench_args->fibers_per_thread != _DONT_USE_UTHREADS_)
-        bench_args->nthreads *= bench_args->fibers_per_thread;
+    if (bench_args->fibers_per_thread != SYNCH_DONT_USE_UTHREADS) bench_args->nthreads *= bench_args->fibers_per_thread;
 
     bench_args->total_runs = bench_args->runs;
     bench_args->runs /= bench_args->nthreads;

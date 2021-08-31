@@ -1,19 +1,20 @@
 #include <ccstack.h>
+#include <pool.h>
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
 static const int POP_OP = INT_MIN;
-static __thread PoolStruct pool_node CACHE_ALIGN;
+static __thread SynchPoolStruct pool_node CACHE_ALIGN;
 
 void CCStackInit(CCStackStruct *stack_object_struct, uint32_t nthreads) {
     CCSynchStructInit(&stack_object_struct->object_struct, nthreads);
-    stack_object_struct->top = null;
-    StoreFence();
+    stack_object_struct->top = NULL;
+    synchStoreFence();
 }
 
 void CCStackThreadStateInit(CCStackStruct *object_struct, CCStackThreadState *lobject_struct, int pid) {
     CCSynchThreadStateInit(&object_struct->object_struct, &lobject_struct->th_state, (int)pid);
-    init_pool(&pool_node, sizeof(Node));
+    synchInitPool(&pool_node, sizeof(Node));
 }
 
 inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
@@ -21,11 +22,11 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         volatile CCStackStruct *st = (CCStackStruct *)state;
         volatile Node *node = st->top;
 
-        if (st->top != null) {
+        if (st->top != NULL) {
             RetVal ret = node->val;
             st->top = st->top->next;
-            NonTSOFence();
-            recycle_obj(&pool_node, (void *)node);
+            synchNonTSOFence();
+            synchRecycleObj(&pool_node, (void *)node);
             return ret;
         } else
             return EMPTY_STACK;
@@ -33,11 +34,11 @@ inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
         CCStackStruct *st = (CCStackStruct *)state;
         Node *node;
 
-        node = alloc_obj(&pool_node);
+        node = synchAllocObj(&pool_node);
         node->next = st->top;
         node->val = arg;
         st->top = node;
-        NonTSOFence();
+        synchNonTSOFence();
 
         return PUSH_SUCCESS;
     }

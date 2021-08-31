@@ -1,6 +1,7 @@
 #include <hsynch.h>
+#include <threadtools.h>
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
 #    include <numa.h>
 #endif
 
@@ -17,11 +18,11 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     int help_bound = HSYNCH_HELP_FACTOR * l->nthreads;
 
     next_node = st_thread->next_node;
-    next_node->next = null;
+    next_node->next = NULL;
     next_node->locked = true;
     next_node->completed = false;
 
-    cur = (volatile HSynchNode *)SWAP(&l->Tail[node_of_thread].ptr, next_node);
+    cur = (volatile HSynchNode *)synchSWAP(&l->Tail[node_of_thread].ptr, next_node);
     cur->arg_ret = arg;
     cur->pid = pid;
     cur->next = (HSynchNode *)next_node;
@@ -29,7 +30,7 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
     st_thread->next_node = (HSynchNode *)cur;
 
     while (cur->locked) // spinning
-        resched();
+        synchResched();
 
     p = cur;            // I am not been helped
     if (cur->completed) // I have been helped
@@ -38,17 +39,17 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
 #ifdef DEBUG
     l->rounds++;
 #endif
-    while (counter < help_bound && p->next != null) {
-        ReadPrefetch(p->next);
+    while (counter < help_bound && p->next != NULL) {
+        synchReadPrefetch(p->next);
         counter++;
 #ifdef DEBUG
         l->counter++;
 #endif
         tmp_next = p->next;
         p->arg_ret = sfunc(state, p->arg_ret, p->pid);
-        NonTSOFence();
+        synchNonTSOFence();
         p->completed = true;
-        NonTSOFence();
+        synchNonTSOFence();
         p->locked = false;
         p = tmp_next;
     }
@@ -62,23 +63,23 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
     HSynchNode *last_node = NULL;
     uint32_t node_index = 0;
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
     if (l->numa_policy) {
-        if (getPreferedCore() != -1) {
-            node_of_thread = numa_node_of_cpu(getPreferedCore());
+        if (synchGetPreferedCore() != -1) {
+            node_of_thread = numa_node_of_cpu(synchGetPreferedCore());
             if (node_of_thread == -1)
                 node_of_thread = pid / l->numa_node_size;
         }
     } else {
         int ncpus = numa_num_configured_cpus();
         if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2) && ncpus > 1) {
-            int actual_numa_node = numa_node_of_cpu(getPreferedCore());
+            int actual_numa_node = numa_node_of_cpu(synchGetPreferedCore());
             int actual_per_manual = numa_num_task_nodes() / l->numa_nodes;
             if (actual_per_manual != 0)
                 node_of_thread = actual_numa_node / actual_per_manual;
             else {
                 int threads_per_node = l->nthreads / l->numa_nodes;
-                node_of_thread = getPreferedCore() / threads_per_node;
+                node_of_thread = synchGetPreferedCore() / threads_per_node;
             }
         } else {
             node_of_thread = pid / l->numa_node_size;
@@ -89,19 +90,18 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
 #endif
 
     if (l->nodes[node_of_thread] == NULL) {
-        HSynchNode *ptr = getAlignedMemory(CACHE_LINE_SIZE, (l->numa_node_size + 2) * sizeof(HSynchNode));
+        HSynchNode *ptr = synchGetAlignedMemory(CACHE_LINE_SIZE, (l->numa_node_size + 2) * sizeof(HSynchNode));
 
         last_node = &ptr[l->numa_node_size + 1];
         last_node->next = NULL;
         last_node->locked = false;
         last_node->completed = false;
 
-        if (CASPTR(&l->nodes[node_of_thread], NULL, ptr) == false)
-            freeMemory(ptr, (l->numa_node_size + 2) * sizeof(HSynchNode));
+        if (synchCASPTR(&l->nodes[node_of_thread], NULL, ptr) == false) synchFreeMemory(ptr, (l->numa_node_size + 2) * sizeof(HSynchNode));
     }
     last_node = l->nodes[node_of_thread] + l->numa_node_size + 1;
-    CASPTR(&l->Tail[node_of_thread].ptr, NULL, last_node);
-    node_index = FAA32(&l->node_indexes[node_of_thread], 1);
+    synchCASPTR(&l->Tail[node_of_thread].ptr, NULL, last_node);
+    node_index = synchFAA32(&l->node_indexes[node_of_thread], 1);
     st_thread->next_node = l->nodes[node_of_thread] + node_index;
 }
 
@@ -127,7 +127,7 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
         // better performance. The user usually overides HSYNCH_DEFAULT_NUMA_POLICY
         // by setting the '-n' argument in the executable of the benchmarks.
         l->numa_policy = true;
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
         l->numa_nodes = numa_num_task_nodes();
         l->numa_node_size = nthreads / l->numa_nodes + (nthreads % l->numa_nodes);
 #else
@@ -145,9 +145,9 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
     }
 
     l->central_lock = CLHLockInit(nthreads);
-    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNode *));
-    l->Tail = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNodePtr));
-    l->node_indexes = getAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(uint32_t));
+    l->nodes = synchGetAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNode *));
+    l->Tail = synchGetAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(HSynchNodePtr));
+    l->node_indexes = synchGetAlignedMemory(CACHE_LINE_SIZE, l->numa_nodes * sizeof(uint32_t));
     for (i = 0; i < l->numa_nodes; i++) {
         l->node_indexes[i] = 0;
         l->nodes[i] = NULL;
@@ -156,5 +156,5 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
 #ifdef DEBUG
     l->rounds = l->counter = 0;
 #endif
-    StoreFence();
+    synchStoreFence();
 }

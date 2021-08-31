@@ -1,4 +1,5 @@
 #include <dsmsynch.h>
+#include <threadtools.h>
 
 static const int DSMSYNCH_HELP_FACTOR = 10;
 
@@ -12,20 +13,20 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     st_thread->toggle = 1 - st_thread->toggle;
     mynode = st_thread->MyNodes[st_thread->toggle];
 
-    mynode->next = null;
+    mynode->next = NULL;
     mynode->arg_ret = arg;
     mynode->pid = pid;
     mynode->locked = true;
     mynode->completed = false;
     mynode->pid = pid;
 
-    mypred = (DSMSynchNode *)SWAP(&l->Tail, mynode);
-    if (mypred != null) {
+    mypred = (DSMSynchNode *)synchSWAP(&l->Tail, mynode);
+    if (mypred != NULL) {
         mypred->next = (DSMSynchNode *)mynode;
-        FullFence();
+        synchFullFence();
 
         while (mynode->locked) {
-            resched();
+            synchResched();
         }
         if (mynode->completed) // operation has already applied
             return mynode->arg_ret;
@@ -37,60 +38,59 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     counter = 0;
     p = mynode;
     do { // I surely do it for myself
-        ReadPrefetch(p->next);
+        synchReadPrefetch(p->next);
         counter++;
 #ifdef DEBUG
         l->counter += 1;
 #endif
         p->arg_ret = sfunc(state, p->arg_ret, p->pid);
-        NonTSOFence();
+        synchNonTSOFence();
         p->completed = true;
-        NonTSOFence();
+        synchNonTSOFence();
         p->locked = false;
-        if (p->next == null || p->next->next == null || counter >= help_bound)
+        if (p->next == NULL || p->next->next == NULL || counter >= help_bound)
             break;
         p = p->next;
     } while (true);
     // End critical section
-    if (p->next == null) {
-        if (l->Tail == p && CASPTR(&l->Tail, p, null) == true)
-            return mynode->arg_ret;
-        while (p->next == null) {
-            resched();
+    if (p->next == NULL) {
+        if (l->Tail == p && synchCASPTR(&l->Tail, p, NULL) == true) return mynode->arg_ret;
+        while (p->next == NULL) {
+            synchResched();
         }
     }
-    NonTSOFence();
+    synchNonTSOFence();
     p->next->locked = false;
-    FullFence();
+    synchFullFence();
 
     return mynode->arg_ret;
 }
 
 void DSMSynchStructInit(DSMSynchStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
-    l->Tail = null;
+    l->Tail = NULL;
 
-#ifdef SYNCH_COMPACT_ALLOCATION
-    l->nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
-#else
-    l->nodes = NULL;
-#endif
+    if (synchGetMachineModel() == INTEL_X86_MACHINE) {
+        l->nodes = NULL;
+    } else {
+        l->nodes = synchGetAlignedMemory(CACHE_LINE_SIZE, 2 * nthreads * sizeof(DSMSynchNode));
+    }
 
 #ifdef DEBUG
     l->counter = 0;
 #endif
-    FullFence();
+    synchFullFence();
 }
 
 void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, int pid) {
-#ifdef SYNCH_COMPACT_ALLOCATION
-    st_thread->MyNodes[0] = &l->nodes[2 * pid];
-    st_thread->MyNodes[1] = &l->nodes[2 * pid + 1];
-#else
-    DSMSynchNode *nodes = getAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
-    st_thread->MyNodes[0] = &nodes[0];
-    st_thread->MyNodes[1] = &nodes[1];
-#endif
+    if (synchGetMachineModel() == INTEL_X86_MACHINE) {
+        DSMSynchNode *nodes = synchGetAlignedMemory(CACHE_LINE_SIZE, 2 * sizeof(DSMSynchNode));
+        st_thread->MyNodes[0] = &nodes[0];
+        st_thread->MyNodes[1] = &nodes[1];
+    } else {
+        st_thread->MyNodes[0] = &l->nodes[2 * pid];
+        st_thread->MyNodes[1] = &l->nodes[2 * pid + 1];
+    }
 
     st_thread->toggle = 0;
 }

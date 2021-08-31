@@ -1,49 +1,51 @@
 #include <barrier.h>
+#include <primitives.h>
+#include <threadtools.h>
 
-inline void BarrierSet(Barrier *bar, uint32_t n) {
+inline void synchBarrierSet(SynchBarrier *bar, uint32_t n) {
     bar->arrive = n;
     bar->leave = n;
     bar->arrive_flag = true;
     bar->leave_flag = true;
     bar->val_at_set = n;
-    FullFence();
+    synchFullFence();
 }
 
-inline void BarrierWait(Barrier *bar) {
-    if (FAA32(&bar->arrive, -1) > 1) {
+inline void synchBarrierWait(SynchBarrier *bar) {
+    if (synchFAA32(&bar->arrive, -1) > 1) {
         while (bar->arrive_flag)
-            resched();
+            synchResched();
     } else {
         bar->arrive = bar->val_at_set;
-        NonTSOFence();
+        synchNonTSOFence();
         bar->leave_flag = true;
-        NonTSOFence();
+        synchNonTSOFence();
         bar->arrive_flag = false;
-        FullFence();
+        synchFullFence();
     }
 
-    FullFence();
-    if (FAA32(&bar->leave, -1) > 1) {
+    synchFullFence();
+    if (synchFAA32(&bar->leave, -1) > 1) {
         while (bar->leave_flag)
-            resched();
+            synchResched();
     } else {
         bar->leave = bar->val_at_set;
-        NonTSOFence();
+        synchNonTSOFence();
         bar->arrive_flag = true;
-        NonTSOFence();
+        synchNonTSOFence();
         bar->leave_flag = false;
-        FullFence();
+        synchFullFence();
     }
 }
 
-inline void BarrierLeave(Barrier *bar) {
-    FAA32(&bar->arrive, -1);
-    FAA32(&bar->leave, -1);
+inline void synchBarrierLeave(SynchBarrier *bar) {
+    synchFAA32(&bar->arrive, -1);
+    synchFAA32(&bar->leave, -1);
 }
 
-inline void BarrierLastLeave(Barrier *bar) {
-    BarrierLeave(bar);
+inline void synchBarrierLastLeave(SynchBarrier *bar) {
+    synchBarrierLeave(bar);
     while (bar->arrive != 0 && bar->leave != 0) {
-        resched();
+        synchResched();
     }
 }

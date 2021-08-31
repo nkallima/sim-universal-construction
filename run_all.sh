@@ -1,22 +1,15 @@
 #!/bin/bash
 
-result_file="results.txt"
+result_file="./results.txt"
+script_path=$(dirname ${BASH_SOURCE[0]})
 
 # Remove the resuts file if exists
 if [ -f $result_file ] ; then
     rm $result_file
 fi
 
-printf "Compiling..."
-make all > /dev/null
-# Stop the script if there is a compile error
-if [ $? -ne 0 ]; then
-   exit
-fi
-printf " Done\n"
-
 # Get a string with all available benchmarks
-benchmarks_string=$(./bench.sh -l)
+benchmarks_string=$($script_path/bench.sh -l)
 
 # Put the benchmarks into an array
 benchmark_array=($(echo $benchmarks_string | tr " " "\n"))
@@ -28,7 +21,7 @@ do
    index=$((i+1))
    printf "\nExecuting ${benchmark_array[$i]} ($index/$number_of_benchmarks)" | tee -a $result_file
    printf "\n========================================\n" >> $result_file
-   ./bench.sh ${benchmark_array[$i]} >> $result_file
+   $script_path/bench.sh ${benchmark_array[$i]} >> $result_file
    printf "\n\n" >> $result_file
    printf " ...Done\n"
 done

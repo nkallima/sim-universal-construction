@@ -1,8 +1,15 @@
 #include <primitives.h>
+#include <time.h>
+#include <malloc.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
 #    include <numa.h>
 #endif
+
+#define MAX_VENDOR_STR_SIZE 64
 
 #ifdef DEBUG
 extern __thread int64_t __failed_cas;
@@ -89,7 +96,7 @@ inline uint64_t __BitTAS64(volatile uint64_t *A, unsigned char B) {
     return bit;
 }
 
-inline int bitSearchFirst(uint64_t B) {
+inline int synchBitSearchFirst(uint64_t B) {
     uint64_t A;
 
     asm("bsfq %0, %1;" : "=d"(A) : "d"(B));
@@ -97,7 +104,7 @@ inline int bitSearchFirst(uint64_t B) {
     return (int)A;
 }
 
-inline uint64_t nonZeroBits(uint64_t v) {
+inline uint64_t synchNonZeroBits(uint64_t v) {
     uint64_t c;
 
     for (c = 0; v; v >>= 1)
@@ -131,25 +138,25 @@ inline bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t
     return res;
 }
 
-inline void *getMemory(size_t size) {
+inline void *synchGetMemory(size_t size) {
     void *p;
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
     p = numa_alloc_local(size);
 #else
     p = malloc(size);
 #endif
-    if (p == null) {
+    if (p == NULL) {
         perror("memory allocation fail");
         exit(EXIT_FAILURE);
     } else
         return p;
 }
 
-inline void *getAlignedMemory(size_t align, size_t size) {
+inline void *synchGetAlignedMemory(size_t align, size_t size) {
     void *p;
 
-#ifdef NUMA_SUPPORT
+#ifdef SYNCH_NUMA_SUPPORT
     p = numa_alloc_local(size + align);
     long plong = (long)p;
     plong += align;
@@ -159,28 +166,58 @@ inline void *getAlignedMemory(size_t align, size_t size) {
     p = (void *)memalign(align, size);
 #endif
 
-    if (p == null) {
+    if (p == NULL) {
         perror("memory allocation fail");
         exit(EXIT_FAILURE);
     } else
         return p;
 }
 
-inline void freeMemory(void *ptr, size_t size) {
-#ifdef NUMA_SUPPORT
+inline void synchFreeMemory(void *ptr, size_t size) {
+#ifdef SYNCH_NUMA_SUPPORT
     numa_free(ptr, size);
 #else
     free(ptr);
 #endif
 }
 
-inline int64_t getTimeMillis(void) {
+inline int64_t synchGetTimeMillis(void) {
     struct timespec tm;
 
     if (clock_gettime(CLOCK_MONOTONIC, &tm) == -1) {
         perror("clock_gettime");
         return 0;
     } else return tm.tv_sec*1000LL + tm.tv_nsec/1000000LL;
+}
+
+inline uint64_t synchGetMachineModel(void) {
+#if defined(__amd64__) || defined(__x86_64__)
+    char cpu_model[MAX_VENDOR_STR_SIZE] = {'\0'};
+
+    asm volatile("movl $0, %%eax\n"
+                 "cpuid\n"
+                 "movl %%ebx, %0\n"
+                 "movl %%edx, %1\n"
+                 "movl %%ecx, %2\n"
+                 : "=m"(cpu_model[0]), "=m"(cpu_model[4]), "=m"(cpu_model[8])
+                 :: "%eax", "%ebx", "%edx", "%ecx", "memory");
+#ifdef DEBUG
+    fprintf(stderr, "DEBUG: Machine model: %s\n", cpu_model);
+#endif
+
+    if (strcmp(cpu_model, "AuthenticAMD") == 0)
+        return AMD_X86_MACHINE;
+    else if (strcmp(cpu_model, "GenuineIntel") == 0)
+        return INTEL_X86_MACHINE;
+    else
+        return X86_GENERIC_MACHINE;
+#elif defined(__aarch64__)
+    return ARM_GENERIC_MACHINE;
+#elif defined(__riscv__) || defined(__riscv)
+    return RISCV_GENERIC_MACHINE;
+#else
+    return UNKNOWN_MACHINE;
+#endif
 }
 
 inline bool _CASPTR(void *A, void *B, void *C) {
@@ -227,15 +264,14 @@ inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {
 
 inline void *_SWAP(void *A, void *B) {
 #if defined(_EMULATE_SWAP_)
-#    warning SWAP instructions are simulated!
+#    warning synchSWAP instructions are simulated!
     void *old_val;
     void *new_val;
 
     while (true) {
         old_val = (void *)*((volatile long *)A);
         new_val = B;
-        if (((void *)*((volatile long *)A)) == old_val && CASPTR(A, old_val, new_val) == true)
-            break;
+        if (((void *)*((volatile long *)A)) == old_val && synchCASPTR(A, old_val, new_val) == true) break;
     }
 #    ifdef DEBUG
     __executed_swap++;
@@ -261,8 +297,7 @@ inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
     while (true) {
         old_val = *((int32_t *volatile)A);
         new_val = old_val + B;
-        if (*A == old_val && CAS32(A, old_val, new_val) == true)
-            break;
+        if (*A == old_val && synchCAS32(A, old_val, new_val) == true) break;
     }
 #    ifdef DEBUG
     __executed_faa++;
@@ -288,8 +323,7 @@ inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
     while (true) {
         old_val = *((int64_t *volatile)A);
         new_val = old_val + B;
-        if (*A == old_val && CAS64(A, old_val, new_val) == true)
-            break;
+        if (*A == old_val && synchCAS64(A, old_val, new_val) == true) break;
     }
 #    ifdef DEBUG
     __executed_faa++;

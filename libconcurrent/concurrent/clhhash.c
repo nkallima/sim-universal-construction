@@ -1,25 +1,27 @@
 #include <clhhash.h>
+#include <stdbool.h>
+#include <limits.h>
 
 static inline int64_t hash_func(CLHHash *hash, int64_t key);
 static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid);
 
 static const int HT_INSERT = 0, HT_DELETE = 1, HT_SEARCH = 2;
 
-inline void CLHHashInit(CLHHash *hash, int hash_size, int nthreads) {
+inline void CLHHashStructInit(CLHHash *hash, int num_cells, int nthreads) {
     int i;
 
-    hash->size = hash_size;
-    hash->announce = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(HashOperations));
-    hash->synch = getAlignedMemory(CACHE_LINE_SIZE, hash_size * sizeof(CLHLockStruct *));
-    hash->buckets = getAlignedMemory(CACHE_LINE_SIZE, hash_size * sizeof(ptr_aligned_t));
-    for (i = 0; i < hash_size; i++) {
+    hash->size = num_cells;
+    hash->announce = synchGetAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(HashOperations));
+    hash->synch = synchGetAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(CLHLockStruct *));
+    hash->cells = synchGetAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(ptr_aligned_t));
+    for (i = 0; i < num_cells; i++) {
         hash->synch[i] = CLHLockInit(nthreads);
-        hash->buckets[i].ptr = null;
+        hash->cells[i].ptr = NULL;
     }
 }
 
-inline void CLHHashThreadStateInit(CLHHash *hash, CLHHashThreadState *th_state, int hash_size, int pid) {
-    init_pool(&th_state->pool, sizeof(HashNode));
+inline void CLHHashThreadStateInit(CLHHash *hash, CLHHashThreadState *th_state, int num_cells, int pid) {
+    synchInitPool(&th_state->pool, sizeof(HashNode));
 }
 
 static inline int64_t hash_func(CLHHash *hash, int64_t key) {
@@ -31,19 +33,19 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
     int64_t key;
     int64_t value;
     CLHHash *hash = (CLHHash *)h;
-    ptr_aligned_t *buckets;
+    ptr_aligned_t *cells;
     HashNode *top;
 
     arg = hash->announce[pid];
     key = arg.key;
     value = arg.value;
-    buckets = (ptr_aligned_t *)hash->buckets;
-    top = buckets[arg.bucket].ptr;
+    cells = (ptr_aligned_t *)hash->cells;
+    top = cells[arg.cell].ptr;
     if (arg.op == HT_INSERT) {
         bool found = false;
         HashNode *cur = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -54,14 +56,14 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
             arg.node->key = key;
             arg.node->value = value;
             arg.node->next = top;
-            buckets[arg.bucket].ptr = arg.node;
+            cells[arg.cell].ptr = arg.node;
         }
         return true;
     } else if (arg.op == HT_DELETE) {
         bool found = false;
         HashNode *cur = top, *prev = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -81,7 +83,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
         bool found = false;
         HashNode *cur = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -92,34 +94,40 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
     }
 }
 
-inline void CLHHashInsert(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int64_t value, int pid) {
+inline bool CLHHashInsert(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int64_t value, int pid) {
     HashOperations args;
+    RetVal ret;
 
     args.op = HT_INSERT;
     args.key = key;
     args.value = value;
-    args.bucket = hash_func(hash, key);
-    args.node = alloc_obj(&th_state->pool);
+    args.cell = hash_func(hash, key);
+    args.node = synchAllocObj(&th_state->pool);
     hash->announce[pid] = args;
 
-    CLHLock(hash->synch[args.bucket], pid);
-    serialOperations((void *)hash, 0, pid);
-    CLHUnlock(hash->synch[args.bucket], pid);
+    CLHLock(hash->synch[args.cell], pid);
+    ret = serialOperations((void *)hash, 0, pid);
+    CLHUnlock(hash->synch[args.cell], pid);
+
+    return ret;
 }
 
-inline void CLHHashSearch(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int pid) {
+inline RetVal CLHHashSearch(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int pid) {
     HashOperations args;
+    RetVal ret;
 
     args.op = HT_SEARCH;
     args.key = key;
     args.value = INT_MIN;
-    args.bucket = hash_func(hash, key);
-    args.node = alloc_obj(&th_state->pool);
+    args.cell = hash_func(hash, key);
+    args.node = synchAllocObj(&th_state->pool);
     hash->announce[pid] = args;
 
-    CLHLock(hash->synch[args.bucket], pid);
-    serialOperations((void *)hash, 0, pid);
-    CLHUnlock(hash->synch[args.bucket], pid);
+    CLHLock(hash->synch[args.cell], pid);
+    ret = serialOperations((void *)hash, 0, pid);
+    CLHUnlock(hash->synch[args.cell], pid);
+
+    return ret;
 }
 
 inline void CLHHashDelete(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int pid) {
@@ -128,11 +136,11 @@ inline void CLHHashDelete(CLHHash *hash, CLHHashThreadState *th_state, int64_t k
     args.op = HT_DELETE;
     args.key = key;
     args.value = INT_MIN;
-    args.bucket = hash_func(hash, key);
-    args.node = alloc_obj(&th_state->pool);
+    args.cell = hash_func(hash, key);
+    args.node = synchAllocObj(&th_state->pool);
     hash->announce[pid] = args;
 
-    CLHLock(hash->synch[args.bucket], pid);
+    CLHLock(hash->synch[args.cell], pid);
     serialOperations((void *)hash, 0, pid);
-    CLHUnlock(hash->synch[args.bucket], pid);
+    CLHUnlock(hash->synch[args.cell], pid);
 }

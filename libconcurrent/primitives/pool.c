@@ -2,14 +2,17 @@
 
 #include <config.h>
 #include <pool.h>
+#include <stdio.h>
+
+#define POOL_BLOCK_METADATA_SIZE sizeof(SynchPoolBlockMetadata)
 
 static const uint32_t BLOCK_SIZE = 4096 * 8192;
 
 static void *get_new_block(uint32_t obj_size) {
-    PoolBlock *block;
-    block = getAlignedMemory(CACHE_LINE_SIZE, BLOCK_SIZE);
-    block->metadata.entries = (BLOCK_SIZE - POOL_BLOCK_METADATA) / obj_size;
-    block->metadata.free_entries = (BLOCK_SIZE - POOL_BLOCK_METADATA) / obj_size;
+    SynchPoolBlock *block;
+    block = synchGetAlignedMemory(CACHE_LINE_SIZE, BLOCK_SIZE);
+    block->metadata.entries = (BLOCK_SIZE - POOL_BLOCK_METADATA_SIZE) / obj_size;
+    block->metadata.free_entries = (BLOCK_SIZE - POOL_BLOCK_METADATA_SIZE) / obj_size;
     block->metadata.cur_entry = 0;
     block->metadata.object_size = obj_size;
     block->metadata.next = NULL;
@@ -18,10 +21,10 @@ static void *get_new_block(uint32_t obj_size) {
     return block;
 }
 
-int init_pool(PoolStruct *pool, uint32_t obj_size) {
-    PoolBlock *block;
+int synchInitPool(SynchPoolStruct *pool, uint32_t obj_size) {
+    SynchPoolBlock *block;
 
-    if (obj_size > BLOCK_SIZE - POOL_BLOCK_METADATA) {
+    if (obj_size > BLOCK_SIZE - POOL_BLOCK_METADATA_SIZE) {
         fprintf(stderr, "ERROR: init_pool: object size unsupported\n");
 
         return POOL_INIT_ERROR;
@@ -32,7 +35,7 @@ int init_pool(PoolStruct *pool, uint32_t obj_size) {
     // Get the first block of the pool
     block = get_new_block(obj_size);
 
-    pool->entries_per_block = (BLOCK_SIZE - POOL_BLOCK_METADATA) / obj_size;
+    pool->entries_per_block = (BLOCK_SIZE - POOL_BLOCK_METADATA_SIZE) / obj_size;
     pool->obj_size = obj_size;
     pool->recycle_list = NULL;
     pool->head_block = block;
@@ -41,8 +44,8 @@ int init_pool(PoolStruct *pool, uint32_t obj_size) {
     return POOL_INIT_SUCC;
 }
 
-void *alloc_obj(PoolStruct *pool) {
-    BlockObject *ret = NULL;
+void *synchAllocObj(SynchPoolStruct *pool) {
+    SynchBlockObject *ret = NULL;
 
     if (pool->recycle_list == NULL) {
         if (pool->cur_block->metadata.free_entries > 0) {
@@ -53,11 +56,11 @@ void *alloc_obj(PoolStruct *pool) {
             if (pool->cur_block->metadata.next != NULL) {
                 pool->cur_block = pool->cur_block->metadata.next;
             } else {
-                PoolBlock *new_block = get_new_block(pool->obj_size);
+                SynchPoolBlock *new_block = get_new_block(pool->obj_size);
                 new_block->metadata.back = pool->cur_block;
                 pool->cur_block = new_block;
             }
-            ret = alloc_obj(pool);
+            ret = synchAllocObj(pool);
         }
     } else {
         ret = pool->recycle_list;
@@ -71,15 +74,15 @@ void *alloc_obj(PoolStruct *pool) {
     return ret;
 }
 
-void recycle_obj(PoolStruct *pool, void *obj) {
-#ifndef POOL_NODE_RECYCLING_DISABLE
-    BlockObject *object = obj;
+void synchRecycleObj(SynchPoolStruct *pool, void *obj) {
+#ifndef SYNCH_POOL_NODE_RECYCLING_DISABLE
+    SynchBlockObject *object = obj;
     object->next = pool->recycle_list;
     pool->recycle_list = object;
 #endif
 }
 
-void rollback(PoolStruct *pool, uint32_t num_objs) {
+void synchRollback(SynchPoolStruct *pool, uint32_t num_objs) {
     while (num_objs > 0) {
         if (num_objs > pool->cur_block->metadata.cur_entry) {
             num_objs -= pool->cur_block->metadata.cur_entry;
@@ -97,11 +100,11 @@ void rollback(PoolStruct *pool, uint32_t num_objs) {
     }
 }
 
-void destroy_pool(PoolStruct *pool) {
+void synchDestroyPool(SynchPoolStruct *pool) {
     while (pool->head_block != NULL) {
-        PoolBlock *block = pool->head_block;
+        SynchPoolBlock *block = pool->head_block;
         pool->head_block = pool->head_block->metadata.next;
-        freeMemory(block, BLOCK_SIZE);
+        synchFreeMemory(block, BLOCK_SIZE);
     }
     pool->head_block = NULL;
     pool->cur_block = NULL;

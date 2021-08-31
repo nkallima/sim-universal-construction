@@ -1,29 +1,30 @@
 #include <dsmhash.h>
+#include <limits.h>
 
 static inline int64_t hash_func(DSMHash *hash, int64_t key);
 static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid);
 
 static const int HT_INSERT = 0, HT_DELETE = 1, HT_SEARCH = 2;
 
-inline void DSMHashInit(DSMHash *hash, int hash_size, int nthreads) {
+inline void DSMHashInit(DSMHash *hash, int num_cells, int nthreads) {
     int i;
 
-    hash->size = hash_size;
-    hash->announce = getAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(HashOperations));
-    hash->synch = getAlignedMemory(CACHE_LINE_SIZE, hash_size * sizeof(DSMSynchStruct));
-    hash->buckets = getAlignedMemory(CACHE_LINE_SIZE, hash_size * sizeof(ptr_aligned_t));
-    for (i = 0; i < hash_size; i++) {
+    hash->size = num_cells;
+    hash->announce = synchGetAlignedMemory(CACHE_LINE_SIZE, nthreads * sizeof(HashOperations));
+    hash->synch = synchGetAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(DSMSynchStruct));
+    hash->cells = synchGetAlignedMemory(CACHE_LINE_SIZE, num_cells * sizeof(ptr_aligned_t));
+    for (i = 0; i < num_cells; i++) {
         DSMSynchStructInit(&hash->synch[i], nthreads);
-        hash->buckets[i].ptr = null;
+        hash->cells[i].ptr = NULL;
     }
 }
 
-inline void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, int hash_size, int pid) {
+inline void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, int num_cells, int pid) {
     int i;
 
-    th_state->th_state = getMemory(hash_size * sizeof(DSMSynchThreadState));
-    init_pool(&th_state->pool, sizeof(HashNode));
-    for (i = 0; i < hash_size; i++)
+    th_state->th_state = synchGetMemory(num_cells * sizeof(DSMSynchThreadState));
+    synchInitPool(&th_state->pool, sizeof(HashNode));
+    for (i = 0; i < num_cells; i++)
         DSMSynchThreadStateInit(&hash->synch[i], &th_state->th_state[i], pid);
 }
 
@@ -36,19 +37,19 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
     int64_t key;
     int64_t value;
     DSMHash *hash = (DSMHash *)h;
-    ptr_aligned_t *buckets;
+    ptr_aligned_t *cells;
     HashNode *top;
 
     arg = hash->announce[pid];
     key = arg.key;
     value = arg.value;
-    buckets = (ptr_aligned_t *)hash->buckets;
-    top = buckets[arg.bucket].ptr;
+    cells = (ptr_aligned_t *)hash->cells;
+    top = cells[arg.cell].ptr;
     if (arg.op == HT_INSERT) {
         bool found = false;
         HashNode *cur = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -59,14 +60,14 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
             arg.node->key = key;
             arg.node->value = value;
             arg.node->next = top;
-            buckets[arg.bucket].ptr = arg.node;
+            cells[arg.cell].ptr = arg.node;
         }
         return true;
     } else if (arg.op == HT_DELETE) {
         bool found = false;
         HashNode *cur = top, *prev = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -86,7 +87,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
         bool found = false;
         HashNode *cur = top;
 
-        while (cur != null && found == false) {
+        while (cur != NULL && found == false) {
             if (cur->key == key) {
                 found = true;
                 break;
@@ -97,28 +98,31 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
     }
 }
 
-inline void DSMHashInsert(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int64_t value, int pid) {
+inline bool DSMHashInsert(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int64_t value, int pid) {
     HashOperations args;
 
     args.op = HT_INSERT;
     args.key = key;
     args.value = value;
-    args.bucket = hash_func(hash, key);
-    args.node = alloc_obj(&th_state->pool);
+    args.cell = hash_func(hash, key);
+    args.node = synchAllocObj(&th_state->pool);
     hash->announce[pid] = args;
-    DSMSynchApplyOp(&hash->synch[args.bucket], &th_state->th_state[args.bucket], serialOperations, (void *)hash, 0, pid);
+    return DSMSynchApplyOp(&hash->synch[args.cell], &th_state->th_state[args.cell], serialOperations, (void *)hash, 0, pid);
 }
 
-inline void DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid) {
+inline RetVal DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid) {
     HashOperations args;
+    RetVal ret;
 
     args.op = HT_SEARCH;
     args.key = key;
     args.value = INT_MIN;
-    args.bucket = hash_func(hash, key);
-    args.node = null;
+    args.cell = hash_func(hash, key);
+    args.node = NULL;
     hash->announce[pid] = args;
-    DSMSynchApplyOp(&hash->synch[args.bucket], &th_state->th_state[args.bucket], serialOperations, (void *)hash, 0, pid);
+    ret = DSMSynchApplyOp(&hash->synch[args.cell], &th_state->th_state[args.cell], serialOperations, (void *)hash, 0, pid);
+
+    return ret;
 }
 
 inline void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid) {
@@ -127,8 +131,8 @@ inline void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t k
     args.op = HT_DELETE;
     args.key = key;
     args.value = INT_MIN;
-    args.bucket = hash_func(hash, key);
-    args.node = null;
+    args.cell = hash_func(hash, key);
+    args.node = NULL;
     hash->announce[pid] = args;
-    DSMSynchApplyOp(&hash->synch[args.bucket], &th_state->th_state[args.bucket], serialOperations, (void *)hash, 0, pid);
+    DSMSynchApplyOp(&hash->synch[args.cell], &th_state->th_state[args.cell], serialOperations, (void *)hash, 0, pid);
 }

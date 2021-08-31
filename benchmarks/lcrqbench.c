@@ -12,9 +12,8 @@
 
 LCRQStruct *queue_object CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-Barrier bar CACHE_ALIGN;
-BenchArgs bench_args CACHE_ALIGN;
-
+SynchBarrier bar CACHE_ALIGN;
+SynchBenchArgs bench_args CACHE_ALIGN;
 
 inline static void *Execute(void *Arg) {
     LCRQThreadState thread_state;
@@ -23,43 +22,42 @@ inline static void *Execute(void *Arg) {
     long id = (long)Arg;
 
     LCRQThreadStateInit(&thread_state, id);
-    fastRandomSetSeed(id + 1);
-    BarrierWait(&bar);
-    if (id == 0)
-        d1 = getTimeMillis();
+    synchFastRandomSetSeed(id + 1);
+    synchBarrierWait(&bar);
+    if (id == 0) d1 = synchGetTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
         // perform an enqueue operation
         LCRQEnqueue(queue_object, &thread_state, (ArgVal)id, id);
-        rnum = fastRandomRange(1, bench_args.max_work);
+        rnum = synchFastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
         // perform a dequeue operation
         LCRQDequeue(queue_object, &thread_state, id);
-        rnum = fastRandomRange(1, bench_args.max_work);
+        rnum = synchFastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
-    BarrierWait(&bar);
-    if (id == 0) d2 = getTimeMillis();
+    synchBarrierWait(&bar);
+    if (id == 0) d2 = synchGetTimeMillis();
 
 #ifdef DEBUG
-    FAA64(&queue_object->closes, thread_state.mycloses);
-    FAA64(&queue_object->unsafes, thread_state.myunsafes);
+    synchFAA64(&queue_object->closes, thread_state.mycloses);
+    synchFAA64(&queue_object->unsafes, thread_state.myunsafes);
 #endif
 
     return NULL;
 }
 
 int main(int argc, char *argv[]) {
-    parseArguments(&bench_args, argc, argv);
-    queue_object = getAlignedMemory(S_CACHE_LINE_SIZE, sizeof(LCRQStruct));
+    synchParseArguments(&bench_args, argc, argv);
+    queue_object = synchGetAlignedMemory(S_CACHE_LINE_SIZE, sizeof(LCRQStruct));
     LCRQInit(queue_object, bench_args.nthreads);
 
-    BarrierSet(&bar, bench_args.nthreads);
-    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
-    JoinThreadsN(bench_args.nthreads - 1);
-    d2 = getTimeMillis();
+    synchBarrierSet(&bar, bench_args.nthreads);
+    synchStartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    synchJoinThreadsN(bench_args.nthreads - 1);
+    d2 = synchGetTimeMillis();
 
 #ifdef DEBUG
     LCRQThreadState thread_state;
@@ -83,7 +81,7 @@ int main(int argc, char *argv[]) {
 #endif
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int) (d2 - d1), 2 * bench_args.runs * bench_args.nthreads/(1000.0*(d2 - d1)));
-    printStats(bench_args.nthreads, bench_args.total_runs);
+    synchPrintStats(bench_args.nthreads, bench_args.total_runs);
 
     return 0;
 }

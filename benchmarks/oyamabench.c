@@ -16,8 +16,8 @@
 volatile Object object CACHE_ALIGN = 1;
 volatile OyamaStruct object_lock CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
-Barrier bar CACHE_ALIGN;
-BenchArgs bench_args CACHE_ALIGN;
+SynchBarrier bar CACHE_ALIGN;
+SynchBenchArgs bench_args CACHE_ALIGN;
 
 inline static RetVal fetchAndMultiply(ArgVal arg, int pid);
 
@@ -35,36 +35,35 @@ inline static void *Execute(void *Arg) {
     volatile int j;
     long id = (long)Arg;
 
-    fastRandomSetSeed(id + 1);
-    th_state = getAlignedMemory(CACHE_LINE_SIZE, sizeof(OyamaThreadState));
+    synchFastRandomSetSeed(id + 1);
+    th_state = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(OyamaThreadState));
     OyamaThreadStateInit(th_state);
-    BarrierWait(&bar);
-    if (id == 0)
-        d1 = getTimeMillis();
+    synchBarrierWait(&bar);
+    if (id == 0) d1 = synchGetTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
         // perform a fetchAndMultiply operation
         OyamaApplyOp((OyamaStruct *)&object_lock, th_state, fetchAndMultiply, (ArgVal)id, id);
-        rnum = fastRandomRange(1, bench_args.max_work);
+        rnum = synchFastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
     }
-    BarrierWait(&bar);
-    if (id == 0) d2 = getTimeMillis();
+    synchBarrierWait(&bar);
+    if (id == 0) d2 = synchGetTimeMillis();
 
     return NULL;
 }
 
 int main(int argc, char *argv[]) {
-    parseArguments(&bench_args, argc, argv);
+    synchParseArguments(&bench_args, argc, argv);
 
     OyamaInit((OyamaStruct *)&object_lock, bench_args.nthreads);
-    BarrierSet(&bar, bench_args.nthreads);
-    StartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
-    JoinThreadsN(bench_args.nthreads - 1);
+    synchBarrierSet(&bar, bench_args.nthreads);
+    synchStartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
+    synchJoinThreadsN(bench_args.nthreads - 1);
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
-    printStats(bench_args.nthreads, bench_args.total_runs);
+    synchPrintStats(bench_args.nthreads, bench_args.total_runs);
 
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: Object state: %d\n", object_lock.counter);

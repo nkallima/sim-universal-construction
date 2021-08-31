@@ -1,51 +1,51 @@
 #include <mcs.h>
+#include <threadtools.h>
 
 void MCSLock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
     volatile MCSLockNode *prev;
 
-    NonTSOFence();
+    synchNonTSOFence();
     thread_state->MyNode->next = NULL;
-    prev = SWAP(&l->Tail, (void *)thread_state->MyNode);
+    prev = synchSWAP(&l->Tail, (void *)thread_state->MyNode);
 
     if (prev != NULL) {
         l->Tail->locked = true;
-        NonTSOFence();
+        synchNonTSOFence();
         thread_state->MyNode->locked = true;
-        NonTSOFence();
+        synchNonTSOFence();
         prev->next = thread_state->MyNode;
-        NonTSOFence();
+        synchNonTSOFence();
     }
     while (thread_state->MyNode->locked == true) {
-        resched();
+        synchResched();
     }
-    FullFence();
+    synchFullFence();
 }
 
 void MCSUnlock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
-    NonTSOFence();
+    synchNonTSOFence();
     if (thread_state->MyNode->next == NULL) {
-        if (CASPTR(&l->Tail, thread_state->MyNode, NULL))
-            return;
+        if (synchCASPTR(&l->Tail, thread_state->MyNode, NULL)) return;
 
         while (thread_state->MyNode->next == NULL) {
-            resched();
+            synchResched();
         }
     }
     thread_state->MyNode->next->locked = false;
     thread_state->MyNode->next = NULL;
-    FullFence();
+    synchFullFence();
 }
 
 MCSLockStruct *MCSLockInit(void) {
     MCSLockStruct *l;
 
-    l = getAlignedMemory(CACHE_LINE_SIZE, sizeof(MCSLockStruct));
+    l = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(MCSLockStruct));
     l->Tail = NULL;
-    FullFence();
+    synchFullFence();
 
     return l;
 }
 
 void MCSThreadStateInit(MCSThreadState *st_thread, int pid) {
-    st_thread->MyNode = getAlignedMemory(CACHE_LINE_SIZE, sizeof(MCSLockNode));
+    st_thread->MyNode = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(MCSLockNode));
 }

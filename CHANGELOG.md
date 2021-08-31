@@ -1,3 +1,21 @@
+Changelog
+---------
+
+v3.0.0
+------
+- Header-files cleanup in order to provide a better and consistent API.
+- Adding the `Synch` prefix to all structs provided by the runtime/primitives to the end-user.
+- Adding the `synch` prefix to all functions provided by the runtime/primitives to the end-user.
+- Extensive documentation for the API.
+- Create a `doxygen` configuration file for auto-generating man-pages/documentation.
+- API documentation is now provided at GitHub pages: https://nkallima.github.io/sim-universal-construction/index.html.
+- A code coverage report is provided through codecov.io for the validation script.
+- Support for installing the framework.
+- Improvements on the build environment.
+- Expansion of the CONTRIBUTING.md.
+- Providing a short discussion (see PERFORMANCE.md) of the expected performance for the various objects provided by the framework.
+- The `bench.sh` and `validate.sh` scripts use similar arguments as the provided benchmarks.
+
 v2.4.0
 ------
 - Adding the LCRQ Queue implementation (Adam Morrison and Yehuda Afek, PPoPP 2013, http://mcg.cs.tau.ac.il/projects/lcrq).

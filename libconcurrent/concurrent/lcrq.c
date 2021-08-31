@@ -60,8 +60,10 @@ inline static void count_unsafe_node(LCRQThreadState *thread_state) {
     thread_state->myunsafes++;
 }
 #else
-inline static void count_closed_crq(LCRQThreadState *thread_state) { }
-inline static void count_unsafe_node(LCRQThreadState *thread_state) { }
+inline static void count_closed_crq(LCRQThreadState *thread_state) {
+}
+inline static void count_unsafe_node(LCRQThreadState *thread_state) {
+}
 #endif
 
 inline static void init_ring(RingQueue *r) {
@@ -73,7 +75,7 @@ inline static void init_ring(RingQueue *r) {
     }
 
     r->head = r->tail = 0;
-    r->next = null;
+    r->next = NULL;
 }
 
 inline static int is_empty(uint64_t v)  {
@@ -102,14 +104,13 @@ inline static int crq_is_closed(uint64_t t) {
 
 inline static void fix_state(RingQueue *rq) {
     while (true) {
-        uint64_t t = FAA64(&rq->tail, 0);
-        uint64_t h = FAA64(&rq->head, 0);
+        uint64_t t = synchFAA64(&rq->tail, 0);
+        uint64_t h = synchFAA64(&rq->head, 0);
 
-        if (Unlikely(rq->tail != t))
-            continue;
+        if (synchUnlikely(rq->tail != t)) continue;
 
         if (h > t) {
-            if (CAS64(&rq->tail, t, h)) break;
+            if (synchCAS64(&rq->tail, t, h)) break;
             continue;
         }
         break;
@@ -118,15 +119,15 @@ inline static void fix_state(RingQueue *rq) {
 
 inline static int close_crq(RingQueue *rq, const uint64_t t, const int tries) {
     if (tries < 10)
-        return CAS64(&rq->tail, t + 1, set_unsafe(t + 1));
+        return synchCAS64(&rq->tail, t + 1, set_unsafe(t + 1));
     else
-        return BitTAS64(&rq->tail, 63);
+        return synchBitTAS64(&rq->tail, 63);
 }
 
 void LCRQInit(LCRQStruct *queue, uint32_t nthreads UNUSED_ARG) {
-     RingQueue *rq = getMemory(sizeof(RingQueue));
-     init_ring(rq);
-     queue->head = queue->tail = rq;
+    RingQueue *rq = synchGetMemory(sizeof(RingQueue));
+    init_ring(rq);
+    queue->head = queue->tail = rq;
 }
 
 void LCRQThreadStateInit(LCRQThreadState *thread_state, int pid UNUSED_ARG) {
@@ -143,55 +144,54 @@ void LCRQEnqueue(LCRQStruct *queue, LCRQThreadState *thread_state, ArgVal arg, i
         RingQueue *rq = queue->tail;
 
 #ifdef HAVE_HPTRS
-        SWAP(&thread_state->hazardptr, rq);
-        if (Unlikely(queue->tail != rq))
-            continue;
+        synchSWAP(&thread_state->hazardptr, rq);
+        if (synchUnlikely(queue->tail != rq)) continue;
 #endif
 
         RingQueue *next = rq->next;
- 
-        if (Unlikely(next != null)) {
-            CASPTR(&queue->tail, rq, next);
+
+        if (synchUnlikely(next != NULL)) {
+            synchCASPTR(&queue->tail, rq, next);
             continue;
         }
 
-        uint64_t t = FAA64(&rq->tail, 1);
+        uint64_t t = synchFAA64(&rq->tail, 1);
 
         if (crq_is_closed(t)) {
 alloc:
-            if (thread_state->nrq == null) {
-                thread_state->nrq = getMemory(sizeof(RingQueue));
+            if (thread_state->nrq == NULL) {
+                thread_state->nrq = synchGetMemory(sizeof(RingQueue));
                 init_ring(thread_state->nrq);
             }
 
             // Solo enqueue
             thread_state->nrq->tail = 1, thread_state->nrq->array[0].val = arg, thread_state->nrq->array[0].idx = 0;
 
-            if (CASPTR(&rq->next, null, thread_state->nrq)) {
-                CASPTR(&queue->tail, rq, thread_state->nrq);
-                thread_state->nrq = null;
+            if (synchCASPTR(&rq->next, NULL, thread_state->nrq)) {
+                synchCASPTR(&queue->tail, rq, thread_state->nrq);
+                thread_state->nrq = NULL;
                 return;
             }
             continue;
         }
-           
-        RingNode* cell = &rq->array[t & (RING_SIZE-1)];
-        StorePrefetch(cell);
+
+        RingNode *cell = &rq->array[t & (RING_SIZE - 1)];
+        synchStorePrefetch(cell);
 
         uint64_t idx = cell->idx;
         uint64_t val = cell->val;
 
-        if (Likely(is_empty(val))) {
-            if (Likely(node_index(idx) <= t)) {
-                if ((Likely(!node_unsafe(idx)) || rq->head < t) && CAS128((uint64_t*)cell, -1, idx, arg, t)) {
+        if (synchLikely(is_empty(val))) {
+            if (synchLikely(node_index(idx) <= t)) {
+                if ((synchLikely(!node_unsafe(idx)) || rq->head < t) && synchCAS128((uint64_t *)cell, -1, idx, arg, t)) {
                     return;
                 }
             }
-        } 
+        }
 
         uint64_t h = rq->head;
 
-        if (Unlikely((int64_t)(t - h) >= (int64_t)RING_SIZE) && close_crq(rq, t, ++try_close)) {
+        if (synchUnlikely((int64_t)(t - h) >= (int64_t)RING_SIZE) && close_crq(rq, t, ++try_close)) {
             count_closed_crq(thread_state);
             goto alloc;
         }
@@ -204,15 +204,14 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid UNU
         RingQueue *next;
 
 #ifdef HAVE_HPTRS
-        SWAP(&thread_state->hazardptr, rq);
-        if (Unlikely(head != rq))
-            continue;
+        synchSWAP(&thread_state->hazardptr, rq);
+        if (synchUnlikely(head != rq)) continue;
 #endif
 
-        uint64_t h = FAA64(&rq->head, 1);
+        uint64_t h = synchFAA64(&rq->head, 1);
 
-        RingNode* cell = &rq->array[h & (RING_SIZE-1)];
-        StorePrefetch(cell);
+        RingNode *cell = &rq->array[h & (RING_SIZE - 1)];
+        synchStorePrefetch(cell);
 
         uint64_t tt = 0;
         int r = 0;
@@ -223,14 +222,13 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid UNU
             uint64_t idx = node_index(cell_idx);
             uint64_t val = cell->val;
 
-            if (Unlikely(idx > h)) break;
+            if (synchUnlikely(idx > h)) break;
 
-            if (Likely(!is_empty(val))) {
-                if (Likely(idx == h)) {
-                    if (CAS128((uint64_t*)cell, val, cell_idx, -1, (unsafe | h) + RING_SIZE))
-                        return val;
+            if (synchLikely(!is_empty(val))) {
+                if (synchLikely(idx == h)) {
+                    if (synchCAS128((uint64_t *)cell, val, cell_idx, -1, (unsafe | h) + RING_SIZE)) return val;
                 } else {
-                    if (CAS128((uint64_t*)cell, val, cell_idx, val, set_unsafe(idx))) {
+                    if (synchCAS128((uint64_t *)cell, val, cell_idx, val, set_unsafe(idx))) {
                         count_unsafe_node(thread_state);
                         break;
                     }
@@ -243,13 +241,11 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid UNU
                 int crq_closed = crq_is_closed(tt);
                 uint64_t t = tail_index(tt);
 
-                if (Unlikely(unsafe)) { // Nothing to do, move along
-                    if (CAS128((uint64_t*)cell, val, cell_idx, val, (unsafe | h) + RING_SIZE))
-                        break;
+                if (synchUnlikely(unsafe)) {  // Nothing to do, move along
+                    if (synchCAS128((uint64_t *)cell, val, cell_idx, val, (unsafe | h) + RING_SIZE)) break;
                 } else if (t < h + 1 || r > 200000 || crq_closed) {
-                    if (CAS128((uint64_t*)cell, val, idx, val, h + RING_SIZE)) {
-                        if (r > 200000 && tt > RING_SIZE)
-                            BitTAS64(&rq->tail, 63);
+                    if (synchCAS128((uint64_t *)cell, val, idx, val, h + RING_SIZE)) {
+                        if (r > 200000 && tt > RING_SIZE) synchBitTAS64(&rq->tail, 63);
                         break;
                     }
                 } else {
@@ -262,10 +258,9 @@ RetVal LCRQDequeue(LCRQStruct *queue, LCRQThreadState *thread_state, int pid UNU
             fix_state(rq);
             // try to return empty
             next = rq->next;
-            if (next == null)
+            if (next == NULL)
                 return EMPTY_QUEUE;  // EMPTY
-            if (tail_index(rq->tail) <= h + 1)
-                CASPTR(&queue->head, rq, next);
+            if (tail_index(rq->tail) <= h + 1) synchCASPTR(&queue->head, rq, next);
         }
     }
 }

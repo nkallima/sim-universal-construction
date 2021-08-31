@@ -10,11 +10,12 @@ STEP_THREADS=1
 WORKLOAD="-w 64"
 FIBERS=""
 NUMA_NODES=""
+CODECOV=0
 PASS_STATUS=1
 
 function usage()
 {
-    echo -e "Usage: ./validate.sh OPTION=NUM ...";
+    echo -e "Usage: ./validate.sh OPTION1 VALUE1 OPTION2 VALUE2 ...";
     echo -e "This script compiles the sources in DEBUG mode and validates the correctnes of some of the provided concurrent objects.";
     echo -e ""
     echo -e "The following options are available."
@@ -42,8 +43,9 @@ if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
 fi
 
 while [ "$1" != "" ]; do
-    PARAM=`echo $1 | awk -F= '{print $1}'`
-    VALUE=`echo $1 | awk -F= '{print $2}'`
+    PARAM=`echo $1`
+    VALUE=`echo $2`
+    SHIFT=0
     case $PARAM in
         -h | --help)
             usage;
@@ -52,32 +54,46 @@ while [ "$1" != "" ]; do
         -s | --step_threads)
             STEP_THREADS=$VALUE
             STEP_SELETCTED=1
+            SHIFT=1
             ;;
         -t | --max_threads)
             MAX_PTHREADS=$VALUE
+            SHIFT=1
             ;;
         -f | --fibers)
             FIBERS="-f $VALUE"
+            SHIFT=1
             ;;
         -w | --max_work)
             WORKLOAD="-w $VALUE"
+            SHIFT=1
             ;;
         -n | --numa_nodes)
             NUMA_NODES="-n $VALUE"
+            SHIFT=1
             ;;
         -r | --runs)
             RUNS_PER_THREAD=$VALUE
+            SHIFT=1
+            ;;
+        --codecov)
+            CODECOV=1
             ;;
         -*)
             echo "ERROR: unknown parameter \"$PARAM\""
             usage
             exit 1
             ;;
-	*)
-	    FILE=$PARAM
-	    ;;
     esac
     shift
+    if [ $SHIFT = "1" ]; then
+        shift
+        if [ "$VALUE" = "" ]; then
+            echo "ERROR: no value set for \"$PARAM\""
+            usage
+            exit 1
+        fi
+    fi
 done
 
 # Calculate step according to user preferences
@@ -102,7 +118,11 @@ done
 PTHREADS_ARRAY+=($MAX_PTHREADS)
 
 echo -ne "Compiling the sources...\t\t\t\t\t\t"
-make clean debug &> $BUILD_LOG
+if [ $CODECOV -eq 1 ]; then
+    make clean codecov &> $BUILD_LOG
+else
+    make clean debug &> $BUILD_LOG
+fi
 
 if [ $? -eq 0 ]; then
     echo -e $COLOR_PASS

@@ -6,7 +6,11 @@
 *kate-swp
 *.bak
 *.orig
+*.gcno
+*.gcda
+*.gcov
 libconcurrent/bin
+.install_info
 
 [._]*.s[a-v][a-z]
 [._]*.sw[a-p]

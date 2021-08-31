@@ -1,4 +1,5 @@
 #include <oyama.h>
+#include <threadtools.h>
 
 inline static void OyamaWait(void);
 
@@ -7,7 +8,7 @@ const int UNLOCKED = 0;
 const int OYAMA_HELP_FACTOR = 10;
 
 static void OyamaWait(void) {
-    resched();
+    synchResched();
 }
 
 RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal (*sfunc)(ArgVal, int), ArgVal arg, int pid) {
@@ -21,20 +22,20 @@ RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal 
     mynode->pid = pid;
     mynode->completed = false;
     mynode->next = l->tail;
-    while (!CASPTR(&l->tail, mynode->next, mynode)) { // try to insert node to the announce list
+    while (!synchCASPTR(&l->tail, mynode->next, mynode)) {  // try to insert node to the announce list
         OyamaWait();
         mynode->next = l->tail;
     }
 
     do {
-        if (l->lock == UNLOCKED && CAS32(&l->lock, UNLOCKED, LOCKED)) {
+        if (l->lock == UNLOCKED && synchCAS32(&l->lock, UNLOCKED, LOCKED)) {
             int counter = 0;
 #ifdef DEBUG
             l->rounds++;
 #endif
-            while (counter < help_bound && (p = (OyamaAnnounceNode *)SWAP(&l->tail, null)) != null) {
+            while (counter < help_bound && (p = (OyamaAnnounceNode *)synchSWAP(&l->tail, NULL)) != NULL) {
                 // Start helping all the active processes
-                while (p != null) {
+                while (p != NULL) {
                     counter++;
 #ifdef DEBUG
                     l->counter++;
@@ -45,10 +46,10 @@ RetVal OyamaApplyOp(volatile OyamaStruct *l, OyamaThreadState *th_state, RetVal 
                     p = (OyamaAnnounceNode *)tmp_next;
                 }
             }
-            NonTSOFence();
+            synchNonTSOFence();
             // Release the lock
             l->lock = UNLOCKED;
-            StoreFence();
+            synchStoreFence();
             return mynode->arg_ret;
         } else {
             while (*((volatile bool *)&mynode->completed) == false && *((volatile int32_t *)&l->lock) == LOCKED) {
@@ -67,9 +68,9 @@ void OyamaThreadStateInit(OyamaThreadState *th_state) {
 void OyamaInit(OyamaStruct *l, uint32_t nthreads) {
     l->nthreads = nthreads;
     l->lock = UNLOCKED;
-    l->tail = null;
+    l->tail = NULL;
 #ifdef DEBUG
     l->rounds = l->counter = 0;
 #endif
-    FullFence();
+    synchFullFence();
 }

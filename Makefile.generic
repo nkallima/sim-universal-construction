@@ -1,20 +1,26 @@
-COMPILER   = cc
-AR         = gcc-ar
-LDLIBS     = -lpthread -lm -lnuma
-CFLAGS     =
-ARGS       =
-D_ARGS     = 
+COMPILER       = cc
+AR             = gcc-ar
+LDLIBS         = -lpthread -lm -lnuma
+CFLAGS         =
+ARGS           =
+D_ARGS         =
+INSTALL_INFO   = .install_info
+INSTALL_SUFFIX = Synch
+UNINSTALL_DIR  = $(shell cat $(INSTALL_INFO))
 
 # define any directories containing header files other than /usr/include
-INCLUDES   = -Ilibconcurrent/includes
+INCLUDES   = -Ilibconcurrent/includes -Ilibconcurrent
 
 # define the output directory
 BINDIR     = build/bin
-
 LIBDIR     = build/lib
+DOCSDIR    = build/docs
+OBJDIR     = build/objects
 
 LIBNAME    = libconcurrent.a
 LIBNAMESO  = libconcurrent.so
+
+BUILD_LOG=./build.log
 
 # define the C source files
 PRIMITIVES = $(wildcard libconcurrent/primitives/*.c)
@@ -29,8 +35,10 @@ OBJECTS    = $(SRCS:.c=.o)
 EXECS      = $(BENCHMARKS:.c=.run)
 
 COLOR_CC   = [  \e[32mCC\e[39m  ]
+COLOR_CP   = [  \e[32mCP\e[39m  ]
 COLOR_AR   = [  \e[36mAR\e[39m  ]
 COLOR_RM   = [  \e[31mRM\e[39m  ]
+COLOR_ERR  = [ \e[31mERROR\e[39m ]
 
 .PHONY: all clean
 
@@ -42,23 +50,68 @@ $(EXECS): %.run : %.c libbuild
 
 .c.o:
 	@printf '$(COLOR_CC)\t$<\n'
-	@$(COMPILER) $(CFLAGS) $(ARGS) $(INCLUDES) $(D_ARGS) -c $< -o $@
+	@$(COMPILER) $(CFLAGS) $(ARGS) $(INCLUDES) $(D_ARGS) -c $< -o $(OBJDIR)/$(notdir $@)
 
 libbuild: $(OBJECTS)
 	@printf '$(COLOR_CC)\t$(LIBDIR)/$(LIBNAMESO)\n'
-	@$(CC) -shared -o $(LIBDIR)/$(LIBNAMESO) $(OBJECTS)
+	@$(COMPILER) -shared -o $(LIBDIR)/$(LIBNAMESO) $(addprefix $(OBJDIR)/,$(notdir $(OBJECTS)))
 	@printf '$(COLOR_AR)\t$(LIBDIR)/$(LIBNAME)\n'
-	@$(AR) rcs $(LIBDIR)/$(LIBNAME) $(OBJECTS)
+	@$(AR) rcs $(LIBDIR)/$(LIBNAME) $(addprefix $(OBJDIR)/,$(notdir $(OBJECTS)))
 
 clean: $(SRCS)
 	@printf '$(COLOR_RM)\t$(LIBDIR)/*.a\n'
 	@rm -rf $(LIBDIR)/*.a
 	@printf '$(COLOR_RM)\t$(LIBDIR)/*.so\n'
 	@rm -rf $(LIBDIR)/*.so
-	@printf '$(COLOR_RM)\tlibconcurrent/primitives/*.o\n'
-	@printf '$(COLOR_RM)\tlibconcurrent/concurrent/*.o\n'
-	@rm -f $(OBJECTS)
+	@printf '$(COLOR_RM)\tObject files\n'
+	@rm -f $(addprefix $(OBJDIR)/,$(notdir $(OBJECTS)))
 	@printf '$(COLOR_RM)\tExecutable files\n'
 	@rm -rf $(BINDIR)/*.run
 	@printf '$(COLOR_RM)\tLog and result files\n'
 	@rm -rf res.txt results.txt *.log
+	@printf '$(COLOR_RM)\tOld documentation files\n'
+	@rm -rf $(DOCSDIR)/*
+	@printf '$(COLOR_RM)\tInstallation configuration\n'
+	@rm -rf $(INSTALL_INFO)
+
+docs:
+	@printf '$(COLOR_RM)\tOld documentation files\n'
+	@rm -rf $(DOCSDIR)
+	@printf '$(COLOR_CC)\tGenerating documentation\n'
+	@doxygen resources/Doxyfile >> $(BUILD_LOG)
+	@printf 'Documentation build log is placed in $(BUILD_LOG)\n'
+
+install:
+	@if [ -d ${INSTALL_DIR} ]; then                                                                \
+		if [ -w ${INSTALL_DIR} ]; then                                                             \
+			mkdir -p ${INSTALL_DIR};                                                               \
+			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/;                                            \
+			mkdir -p ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build;                                       \
+			printf '$(COLOR_CP)\tInstalling the Synch framework\n';                                \
+			cp -r ./build/* $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;                                     \
+			cp -r ./libconcurrent/includes/ $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;                     \
+			cp bench.sh  run_all.sh $(INSTALL_DIR)/$(INSTALL_SUFFIX)/;                             \
+			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/bin ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/bin; \
+			ln -s ${INSTALL_DIR}/$(INSTALL_SUFFIX)/lib ${INSTALL_DIR}/$(INSTALL_SUFFIX)/build/lib; \
+			echo $(INSTALL_DIR) > $(INSTALL_INFO);                                                 \
+		else                                                                                       \
+			printf '$(COLOR_ERR)\tNo write access at %s \n' ${INSTALL_DIR};                        \
+			printf '$(COLOR_ERR)\tYou may need root access\n';                                     \
+		fi                                                                                         \
+	else                                                                                           \
+		printf '$(COLOR_ERR)\tThere is no directory: %s\n' ${INSTALL_DIR};                         \
+	fi
+
+uninstall:
+	@if [ -d ${UNINSTALL_DIR} ]; then                                        \
+		if [ -w ${UNINSTALL_DIR} ]; then                                     \
+			printf '$(COLOR_RM)\tRemoving installation files\n';             \
+			rm -rf $(UNINSTALL_DIR)/$(INSTALL_SUFFIX)/;                      \
+		else                                                                 \
+			echo "Unable to remove " $(UNINSTALL_DIR);                       \
+			echo "You may need root access";                                 \
+		fi                                                                   \
+	else                                                                     \
+		printf '$(COLOR_ERR)\tThere is no directory: %s\n' ${UNINSTALL_DIR}; \
+		printf '$(COLOR_ERR)\tFramework may already uninstalled\n';          \
+	fi
