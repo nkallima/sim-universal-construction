@@ -236,10 +236,17 @@ At the end of the benchmark, `main` calculates and prints the average throughput
 # If you want to cite us
 
 ```latex
-@misc{SynchFramework,
-  title={{Synch: A framework for concurrent data-structures and benchmarks. https://github.com/nkallima/sim-universal-construction}},
-  author={Kallimanis, Nikolaos D.},
-  url={{https://github.com/nkallima/sim-universal-construction}}
+@article{Kallimanis2021,
+  doi = {10.21105/joss.03143},
+  url = {https://doi.org/10.21105/joss.03143},
+  year = {2021},
+  publisher = {The Open Journal},
+  volume = {6},
+  number = {64},
+  pages = {3143},
+  author = {Nikolaos D. Kallimanis},
+  title = {Synch: A framework for concurrent data-structures and benchmarks},
+  journal = {Journal of Open Source Software}
 }
 ```
 
