@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+v3.0.1
+------
+- README.md updated.
+- Adding the JOSS paper to the repository.
+
 v3.0.0
 ------
 - Header-files cleanup in order to provide a better and consistent API.
