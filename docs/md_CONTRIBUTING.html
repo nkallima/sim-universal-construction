@@ -68,15 +68,15 @@ $(function() {
 <div class="title">Contribution </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md31"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md32"></a>
 Source code structure</h1>
 <p>The Synch framework consists of 3 main parts, i.e. the Runtime/Primitives, the library of concurrent data-structures and the benchmarks (see the figure below) . The Runtime/Primitives part provides some basic functionality for creating and managing threads, functionality for basic atomic primitives (e.g. Compare&amp;Swap, Fetch&amp;Add, fences, simple synchronization barriers, etc.), mechanisms for basic memory allocation/management (e.g. memory pools, etc.), functionality for measuring time, reporting CPU counters, etc. Furthermore, the Runtime/Primitives provides a simple and lightweight library of user level-threads that can be used in order to evaluate the provided data-structures and algorithms.</p>
 <p>The Concurrent library utilizes the building blocks of the Runtime/Primitives layer in order to provide all the concurrent data-structures (e.g. combining objects, queues, stacks, etc.). For almost every concurrent data-structure or synchronization mechanism, Synch provides at least one benchmark for evaluating its performance.</p>
 <p><img src="resources/code_structure.png" alt="The code-structure of the Synch framework" width="50%" class="inline"/> </p>
-<h1><a class="anchor" id="autotoc_md32"></a>
+<h1><a class="anchor" id="autotoc_md33"></a>
 First, discuss your issue</h1>
 <p>Before contributing to this repository, you are encouraged to first discuss the issue, change or contribution that you wish to make. In order to do this, please open an issue or send an email. We are open to discuss new ideas, improvements or any other contributions. Please note that we have a <a href="https://github.com/nkallima/sim-universal-construction/blob/main/.github/CODE_OF_CONDUCT.md">Code of conduct</a> that should be considered in all your interactions with the project.</p>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 Ready to make a change</h1>
 <ul>
 <li>Fork the repository.</li>
@@ -86,7 +86,7 @@ Ready to make a change</h1>
 <li>Submit your pull request targeting the current development branch (i.e. the branch with the highest version number).</li>
 <li>Get it reviewed.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 Coding conventions</h1>
 <p>Before committing a new patch, follow the steps below for checking the coding style of your patch.</p><ul>
 <li>Ensure that you have installed <code>clang-format</code> package (version &gt;= 9).</li>
@@ -141,18 +141,18 @@ Coding conventions</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md35"></a>
+<h1><a class="anchor" id="autotoc_md36"></a>
 API &amp; Code documentation</h1>
 <ul>
 <li>It is strongly recommended to sufficiently comment your code.</li>
 <li>At least, ensure that all the public functionality of your patch provides adequate documentation through Doxygen.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md36"></a>
+<h1><a class="anchor" id="autotoc_md37"></a>
 Basic correctness validation</h1>
 <p>Whenever the <code>DEBUG</code> macro is defined in <code><a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a></code>, most of the provided benchmarks make some basic sanity-checks in order to ensure that the provided concurrent data-structures behave appropriately. For example, in concurrent stack benchmarks where each thread executes a specific amount of Push/Pop pairs of operations on a concurrent stack, the <code>DEBUG</code> macro ensures that after the end of the benchmark the stack is empty of elements (given that the amount of elements in the initialization phase of the benchmark is zero).</p>
 <p>The <code>validate.sh</code> script compiles the sources in <code>DEBUG</code> mode and runs a big set of benchmarks with various numbers of threads. After running each of the benchmarks, the script evaluates the <code>DEBUG</code> output and in case of success it prints <code>PASS</code>. In case of a failure, the script simply prints <code>FAIL</code>.</p>
 <p>In case that you want to contribute a new concurrent data-structure, you should provide sanity-check code in a benchmark that should be activated whenever <code>DEBUG</code> macro is defined. Please, don't forget to update the <code>validate.sh</code> script appropriately.</p>
-<h1><a class="anchor" id="autotoc_md37"></a>
+<h1><a class="anchor" id="autotoc_md38"></a>
 Final steps before pulling a request</h1>
 <ul>
 <li>Update the <a class="el" href="README_8md.html">README.md</a> with details.</li>
