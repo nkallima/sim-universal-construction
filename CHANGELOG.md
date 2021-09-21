@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+v3.1.0
+------
+- A few API fixes.
+
 v3.0.1
 ------
 - README.md updated.

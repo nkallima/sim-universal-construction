@@ -37,18 +37,18 @@ void synchInitCPUCounters(void) {
     int ret, i;
 
     while (__cpu_events == NULL) {
-        void *ptr = getAlignedMemory(CACHE_LINE_SIZE, synchGetNCores() * sizeof(int));
+        void *ptr = synchGetAlignedMemory(CACHE_LINE_SIZE, synchGetNCores() * sizeof(int));
         if (synchCASPTR(&__cpu_events, NULL, ptr) == false) synchFreeMemory(ptr, synchGetNCores() * sizeof(int));
     }
 
     while (__cpu_values == NULL) {
-        void *ptr = getAlignedMemory(CACHE_LINE_SIZE, synchGetNCores() * sizeof(long long *));
+        void *ptr = synchGetAlignedMemory(CACHE_LINE_SIZE, synchGetNCores() * sizeof(long long *));
         if (synchCASPTR(&__cpu_values, NULL, ptr) == false) synchFreeMemory(ptr, synchGetNCores() * sizeof(long long *));
     }
 
     for (i = 0; i < synchGetNCores(); i++) {
         while (__cpu_values[i] == NULL) {
-            void *ptr = getAlignedMemory(CACHE_LINE_SIZE, N_CPU_COUNTERS * sizeof(long long));
+            void *ptr = synchGetAlignedMemory(CACHE_LINE_SIZE, N_CPU_COUNTERS * sizeof(long long));
             if (synchCASPTR(&__cpu_values[i], NULL, ptr) == false) synchFreeMemory(ptr, N_CPU_COUNTERS * sizeof(long long));
         }
     }

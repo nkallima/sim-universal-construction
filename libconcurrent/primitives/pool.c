@@ -25,9 +25,9 @@ int synchInitPool(SynchPoolStruct *pool, uint32_t obj_size) {
     SynchPoolBlock *block;
 
     if (obj_size > BLOCK_SIZE - POOL_BLOCK_METADATA_SIZE) {
-        fprintf(stderr, "ERROR: init_pool: object size unsupported\n");
+        fprintf(stderr, "ERROR: synchInitPool: object size unsupported\n");
 
-        return POOL_INIT_ERROR;
+        return SYNCH_POOL_INIT_ERROR;
     } else if (obj_size < sizeof(void *)) {
         obj_size = sizeof(void *);
     }
@@ -41,7 +41,7 @@ int synchInitPool(SynchPoolStruct *pool, uint32_t obj_size) {
     pool->head_block = block;
     pool->cur_block = block;
 
-    return POOL_INIT_SUCC;
+    return SYNCH_POOL_INIT_SUCC;
 }
 
 void *synchAllocObj(SynchPoolStruct *pool) {
@@ -68,7 +68,7 @@ void *synchAllocObj(SynchPoolStruct *pool) {
     }
 
 #ifdef DEBUG
-    if (ret == NULL) fprintf(stderr, "DEBUG: alloc_obj returns a NULL object\n");
+    if (ret == NULL) fprintf(stderr, "DEBUG: synchAllocObj returns a NULL object\n");
 #endif
 
     return ret;

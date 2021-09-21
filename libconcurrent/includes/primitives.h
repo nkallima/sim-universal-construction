@@ -104,7 +104,7 @@ inline void *synchGetMemory(size_t size);
 /// @return In case of error, NULL is returned. In case of success a pointer to the allocated memory area is returned.
 inline void *synchGetAlignedMemory(size_t align, size_t size);
 
-/// @brief This function frees memory allocated with either getMemory() or getAlignedMemory() functions.
+/// @brief This function frees memory allocated with either getMemory() or synchGetAlignedMemory() functions.
 ///
 /// @param ptr A pointer to the memory area to be freed.
 /// @param size The size of the memory area to be freed.

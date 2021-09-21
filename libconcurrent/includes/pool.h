@@ -24,7 +24,7 @@ typedef struct SynchPoolBlockMetadata {
     uint32_t entries;
     /// @brief The number of free blocks available in the block.
     uint32_t free_entries;
-    /// @brief The first free block. This should be returned in the next call of alloc_obj.
+    /// @brief The first free block. This should be returned in the next call of synchAllocObj.
     uint32_t cur_entry;
     /// @brief The next block of objects.
     struct SynchPoolBlock *next;
@@ -54,23 +54,23 @@ typedef struct SynchPoolStruct {
     SynchPoolBlock *cur_block;
 } SynchPoolStruct;
 
-/// @brief This is returned in case of error while calling init_pool.
-#define POOL_INIT_ERROR         -1
-/// @brief This is returned in case of success while calling init_pool.
-#define POOL_INIT_SUCC          0
-/// @brief This is returned in case of error while calling alloc_obj (usually system's memory is exhausted).
-#define POOL_OBJECT_ALLOC_ERROR NULL
+/// @brief This is returned in case of error while calling synchInitPool.
+#define SYNCH_POOL_INIT_ERROR         -1
+/// @brief This is returned in case of success while calling synchInitPool.
+#define SYNCH_POOL_INIT_SUCC          0
+/// @brief This is returned in case of error while calling synchAllocObj (usually system's memory is exhausted).
+#define SYNCH_POOL_OBJECT_ALLOC_ERROR NULL
 
 
 /// @brief This function initializes a pool with objects of size obj_size.
 /// @param pool A pointer to the pool of objects.
 /// @param obj_size The size of objects that the pool contains.
-/// @return In case of success, init_pool returns POOL_INIT_SUCC. In case of error, init_pool returns POOL_INIT_ERROR.
+/// @return In case of success, synchInitPool returns SYNCH_POOL_INIT_SUCC. In case of error, synchInitPool returns SYNCH_POOL_INIT_ERROR.
 int synchInitPool(SynchPoolStruct *pool, uint32_t obj_size);
 
 /// @brief This function initializes a pool with objects of size obj_size.
 /// @param pool A pointer to the pool of objects.
-/// @return On success, a pointer to a free object is returned. Otherwise, POOL_OBJECT_ALLOC_ERROR is returned.
+/// @return On success, a pointer to a free object is returned. Otherwise, SYNCH_POOL_OBJECT_ALLOC_ERROR is returned.
 void *synchAllocObj(SynchPoolStruct *pool);
 
 /// @brief This function recycles the obj object for future use.
