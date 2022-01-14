@@ -3,6 +3,7 @@ Changelog
 
 v3.1.0
 ------
+- A new high-performant, optimized implementation for the flat-combining synchronization technique. This new implementation provided by the Synch framework is written from the scratch.
 - A few API fixes.
 
 v3.0.1
