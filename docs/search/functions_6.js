@@ -1,17 +1,11 @@
 var searchData=
 [
-  ['osciapplyop_603',['OsciApplyOp',['../osci_8h.html#ad8192041f31e8e6196d7cb6fafe706ff',1,'osci.h']]],
-  ['osciinit_604',['OsciInit',['../osci_8h.html#a4a4c3d73c5f1f0e617b93b273f6f88dc',1,'osci.h']]],
-  ['osciqueueapplydequeue_605',['OsciQueueApplyDequeue',['../osciqueue_8h.html#a58d96b6be35b05d4bddedc5d823c2b32',1,'osciqueue.h']]],
-  ['osciqueueapplyenqueue_606',['OsciQueueApplyEnqueue',['../osciqueue_8h.html#ab5b4b04077d85d98816880d5c514fcbf',1,'osciqueue.h']]],
-  ['osciqueueinit_607',['OsciQueueInit',['../osciqueue_8h.html#a5cf0f32683e4fc5a12444a58e3c285a0',1,'osciqueue.h']]],
-  ['osciqueuethreadstateinit_608',['OsciQueueThreadStateInit',['../osciqueue_8h.html#a4163bcf94553bab64fa98fddae544abb',1,'osciqueue.h']]],
-  ['oscistackapplypop_609',['OsciStackApplyPop',['../oscistack_8h.html#a7db49e3ab9629dfedd55c496839dac3c',1,'oscistack.h']]],
-  ['oscistackapplypush_610',['OsciStackApplyPush',['../oscistack_8h.html#aadd00e15bc025b5ee0d673d88d731e6a',1,'oscistack.h']]],
-  ['oscistackinit_611',['OsciStackInit',['../oscistack_8h.html#abd722d36f50fe639a76cafe31c14a722',1,'oscistack.h']]],
-  ['oscistackthreadstateinit_612',['OsciStackThreadStateInit',['../oscistack_8h.html#a66ab92c0b4ff34aec32bf608348e539a',1,'oscistack.h']]],
-  ['oscithreadstateinit_613',['OsciThreadStateInit',['../osci_8h.html#a64489bbbaaa36fa680f9c3d3771db99c',1,'osci.h']]],
-  ['oyamaapplyop_614',['OyamaApplyOp',['../oyama_8h.html#a329e97fe0800bcbed09cd46079522701',1,'oyama.h']]],
-  ['oyamainit_615',['OyamaInit',['../oyama_8h.html#a7fcb4c15cbc58b5b9a3e427afdd01aab',1,'oyama.h']]],
-  ['oyamathreadstateinit_616',['OyamaThreadStateInit',['../oyama_8h.html#ac9207fdac513b6e4569d9b6977c5fa32',1,'oyama.h']]]
+  ['mcslock_645',['MCSLock',['../mcs_8h.html#ab8aa271256eb9f1a5a0113699b9f178c',1,'mcs.h']]],
+  ['mcslockinit_646',['MCSLockInit',['../mcs_8h.html#a01cf4b56395b1a1c9e754d152b632ce2',1,'mcs.h']]],
+  ['mcsthreadstateinit_647',['MCSThreadStateInit',['../mcs_8h.html#abe18f92cdd12bbd0087aecf91bec6c91',1,'mcs.h']]],
+  ['mcsunlock_648',['MCSUnlock',['../mcs_8h.html#a89042866e56fb10ae4cb07b96a3677a4',1,'mcs.h']]],
+  ['msqueuedequeue_649',['MSQueueDequeue',['../msqueue_8h.html#a09fb47175d4222f798ed1b53a9a87b0a',1,'msqueue.h']]],
+  ['msqueueenqueue_650',['MSQueueEnqueue',['../msqueue_8h.html#ad846820701962b0d3f65b17d90874390',1,'msqueue.h']]],
+  ['msqueueinit_651',['MSQueueInit',['../msqueue_8h.html#aa7b69d2da361672fe922f44c51c4f8f4',1,'msqueue.h']]],
+  ['msqueuethreadstateinit_652',['MSQueueThreadStateInit',['../msqueue_8h.html#a2c366ca204d2ea2ef6034984de3d574a',1,'msqueue.h']]]
 ];

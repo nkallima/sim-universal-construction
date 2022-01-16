@@ -1,12 +1,19 @@
 var searchData=
 [
-  ['simobjectstate_482',['SimObjectState',['../sim_8h.html#structSimObjectState',1,'']]],
-  ['simqueuestruct_483',['SimQueueStruct',['../simqueue_8h.html#structSimQueueStruct',1,'']]],
-  ['simqueuethreadstate_484',['SimQueueThreadState',['../simqueue_8h.html#structSimQueueThreadState',1,'']]],
-  ['simstackstate_485',['SimStackState',['../simstack_8h.html#structSimStackState',1,'']]],
-  ['simstackstruct_486',['SimStackStruct',['../simstack_8h.html#structSimStackStruct',1,'']]],
-  ['simstackthreadstate_487',['SimStackThreadState',['../simstack_8h.html#structSimStackThreadState',1,'']]],
-  ['simstruct_488',['SimStruct',['../sim_8h.html#structSimStruct',1,'']]],
-  ['simthreadstate_489',['SimThreadState',['../sim_8h.html#structSimThreadState',1,'']]],
-  ['structdata_490',['StructData',['../sim_8h.html#structpointer__t_1_1StructData',1,'pointer_t']]]
+  ['simobjectstate_511',['SimObjectState',['../sim_8h.html#structSimObjectState',1,'']]],
+  ['simqueuestruct_512',['SimQueueStruct',['../simqueue_8h.html#structSimQueueStruct',1,'']]],
+  ['simqueuethreadstate_513',['SimQueueThreadState',['../simqueue_8h.html#structSimQueueThreadState',1,'']]],
+  ['simstackstate_514',['SimStackState',['../simstack_8h.html#structSimStackState',1,'']]],
+  ['simstackstruct_515',['SimStackStruct',['../simstack_8h.html#structSimStackStruct',1,'']]],
+  ['simstackthreadstate_516',['SimStackThreadState',['../simstack_8h.html#structSimStackThreadState',1,'']]],
+  ['simstruct_517',['SimStruct',['../sim_8h.html#structSimStruct',1,'']]],
+  ['simthreadstate_518',['SimThreadState',['../sim_8h.html#structSimThreadState',1,'']]],
+  ['structdata_519',['StructData',['../sim_8h.html#structpointer__t_1_1StructData',1,'pointer_t']]],
+  ['synchbackoffstruct_520',['SynchBackoffStruct',['../backoff_8h.html#structSynchBackoffStruct',1,'']]],
+  ['synchbarrier_521',['SynchBarrier',['../barrier_8h.html#structSynchBarrier',1,'']]],
+  ['synchbenchargs_522',['SynchBenchArgs',['../bench__args_8h.html#structSynchBenchArgs',1,'']]],
+  ['synchblockobject_523',['SynchBlockObject',['../pool_8h.html#structSynchBlockObject',1,'']]],
+  ['synchpoolblock_524',['SynchPoolBlock',['../pool_8h.html#structSynchPoolBlock',1,'']]],
+  ['synchpoolblockmetadata_525',['SynchPoolBlockMetadata',['../pool_8h.html#structSynchPoolBlockMetadata',1,'']]],
+  ['synchpoolstruct_526',['SynchPoolStruct',['../pool_8h.html#structSynchPoolStruct',1,'']]]
 ];

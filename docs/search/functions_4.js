@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['lcrqdequeue_584',['LCRQDequeue',['../lcrq_8h.html#ad7058a6a57b5154e41320dc87a2ba2a6',1,'lcrq.h']]],
-  ['lcrqenqueue_585',['LCRQEnqueue',['../lcrq_8h.html#ae343585a3d04de1e4779cbd851f0ef47',1,'lcrq.h']]],
-  ['lcrqinit_586',['LCRQInit',['../lcrq_8h.html#a3e5d1c8978fdd6faf21fc73468993741',1,'lcrq.h']]],
-  ['lcrqthreadstateinit_587',['LCRQThreadStateInit',['../lcrq_8h.html#a6b5a3ba9ef4e61fe726d26775ee42d1d',1,'lcrq.h']]],
-  ['lfstackinit_588',['LFStackInit',['../lfstack_8h.html#a257179a30f946af626d833734ba7c73b',1,'lfstack.h']]],
-  ['lfstackpop_589',['LFStackPop',['../lfstack_8h.html#a08ac2c0a0da53fafefd99290e6f45ee1',1,'lfstack.h']]],
-  ['lfstackpush_590',['LFStackPush',['../lfstack_8h.html#a6b87f5f1e54673f9be3129636160967b',1,'lfstack.h']]],
-  ['lfstackthreadstateinit_591',['LFStackThreadStateInit',['../lfstack_8h.html#a5b915ab960d057471deb226cfd125268',1,'lfstack.h']]],
-  ['lfuobjectapplyop_592',['LFUObjectApplyOp',['../lfuobject_8h.html#afbc55da36be1e083038a43534a13c662',1,'lfuobject.h']]],
-  ['lfuobjectinit_593',['LFUObjectInit',['../lfuobject_8h.html#a6259ddb75c92951eff4e4b8a0d4feb94',1,'lfuobject.h']]],
-  ['lfuobjectthreadstateinit_594',['LFUObjectThreadStateInit',['../lfuobject_8h.html#a6d6085eb040665e8b86aadeb1d95d30c',1,'lfuobject.h']]]
+  ['hqueueapplydequeue_623',['HQueueApplyDequeue',['../hqueue_8h.html#a8d875e79f67b43f8f308c9d1a5e11ced',1,'hqueue.h']]],
+  ['hqueueapplyenqueue_624',['HQueueApplyEnqueue',['../hqueue_8h.html#a50fcb8b0dcc7b0469380cf874c46f50b',1,'hqueue.h']]],
+  ['hqueueinit_625',['HQueueInit',['../hqueue_8h.html#a8fccddc31a256e9eaaf7c0dcbcf7529b',1,'hqueue.h']]],
+  ['hqueuethreadstateinit_626',['HQueueThreadStateInit',['../hqueue_8h.html#a88ce237358cc7625e7ab92335fc088d8',1,'hqueue.h']]],
+  ['hstackinit_627',['HStackInit',['../hstack_8h.html#ad0a66109b24c5b6a039dfd0927a29529',1,'hstack.h']]],
+  ['hstackpop_628',['HStackPop',['../hstack_8h.html#a71fc853b815b5f04b86b489ecf437262',1,'hstack.h']]],
+  ['hstackpush_629',['HStackPush',['../hstack_8h.html#a90b4bd0a409d7e4bea4a85752688416d',1,'hstack.h']]],
+  ['hstackthreadstateinit_630',['HStackThreadStateInit',['../hstack_8h.html#ae518006db96a4717ff1c8cfdd8bc23d6',1,'hstack.h']]],
+  ['hsynchapplyop_631',['HSynchApplyOp',['../hsynch_8h.html#a3241c702af4cd3970f711482af76bf08',1,'hsynch.h']]],
+  ['hsynchstructinit_632',['HSynchStructInit',['../hsynch_8h.html#ada46084b191eff9a8b238de7c02550d6',1,'hsynch.h']]],
+  ['hsynchthreadstateinit_633',['HSynchThreadStateInit',['../hsynch_8h.html#ac123a40527fea5e90dea44499e294bca',1,'hsynch.h']]]
 ];

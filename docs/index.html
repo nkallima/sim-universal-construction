@@ -77,8 +77,8 @@ Summary</h1>
 <p>The current version of this code is optimized for x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&amp;Add instructions (e.g., x86_64, etc.).</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Collection</h1>
-<p>The Synch framework provides a large set of highly efficient concurrent data-structures, such as combining-objects, concurrent queues and stacks, concurrent hash-tables and locks. The cornerstone of the Synch framework are the combining objects. A Combining object is a concurrent object/data-structure that is able to simulate any other concurrent object, e.g. stacks, queues, atomic counters, barriers, etc. The Synch framework provides the PSim wait-free combining object [2,10], the blocking combining objects CC-Synch, DSM-Synch and H-Synch [1], and the blocking combining object based on the technique presented in [4]. Moreover, the Synch framework provides the Osci blocking, combining technique [3] that achieves good performance using user-level threads.</p>
-<p>In terms of concurrent queues, the Synch framework provides the SimQueue [2,10] wait-free queue implementation that is based on the PSim combining object, the CC-Queue, DSM-Queue and H-Queue [1] blocking queue implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. A blocking queue implementation based on the CLH locks [5,6] and the lock-free implementation presented in [7] are also provided. Since v2.4.0, the Synch framework provides the LCRQ [11,12] queue implementation. In terms of concurrent stacks, the Synch framework provides the SimStack [2,10] wait-free stack implementation that is based on the PSim combining object, the CC-Stack, DSM-Stack and H-Stack [1] blocking stack implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. Moreover, the lock-free stack implementation of [8] and the blocking implementation based on the CLH locks [5,6] are provided. The Synch framework also provides concurrent queue and stacks implementations (i.e. OsciQueue and OsciStack implementations) that achieve very high performance using user-level threads [3].</p>
+<p>The Synch framework provides a large set of highly efficient concurrent data-structures, such as combining-objects, concurrent queues and stacks, concurrent hash-tables and locks. The cornerstone of the Synch framework are the combining objects. A Combining object is a concurrent object/data-structure that is able to simulate any other concurrent object, e.g. stacks, queues, atomic counters, barriers, etc. The Synch framework provides the PSim wait-free combining object [2,10], the blocking combining objects CC-Synch, DSM-Synch and H-Synch [1], and the blocking combining object based on the technique presented in [4]. Moreover, the Synch framework provides the Osci blocking, combining technique [3] that achieves good performance using user-level threads. Since v3.1.0, the Synch framework offers a new high performant implementation of flat-combining synchronization technique [14]. This novel version is implemented from the scratch and is not just an optimized version of the original code provided in [15].</p>
+<p>In terms of concurrent queues, the Synch framework provides the SimQueue [2,10] wait-free queue implementation that is based on the PSim combining object, the CC-Queue, DSM-Queue and H-Queue [1] blocking queue implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. A blocking queue implementation based on the CLH locks [5,6] and the lock-free implementation presented in [7] are also provided. Since v2.4.0, the Synch framework provides the LCRQ [11,12] queue implementation. In terms of concurrent stacks, the Synch framework provides the SimStack [2,10] wait-free stack implementation that is based on the PSim combining object, the CC-Stack, DSM-Stack and H-Stack [1] blocking stack implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. Moreover, the lock-free stack implementation of [8] and the blocking implementation based on the CLH locks [5,6] are provided. The Synch framework also provides concurrent queue and stacks implementations (i.e. OsciQueue and OsciStack implementations) that achieve very high performance using user-level threads [3]. Since v3.1.0, the Synch framework provides stack and queue implementations (i.e. FC-Stack and FC-Queue) based on the implementation of flat-combining provided by the Synch framework.</p>
 <p>Furthermore, the Synch framework provides a few scalable lock implementations, i.e. the MCS queue-lock presented in [9] and the CLH queue-lock presented in [5,6]. Finally, the Synch framework provides two example-implementations of concurrent hash-tables. More specifically, it provides a simple implementation based on CLH queue-locks [5,6] and an implementation based on the DSM-Synch [1] combining technique.</p>
 <p>The following table presents a summary of the concurrent data-structures offered by the Synch framework. </p><table class="markdownTable">
 <tr class="markdownTableHead">
@@ -92,17 +92,21 @@ Collection</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">Oyama [4]    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">FC: a new implementation of flat-combining [14]    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Concurrent Queues   </td><td class="markdownTableBodyNone">CC-Queue, DSM-Queue and H-Queue [1]    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">SimQueue [2,10]    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">OsciQueue [3]    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">CLH-Queue [5,6]    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">MS-Queue [7]    </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">CLH-Queue [5,6]    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">MS-Queue [7]    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">LCRQ [11,12]    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">FC-Queue [14]    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Concurrent Stacks   </td><td class="markdownTableBodyNone">CC-Stack, DSM-Stack and H-Stack [1]    </td></tr>
 <tr class="markdownTableRowEven">
@@ -114,12 +118,14 @@ Collection</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">LF-Stack [8]    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">FC-Stack [14]    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Locks   </td><td class="markdownTableBodyNone">CLH [5,6]    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">MCS [9]    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Hash Tables   </td><td class="markdownTableBodyNone">CLH-Hash [5,6]    </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">MCS [9]    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Hash Tables   </td><td class="markdownTableBodyNone">CLH-Hash [5,6]    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">A hash-table based on DSM-Synch [1]   </td></tr>
 </table>
 <h1><a class="anchor" id="autotoc_md2"></a>
@@ -258,15 +264,19 @@ Memory reclamation (stacks and queues)</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">LCRQ [11,12]   </td><td class="markdownTableBodyNone">Hazard Pointers (not provided by Synch)    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">FC-Queue [14]   </td><td class="markdownTableBodyNone">Supported    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Concurrent Stacks   </td><td class="markdownTableBodyNone">CC-Stack, DSM-Stack and H-Stack [1]   </td><td class="markdownTableBodyNone">Supported    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">SimStack [2,10]   </td><td class="markdownTableBodyNone">Supported (since v2.4.0)    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">OsciStack [3]   </td><td class="markdownTableBodyNone">Supported    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">CLH-Stack [5,6]   </td><td class="markdownTableBodyNone">Supported    </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">OsciStack [3]   </td><td class="markdownTableBodyNone">Supported    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">LF-Stack [8]   </td><td class="markdownTableBodyNone">Hazard Pointers (not provided by Synch)   </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">CLH-Stack [5,6]   </td><td class="markdownTableBodyNone">Supported    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">LF-Stack [8]   </td><td class="markdownTableBodyNone">Hazard Pointers (not provided by Synch)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">FC-Stack [14]   </td><td class="markdownTableBodyNone">Supported   </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md8"></a>
 Memory reclamation limitations</h2>
@@ -330,7 +340,7 @@ Code example for a simple benchmark</h1>
 <div class="ttc" id="athreadtools_8h_html_ab271ce770f682a143aad0a6d671a407c"><div class="ttname"><a href="threadtools_8h.html#ab271ce770f682a143aad0a6d671a407c">synchStartThreadsN</a></div><div class="ttdeci">int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthreads)</div><div class="ttdoc">This function creates nthreads posix threads, where each posix thread executes uthreads user-level th...</div></div>
 <div class="ttc" id="athreadtools_8h_html_af4308af25d549ba165c86987cecedd93"><div class="ttname"><a href="threadtools_8h.html#af4308af25d549ba165c86987cecedd93">synchJoinThreadsN</a></div><div class="ttdeci">void synchJoinThreadsN(uint32_t nthreads)</div><div class="ttdoc">This function returns whenever all the created posix threads and fibers spawned by StartThreadsN have...</div></div>
 </div><!-- fragment --><p>This example-benchmark creates <code>N_THREADS</code>, where each of them executes <code>RUNS</code> Fetch&amp;Add operations in a shared 64-bit integer. At the end of the benchmark the throughput (i.e. Fetch&amp;Add operations per second) is calculated. By seting varous values for <code>N_THREADS</code>, this benchmark is able to measure strong scaling.</p>
-<p>The <code>synchStartThreadsN</code> function (provided by the API defined in <code><a class="el" href="threadtools_8h.html" title="This file exposes a simple API for handling both posix and user-level threads. This API provides func...">threadtools.h</a></code>) in main, creates <code>N_THREADS</code> threads and each of the executes the <code>Execute</code> function declared in the same file. The <code>_DONT_USE_UTHREADS_</code> argument imposes <code>synchStartThreadsN</code> to create only Posix threads; in case that the user sets the corresponding fibers argument to <code>M</code> &gt; 0, then <code>StartThreadsN</code> will create <code>N_THREADS</code> Posix threads and each of them will create <code>M</code> user-level (i.e. fiber) threads. The <code>synchJoinThreadsN</code> function (also provided by <code>threadtools. h</code>) waits until all Posix and fiber (if any) threads finish the execution of the <code>Execute</code> function. The Fetch&amp;Add instruction on 64-bit integers is performed by the <code>synchFAA64</code> function provided by the API of <code><a class="el" href="primitives_8h.html" title="This file exposes a simple API for basic atomic operations, basic operations for memory management....">primitives.h</a></code>.</p>
+<p>The <code>synchStartThreadsN</code> function (provided by the API defined in <code><a class="el" href="threadtools_8h.html" title="This file exposes a simple API for handling both posix and user-level threads. This API provides func...">threadtools.h</a></code>) in main, creates <code>N_THREADS</code> threads and each of the executes the <code>Execute</code> function declared in the same file. The <code>SYNCH_DONT_USE_UTHREADS_</code> argument imposes <code>synchStartThreadsN</code> to create only Posix threads; in case that the user sets the corresponding fibers argument to <code>M</code> &gt; 0, then <code>synchStartThreadsN</code> will create <code>N_THREADS</code> Posix threads and each of them will create <code>M</code> user-level (i.e. fiber) threads. The <code>synchJoinThreadsN</code> function (also provided by <code>threadtools. h</code>) waits until all Posix and fiber (if any) threads finish the execution of the <code>Execute</code> function. The Fetch&amp;Add instruction on 64-bit integers is performed by the <code>synchFAA64</code> function provided by the API of <code><a class="el" href="primitives_8h.html" title="This file exposes a simple API for basic atomic operations, basic operations for memory management....">primitives.h</a></code>.</p>
 <p>The threads executing the <code>Execute</code> function use the <code><a class="el" href="barrier_8h.html#structSynchBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">SynchBarrier</a></code> re-entrant barrier object for simultaneously starting to perform Fetch&amp;Add instructions on the shared variable <code>object</code>. This barrier is also re-used before the end of the <code>Execute</code> function in order to allow thread with <code>id = 0</code> to measure the amount of time that the benchmark needed for completion. The <code>synchBarrierSet</code> function in <code>main</code> initializes the <code><a class="el" href="barrier_8h.html#structSynchBarrier" title="Barrier stores the state of an instance of the a backoff object. Barrier should be initialized using ...">SynchBarrier</a></code> object. The <code>synchBarrierSet</code> takes as an argument a pointer to the barrier object and the number of threads <code>N_THREADS</code> that are going to use it. Both <code>synchBarrierSet</code> and <code>synchBarrierWait</code> are provided by the API of <code><a class="el" href="barrier_8h.html" title="This file exposes the API of a simple re-entrant synchronization barrier. This implementation is a cl...">barrier.h</a></code></p>
 <p>At the end of the benchmark, <code>main</code> calculates and prints the average throughput of Fetch&amp;Add operations per second achieved by the benchmark.</p>
 <h1><a class="anchor" id="autotoc_md11"></a>
@@ -371,6 +381,8 @@ References</h1>
 <p>[11]. Adam Morrison, and Yehuda Afek. "Fast concurrent queues for x86 processors". Proceedings of the 18th ACM SIGPLAN symposium on Principles and practice of parallel programming. 2013.</p>
 <p>[12]. Adam Morrison, and Yehuda Afek. Source code for LCRQ. <a href="http://mcg.cs.tau.ac.il/projects/lcrq">http://mcg.cs.tau.ac.il/projects/lcrq</a>.</p>
 <p>[13]. Guy E. Blelloch, and Yuanhao Wei. "Brief Announcement: Concurrent Fixed-Size Allocation and Free in Constant Time." 34th International Symposium on Distributed Computing (DISC 2020). Schloss Dagstuhl-Leibniz-Zentrum für Informatik, 2020.</p>
+<p>[14]. Danny Hendler, Itai Incze, Nir Shavit, and Moran Tzafrir. Flat combining and the synchronization-parallelism tradeoff. In Proceedings of the twenty-second annual ACM symposium on Parallelism in algorithms and architectures (SPAA 2010), pp. 355-364.</p>
+<p>[15]. Danny Hendler, Itai Incze, Nir Shavit, and Moran Tzafrir. Source code for flat-combing. <a href="https://github.com/mit-carbon/Flat-Combining">https://github.com/mit-carbon/Flat-Combining</a></p>
 <h1><a class="anchor" id="autotoc_md16"></a>
 Contact</h1>
 <p>For any further information, please do not hesitate to send an email at nkallima (at) ics.forth.gr. Feedback is always valuable. </p>

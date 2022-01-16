@@ -99,15 +99,15 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a51183a4fb4e89b43b358b593453288de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a51183a4fb4e89b43b358b593453288de">POOL_INIT_ERROR</a>&#160;&#160;&#160;-1</td></tr>
-<tr class="memdesc:a51183a4fb4e89b43b358b593453288de"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is returned in case of error while calling init_pool.  <a href="pool_8h.html#a51183a4fb4e89b43b358b593453288de">More...</a><br /></td></tr>
-<tr class="separator:a51183a4fb4e89b43b358b593453288de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad173b08045ec3decd6988a169d719605"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#ad173b08045ec3decd6988a169d719605">POOL_INIT_SUCC</a>&#160;&#160;&#160;0</td></tr>
-<tr class="memdesc:ad173b08045ec3decd6988a169d719605"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is returned in case of success while calling init_pool.  <a href="pool_8h.html#ad173b08045ec3decd6988a169d719605">More...</a><br /></td></tr>
-<tr class="separator:ad173b08045ec3decd6988a169d719605"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5353b6568fe7b54ad53061532cc4d459"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a5353b6568fe7b54ad53061532cc4d459">POOL_OBJECT_ALLOC_ERROR</a>&#160;&#160;&#160;NULL</td></tr>
-<tr class="memdesc:a5353b6568fe7b54ad53061532cc4d459"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is returned in case of error while calling alloc_obj (usually system's memory is exhausted).  <a href="pool_8h.html#a5353b6568fe7b54ad53061532cc4d459">More...</a><br /></td></tr>
-<tr class="separator:a5353b6568fe7b54ad53061532cc4d459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41d7b191d6f7238d0b39bea18b2718ca"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a41d7b191d6f7238d0b39bea18b2718ca">SYNCH_POOL_INIT_ERROR</a>&#160;&#160;&#160;-1</td></tr>
+<tr class="memdesc:a41d7b191d6f7238d0b39bea18b2718ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is returned in case of error while calling synchInitPool.  <a href="pool_8h.html#a41d7b191d6f7238d0b39bea18b2718ca">More...</a><br /></td></tr>
+<tr class="separator:a41d7b191d6f7238d0b39bea18b2718ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bdabff1bbad494745411325c6dfc57e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#a3bdabff1bbad494745411325c6dfc57e">SYNCH_POOL_INIT_SUCC</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:a3bdabff1bbad494745411325c6dfc57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is returned in case of success while calling synchInitPool.  <a href="pool_8h.html#a3bdabff1bbad494745411325c6dfc57e">More...</a><br /></td></tr>
+<tr class="separator:a3bdabff1bbad494745411325c6dfc57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf3b415b67517526e7bbf93e98f67503"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pool_8h.html#acf3b415b67517526e7bbf93e98f67503">SYNCH_POOL_OBJECT_ALLOC_ERROR</a>&#160;&#160;&#160;NULL</td></tr>
+<tr class="memdesc:acf3b415b67517526e7bbf93e98f67503"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is returned in case of error while calling synchAllocObj (usually system's memory is exhausted).  <a href="pool_8h.html#acf3b415b67517526e7bbf93e98f67503">More...</a><br /></td></tr>
+<tr class="separator:acf3b415b67517526e7bbf93e98f67503"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -191,7 +191,7 @@ The number of free blocks available in the block. </td></tr>
 <td class="fieldname">
 cur_entry</td>
 <td class="fielddoc">
-The first free block. This should be returned in the next call of alloc_obj. </td></tr>
+The first free block. This should be returned in the next call of synchAllocObj. </td></tr>
 <tr><td class="fieldtype">
 <a id="acd3cd0f1c11b3978b9eb6ad6efd10614"></a>struct <a class="el" href="pool_8h.html#structSynchPoolBlock">SynchPoolBlock</a> *</td>
 <td class="fieldname">
@@ -287,51 +287,51 @@ The latest allocated block of objects. </td></tr>
 </div>
 </div>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a51183a4fb4e89b43b358b593453288de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51183a4fb4e89b43b358b593453288de">&#9670;&nbsp;</a></span>POOL_INIT_ERROR</h2>
+<a id="a41d7b191d6f7238d0b39bea18b2718ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d7b191d6f7238d0b39bea18b2718ca">&#9670;&nbsp;</a></span>SYNCH_POOL_INIT_ERROR</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define POOL_INIT_ERROR&#160;&#160;&#160;-1</td>
+          <td class="memname">#define SYNCH_POOL_INIT_ERROR&#160;&#160;&#160;-1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This is returned in case of error while calling init_pool. </p>
+<p>This is returned in case of error while calling synchInitPool. </p>
 
 </div>
 </div>
-<a id="ad173b08045ec3decd6988a169d719605"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad173b08045ec3decd6988a169d719605">&#9670;&nbsp;</a></span>POOL_INIT_SUCC</h2>
+<a id="a3bdabff1bbad494745411325c6dfc57e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bdabff1bbad494745411325c6dfc57e">&#9670;&nbsp;</a></span>SYNCH_POOL_INIT_SUCC</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define POOL_INIT_SUCC&#160;&#160;&#160;0</td>
+          <td class="memname">#define SYNCH_POOL_INIT_SUCC&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This is returned in case of success while calling init_pool. </p>
+<p>This is returned in case of success while calling synchInitPool. </p>
 
 </div>
 </div>
-<a id="a5353b6568fe7b54ad53061532cc4d459"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5353b6568fe7b54ad53061532cc4d459">&#9670;&nbsp;</a></span>POOL_OBJECT_ALLOC_ERROR</h2>
+<a id="acf3b415b67517526e7bbf93e98f67503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf3b415b67517526e7bbf93e98f67503">&#9670;&nbsp;</a></span>SYNCH_POOL_OBJECT_ALLOC_ERROR</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define POOL_OBJECT_ALLOC_ERROR&#160;&#160;&#160;NULL</td>
+          <td class="memname">#define SYNCH_POOL_OBJECT_ALLOC_ERROR&#160;&#160;&#160;NULL</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This is returned in case of error while calling alloc_obj (usually system's memory is exhausted). </p>
+<p>This is returned in case of error while calling synchAllocObj (usually system's memory is exhausted). </p>
 
 </div>
 </div>
@@ -370,7 +370,7 @@ The latest allocated block of objects. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of success, init_pool returns POOL_INIT_SUCC. In case of error, init_pool returns POOL_INIT_ERROR. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>In case of success, synchInitPool returns SYNCH_POOL_INIT_SUCC. In case of error, synchInitPool returns SYNCH_POOL_INIT_ERROR. </dd></dl>
 
 </div>
 </div>
@@ -397,7 +397,7 @@ The latest allocated block of objects. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>On success, a pointer to a free object is returned. Otherwise, POOL_OBJECT_ALLOC_ERROR is returned. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>On success, a pointer to a free object is returned. Otherwise, SYNCH_POOL_OBJECT_ALLOC_ERROR is returned. </dd></dl>
 
 </div>
 </div>

@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['mcslocknode_454',['MCSLockNode',['../mcs_8h.html#structMCSLockNode',1,'']]],
-  ['mcslockstruct_455',['MCSLockStruct',['../mcs_8h.html#structMCSLockStruct',1,'']]],
-  ['mcsthreadstate_456',['MCSThreadState',['../mcs_8h.html#structMCSThreadState',1,'']]],
-  ['msqueuestruct_457',['MSQueueStruct',['../msqueue_8h.html#structMSQueueStruct',1,'']]],
-  ['msqueuethreadstate_458',['MSQueueThreadState',['../msqueue_8h.html#structMSQueueThreadState',1,'']]]
+  ['lcrqstruct_484',['LCRQStruct',['../lcrq_8h.html#structLCRQStruct',1,'']]],
+  ['lcrqthreadstate_485',['LCRQThreadState',['../lcrq_8h.html#structLCRQThreadState',1,'']]],
+  ['lfstackstruct_486',['LFStackStruct',['../lfstack_8h.html#structLFStackStruct',1,'']]],
+  ['lfstackthreadstate_487',['LFStackThreadState',['../lfstack_8h.html#structLFStackThreadState',1,'']]],
+  ['lfuobjectstruct_488',['LFUObjectStruct',['../lfuobject_8h.html#unionLFUObjectStruct',1,'']]],
+  ['lfuobjectthreadstate_489',['LFUObjectThreadState',['../lfuobject_8h.html#structLFUObjectThreadState',1,'']]]
 ];

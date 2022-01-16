@@ -138,7 +138,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:af4f5695a6870df657eda4f6f4fa8c379"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a memory area of size bytes. The returned address is aligned to an offset equal to align bytes. In case that SYNCH_NUMA_SUPPORT is defined in <a class="el" href="config_8h.html" title="This file provides important parameters and constants for the benchmarks and the library.">libconcurrent/config.h</a>, the returned memory is allocated on the local NUMA node.  <a href="primitives_8h.html#af4f5695a6870df657eda4f6f4fa8c379">More...</a><br /></td></tr>
 <tr class="separator:af4f5695a6870df657eda4f6f4fa8c379"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab08525b58a8e92c5d92bf874ad065534"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#ab08525b58a8e92c5d92bf874ad065534">synchFreeMemory</a> (void *ptr, size_t size)</td></tr>
-<tr class="memdesc:ab08525b58a8e92c5d92bf874ad065534"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees memory allocated with either getMemory() or getAlignedMemory() functions.  <a href="primitives_8h.html#ab08525b58a8e92c5d92bf874ad065534">More...</a><br /></td></tr>
+<tr class="memdesc:ab08525b58a8e92c5d92bf874ad065534"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees memory allocated with either getMemory() or <a class="el" href="primitives_8h.html#af4f5695a6870df657eda4f6f4fa8c379" title="This function allocates a memory area of size bytes. The returned address is aligned to an offset equ...">synchGetAlignedMemory()</a> functions.  <a href="primitives_8h.html#ab08525b58a8e92c5d92bf874ad065534">More...</a><br /></td></tr>
 <tr class="separator:ab08525b58a8e92c5d92bf874ad065534"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd58ecc3ee687922e7ccce8f8d044827"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="primitives_8h.html#afd58ecc3ee687922e7ccce8f8d044827">synchGetTimeMillis</a> (void)</td></tr>
 <tr class="memdesc:afd58ecc3ee687922e7ccce8f8d044827"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns the current system's time in milliseconds.  <a href="primitives_8h.html#afd58ecc3ee687922e7ccce8f8d044827">More...</a><br /></td></tr>
@@ -681,7 +681,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>This function frees memory allocated with either getMemory() or getAlignedMemory() functions. </p>
+<p>This function frees memory allocated with either getMemory() or <a class="el" href="primitives_8h.html#af4f5695a6870df657eda4f6f4fa8c379" title="This function allocates a memory area of size bytes. The returned address is aligned to an offset equ...">synchGetAlignedMemory()</a> functions. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ptr</td><td>A pointer to the memory area to be freed. </td></tr>
