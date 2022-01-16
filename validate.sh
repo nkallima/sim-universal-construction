@@ -33,9 +33,9 @@ function usage()
 COLOR_PASS="[ \e[32mPASS\e[39m ]"
 COLOR_FAIL="[ \e[31mFAIL\e[39m ]"
 
-declare -a uobjects=("ccsynchbench.run"                     "dsmsynchbench.run" "hsynchbench.run" "oscibench.run"      "simbench.run")
-declare -a queues=(  "ccqueuebench.run" "clhqueuebench.run" "dsmqueuebench.run" "hqueuebench.run" "osciqueuebench.run" "simqueuebench.run" "lcrqbench.run")
-declare -a stacks=(  "ccstackbench.run" "clhstackbench.run" "dsmstackbench.run" "hstackbench.run" "oscistackbench.run" "simstackbench.run")
+declare -a uobjects=("ccsynchbench.run"                     "dsmsynchbench.run" "hsynchbench.run" "oscibench.run"      "simbench.run"      "fcbench.run")
+declare -a queues=(  "ccqueuebench.run" "clhqueuebench.run" "dsmqueuebench.run" "hqueuebench.run" "osciqueuebench.run" "simqueuebench.run" "fcqueuebench.run" "lcrqbench.run")
+declare -a stacks=(  "ccstackbench.run" "clhstackbench.run" "dsmstackbench.run" "hstackbench.run" "oscistackbench.run" "simstackbench.run" "fcstackbench.run")
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     usage;
