@@ -76,6 +76,9 @@ void *synchAllocObj(SynchPoolStruct *pool) {
 
 void synchRecycleObj(SynchPoolStruct *pool, void *obj) {
 #ifndef SYNCH_POOL_NODE_RECYCLING_DISABLE
+    if (obj == NULL)
+        return;
+
     SynchBlockObject *object = obj;
     object->next = pool->recycle_list;
     pool->recycle_list = object;

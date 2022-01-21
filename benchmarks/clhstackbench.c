@@ -58,7 +58,7 @@ inline static Object pop(int pid) {
 #endif
     synchNonTSOFence();
     CLHUnlock(lock, pid);
-    synchRecycleObj(&pool_node, n);
+    if (n != NULL) synchRecycleObj(&pool_node, n);
 
     return result;
 }
