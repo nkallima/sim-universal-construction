@@ -23,7 +23,7 @@ var searchData=
   ['fcstructinit_159',['FCStructInit',['../fc_8h.html#aa9913f69482a0f2b940d16beb7713ca7',1,'fc.h']]],
   ['fcthreadstate_160',['FCThreadState',['../fc_8h.html#structFCThreadState',1,'']]],
   ['fcthreadstateinit_161',['FCThreadStateInit',['../fc_8h.html#ae3577018c64bd886d0fda3d0c9ff6d79',1,'fc.h']]],
-  ['fibers_5fper_5fthread_162',['fibers_per_thread',['../osci_8h.html#afe6a707786177eeeae459e4013db65ff',1,'OsciStruct::fibers_per_thread()'],['../bench__args_8h.html#aab955cfa6289817a712f5ef45e3ffd10',1,'SynchBenchArgs::fibers_per_thread()']]],
+  ['fibers_5fper_5fthread_162',['fibers_per_thread',['../bench__args_8h.html#aab955cfa6289817a712f5ef45e3ffd10',1,'SynchBenchArgs::fibers_per_thread()'],['../osci_8h.html#afe6a707786177eeeae459e4013db65ff',1,'OsciStruct::fibers_per_thread()']]],
   ['first_163',['first',['../simqueue_8h.html#a8d3edf08823592d17a0343ad87d3a873',1,'EnqState']]],
   ['free_5fentries_164',['free_entries',['../pool_8h.html#ac842b51b9c3a01f850abd2a39844400b',1,'SynchPoolBlockMetadata']]]
 ];
