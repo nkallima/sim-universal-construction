@@ -39,7 +39,7 @@ inline static void *Execute(void *Arg) {
 
 int main(int argc, char *argv[]) {
     synchParseArguments(&bench_args, argc, argv);
-    object = 1;
+    object = 0;
 
     synchBarrierSet(&bar, bench_args.nthreads);
     synchStartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
