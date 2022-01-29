@@ -22,29 +22,28 @@ int64_t d1 CACHE_ALIGN, d2;
 SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 
-__thread MCSThreadState st_thread;
 
-inline void apply_op(RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
-    MCSLock(object_lock, &st_thread, pid);
+inline void apply_op(RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, MCSThreadState *thread_state, int pid) {
+    MCSLock(object_lock, thread_state, pid);
     sfunc(state, arg, pid);
 #ifdef DEBUG
     debug_state += 1;
 #endif
-    MCSUnlock(object_lock, &st_thread, pid);
+    MCSUnlock(object_lock, thread_state, pid);
 }
 
 inline static void *Execute(void *Arg) {
     long i, rnum;
     volatile long j;
     long id = (long)Arg;
+    MCSThreadState thread_state;
 
-    MCSThreadStateInit(&st_thread, id);
+    MCSThreadStateInit(&thread_state, id);
     synchFastRandomSetSeed(id + 1);
     synchBarrierWait(&bar);
     if (id == 0) d1 = synchGetTimeMillis();
-
     for (i = 0; i < bench_args.runs; i++) {
-        apply_op(fetchAndMultiply, &object, (ArgVal)i, (int)id);
+        apply_op(fetchAndMultiply, &object, (ArgVal)i,  &thread_state, (int)id);
         rnum = synchFastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
