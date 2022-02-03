@@ -220,7 +220,7 @@ int main(int argc, char *argv[]) {
 
     synchBarrierSet(&bar, N_THREADS);
     synchStartThreadsN(N_THREADS, Execute, SYNCH_DONT_USE_UTHREADS);
-    synchJoinThreadsN(N_THREADS - 1);
+    synchJoinThreadsN(N_THREADS);
 
     printf("time: %ld (ms)\tthroughput: %.2f (millions ops/sec)\n", 
            (d2 - d1), RUNS * N_THREADS / (1000.0 * (d2 - d1)));
@@ -231,7 +231,7 @@ int main(int argc, char *argv[]) {
 
 This example-benchmark creates `N_THREADS`, where each of them executes `RUNS` Fetch&Add operations in a shared 64-bit integer. At the end of the benchmark the throughput (i.e. Fetch&Add operations per second) is calculated. By seting varous values for `N_THREADS`, this benchmark is able to measure strong scaling.
 
-The `synchStartThreadsN` function (provided by the API defined in `threadtools.h`) in main, creates `N_THREADS` threads and each of the executes the `Execute` function declared in the same file. The `SYNCH_DONT_USE_UTHREADS_` argument imposes `synchStartThreadsN` to create only Posix threads; in case that the user sets the corresponding fibers argument to `M` > 0, then `synchStartThreadsN` will create `N_THREADS` Posix threads and each of them will create `M` user-level (i.e. fiber) threads. The `synchJoinThreadsN` function (also provided by `threadtools. h`) waits until all Posix and fiber (if any) threads finish the execution of the `Execute` function. The Fetch&Add instruction on 64-bit integers is performed by the `synchFAA64` function provided by the API of `primitives.h`.
+The `synchStartThreadsN` function (provided by the API defined in `threadtools.h`) in main, creates `N_THREADS` threads and each of the executes the `Execute` function declared in the same file. The `SYNCH_DONT_USE_UTHREADS_` argument imposes `synchStartThreadsN` to create only Posix threads; in case that the user sets the corresponding fibers argument to `M` > 0, then `synchStartThreadsN` will create `N_THREADS` Posix threads and each of them will create `M` user-level (i.e. fiber) threads. The `synchJoinThreadsN` function (also provided by `threadtools. h`) waits until all Posix and fiber threads (if any) finish the execution of the `Execute` function. The Fetch&Add instruction on 64-bit integers is performed by the `synchFAA64` function provided by the API of `primitives.h`.
 
 The threads executing the `Execute` function use the `SynchBarrier` re-entrant barrier object for simultaneously starting to perform Fetch&Add instructions on the shared variable `object`. This barrier is also re-used before the end of the `Execute` function in order to allow thread with `id = 0` to measure the amount of time that the benchmark needed for completion. The `synchBarrierSet` function in `main` initializes the `SynchBarrier` object. The `synchBarrierSet` takes as an argument a pointer to the barrier object and the number of threads `N_THREADS` that are going to use it. Both `synchBarrierSet` and `synchBarrierWait` are provided by the API of `barrier.h`
 

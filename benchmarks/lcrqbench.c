@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 
     synchBarrierSet(&bar, bench_args.nthreads);
     synchStartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
-    synchJoinThreadsN(bench_args.nthreads - 1);
+    synchJoinThreadsN(bench_args.nthreads);
     d2 = synchGetTimeMillis();
 
 #ifdef DEBUG

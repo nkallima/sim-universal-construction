@@ -173,7 +173,7 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
 
 void synchJoinThreadsN(uint32_t nthreads) {
     synchBarrierLastLeave(&bar);
-    synchFreeMemory(__threads, (nthreads + 1) * sizeof(pthread_t));
+    synchFreeMemory(__threads, nthreads * sizeof(pthread_t));
 }
 
 inline int32_t synchGetThreadId(void) {

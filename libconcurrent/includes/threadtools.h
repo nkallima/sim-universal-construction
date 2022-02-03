@@ -25,7 +25,7 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
 
 /// @brief This function returns whenever all the created posix threads and fibers spawned by StartThreadsN
 /// have completed the execution. 
-/// @param nthreads The number of posix threads minus 1 that StartThreadsN spawned.
+/// @param nthreads The number of posix threads that StartThreadsN spawned.
 void synchJoinThreadsN(uint32_t nthreads);
 
 /// @brief This function sets the CPU affinity of the running thread to cpu_id, where cpu_id
