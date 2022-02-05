@@ -22,7 +22,7 @@ SynchBenchArgs bench_args CACHE_ALIGN;
 inline static void *Execute(void *Arg) {
     MSQueueThreadState *th_state;
     long i;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
     long rnum;
     volatile long j;
 

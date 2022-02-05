@@ -23,7 +23,7 @@ inline static void *Execute(void *Arg) {
     HSynchThreadState th_state;
     long i, rnum;
     volatile int j;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
 
     synchFastRandomSetSeed(id + 1);
     HSynchThreadStateInit(object_combiner, &th_state, (int)id);

@@ -19,7 +19,7 @@ inline static void *Execute(void *Arg) {
     LCRQThreadState thread_state;
     long i, rnum;
     volatile int j;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
 
     LCRQThreadStateInit(&thread_state, id);
     synchFastRandomSetSeed(id + 1);

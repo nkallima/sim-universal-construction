@@ -23,7 +23,7 @@ inline static void *Execute(void *Arg) {
     OsciThreadState *th_state;
     long i, rnum;
     volatile int j;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
 
     th_state = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(OsciThreadState));
     synchFastRandomSetSeed(id);

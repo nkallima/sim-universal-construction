@@ -35,7 +35,7 @@ inline void apply_op(RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal a
 inline static void *Execute(void *Arg) {
     long i, rnum;
     volatile long j;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
     MCSThreadState thread_state;
 
     MCSThreadStateInit(&thread_state, id);

@@ -5,6 +5,8 @@ v3.2.0
 ------
 - Expanding `validate.sh` to cover a few more concurrent objects.
 - Increasing code coverage by `codecov`.
+- Enhancing the API of `threadtools.h`.
+- Code cleanup for the provided benchmark files.
 
 v3.1.1
 ------

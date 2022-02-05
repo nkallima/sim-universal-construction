@@ -20,7 +20,7 @@ SynchBenchArgs bench_args CACHE_ALIGN;
 inline static void *Execute(void *Arg) {
     long i, rnum, mybank;
     volatile long j;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
     ToggleVector lactive_set;
     ToggleVector mystate;
 

@@ -24,7 +24,7 @@ inline static void *Execute(void *Arg) {
     LFUObjectThreadState *th_state;
     long i, rnum;
     volatile long j;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
 
     synchFastRandomSetSeed(id + 1);
     th_state = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(LFUObjectThreadState));

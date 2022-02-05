@@ -32,9 +32,13 @@ void synchJoinThreadsN(uint32_t nthreads);
 /// should be a unique integer in {0, ..., N-1}, where N is the amount of available procissing cores.
 int synchThreadPin(int32_t cpu_id);
 
-/// @brief This function returns the CPU affinity of the running thread. More specifically, it returns
-/// a unique integer in {0, ..., N-1}, where N is the amount of available procissing cores.
+/// @brief This function returns the id of the running thread (posix or fiber). More specifically, it returns
+/// a unique integer in {0, ..., N-1}, where N is the amount of the running threads.
 inline int32_t synchGetThreadId(void);
+
+/// @brief This fuction returns the id of the current posix thread. 
+/// This function should return an identical value for any fiber running in the same posix thread.
+inline int32_t synchGetPosixThreadId(void);
 
 /// @brief This function returns the core-id of the current posix thread or fiber. The core-id is a
 /// unique integer in {0, ..., N-1}, where N is the amount of available procissing cores.

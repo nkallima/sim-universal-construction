@@ -19,7 +19,7 @@ SynchBenchArgs bench_args CACHE_ALIGN;
 inline static void *Execute(void *Arg) {
     SimStackThreadState *th_state;
     long i = 0;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
     long rnum;
     volatile int j = 0;
 

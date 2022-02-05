@@ -111,3 +111,7 @@ void synchWaitForAllFibers(void) {  // Execute the fibers until they quit
     while (N_FIBERS > 1)
         synchFiberYield();
 }
+
+int32_t synchCurrentFiberIndex(void) {
+    return currentFiber;
+}

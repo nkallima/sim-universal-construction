@@ -19,7 +19,7 @@ int MAX_BACK CACHE_ALIGN;
 inline static void *Execute(void *Arg) {
     SimThreadState th_state;
     long i, rnum;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
     volatile long j;
 
     SimThreadStateInit(&th_state, bench_args.nthreads, id);

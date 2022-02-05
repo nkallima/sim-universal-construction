@@ -78,7 +78,7 @@ inline static Object dequeue(int pid) {
 inline static void *Execute(void *Arg) {
     long i;
     long rnum;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
     volatile int j;
 
     synchFastRandomSetSeed(id + 1);

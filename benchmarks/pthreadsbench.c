@@ -21,7 +21,7 @@ SynchBenchArgs bench_args CACHE_ALIGN;
 inline static void *Execute(void *Arg) {
     long i, rnum;
     volatile int j;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
 
     synchFastRandomSetSeed(id + 1);
     synchBarrierWait(&bar);
