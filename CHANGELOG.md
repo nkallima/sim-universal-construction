@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-v3.2.0
+v3.1.2
 ------
 - Expanding `validate.sh` to cover a few more concurrent objects.
 - Increasing code coverage by `codecov`.
