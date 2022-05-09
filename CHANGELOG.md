@@ -1,6 +1,13 @@
 Changelog
 ---------
 
+v3.1.2
+------
+- Expanding `validate.sh` to cover a few more concurrent objects.
+- Increasing code coverage by `codecov`.
+- Enhancing the API of `threadtools.h`.
+- Code cleanup for the provided benchmark files.
+
 v3.1.1
 ------
 - Bug fix for the pool objects on the recycling functionality.

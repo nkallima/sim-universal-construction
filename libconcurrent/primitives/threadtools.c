@@ -18,8 +18,8 @@ inline static void *uthreadWrapper(void *arg);
 inline static void *kthreadWrapper(void *arg);
 
 static __thread pthread_t *__threads;
-static __thread int32_t __thread_id = -1;
-static __thread int32_t __prefered_core = -1;
+static __thread int32_t __thread_id = 0;
+static __thread int32_t __prefered_core = 0;
 static __thread int32_t __unjoined_threads = 0;
 
 static void *(*__func)(void *) CACHE_ALIGN = NULL;
@@ -98,7 +98,7 @@ int synchThreadPin(int32_t cpu_id) {
     __prefered_core = synchPreferedCoreOfThread(cpu_id);
     CPU_SET(__prefered_core, &mask);
 #if defined(DEBUG) && defined(SYNCH_NUMA_SUPPORT)
-    fprintf(stderr, "DEBUG: thread: %d -- numa_node: %d -- core: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core);
+    fprintf(stderr, "DEBUG: posix_thread: %d -- numa_node: %d -- core: %d\n", cpu_id, numa_node_of_cpu(__prefered_core), __prefered_core);
 #endif
     ret = sched_setaffinity(0, len, &mask);
     if (ret == -1)
@@ -113,12 +113,18 @@ inline static void *uthreadWrapper(void *arg) {
 
     kernel_id = (pid / __uthreads) % synchGetNCores();
     synchThreadPin(kernel_id);
-    setThreadId(kernel_id);
+    setThreadId(pid);
     synchStartCPUCounters(kernel_id);
     synchInitFibers(__uthreads);
     for (i = 0; i < __uthreads - 1; i++) {
         synchSpawnFiber(__func, pid + i + 1);
+#if defined(DEBUG)
+        fprintf(stderr, "DEBUG: fiber: %ld\n", pid + i + 1);
+#endif
     }
+#if defined(DEBUG)
+    fprintf(stderr, "DEBUG: fiber: %ld\n", pid);
+#endif
     __func((void *)pid);
 
     synchWaitForAllFibers();
@@ -173,10 +179,14 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
 
 void synchJoinThreadsN(uint32_t nthreads) {
     synchBarrierLastLeave(&bar);
-    synchFreeMemory(__threads, (nthreads + 1) * sizeof(pthread_t));
+    synchFreeMemory(__threads, nthreads * sizeof(pthread_t));
 }
 
 inline int32_t synchGetThreadId(void) {
+    return __thread_id + synchCurrentFiberIndex();
+}
+
+inline int32_t synchGetPosixThreadId(void) {
     return __thread_id;
 }
 

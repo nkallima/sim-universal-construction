@@ -19,7 +19,7 @@ SynchBenchArgs bench_args CACHE_ALIGN;
 static void *Execute(void *Arg) {
     SimQueueThreadState *th_state;
     long i = 0;
-    long id = (long)Arg;
+    int id = synchGetThreadId();
     long rnum;
     volatile int j = 0;
 
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
 
     synchBarrierSet(&bar, bench_args.nthreads);
     synchStartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
-    synchJoinThreadsN(bench_args.nthreads - 1);
+    synchJoinThreadsN(bench_args.nthreads);
 
     printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 2 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     synchPrintStats(bench_args.nthreads, bench_args.total_runs);

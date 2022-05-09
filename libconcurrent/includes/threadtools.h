@@ -25,16 +25,22 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
 
 /// @brief This function returns whenever all the created posix threads and fibers spawned by StartThreadsN
 /// have completed the execution. 
-/// @param nthreads The number of posix threads minus 1 that StartThreadsN spawned.
+/// @param nthreads The number of posix threads that StartThreadsN spawned.
 void synchJoinThreadsN(uint32_t nthreads);
 
 /// @brief This function sets the CPU affinity of the running thread to cpu_id, where cpu_id
 /// should be a unique integer in {0, ..., N-1}, where N is the amount of available procissing cores.
 int synchThreadPin(int32_t cpu_id);
 
-/// @brief This function returns the CPU affinity of the running thread. More specifically, it returns
-/// a unique integer in {0, ..., N-1}, where N is the amount of available procissing cores.
+/// @brief This function returns the id of the running thread (posix or fiber). More specifically, it returns
+/// a unique integer in {0, ..., N-1}, where N is the amount of the running threads. For example, if 3 Posix threads
+/// are running, and 4 fiber threads are running inside each Posix thread, this function will return an integer
+/// in the interval of {0, ...., 11}.
 inline int32_t synchGetThreadId(void);
+
+/// @brief This fuction returns the id of the current posix thread. 
+/// This function should return an identical value for any fiber running in the same posix thread.
+inline int32_t synchGetPosixThreadId(void);
 
 /// @brief This function returns the core-id of the current posix thread or fiber. The core-id is a
 /// unique integer in {0, ..., N-1}, where N is the amount of available procissing cores.
