@@ -33,7 +33,9 @@ void synchJoinThreadsN(uint32_t nthreads);
 int synchThreadPin(int32_t cpu_id);
 
 /// @brief This function returns the id of the running thread (posix or fiber). More specifically, it returns
-/// a unique integer in {0, ..., N-1}, where N is the amount of the running threads.
+/// a unique integer in {0, ..., N-1}, where N is the amount of the running threads. For example, if 3 Posix threads
+/// are running, and 4 fiber threads are running inside each Posix thread, this function will return an integer
+/// in the interval of {0, ...., 11}.
 inline int32_t synchGetThreadId(void);
 
 /// @brief This fuction returns the id of the current posix thread. 

@@ -19,7 +19,6 @@ void MCSLock(MCSLockStruct *l, MCSThreadState *thread_state, int pid) {
 
     while (thread_state->MyNode->locked == true) {
         synchResched();
-
     }
     synchFullFence();
 }

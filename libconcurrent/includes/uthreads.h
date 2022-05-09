@@ -28,7 +28,7 @@ int synchSpawnFiber(void *(*func)(void *), long arg);
 void synchWaitForAllFibers(void);
 
 /// @brief This function returns an index of the running fiber in the current posix thread, i.e.
-/// an integer number between 0 and N-1, where N is the number of active fibers in the cirrent posix thread.
+/// an integer number between 0 and N-1, where N is the number of active fibers in the current posix thread.
 int32_t synchCurrentFiberIndex(void);
 
 #endif

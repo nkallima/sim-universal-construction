@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
 
 #ifdef DEBUG
     fprintf(stderr, "DEBUG: Object state: %lu\n", debug_state);
-    fprintf(stderr, "DEBUG: shared state: %f\n", object.state_f);
+    fprintf(stderr, "DEBUG: Object float state: %f\n", object.state_f);
 #endif
 
     return 0;
