@@ -41,6 +41,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
     value = arg.value;
     cells = (ptr_aligned_t *)hash->cells;
     top = cells[arg.cell].ptr;
+
     if (arg.op == HT_INSERT) {
         bool found = false;
         HashNode *cur = top;
@@ -76,7 +77,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
             if (top != prev)
                 prev->next = cur->next;
             else
-                top->next = cur->next;
+                cells[arg.cell].ptr = cur->next;
         }
         return found;
     } else { // SEARCH

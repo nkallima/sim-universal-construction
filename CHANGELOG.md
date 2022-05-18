@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+v3.1.3
+------
+- Fix for the `chlhash.c` and `dsmhash.c` concurrent hash-tables.
+
 v3.1.2
 ------
 - Expanding `validate.sh` to cover a few more concurrent objects.

@@ -80,7 +80,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
             if (top != prev)
                 prev->next = cur->next;
             else
-                top->next = cur->next;
+                cells[arg.cell].ptr = cur->next;
         }
         return found;
     } else { // SEARCH
