@@ -3,7 +3,8 @@ Changelog
 
 v3.1.3
 ------
-- Fix for the `chlhash.c` and `dsmhash.c` concurrent hash-tables.
+- Fix for the `chlhash.c` and `dsmhash.c` concurrent hash-tables. 
+- Fix for the functionality of `synchFastRandomRange32` and `synchFastRandomRange` provided by `fastrand.c`.
 
 v3.1.2
 ------

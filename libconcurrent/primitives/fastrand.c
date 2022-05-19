@@ -36,9 +36,9 @@ void synchFastRandomSetSeed(uint32_t seed) {
 // New York: Cambridge University Press, 1992 (2nd ed., p. 277))
 // -------------------------------------------------------------------------------
 uint32_t synchFastRandomRange32(uint32_t low, uint32_t high) {
-    return low + (uint32_t)(((double)high) * ((double)synchFastRandom32() / (UINT_MAX)));
+    return low + (uint32_t)(((double)high - low) * ((double)synchFastRandom32() / (UINT_MAX)));
 }
 
 long synchFastRandomRange(long low, long high) {
-    return low + (long)(((double)high) * ((double)synchFastRandom() / (SYNCH_RAND_MAX + 1.0)));
+    return low + (long)(((double)high - low) * ((double)synchFastRandom() / (SYNCH_RAND_MAX + 1.0)));
 }
