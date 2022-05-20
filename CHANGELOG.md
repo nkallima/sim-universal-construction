@@ -1,6 +1,14 @@
 Changelog
 ---------
 
+v3.1.3
+------
+- Fix for the `chlhash.c` and `dsmhash.c` concurrent hash-tables. 
+- Fix for the functionality of `synchFastRandomRange32` and `synchFastRandomRange` provided by `fastrand.c`.
+- Improvements for the benchmarking infrastructure of hash-tables.
+- Adding code for validating the data-structures provided by `clhhash.c` and `dsmhash.c`.
+- Increasing code coverage by `codecov`.
+
 v3.1.2
 ------
 - Expanding `validate.sh` to cover a few more concurrent objects.

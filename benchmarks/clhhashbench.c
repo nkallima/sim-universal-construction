@@ -13,11 +13,12 @@
 #include <bench_args.h>
 #include <math.h>
 
-#define N_BUCKETS        64
-#define LOAD_FACTOR      1
-#define INITIAL_CAPACITY (LOAD_FACTOR * N_BUCKETS)
-
-#define RANDOM_RANGE (INITIAL_CAPACITY * log(INITIAL_CAPACITY))
+#define N_BUCKETS            128
+#define INITIAL_LOAD_FACTOR  2
+#define INITIAL_CAPACITY     (INITIAL_LOAD_FACTOR * N_BUCKETS)
+#define RANDOM_RANGE         1000
+#define RANDOM_RANGE_MIN(ID) (RANDOM_RANGE * (ID) + 1)
+#define RANDOM_RANGE_MAX(ID) (RANDOM_RANGE * (ID + 1) - 1)
 
 CLHHash object_struct CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
@@ -34,31 +35,32 @@ inline static void *Execute(void *Arg) {
     synchFastRandomSetSeed(id + 1);
     th_state = synchGetAlignedMemory(CACHE_LINE_SIZE, sizeof(CLHHashThreadState));
     CLHHashThreadStateInit(&object_struct, th_state, N_BUCKETS, (int)id);
+#ifndef DEBUG
     if (id == 0) {
         for (i = 0; i < INITIAL_CAPACITY; i++) {
-            key = synchFastRandomRange32(1, RANDOM_RANGE);
+            key = synchFastRandomRange32(RANDOM_RANGE_MIN(0), RANDOM_RANGE_MAX(bench_args.nthreads));
             value = id;
             CLHHashInsert(&object_struct, th_state, key, value, id);
         }
     }
+#endif
     synchBarrierWait(&bar);
     if (id == 0) d1 = synchGetTimeMillis();
 
     for (i = 0; i < bench_args.runs; i++) {
-        int imode = i % 10;
-
         rnum = synchFastRandomRange(1, bench_args.max_work);
         for (j = 0; j < rnum; j++)
             ;
-        key = synchFastRandomRange32(1, RANDOM_RANGE);
+        key = synchFastRandomRange32(RANDOM_RANGE_MIN(id), RANDOM_RANGE_MAX(id));
         value = id;
-        if (imode < 2) {
-            CLHHashDelete(&object_struct, th_state, key, id);
-        } else if (imode < 4) {
-            CLHHashInsert(&object_struct, th_state, key, value, id);
-        } else {
-            CLHHashSearch(&object_struct, th_state, key, id);
-        }
+        CLHHashInsert(&object_struct, th_state, key, value, id);
+        CLHHashDelete(&object_struct, th_state, key, id);
+        CLHHashSearch(&object_struct, th_state, key, id);
+#ifdef DEBUG
+        bool found = CLHHashSearch(&object_struct, th_state, key, id);
+        if (found)
+            fprintf(stderr, "DEBUG: Found key: %ld - thread: %d - iteration: %ld\n", key, id, i);
+#endif
     }
     synchBarrierWait(&bar);
     if (id == 0) d2 = synchGetTimeMillis();
@@ -74,7 +76,7 @@ int main(int argc, char *argv[]) {
     synchStartThreadsN(bench_args.nthreads, Execute, bench_args.fibers_per_thread);
     synchJoinThreadsN(bench_args.nthreads);
 
-    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
+    printf("time: %d (ms)\tthroughput: %.2f (millions ops/sec)\t", (int)(d2 - d1), 3 * bench_args.runs * bench_args.nthreads / (1000.0 * (d2 - d1)));
     synchPrintStats(bench_args.nthreads, bench_args.total_runs);
 
     return 0;

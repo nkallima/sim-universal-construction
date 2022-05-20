@@ -33,9 +33,10 @@ function usage()
 COLOR_PASS="[ \e[32mPASS\e[39m ]"
 COLOR_FAIL="[ \e[31mFAIL\e[39m ]"
 
-declare -a uobjects=("ccsynchbench.run"                     "dsmsynchbench.run" "hsynchbench.run" "oscibench.run"      "simbench.run"      "fcbench.run"      "oyamabench.run" "mcsbench.run" "clhbench.run" "pthreadsbench.run" "fadbench.run")
-declare -a queues=(  "ccqueuebench.run" "clhqueuebench.run" "dsmqueuebench.run" "hqueuebench.run" "osciqueuebench.run" "simqueuebench.run" "fcqueuebench.run" "lcrqbench.run")
-declare -a stacks=(  "ccstackbench.run" "clhstackbench.run" "dsmstackbench.run" "hstackbench.run" "oscistackbench.run" "simstackbench.run" "fcstackbench.run")
+declare -a uobjects=(  "ccsynchbench.run"                     "dsmsynchbench.run" "hsynchbench.run" "oscibench.run"      "simbench.run"      "fcbench.run"      "oyamabench.run" "mcsbench.run" "clhbench.run" "pthreadsbench.run" "fadbench.run")
+declare -a queues=(    "ccqueuebench.run" "clhqueuebench.run" "dsmqueuebench.run" "hqueuebench.run" "osciqueuebench.run" "simqueuebench.run" "fcqueuebench.run" "lcrqbench.run")
+declare -a stacks=(    "ccstackbench.run" "clhstackbench.run" "dsmstackbench.run" "hstackbench.run" "oscistackbench.run" "simstackbench.run" "fcstackbench.run")
+declare -a hashtables=("clhhashbench.run" "dsmhashbench.run")
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     usage;
@@ -199,6 +200,20 @@ for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
             echo -e $COLOR_FAIL
             echo "Expected state: " $runs
             echo "Invalid state: " $enq_state
+            PASS_STATUS=0
+        fi
+    done
+
+    for bench in "${hashtables[@]}"; do
+        printf "Validating %-20s \t\t\t\t\t" $bench
+        $BIN_PATH/$bench -t $PTHREADS -r $runs $WORKLOAD $FIBERS $NUMA_NODES > $RES_FILE 2>&1
+        # state counts the number of found keys in the hash-table. The provided benchmarks impose that this number should be zero!
+        found_keys=$(fgrep "DEBUG: Found key:" $RES_FILE | wc -l)
+        if [ $found_keys -eq 0 ]; then
+            echo -e $COLOR_PASS
+        else
+            echo -e $COLOR_FAIL
+            cat $RES_FILE
             PASS_STATUS=0
         fi
     done
