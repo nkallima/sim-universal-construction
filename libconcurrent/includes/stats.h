@@ -5,15 +5,15 @@
 /// Notice that this API should be used only by Posix threads. In the case where there more 
 /// than one fiber per Posix thread, only a single fiber thread should use this API.
 /// In case that the API of threadtools.h is used, most the provided functionality 
-/// (except printStats function), should not be directely used by the user.
+/// (except printStats function), should not be directly used by the user.
 #ifndef _STATS_H_
 #define _STATS_H_
 
 #include <stdint.h>
 
 /// @brief This function initiates the counters for keeping statics. 
-/// This function should be called once, usually at the begining of a main function.
-/// In case that the API of threadtools.h is used, there is no need to directely use this function.
+/// This function should be called once, usually at the beginning of a main function.
+/// In case that the API of threadtools.h is used, there is no need to directly use this function.
 void synchInitCPUCounters(void);
 
 /// @brief This function starts the logging of statistics (usually called before performing the first concurrent operation)
@@ -22,7 +22,7 @@ void synchInitCPUCounters(void);
 void synchStartCPUCounters(int id);
 
 /// @brief This function stops the logging of statistics (usually called after performing the last concurrent operation)
-/// for the current thread with pid equal to id. In case that the API of threadtools.h is used, there is no need to directely
+/// for the current thread with pid equal to id. In case that the API of threadtools.h is used, there is no need to directly
 /// use this function.
 void synchStopCPUCounters(int id);
 

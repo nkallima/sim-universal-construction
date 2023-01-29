@@ -58,10 +58,7 @@ Similarly to the previous experiment for stacks, the following figure shows the 
 
 [10]. Panagiota Fatourou, and Nikolaos D. Kallimanis. "Highly-efficient wait-free synchronization". Theory of Computing Systems 55.3 (2014): 475-520.
 
-[11]. Danny Hendler, Itai Incze, Nir Shavit, and Moran Tzafrir. Flat combining and
-the synchronization-parallelism tradeoff. In Proceedings of the 22nd Annual ACM
-Symposium on Parallel Algorithms and Architectures, pages 355–364, 2010.
+[11]. Danny Hendler, Itai Incze, Nir Shavit, and Moran Tzafrir. Flat combining and the synchronization-parallelism tradeoff. In Proceedings of the 22nd Annual ACM Symposium on Parallel Algorithms and Architectures, pages 355–364, 2010.
 
-[12]. Danny Hendler, Itai Incze, Nir Shavit, and Moran Tzafrir. The Code for Flat-
-Combining. http://github.com/mit-carbon/Flat-Combining.
+[12]. Danny Hendler, Itai Incze, Nir Shavit, and Moran Tzafrir. The Code for Flat-Combining. http://github.com/mit-carbon/Flat-Combining.
 

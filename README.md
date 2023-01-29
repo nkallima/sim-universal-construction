@@ -7,7 +7,7 @@
 # Summary
 
 This is an open-source framework for concurrent data-structures and benchmarks. The provided framework contains a substantial set of concurrent data-structures such as `queues`, `stacks`, `combining-objects`,
-`hash-tables`, `locks`, etc. This framework also provides a user-friendly runtime for developing and benchmarking concurrent data-structures. Among other features, this runtime provides functionality for creating threads easily (both Posix and user-level threads), tools for measuring performance, etc. The provided concurrent data-structures and the runtime are highly optimized for contemporary NUMA multiprocessors such as AMD Epyc and Intel Xeon.
+`hash-tables`, `locks`, etc. This framework also provides a user-friendly runtime for developing and benchmarking concurrent data-structures. Among other features, this runtime provides functionality for creating threads easily (both POSIX and user-level threads), tools for measuring performance, etc. The provided concurrent data-structures and the runtime are highly optimized for contemporary NUMA multiprocessors such as AMD Epyc and Intel Xeon.
 
 The current version of this code is optimized for x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.).
 
@@ -103,7 +103,7 @@ The following options are available:
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 |  `-t`, `--max_threads`  |  set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system cores |
 |  `-s`, `--step`         |  set the step (extra number of threads to be used) in each set of iterations of the benchmark, default is number of processors/8 or 1            |
-|  `-f`, `--fibers`       |  set the number of user-level threads per posix thread                                                                                           |
+|  `-f`, `--fibers`       |  set the number of user-level threads per POSIX thread                                                                                           |
 |  `-r`, `--repeat`       |  set the total number of operations executed by the benchmark, default is 1000000                                                                |
 |  `-i`, `--iterations`   |  set the number of times that the benchmark should be executed, default is 10                                                                    |
 |  `-w`, `--workload`     |  set the amount of workload (i.e. dummy loop iterations among two consecutive operations of the benchmarked object), default is 64               |
@@ -230,9 +230,9 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-This example-benchmark creates `N_THREADS`, where each of them executes `RUNS` Fetch&Add operations in a shared 64-bit integer. At the end of the benchmark the throughput (i.e. Fetch&Add operations per second) is calculated. By seting varous values for `N_THREADS`, this benchmark is able to measure strong scaling.
+This example-benchmark creates `N_THREADS`, where each of them executes `RUNS` Fetch&Add operations in a shared 64-bit integer. At the end of the benchmark the throughput (i.e. Fetch&Add operations per second) is calculated. By setting various values for `N_THREADS`, this benchmark is able to measure strong scaling.
 
-The `synchStartThreadsN` function (provided by the API defined in `threadtools.h`) in main, creates `N_THREADS` threads and each of the executes the `Execute` function declared in the same file. The `SYNCH_DONT_USE_UTHREADS` argument imposes `synchStartThreadsN` to create only Posix threads; in case that the user sets the corresponding fibers argument to `M` > 0, then `synchStartThreadsN` will create `N_THREADS` Posix threads and each of them will create `M` user-level (i.e. fiber) threads. The `synchGetThreadId` (provided by `threadtools.h`) returns the id of the running thread, while the `synchJoinThreadsN` function (also provided by `threadtools. h`) waits until all Posix and fiber threads (if any) finish the execution of the `Execute` function. The Fetch&Add instruction on 64-bit integers is performed by the `synchFAA64` function provided by the API of `primitives.h`.
+The `synchStartThreadsN` function (provided by the API defined in `threadtools.h`) in main, creates `N_THREADS` threads and each of the executes the `Execute` function declared in the same file. The `SYNCH_DONT_USE_UTHREADS` argument imposes `synchStartThreadsN` to create only POSIX threads; in case that the user sets the corresponding fibers argument to `M` > 0, then `synchStartThreadsN` will create `N_THREADS` POSIX threads and each of them will create `M` user-level (i.e. fiber) threads. The `synchGetThreadId` (provided by `threadtools.h`) returns the id of the running thread, while the `synchJoinThreadsN` function (also provided by `threadtools. h`) waits until all POSIX and fiber threads (if any) finish the execution of the `Execute` function. The Fetch&Add instruction on 64-bit integers is performed by the `synchFAA64` function provided by the API of `primitives.h`.
 
 The threads executing the `Execute` function use the `SynchBarrier` re-entrant barrier object for simultaneously starting to perform Fetch&Add instructions on the shared variable `object`. This barrier is also re-used before the end of the `Execute` function in order to allow thread with `id = 0` to measure the amount of time that the benchmark needed for completion. The `synchBarrierSet` function in `main` initializes the `SynchBarrier` object. The `synchBarrierSet` takes as an argument a pointer to the barrier object and the number of threads `N_THREADS` that are going to use it. Both `synchBarrierSet` and `synchBarrierWait` are provided by the API of `barrier.h`.
 
@@ -306,4 +306,4 @@ The Synch framework is provided under the [LGPL-2.1 License](https://github.com/
 # Contact
 
 For any further information, please do not hesitate to
-send an email at nkallima (at) ics.forth.gr. Feedback is always valuable.
+send an email at nkallima (at) isi.gr. Feedback is always valuable.
