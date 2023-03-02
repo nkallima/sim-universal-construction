@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+v3.1.4
+------
+- Documentation updates.
+
 v3.1.3
 ------
 - Fix for the `chlhash.c` and `dsmhash.c` concurrent hash-tables. 
