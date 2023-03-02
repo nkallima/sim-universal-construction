@@ -22,7 +22,7 @@
 #include <clh.h>
 
 /// @brief A node (i.e. cell) for the linked-list of cells of <key,value> pair.
-/// This should not directely accessed-used by the user.
+/// This should not directly accessed-used by the user.
 typedef struct HashNode {
     /// @brief Pointer to next node (i.e. cell) of the linked list.
     struct HashNode *next;
@@ -33,7 +33,7 @@ typedef struct HashNode {
 } HashNode;
 
 /// @brief HashOperations describes a hash-table operation, i.e. search, insert or delete.
-/// This should not directely accessed-used by the user.
+/// This should not directly accessed-used by the user.
 typedef struct HashOperations {
     /// @brief The key of the <key,value> pair for the specific request.
     int64_t key;
@@ -95,7 +95,7 @@ inline void CLHHashThreadStateInit(CLHHash *hash, CLHHashThreadState *th_state, 
 /// @return In case of success true is returned. In case that there is not enough space in the corresponding cell.
 inline bool CLHHashInsert(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int64_t value, int pid);
 
-/// @brief This function searches for a specifc key in the hash-table. In case that CLHHashSearch finds the key,
+/// @brief This function searches for a specific key in the hash-table. In case that CLHHashSearch finds the key,
 /// it returns true. Otherwise, it returns false.
 ///
 /// @param hash A pointer to the hash-table instance.
@@ -105,7 +105,7 @@ inline bool CLHHashInsert(CLHHash *hash, CLHHashThreadState *th_state, int64_t k
 /// @return CLHHashSearch returns the value of the <key,value> pair in case that the key exists in the hash-table.
 inline RetVal CLHHashSearch(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int pid);
 
-/// @brief This function searches for a specifc key in the hash-table. In case that CLHHashDelete finds the key,
+/// @brief This function searches for a specific key in the hash-table. In case that CLHHashDelete finds the key,
 /// it deletes the corresponding <key,value>.
 ///
 /// @param hash A pointer to the hash-table instance.

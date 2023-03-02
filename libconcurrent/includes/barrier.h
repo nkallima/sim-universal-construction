@@ -19,7 +19,7 @@ typedef struct SynchBarrier {
     volatile bool arrive_flag;
     /// @brief This variable is set to true if all the n threads have entered to the leave phase.
     volatile bool leave_flag;
-    /// @brief The initial value set to arrive and leave variaales.
+    /// @brief The initial value set to arrive and leave variables.
     volatile int32_t val_at_set;
 } SynchBarrier;
 

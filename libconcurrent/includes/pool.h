@@ -1,9 +1,9 @@
 /// @file pool.h
 /// @brief This file exposes a simple API for implementing a very simple pool object.
-/// This pool object gives user the ability to allocate small chunks of memory (e.g. allocatting nodes for using them in an queue or stack implementation)
-/// in a fast and efficient way. The main purpose of this pool implentation is to add minimal overheads while benchmarking concurrent data structures,
+/// This pool object gives user the ability to allocate small chunks of memory (e.g. allocating nodes for using them in an queue or stack implementation)
+/// in a fast and efficient way. The main purpose of this pool implementation is to add minimal overheads while benchmarking concurrent data structures,
 /// such as stacks. queues, etc. This object does not provide thread-safe methods for accessing, and thus each of the running threads should use its own
-/// instance without directely accessing the pool of any other thread.
+/// instance without directly accessing the pool of any other thread.
 #ifndef _POOL_H_
 #define _POOL_H_
 

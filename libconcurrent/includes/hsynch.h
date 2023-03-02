@@ -17,11 +17,11 @@
 /// @brief Whenever numa_regions is equal to HSYNCH_DEFAULT_NUMA_POLICY, the user uses the default number of NUMA nodes,
 /// which is equal to the number of NUMA nodes that the machine provides. The information about machine's NUMA 
 /// characteristics is provided by the functionality of numa.h lib. In case that numa_regions is different than
-/// HSYNCH_DEFAULT_NUMA_POLICY, the user overides system's default number of NUMA nodes. For example, if  numa_regions = 2
+/// HSYNCH_DEFAULT_NUMA_POLICY, the user overrides system's default number of NUMA nodes. For example, if  numa_regions = 2
 /// and the machine is equipped with 4 NUMA nodes,then the H-Synch will ignore this and will create a fictitious topology of 
-/// 2 NUMA nodes. This is very usefull in cases of machines that provide many NUMA nodes, but each each of them is equipped
+/// 2 NUMA nodes. This is very useful in cases of machines that provide many NUMA nodes, but each each of them is equipped
 /// with a small amount of cores. In such a case, the combining degree of H-Synch may be restricted. Thus, creating a 
-/// fictitious topology with restricted number of NUMA nodes gives much better performance. The user usually overides 
+/// fictitious topology with restricted number of NUMA nodes gives much better performance. The user usually overrides 
 /// HSYNCH_DEFAULT_NUMA_POLICY by setting the '-n' argument in the executable of the benchmarks.
 #define HSYNCH_DEFAULT_NUMA_POLICY 0
 

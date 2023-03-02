@@ -21,12 +21,12 @@ typedef struct SynchBenchArgs {
     uint32_t fibers_per_thread;
     /// @brief The  value of maximum local work that each thread executes between two consecutive of the
     /// benchmarked operation. A zero value means there is no work between two consecutive calls.
-    /// Large values usually reduce system's contention, i.e. threads perform operations less frequentely.
-    /// In constrast, small values (but not zero) increase system's contention. Please avoid to set this value
-    /// equal to zero, since some algorithms may produce unreallistically high performan (i.e. long runs
+    /// Large values usually reduce system's contention, i.e. threads perform operations less frequently.
+    /// In contrast, small values (but not zero) increase system's contention. Please avoid to set this value
+    /// equal to zero, since some algorithms may produce unrealistically high performant (i.e. long runs
     /// and unrealistic low numbers of cache misses).
     uint32_t max_work;
-    /// @brief The number of numa nodes (which may differ with the actual harware numa nodes) that hierarchical algorithms should take account.
+    /// @brief The number of numa nodes (which may differ with the actual hardware numa nodes) that hierarchical algorithms should take account.
     uint32_t numa_nodes;
     /// @brief The lower backoff bound used in the experiment.
     uint16_t backoff_low;

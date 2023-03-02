@@ -3,7 +3,7 @@
 /// This functionality is used by combining objects or universal construction (e.g. CC-Synch, Osci, etc.) for 
 /// providing a concurrent version of this object. The current version of the object stores floats.
 /// However, the user can very easily to modify the object in order to store other data type or size;
-/// in this case ObjecState struct and the fetchAndMultiply function should be modified.
+/// in this case ObjectState struct and the fetchAndMultiply function should be modified.
 #ifndef _FAM_H_
 
 #define _FAM_H_

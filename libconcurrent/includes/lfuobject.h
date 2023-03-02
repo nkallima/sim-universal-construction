@@ -21,7 +21,7 @@
 /// LFUObjectStruct should be initialized using the LFUObjectStructInit function.
 typedef union LFUObjectStruct {
     /// @brief This field stores the state of the concurrent object. This variable is of type ObjectState, which its size is usually 64-bit (defined in config.h).
-    /// Note that the machine should be provide atomic Read/Write and Compare&Swap (or LL/SC) acceses to this variable type.
+    /// Note that the machine should be provide atomic Read/Write and Compare&Swap (or LL/SC) accesses to this variable type.
     volatile ObjectState state;
     /// @brief padding space.
     char pad[CACHE_LINE_SIZE];
