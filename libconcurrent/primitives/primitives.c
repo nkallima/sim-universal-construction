@@ -263,7 +263,7 @@ inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {
 }
 
 inline void *_SWAP(void *A, void *B) {
-#if defined(_EMULATE_SWAP_)
+#if defined(SYNCH_EMULATE_SWAP)
 #    warning synchSWAP instructions are simulated!
     void *old_val;
     void *new_val;
@@ -288,7 +288,7 @@ inline void *_SWAP(void *A, void *B) {
 }
 
 inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
-#if defined(_EMULATE_FAA_)
+#if defined(SYNCH_EMULATE_FAA)
 #    warning Fetch&Add instructions are simulated!
 
     int32_t old_val;
@@ -314,7 +314,7 @@ inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
 }
 
 inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
-#if defined(_EMULATE_FAA_)
+#if defined(SYNCH_EMULATE_FAA)
 #    warning Fetch&Add instructions are simulated!
 
     int64_t old_val;
