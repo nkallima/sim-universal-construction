@@ -10,7 +10,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define SYNCH_DONT_USE_UTHREADS 1
+#define SYNCH_DONT_USE_UTHREADS                       1
+#define SYNCH_THREAD_PLACEMENT_FLAT                   0x1
+#define SYNCH_THREAD_PLACEMENT_NUMA_SPARSE            0x2
+#define SYNCH_THREAD_PLACEMENT_NUMA_DENSE             0x3
+#define SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER 0x4
+#define SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER  0x5
+#define SYNCH_THREAD_PLACEMENT_DEFAULT                SYNCH_THREAD_PLACEMENT_NUMA_SPARSE
 
 /// @brief This function creates nthreads posix threads, where each posix thread executes
 /// uthreads user-level threads (fibers). Thus, the total amount of threads and fibers is nthreads * uthreads.
@@ -27,6 +33,8 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
 /// have completed the execution. 
 /// @param nthreads The number of posix threads that StartThreadsN spawned.
 void synchJoinThreadsN(uint32_t nthreads);
+
+void synchSetThreadPlacementPolicy(uint32_t policy);
 
 /// @brief This function sets the CPU affinity of the running thread to cpu_id, where cpu_id
 /// should be a unique integer in {0, ..., N-1}, where N is the amount of available processing cores.

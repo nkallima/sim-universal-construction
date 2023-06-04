@@ -26,10 +26,16 @@ static void *(*__func)(void *) CACHE_ALIGN = NULL;
 static uint32_t __uthreads = 0;
 static uint32_t __nthreads = 0;
 static uint32_t __ncores = 0;
+static uint32_t __schecule_policy = SYNCH_THREAD_PLACEMENT_DEFAULT;
 static bool __uthread_sched = false;
 static bool __system_oversubscription = false;
 static bool __noop_resched = false;
 static SynchBarrier bar CACHE_ALIGN;
+
+void synchSetThreadPlacementPolicy(uint32_t policy) {
+    __schecule_policy = policy;
+    synchFullFence();
+}
 
 void setThreadId(int32_t id) {
     __thread_id = id;
@@ -61,28 +67,47 @@ inline static void *kthreadWrapper(void *arg) {
 
 inline uint32_t synchPreferedCoreOfThread(uint32_t pid) {
     uint32_t prefered_core = 0;
-#ifdef SYNCH_NUMA_SUPPORT
-    int ncpus = numa_num_configured_cpus();
-    int nodes = numa_num_task_nodes();
-    int node_size = ncpus / nodes;
 
-    if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) {
-        int half_node_size = node_size / 2;
-        int offset = 0;
-        uint32_t half_cpu_id = pid;
-
-        if (pid >= ncpus / 2) {
-            half_cpu_id = pid - ncpus / 2;
-            offset = ncpus / 2;
-        }
-        prefered_core = (half_cpu_id % nodes) * half_node_size + half_cpu_id / nodes;
-        prefered_core += offset;
+    if (__schecule_policy == SYNCH_THREAD_PLACEMENT_FLAT) {
+        prefered_core = pid;
     } else {
-        prefered_core = ((pid % nodes) * node_size);
-    }
+#ifdef SYNCH_NUMA_SUPPORT
+        int ncpus = numa_num_configured_cpus();
+        int nodes = numa_num_task_nodes();
+        int node_size = ncpus / nodes;
+
+        if (__schecule_policy == SYNCH_THREAD_PLACEMENT_NUMA_SPARSE) {
+            if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) { // SMT or HyperThreading detected
+                int half_node_size = node_size / 2;
+                int offset = 0;
+                uint32_t half_cpu_id = pid;
+
+                if (pid >= ncpus / 2) {
+                    half_cpu_id = pid - ncpus / 2;
+                    offset = ncpus / 2;
+                }
+                prefered_core = (half_cpu_id % nodes) * half_node_size + half_cpu_id / nodes;
+                prefered_core += offset;
+            } else prefered_core = ((pid % nodes) * node_size);
+        } else if (__schecule_policy == SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER) {
+            if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) { // SMT or HyperThreading detected
+                uint32_t double_nodes = 2 * nodes;
+                uint32_t half_node_size = node_size / 2;
+
+                prefered_core = (pid % node_size) * half_node_size + (pid / double_nodes);
+            } else prefered_core = ((pid % nodes) * node_size);
+        } else if (__schecule_policy == SYNCH_THREAD_PLACEMENT_NUMA_DENSE) {
+            prefered_core = pid;
+        } else if (__schecule_policy == SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER){
+            prefered_core = (pid / nodes) + (pid % nodes) * (node_size);
+        } else {
+            fprintf(stderr, "ERROR: Unsupported scheduling policy: 0x%X\n", __schecule_policy);
+            prefered_core = ((pid % nodes) * node_size);
+        }
 #else
-    prefered_core = pid;
+        prefered_core = pid;
 #endif
+    }
     prefered_core %= synchGetNCores();
 
     return prefered_core;
