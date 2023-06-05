@@ -16,7 +16,7 @@
 #define SYNCH_THREAD_PLACEMENT_NUMA_DENSE             0x3
 #define SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER 0x4
 #define SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER  0x5
-#define SYNCH_THREAD_PLACEMENT_DEFAULT                SYNCH_THREAD_PLACEMENT_NUMA_SPARSE
+#define SYNCH_THREAD_PLACEMENT_DEFAULT                SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER
 
 /// @brief This function creates nthreads posix threads, where each posix thread executes
 /// uthreads user-level threads (fibers). Thus, the total amount of threads and fibers is nthreads * uthreads.
