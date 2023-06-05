@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+v3.2.0
+------
+- Adding support for various thread placement policies. 
+- Improvements to the `threadtools.h` API; some basic NUMA functionality is added.
+- A patch on `hsynch.c` for supporting the various thread placement policies. 
+
 v3.1.4
 ------
 - Documentation updates.
