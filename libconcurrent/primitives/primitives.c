@@ -11,6 +11,8 @@
 
 #define MAX_VENDOR_STR_SIZE 64
 
+static __thread uint32_t __machine_model = UNINITIALIZED_MACHINE_MODEL;
+
 #ifdef DEBUG
 extern __thread int64_t __failed_cas;
 extern __thread int64_t __executed_cas;
@@ -191,6 +193,9 @@ inline int64_t synchGetTimeMillis(void) {
 }
 
 inline uint64_t synchGetMachineModel(void) {
+    if (__machine_model != UNINITIALIZED_MACHINE_MODEL)
+        return __machine_model;
+
 #if defined(__amd64__) || defined(__x86_64__)
     char cpu_model[MAX_VENDOR_STR_SIZE] = {'\0'};
 
@@ -206,18 +211,20 @@ inline uint64_t synchGetMachineModel(void) {
 #endif
 
     if (strcmp(cpu_model, "AuthenticAMD") == 0)
-        return AMD_X86_MACHINE;
+        __machine_model = AMD_X86_MACHINE;
     else if (strcmp(cpu_model, "GenuineIntel") == 0)
-        return INTEL_X86_MACHINE;
+        __machine_model = INTEL_X86_MACHINE;
     else
-        return X86_GENERIC_MACHINE;
+        __machine_model = X86_GENERIC_MACHINE;
 #elif defined(__aarch64__)
-    return ARM_GENERIC_MACHINE;
+    __machine_model = ARM_GENERIC_MACHINE;
 #elif defined(__riscv__) || defined(__riscv)
-    return RISCV_GENERIC_MACHINE;
+    __machine_model = RISCV_GENERIC_MACHINE;
 #else
-    return UNKNOWN_MACHINE;
+    __machine_model = UNKNOWN_MACHINE;
 #endif
+
+    return __machine_model;
 }
 
 inline bool _CASPTR(void *A, void *B, void *C) {

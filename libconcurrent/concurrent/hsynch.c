@@ -54,6 +54,8 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
         synchNonTSOFence();
         p->locked = false;
         p = tmp_next;
+        if (tmp_next->next == NULL && synchGetMachineModel() != INTEL_X86_MACHINE)
+            synchFullFence();
     }
     p->locked = false; // Unlock the next one
     CLHUnlock(l->central_lock, pid);
