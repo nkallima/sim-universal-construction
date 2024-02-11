@@ -10,37 +10,31 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-/// @brief 
-///
-///
 #define SYNCH_DONT_USE_UTHREADS                       1
-///
-/// @brief 
-///
-///
+
+/// @brief Threads are distributed in a round-robin fashion across all processing cores.
 #define SYNCH_THREAD_PLACEMENT_FLAT                   0x1
-///
-/// @brief 
-///
-///
+
+/// @brief It optimizes thread placement for systems with Non-Uniform Memory Access (NUMA) by spreading threads sparsely 
+/// across NUMA nodes, potentially improving memory bandwidth and improving cache utilization.
 #define SYNCH_THREAD_PLACEMENT_NUMA_SPARSE            0x2
-///
-/// @brief 
-///
-///
+
+/// @brief It places threads within the smallest number of NUMA nodes before spreading them to other nodes,
+/// which can improve memory locality and may reduce contention on shared variables.
 #define SYNCH_THREAD_PLACEMENT_NUMA_DENSE             0x3
-///
-/// @brief 
-///
-///
+
+/// @brief Similar to `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`, but with a preference for utilizing Simultaneous Multithreading (SMT)
+/// capabilities within NUMA nodes to maximize processing efficiency.
 #define SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER 0x4
-///
-/// @brief 
-///
-///
+
+/// @brief It combines the sparse distribution strategy across NUMA nodes with a preference for SMT.
+/// This policy spreads threads across NUMA nodes to avoid contention, while preferring to fill SMT slots within each core before moving to
+/// the next. It aims to strike a balance between improving memory bandwidth and leveraging SMT for higher processing efficiency and reduced
+/// contention on shared variables.
 #define SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER  0x5
-///
-/// @brief The default thread placement policy.
+
+/// @brief By default the thread placement policy is se to `SYNCH_THREAD_PLACEMENT_DEFAULT`.
+/// Currently, `SYNCH_THREAD_PLACEMENT_DEFAULT` is equal to `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`.
 #define SYNCH_THREAD_PLACEMENT_DEFAULT                SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER
 
 /// @brief This function creates nthreads posix threads, where each posix thread executes
