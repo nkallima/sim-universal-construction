@@ -35,6 +35,8 @@ static SynchBarrier bar CACHE_ALIGN;
 
 
 void synchSetThreadPlacementPolicy(uint32_t policy) {
+    if (policy > SYNCH_THREAD_PLACEMENT_POLICY_MAX)
+        policy = SYNCH_THREAD_PLACEMENT_POLICY_MAX;
     __schedule_policy = policy;
     synchFullFence();
 }

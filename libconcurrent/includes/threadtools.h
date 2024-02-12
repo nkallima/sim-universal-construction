@@ -33,6 +33,9 @@
 /// contention on shared variables.
 #define SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER  0x5
 
+/// @brief The maximum defined supported thread placement policy that is available.
+#define SYNCH_THREAD_PLACEMENT_POLICY_MAX             SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER
+
 /// @brief By default the thread placement policy is se to `SYNCH_THREAD_PLACEMENT_DEFAULT`.
 /// Currently, `SYNCH_THREAD_PLACEMENT_DEFAULT` is equal to `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`.
 #define SYNCH_THREAD_PLACEMENT_DEFAULT                SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER
