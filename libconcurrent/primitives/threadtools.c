@@ -100,21 +100,21 @@ inline uint32_t synchPreferredCoreOfThread(uint32_t pid) {
                 }
                 preferred_core = (half_cpu_id % nodes) * half_node_size + half_cpu_id / nodes;
                 preferred_core += offset;
-            } else preferred_core = ((pid % nodes) * node_size);
+            } else preferred_core = (pid / nodes) + (pid % nodes) * (node_size);
         } else if (__schedule_policy == SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER) {
             if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) { // SMT or HyperThreading detected
                 uint32_t double_nodes = 2 * nodes;
                 uint32_t half_node_size = node_size / 2;
 
                 preferred_core = (pid % node_size) * half_node_size + (pid / double_nodes);
-            } else preferred_core = ((pid % nodes) * node_size);
+            } else preferred_core = (pid / nodes) + (pid % nodes) * (node_size);
         } else if (__schedule_policy == SYNCH_THREAD_PLACEMENT_NUMA_DENSE) {
             preferred_core = pid;
         } else if (__schedule_policy == SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER){
             preferred_core = (pid / nodes) + (pid % nodes) * (node_size);
         } else {
             fprintf(stderr, "ERROR: Unsupported scheduling policy: 0x%X\n", __schedule_policy);
-            preferred_core = ((pid % nodes) * node_size);
+            preferred_core = (pid / nodes) + (pid % nodes) * (node_size);
         }
 #else
         preferred_core = pid;
