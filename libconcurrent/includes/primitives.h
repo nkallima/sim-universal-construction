@@ -75,7 +75,14 @@ inline uint64_t synchNonZeroBits(uint64_t v);
 #endif
 
 #if defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
-/// @brief This macro emits a X86 pause instruction.
+/// @brief This macro is designed to emit a pause instruction specifically for Intel X86 processors.
+/// The inclusion of a pause instruction in spinning loops can significantly improve performance
+/// on Intel X86 machines by reducing the execution resource requirements and improving the performance
+/// in many SMT scenarios. It effectively hints to the processor that it is in a spin-wait loop,
+/// allowing the CPU to handle the other thread more efficiently or reduce power consumption.
+///
+/// Note: This optimization is particularly beneficial on Intel X86 architectures and does not yield
+/// the same performance benefits on AMD processors.
 #    define synchPause()                                                                                                                                                                               \
         {                                                                                                                                                                                              \
             int __i;                                                                                                                                                                                   \

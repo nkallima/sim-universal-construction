@@ -54,6 +54,11 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
         synchNonTSOFence();
         p->locked = false;
         p = tmp_next;
+
+        // A full-memory barrier is inserted for performance optimization, with conditional behavior based on the processor type.
+        // This memory barrier is insert to enhance performance in a specific scenario. On non-Intel processors, applying this
+        // full-memory barrier can yield a slight performance improvement, when there are no remaining requests to be served.
+        // However, it's important to note that on Intel X86 machines, this barrier may actually degrade performance.
         if (tmp_next->next == NULL && synchGetMachineModel() != INTEL_X86_MACHINE)
             synchFullFence();
     }
