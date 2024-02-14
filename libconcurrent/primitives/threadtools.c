@@ -163,7 +163,7 @@ int synchThreadPin(int32_t cpu_id) {
     __preferred_numa_node = synchPreferredNumaNodeOfThread(cpu_id);
     CPU_SET(__preferred_core, &mask);
 #if defined(DEBUG) && defined(SYNCH_NUMA_SUPPORT)
-    fprintf(stderr, "DEBUG: posix_thread: %d -- numa_node: %d -- core: %d\n", cpu_id, numa_node_of_cpu(__preferred_core), __preferred_core);
+    fprintf(stderr, "DEBUG: posix_thread: %d -- numa_node: %d -- core: %d\n", cpu_id, __preferred_numa_node, __preferred_core);
 #endif
     ret = sched_setaffinity(0, len, &mask);
     if (ret == -1)
