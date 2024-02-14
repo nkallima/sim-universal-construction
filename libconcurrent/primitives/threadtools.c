@@ -255,9 +255,7 @@ inline int32_t synchGetPosixThreadId(void) {
 }
 
 inline void synchResched(void) {
-    if (__noop_resched && synchGetMachineModel() != INTEL_X86_MACHINE) {
-        ;
-    } else if (__noop_resched) {
+    if (__noop_resched) {
         synchPause();
     } else if (__uthread_sched) {
         synchFiberYield();
