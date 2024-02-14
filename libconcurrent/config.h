@@ -8,9 +8,9 @@
 
 /// @brief Defines the default value of maximum local work that each thread executes between two consecutive of the
 /// benchmarked operation. A zero value means there is no work between two consecutive calls.
-/// Large values usually reduce system's contention, i.e. threads perform operations less frequentely.
-/// In constrast, small values (but not zero) increase system's contention. Please avoid to set this value
-/// equal to zero, since some algorithms may produce unreallistically high performan (i.e. long runs
+/// Large values usually reduce system's contention, i.e. threads perform operations less frequently.
+/// In contrast, small values (but not zero) increase system's contention. Please avoid to set this value
+/// equal to zero, since some algorithms may produce unrealistically high performance (i.e. long runs
 /// and unrealistic low numbers of cache misses).
 /// Default value is 64.
 #ifndef SYNCH_MAX_WORK
@@ -28,7 +28,7 @@
 /// By default, this flag is disabled.
 //#define DEBUG
 
-/// @brief This definition disbales backoff in all algorithms that are using it for reducing system's contention.
+/// @brief This definition disables backoff in all algorithms that are using it for reducing system's contention.
 /// By default, this flag is disabled.
 //#define SYNCH_DISABLE_BACKOFF
 
@@ -59,7 +59,7 @@
 /// different values of `--numa_nodes` may be needed.
 #define SYNCH_NUMA_SUPPORT
 
-/// @brief This definition enables some optimizations on memory allocation that seems to greately improve the performance
+/// @brief This definition enables some optimizations on memory allocation that seems to greatly improve the performance
 /// on AMD Epyc multiprocessors. This flag seems to double the performance in CC-Synch and H-Synch algorithms.
 /// In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. 
 /// Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.
@@ -77,7 +77,11 @@
 /// By default, this flag is disabled.
 //#define SYNCH_TRACK_CPU_COUNTERS
 
-//#define _EMULATE_FAA_
-//#define _EMULATE_SWAP_
+/// @brief By enabling this definition, synchFAA32 and synchFAA64 operations will be simulated using synchCAS32 and
+/// synchCAS64 operations respectively.
+//#define SYNCH_EMULATE_FAA
+
+/// @brief By enabling this definition, synchSWAP operations will be simulated using synchCAS operations.
+//#define SYNCH_EMULATE_SWAP
 
 #endif

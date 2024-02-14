@@ -10,7 +10,35 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define SYNCH_DONT_USE_UTHREADS 1
+#define SYNCH_DONT_USE_UTHREADS                       1
+
+/// @brief Threads are distributed in a round-robin fashion across all processing cores.
+#define SYNCH_THREAD_PLACEMENT_FLAT                   0x1
+
+/// @brief It optimizes thread placement for systems with Non-Uniform Memory Access (NUMA) by spreading threads sparsely 
+/// across NUMA nodes, potentially improving memory bandwidth and improving cache utilization.
+#define SYNCH_THREAD_PLACEMENT_NUMA_SPARSE            0x2
+
+/// @brief It places threads within the smallest number of NUMA nodes before spreading them to other nodes,
+/// which can improve memory locality and may reduce contention on shared variables.
+#define SYNCH_THREAD_PLACEMENT_NUMA_DENSE             0x3
+
+/// @brief Similar to `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`, but with a preference for utilizing Simultaneous Multithreading (SMT)
+/// capabilities within NUMA nodes to maximize processing efficiency.
+#define SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER 0x4
+
+/// @brief It combines the sparse distribution strategy across NUMA nodes with a preference for SMT.
+/// This policy spreads threads across NUMA nodes to avoid contention, while preferring to fill SMT slots within each core before moving to
+/// the next. It aims to strike a balance between improving memory bandwidth and leveraging SMT for higher processing efficiency and reduced
+/// contention on shared variables.
+#define SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER  0x5
+
+/// @brief The maximum defined supported thread placement policy that is available.
+#define SYNCH_THREAD_PLACEMENT_POLICY_MAX             SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER
+
+/// @brief By default the thread placement policy is se to `SYNCH_THREAD_PLACEMENT_DEFAULT`.
+/// Currently, `SYNCH_THREAD_PLACEMENT_DEFAULT` is equal to `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`.
+#define SYNCH_THREAD_PLACEMENT_DEFAULT                SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER
 
 /// @brief This function creates nthreads posix threads, where each posix thread executes
 /// uthreads user-level threads (fibers). Thus, the total amount of threads and fibers is nthreads * uthreads.
@@ -28,9 +56,47 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
 /// @param nthreads The number of posix threads that StartThreadsN spawned.
 void synchJoinThreadsN(uint32_t nthreads);
 
+///@brief This function sets the default placement policy of threads in machine's processors. 
+/// The thread placement policy could set any of the following:
+/// - `SYNCH_THREAD_PLACEMENT_FLAT`: Threads are distributed in a round-robin fashion across all processing cores.
+/// - `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE`: Optimizes thread placement for systems with Non-Uniform Memory Access (NUMA)
+/// by spreading threads sparsely across NUMA nodes, potentially improving memory bandwidth and improving cache utilization.
+/// - `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`: Places threads within the smallest number of NUMA nodes before spreading them to other nodes,
+/// which can improve memory locality and may reduce contention on shared variables.
+/// - `SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER`: Similar to `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`, but with a preference 
+/// for utilizing Simultaneous Multithreading (SMT) capabilities within NUMA nodes to maximize processing efficiency.
+/// - `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`: Combines the sparse distribution strategy across NUMA nodes with a preference for SMT.
+/// This policy spreads threads across NUMA nodes to avoid contention, while preferring to fill SMT slots within each core before moving to
+/// the next. It aims to strike a balance between improving memory bandwidth and leveraging SMT for higher processing efficiency and reduced
+/// contention on shared variables.
+/// - `SYNCH_THREAD_PLACEMENT_DEFAULT`: By default the thread placement policy is se to `SYNCH_THREAD_PLACEMENT_DEFAULT`.
+/// Currently, `SYNCH_THREAD_PLACEMENT_DEFAULT` is equal to `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`.
+/// @param policy The thread placement policy to be set.
+void synchSetThreadPlacementPolicy(uint32_t policy);
+
+/// @brief Retrieves the current thread placement policy for the machine's processors.
+/// This function returns the policy setting that determines how threads are distributed across the processing cores of the machine.
+/// The possible return values correspond to the thread placement policies that could be returned are the following:
+/// - `SYNCH_THREAD_PLACEMENT_FLAT`: Threads are distributed in a round-robin fashion across all processing cores.
+/// - `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE`: Optimizes thread placement for systems with Non-Uniform Memory Access (NUMA)
+/// by spreading threads sparsely across NUMA nodes, potentially improving memory bandwidth and improving cache utilization.
+/// - `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`: Places threads within the smallest number of NUMA nodes before spreading them to other nodes,
+/// which can improve memory locality and may reduce contention on shared variables.
+/// - `SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER`: Similar to `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`, but with a preference 
+/// for utilizing Simultaneous Multithreading (SMT) capabilities within NUMA nodes to maximize processing efficiency.
+/// - `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`: Combines the sparse distribution strategy across NUMA nodes with a preference for SMT.
+/// This policy spreads threads across NUMA nodes to avoid contention, while preferring to fill SMT slots within each core before moving to
+/// the next. It aims to strike a balance between improving memory bandwidth and leveraging SMT for higher processing efficiency and reduced
+/// contention on shared variables.
+/// - `SYNCH_THREAD_PLACEMENT_DEFAULT`: By default the thread placement policy is se to `SYNCH_THREAD_PLACEMENT_DEFAULT`.
+/// Currently, `SYNCH_THREAD_PLACEMENT_DEFAULT` is equal to `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`.
+uint32_t synchGetThreadPlacementPolicy(void);
+
 /// @brief This function sets the CPU affinity of the running thread to cpu_id, where cpu_id
 /// should be a unique integer in {0, ..., N-1}, where N is the amount of available processing cores.
 int synchThreadPin(int32_t cpu_id);
+
+inline uint32_t synchPreferredNumaNodeOfThread(uint32_t pid);
 
 /// @brief This function returns the id of the running thread (posix or fiber). More specifically, it returns
 /// a unique integer in {0, ..., N-1}, where N is the amount of the running threads. For example, if 3 Posix threads
@@ -38,17 +104,19 @@ int synchThreadPin(int32_t cpu_id);
 /// in the interval of {0, ...., 11}.
 inline int32_t synchGetThreadId(void);
 
+inline int32_t synchGetPreferredNumaNode(void);
+
 /// @brief This fuction returns the id of the current posix thread. 
 /// This function should return an identical value for any fiber running in the same posix thread.
 inline int32_t synchGetPosixThreadId(void);
 
 /// @brief This function returns the core-id of the current posix thread or fiber. The core-id is a
 /// unique integer in {0, ..., N-1}, where N is the amount of available processing cores.
-inline int32_t synchGetPreferedCore(void);
+inline int32_t synchGetPreferredCore(void);
 
 /// @brief This function returns the core-id of the posix thread or fiber with id equal to pid. 
 /// The core-id is a unique integer in {0, ..., N-1}, where N is the amount of available processing cores.
-inline uint32_t synchPreferedCoreOfThread(uint32_t pid);
+inline uint32_t synchPreferredCoreOfThread(uint32_t pid);
 
 /// @brief This function returns the number of system's processing cores.
 inline uint32_t synchGetNCores(void);

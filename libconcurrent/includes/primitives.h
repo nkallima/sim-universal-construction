@@ -13,17 +13,19 @@
 #include <stddef.h>
 
 /// @brief The vendor of the processor is unknown.
-#define UNKNOWN_MACHINE       0x0
+#define UNKNOWN_MACHINE             0x0
 /// @brief The vendor is an AMD x86 processor.
-#define AMD_X86_MACHINE       0x1
+#define AMD_X86_MACHINE             0x1
 /// @brief The vendor is an Intel X86 processor.
-#define INTEL_X86_MACHINE     0x2
+#define INTEL_X86_MACHINE           0x2
 /// @brief This is a generic X86 processor.
-#define X86_GENERIC_MACHINE   0x3
+#define X86_GENERIC_MACHINE         0x3
 /// @brief This is a generic ARM processor.
-#define ARM_GENERIC_MACHINE   0x4
+#define ARM_GENERIC_MACHINE         0x4
 /// @brief This is a generic RISC-V processor.
-#define RISCV_GENERIC_MACHINE 0x5
+#define RISCV_GENERIC_MACHINE       0x5
+/// @brief This is return whenever the system is not initialized.
+#define UNINITIALIZED_MACHINE_MODEL 0xFFFFFFFF
 
 #if defined(__GNUC__) && (__GNUC__ * 10000 + __GNUC_MINOR__ * 100) >= 40100
 #    define __CAS128(A, B0, B1, C0, C1) _CAS128(A, B0, B1, C0, C1)
@@ -73,10 +75,19 @@ inline uint64_t synchNonZeroBits(uint64_t v);
 #endif
 
 #if defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
-/// @brief This macro emits a X86 pause instruction.
+/// @brief This macro is designed to emit a pause instruction specifically for Intel X86 processors.
+/// The inclusion of a pause instruction in spinning loops can significantly improve performance
+/// on Intel X86 machines by reducing the execution resource requirements and improving the performance
+/// in many SMT scenarios. It effectively hints to the processor that it is in a spin-wait loop,
+/// allowing the CPU to handle the other thread more efficiently or reduce power consumption.
+///
+/// Note: This optimization is particularly beneficial on Intel X86 architectures and does not yield
+/// the same performance benefits on AMD processors.
 #    define synchPause()                                                                                                                                                                               \
         {                                                                                                                                                                                              \
             int __i;                                                                                                                                                                                   \
+            if (synchGetMachineModel() != INTEL_X86_MACHINE)                                                                                                                                           \
+                return;                                                                                                                                                                                \
             for (__i = 0; __i < 16; __i++) {                                                                                                                                                           \
                 asm volatile("pause");                                                                                                                                                                 \
                 asm volatile("pause");                                                                                                                                                                 \

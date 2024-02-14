@@ -11,6 +11,8 @@
 
 #define MAX_VENDOR_STR_SIZE 64
 
+static __thread uint32_t __machine_model = UNINITIALIZED_MACHINE_MODEL;
+
 #ifdef DEBUG
 extern __thread int64_t __failed_cas;
 extern __thread int64_t __executed_cas;
@@ -191,6 +193,9 @@ inline int64_t synchGetTimeMillis(void) {
 }
 
 inline uint64_t synchGetMachineModel(void) {
+    if (__machine_model != UNINITIALIZED_MACHINE_MODEL)
+        return __machine_model;
+
 #if defined(__amd64__) || defined(__x86_64__)
     char cpu_model[MAX_VENDOR_STR_SIZE] = {'\0'};
 
@@ -206,18 +211,20 @@ inline uint64_t synchGetMachineModel(void) {
 #endif
 
     if (strcmp(cpu_model, "AuthenticAMD") == 0)
-        return AMD_X86_MACHINE;
+        __machine_model = AMD_X86_MACHINE;
     else if (strcmp(cpu_model, "GenuineIntel") == 0)
-        return INTEL_X86_MACHINE;
+        __machine_model = INTEL_X86_MACHINE;
     else
-        return X86_GENERIC_MACHINE;
+        __machine_model = X86_GENERIC_MACHINE;
 #elif defined(__aarch64__)
-    return ARM_GENERIC_MACHINE;
+    __machine_model = ARM_GENERIC_MACHINE;
 #elif defined(__riscv__) || defined(__riscv)
-    return RISCV_GENERIC_MACHINE;
+    __machine_model = RISCV_GENERIC_MACHINE;
 #else
-    return UNKNOWN_MACHINE;
+    __machine_model = UNKNOWN_MACHINE;
 #endif
+
+    return __machine_model;
 }
 
 inline bool _CASPTR(void *A, void *B, void *C) {
@@ -263,7 +270,7 @@ inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {
 }
 
 inline void *_SWAP(void *A, void *B) {
-#if defined(_EMULATE_SWAP_)
+#if defined(SYNCH_EMULATE_SWAP)
 #    warning synchSWAP instructions are simulated!
     void *old_val;
     void *new_val;
@@ -288,7 +295,7 @@ inline void *_SWAP(void *A, void *B) {
 }
 
 inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
-#if defined(_EMULATE_FAA_)
+#if defined(SYNCH_EMULATE_FAA)
 #    warning Fetch&Add instructions are simulated!
 
     int32_t old_val;
@@ -314,7 +321,7 @@ inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
 }
 
 inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
-#if defined(_EMULATE_FAA_)
+#if defined(SYNCH_EMULATE_FAA)
 #    warning Fetch&Add instructions are simulated!
 
     int64_t old_val;

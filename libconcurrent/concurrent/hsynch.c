@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include <hsynch.h>
 #include <threadtools.h>
 
@@ -52,6 +54,13 @@ RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfu
         synchNonTSOFence();
         p->locked = false;
         p = tmp_next;
+
+        // A full-memory barrier is inserted for performance optimization, with conditional behavior based on the processor type.
+        // This memory barrier is insert to enhance performance in a specific scenario. On non-Intel processors, applying this
+        // full-memory barrier can yield a slight performance improvement, when there are no remaining requests to be served.
+        // However, it's important to note that on Intel X86 machines, this barrier may actually degrade performance.
+        if (tmp_next->next == NULL && synchGetMachineModel() != INTEL_X86_MACHINE)
+            synchFullFence();
     }
     p->locked = false; // Unlock the next one
     CLHUnlock(l->central_lock, pid);
@@ -65,21 +74,21 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
 
 #ifdef SYNCH_NUMA_SUPPORT
     if (l->numa_policy) {
-        if (synchGetPreferedCore() != -1) {
-            node_of_thread = numa_node_of_cpu(synchGetPreferedCore());
+        if (synchGetPreferredCore() != -1) {
+            node_of_thread = synchGetPreferredNumaNode();
             if (node_of_thread == -1)
                 node_of_thread = pid / l->numa_node_size;
         }
     } else {
         int ncpus = numa_num_configured_cpus();
         if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2) && ncpus > 1) {
-            int actual_numa_node = numa_node_of_cpu(synchGetPreferedCore());
+            int actual_numa_node = synchGetPreferredNumaNode();
             int actual_per_manual = numa_num_task_nodes() / l->numa_nodes;
             if (actual_per_manual != 0)
                 node_of_thread = actual_numa_node / actual_per_manual;
             else {
                 int threads_per_node = l->nthreads / l->numa_nodes;
-                node_of_thread = synchGetPreferedCore() / threads_per_node;
+                node_of_thread = synchGetPreferredCore() / threads_per_node;
             }
         } else {
             node_of_thread = pid / l->numa_node_size;
@@ -97,12 +106,17 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
         last_node->locked = false;
         last_node->completed = false;
 
-        if (synchCASPTR(&l->nodes[node_of_thread], NULL, ptr) == false) synchFreeMemory(ptr, (l->numa_node_size + 2) * sizeof(HSynchNode));
+        if (synchCASPTR(&l->nodes[node_of_thread], NULL, ptr) == false) 
+            synchFreeMemory(ptr, (l->numa_node_size + 2) * sizeof(HSynchNode));
     }
     last_node = l->nodes[node_of_thread] + l->numa_node_size + 1;
     synchCASPTR(&l->Tail[node_of_thread].ptr, NULL, last_node);
     node_index = synchFAA32(&l->node_indexes[node_of_thread], 1);
     st_thread->next_node = l->nodes[node_of_thread] + node_index;
+#ifdef DEBUG
+    fprintf(stderr, "DEBUG: thread_id: %d -- running_core: %d -- running_node: %d -- hsynch_node: %d\n",
+            pid, synchGetPreferredCore(), synchGetPreferredNumaNode(), node_of_thread);
+#endif
 }
 
 void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions) {
@@ -117,25 +131,32 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
         // that the machine provides. The information about machine's NUMA characteristics
         // is provided by the functionality of numa.h lib.
         // In case that numa_regions is different than HSYNCH_DEFAULT_NUMA_POLICY, the
-        // user overides system's default number of NUMA nodes. For example, if 
+        // user overrides system's default number of NUMA nodes. For example, if 
         // numa_regions = 2 and the machine is equipped with 4 NUMA nodes,then the
         // H-Synch will ignore this and will create a fictitious topology of 2 NUMA nodes. 
-        // This is very usefull in cases of machines that provide many NUMA nodes,
+        // This is very useful in cases of machines that provide many NUMA nodes,
         // but each each of them is equipped with a small amount of cores. In such a 
         // case, the combining degree of H-Synch may be restricted. Thus, creating
         // a fictitious topology with restricted number of NUMA nodes gives much
-        // better performance. The user usually overides HSYNCH_DEFAULT_NUMA_POLICY
+        // better performance. The user usually overrides HSYNCH_DEFAULT_NUMA_POLICY
         // by setting the '-n' argument in the executable of the benchmarks.
         l->numa_policy = true;
+
 #ifdef SYNCH_NUMA_SUPPORT
+        uint32_t ncpus = numa_num_configured_cpus();
+
         l->numa_nodes = numa_num_task_nodes();
         l->numa_node_size = nthreads / l->numa_nodes + (nthreads % l->numa_nodes);
+
+        if (l->numa_node_size < ncpus / l->numa_nodes)
+            l->numa_node_size = ncpus / l->numa_nodes;
 #else
         l->numa_node_size = HSYNCH_DEFAULT_NUMA_NODE_SIZE;
         l->numa_nodes = nthreads / l->numa_node_size + (nthreads % l->numa_node_size == 0 ? 0 : 1);
         if (l->numa_nodes == 0)
             l->numa_nodes = 1;
 #endif
+
     } else {
         l->numa_policy = false;
         l->numa_nodes = numa_regions;

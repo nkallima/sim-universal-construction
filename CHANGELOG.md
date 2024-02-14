@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+v3.2.0
+------
+- Adding support for various thread placement policies. 
+- Improvements to the `threadtools.h` API; some basic NUMA functionality is added.
+- A patch on `hsynch.c` for supporting the various thread placement policies.
+- Improvements of the performance of `synchResched` for many multicore machines (e.g., AMD, Intel, etc.).
+- Improvements of the performance of the `synchGetMachineModel` function in the case of multiple calls.
+- The performance of algorithms based on `hsynch.c` is substantially improved (more than X2 in many cases).
+
 v3.1.4
 ------
 - Documentation updates.

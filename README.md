@@ -67,7 +67,7 @@ In the `libconcurrent/config.h` file, the user can configure some basic options 
 - Support for Numa machines.
 - Enable performance statistics, etc.
 
-The provided default configuration should work well in many cases. However, the default configuration may not provide the best performance. For getting the best performance, modifying the `libconcurrent/config.h` may be needed (see more on Performance/Optimizations Section).
+The provided default configuration should work well in many cases. However, the default configuration may not provide the best performance. For getting the best performance, modifying the `libconcurrent/config.h` may be needed (see more on [Performance/Optimizations](#performanceoptimizations) Section).
 
 In case that you want to compile the library that provides all the implemented concurrent algorithms just execute `make` in the root directory of the source files. This step is necessary in case that you want to run benchmarks. However, some extra make options are provided in case the user wants to compile the framework with other than system's default compiler, clean the binary files, etc. The following table provides the list with all the available make options.
 
@@ -125,9 +125,9 @@ The framework provides another simple fast smoke test: `./run_all.sh`. This will
 Getting the best performance from the provided benchmarks is not always an easy task. For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `libconcurrent/config.h` file. A useful guide to consider in order to get better performance in a modern multiprocessor follows.
 
 - In case that the target machine is a NUMA machine make sure `SYNCH_NUMA_SUPPORT` is enabled in `libconcurrent/config.h`. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.
-- Whenever the `SYNCH_NUMA_SUPPORT` option is enabled, the runtime will detect the system's number of NUMA nodes and will setup the environment appropriately. However, significant performance benefits have been observed by manually setting-up the number of NUMA nodes manually (see the `--numa_nodes` option). For example, the performance of the H-Synch family algorithms on an AMD EPYC machine consisting of 2x EPYC 7501 processors (i.e., 128 hardware threads) is much better by setting `--numa_nodes` equal to `2`. Notice that the runtime successfully reports that the available NUMA nodes are `8`, but this value is not optimal for H-Synch in this configuration. An experimental analysis for different values of `--numa_nodes` may be needed.
 - Check the performance impact of the `SYNCH_COMPACT_ALLOCATION` option in `libconcurrent/config.h`. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.
-- Check the cache line size (`CACHE_LINE_SIZE` and `S_CACHE_LINE` options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines behave better with `CACHE_LINE_SIZE` equal or greater than `128`, while most modern AMD machine achieve better performance with a value equal to `64`. Notice that `CACHE_LINE_SIZE` and `S_CACHE_LINE` depend on the `SYNCH_COMPACT_ALLOCATION` option (see includes/system.h).
+- Check if you have selected the optimal thread placement policy (see more in [Thread placement policies](#thread-placement-policies)).
+- Check the cache line size (`CACHE_LINE_SIZE` and `S_CACHE_LINE` options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines behave better with `CACHE_LINE_SIZE` equal or greater than `128`, while most modern AMD machine achieve better performance with a value equal to `64`. Notice that `CACHE_LINE_SIZE` and `S_CACHE_LINE` depend on the `SYNCH_COMPACT_ALLOCATION` option (see `includes/system.h`).
 - Use backoff if it is available. Many of the provided algorithms could use backoff in order to provide better performance (e.g., sim, LF-Stack, MS-Queue, SimQueue, SimStack, etc.). In this case, it is of crucial importance to use `-b` (and in some cases `-bl` arguments) in order to get the best performance. 
 - Ensure that you are using a recent gcc-compatible compiler, e.g. a `gcc` compiler of version `7.0` or greater is highly recommended.
 - Check the performance impact of the different available compiler optimizations. In most cases, gcc's `-Ofast` option gives the best performance. In addition, some algorithms (i.e., sim, osci, simstack, oscistack, simqueue and osciqueue) benefit by enabling the `-mavx` option (in case that AVX instructions are supported by the hardware).
@@ -136,6 +136,17 @@ Getting the best performance from the provided benchmarks is not always an easy 
 ## Expected performance
 
 The expected performance of the Synch framework is discussed in the [PERFORMANCE.md](PERFORMANCE.md) file.
+
+# Thread placement policies
+
+Since v3.2.0, the Synch framework has introduced a variety of thread placement policies. Utilizing the `synchSetThreadPlacementPolicy` and `synchGetThreadPlacementPolicy` functions, users can modify the default placement policy and inquire about the current thread placement policy, respectively. These functions enable precise control over how threads are allocated across the machine's processors, enhancing performance and efficiency. The available thread placement policies are the following:
+- `SYNCH_THREAD_PLACEMENT_FLAT`: Threads are distributed in a round-robin fashion across all processing cores.
+- `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE`: Optimizes thread placement for systems with Non-Uniform Memory Access (NUMA) by spreading threads sparsely across NUMA nodes, potentially improving memory bandwidth and improving cache utilization.
+- `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`: Places threads within the smallest number of NUMA nodes before spreading them to other nodes, which can improve memory locality and may reduce contention on shared variables.
+- `SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER`: Similar to `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`, but with a preference for utilizing Simultaneous Multithreading (SMT) capabilities within NUMA nodes to maximize processing efficiency.
+- `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`: Combines the sparse distribution strategy across NUMA nodes with a preference for SMT. This policy spreads threads across NUMA nodes to avoid contention, while preferring to fill SMT slots within each core before moving to the next. It aims to strike a balance between improving memory bandwidth and leveraging SMT for higher processing efficiency and reduced contention on shared variables.
+- `SYNCH_THREAD_PLACEMENT_DEFAULT`: By default the thread placement policy is se to `SYNCH_THREAD_PLACEMENT_DEFAULT`.
+Currently, `SYNCH_THREAD_PLACEMENT_DEFAULT` is equal to `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`.
 
 # Memory reclamation (stacks and queues)
 

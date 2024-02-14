@@ -53,7 +53,7 @@ RetVal FCApplyOp(FCStruct *lock, FCThreadState *st_thread, RetVal (*sfunc)(void 
     synchStoreFence();
 
     while (true) {
-        if (lock->lock == 0 && synchCAS32(&lock->lock, 0, 1)) {
+        if (lock->lock == 0 && synchCAS64(&lock->lock, 0, 1)) {
             break;
         } else {
             while (lock->lock && request->pending && request->active) {
@@ -77,7 +77,7 @@ RetVal FCApplyOp(FCStruct *lock, FCThreadState *st_thread, RetVal (*sfunc)(void 
     for (i = 0; i < FC_COMBINING_ROUNDS; i++) {
         for (cur = lock->head; cur != NULL; cur = cur->next) {
             if (cur->pending) {
-                cur->val = sfunc(state, arg, pid);
+                cur->val = sfunc(state, cur->val, pid);
                 cur->pending = false;
                 cur->age = count;
 #ifdef DEBUG
