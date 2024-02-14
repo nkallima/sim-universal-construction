@@ -136,7 +136,6 @@ inline uint32_t synchPreferredNumaNodeOfThread(uint32_t pid) {
 
     if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2)) { // SMT or HyperThreading detected
         uint32_t half_node_size = node_size / 2;
-        uint32_t ncpus = numa_num_configured_cpus();
 
         if (preferred_core < ncpus / 2)
             preferred_node = preferred_core/half_node_size;
