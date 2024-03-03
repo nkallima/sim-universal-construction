@@ -6,8 +6,7 @@
 
 # Summary
 
-This is an open-source framework for concurrent data-structures and benchmarks. The provided framework contains a substantial set of concurrent data-structures such as `queues`, `stacks`, `combining-objects`,
-`hash-tables`, `locks`, etc. This framework also provides a user-friendly runtime for developing and benchmarking concurrent data-structures. Among other features, this runtime provides functionality for creating threads easily (both POSIX and user-level threads), tools for measuring performance, etc. The provided concurrent data-structures and the runtime are highly optimized for contemporary NUMA multiprocessors such as AMD Epyc and Intel Xeon.
+This is an open-source framework for concurrent data-structures and benchmarks. The provided framework contains a substantial set of concurrent data-structures such as `queues`, `stacks`, `combining-objects`, `hash-tables`, `locks`, etc. This framework also provides a user-friendly runtime for developing and benchmarking concurrent data-structures. Among other features, this runtime provides functionality for creating threads easily (both POSIX and user-level threads), tools for measuring performance, etc. The provided concurrent data-structures and the runtime are highly optimized for contemporary NUMA multiprocessors such as AMD Epyc and Intel Xeon.
 
 The current version of this code is optimized for x86_64 machine architecture, but the code is also successfully tested in other machine architectures, such as ARM-V8 and RISC-V. Some of the benchmarks perform much better in architectures that natively support Fetch&Add instructions (e.g., x86_64, etc.).
 
@@ -145,7 +144,7 @@ Since v3.2.0, the Synch framework has introduced a variety of thread placement p
 - `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`: Places threads within the smallest number of NUMA nodes before spreading them to other nodes, which can improve memory locality and may reduce contention on shared variables.
 - `SYNCH_THREAD_PLACEMENT_NUMA_DENSE_SMT_PREFER`: Similar to `SYNCH_THREAD_PLACEMENT_NUMA_DENSE`, but with a preference for utilizing Simultaneous Multithreading (SMT) capabilities within NUMA nodes to maximize processing efficiency.
 - `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`: Combines the sparse distribution strategy across NUMA nodes with a preference for SMT. This policy spreads threads across NUMA nodes to avoid contention, while preferring to fill SMT slots within each core before moving to the next. It aims to strike a balance between improving memory bandwidth and leveraging SMT for higher processing efficiency and reduced contention on shared variables.
-- `SYNCH_THREAD_PLACEMENT_DEFAULT`: By default the thread placement policy is se to `SYNCH_THREAD_PLACEMENT_DEFAULT`.
+- `SYNCH_THREAD_PLACEMENT_DEFAULT`: By default the thread placement policy is set to `SYNCH_THREAD_PLACEMENT_DEFAULT`.
 Currently, `SYNCH_THREAD_PLACEMENT_DEFAULT` is equal to `SYNCH_THREAD_PLACEMENT_NUMA_SPARSE_SMT_PREFER`.
 
 # Memory reclamation (stacks and queues)
