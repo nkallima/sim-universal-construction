@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+v3.3.0
+------
+- Bug fixes and improvements for architectures with weak memory models (i.e., non TSO).
+
 v3.2.0
 ------
 - Adding support for various thread placement policies. 

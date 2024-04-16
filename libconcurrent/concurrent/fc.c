@@ -29,16 +29,20 @@ void FCThreadStateInit(FCStruct *l, FCThreadState *st_thread, int pid) {
     st_thread->node = &l->nodes[pid];
     st_thread->node->age = 0;
     st_thread->node->active = false;
+    synchNonTSOFence();
 }
 
 static void FCEnqueueRequest(FCStruct *lock, FCThreadState *st_thread) {
     FCRequest *request = st_thread->node;
     FCRequest *supposed;
+
     request->active = true;
+    synchNonTSOFence();
 
     do {
         synchResched();
         supposed = (FCRequest *)lock->head;
+        synchNonTSOFence();
         request->next = supposed;
     } while (!synchCASPTR(&lock->head, supposed, request));
 }
@@ -49,6 +53,7 @@ RetVal FCApplyOp(FCStruct *lock, FCThreadState *st_thread, RetVal (*sfunc)(void 
 
     request = st_thread->node;
     request->val = arg;
+    synchNonTSOFence();
     request->pending = true;
     synchStoreFence();
 
@@ -78,11 +83,13 @@ RetVal FCApplyOp(FCStruct *lock, FCThreadState *st_thread, RetVal (*sfunc)(void 
         for (cur = lock->head; cur != NULL; cur = cur->next) {
             if (cur->pending) {
                 cur->val = sfunc(state, cur->val, pid);
+                synchNonTSOFence();
                 cur->pending = false;
                 cur->age = count;
 #ifdef DEBUG
                 lock->counter += 1;
 #endif
+                synchNonTSOFence();
             }
         }
     }
@@ -92,7 +99,9 @@ RetVal FCApplyOp(FCStruct *lock, FCThreadState *st_thread, RetVal (*sfunc)(void 
         while ((cur = prev->next)) {
             if ((cur->age + FC_CLEANUP_OLD_THRESHOLD) < count) {
                 prev->next = cur->next;
+                synchNonTSOFence();
                 cur->active = 0;
+                synchNonTSOFence();
             } else
                 prev = cur;
         }

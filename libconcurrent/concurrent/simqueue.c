@@ -144,6 +144,7 @@ void SimQueueEnqueue(SimQueueStruct *queue, SimQueueThreadState *th_state, ArgVa
 
     for (j = 0; j < 2; j++) {
         old_sp = queue->enq_sp;
+        synchNonTSOFence();
         sp_data = queue->enq_pool[old_sp.struct_data.index];
         TVEC_ATOMIC_COPY_BANKS(diffs, &sp_data->applied, mybank);
         TVEC_XOR_BANKS(diffs, diffs, &th_state->my_enq_bit, mybank); // determine the set of active processes
@@ -233,6 +234,7 @@ RetVal SimQueueDequeue(SimQueueStruct *queue, SimQueueThreadState *th_state, int
 
     for (j = 0; j < 2; j++) {
         old_sp = queue->deq_sp;
+        synchNonTSOFence();
         sp_data = queue->deq_pool[old_sp.struct_data.index];
         TVEC_ATOMIC_COPY_BANKS(diffs, &sp_data->applied, mybank);
         TVEC_XOR_BANKS(diffs, diffs, &th_state->my_deq_bit, mybank);        // determine the set of active processes
