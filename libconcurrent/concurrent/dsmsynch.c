@@ -17,8 +17,8 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
     mynode->arg_ret = arg;
     mynode->pid = pid;
     mynode->locked = true;
+    synchNonTSOFence();
     mynode->completed = false;
-    mynode->pid = pid;
 
     mypred = (DSMSynchNode *)synchSWAP(&l->Tail, mynode);
     if (mypred != NULL) {
@@ -28,6 +28,7 @@ RetVal DSMSynchApplyOp(DSMSynchStruct *l, DSMSynchThreadState *st_thread, RetVal
         while (mynode->locked) {
             synchResched();
         }
+        synchNonTSOFence();
         if (mynode->completed) // operation has already applied
             return mynode->arg_ret;
     }
@@ -93,4 +94,5 @@ void DSMSynchThreadStateInit(DSMSynchStruct *l, DSMSynchThreadState *st_thread, 
     }
 
     st_thread->toggle = 0;
+    synchFullFence();
 }
