@@ -4,6 +4,7 @@ Changelog
 v3.3.0
 ------
 - Bug fixes and improvements for architectures with weak memory models (i.e., non TSO).
+- Using the `synchGetNCores` functionality provided by `primitives.h` instead of `numa_num_configured_cpus` provided by `libnuma`.
 
 v3.2.0
 ------

@@ -80,7 +80,7 @@ void HSynchThreadStateInit(HSynchStruct *l, HSynchThreadState *st_thread, int pi
                 node_of_thread = pid / l->numa_node_size;
         }
     } else {
-        int ncpus = numa_num_configured_cpus();
+        int ncpus = synchGetNCores();
         if (numa_node_of_cpu(0) == numa_node_of_cpu(ncpus / 2) && ncpus > 1) {
             int actual_numa_node = synchGetPreferredNumaNode();
             int actual_per_manual = numa_num_task_nodes() / l->numa_nodes;
@@ -143,7 +143,7 @@ void HSynchStructInit(HSynchStruct *l, uint32_t nthreads, uint32_t numa_regions)
         l->numa_policy = true;
 
 #ifdef SYNCH_NUMA_SUPPORT
-        uint32_t ncpus = numa_num_configured_cpus();
+        uint32_t ncpus = synchGetNCores();
 
         l->numa_nodes = numa_num_task_nodes();
         l->numa_node_size = nthreads / l->numa_nodes + (nthreads % l->numa_nodes);
