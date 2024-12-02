@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['x86_5fgeneric_5fmachine_408',['X86_GENERIC_MACHINE',['../primitives_8h.html#ae146336f9105681c481e5290b2fd6c52',1,'primitives.h']]]
+  ['queue_2dstack_2eh_0',['queue-stack.h',['../queue-stack_8h.html',1,'']]],
+  ['queues_1',['queues',['../index.html#autotoc_md8',1,'Memory reclamation (stacks and queues)'],['../md_PERFORMANCE.html#autotoc_md50',1,'Performance of stacks and queues']]]
 ];

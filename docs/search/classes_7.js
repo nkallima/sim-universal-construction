@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['node_508',['Node',['../queue-stack_8h.html#structNode',1,'']]]
+  ['node_0',['Node',['../queue-stack_8h.html#structNode',1,'']]]
 ];
