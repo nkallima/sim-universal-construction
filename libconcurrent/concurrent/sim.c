@@ -58,6 +58,7 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
     int i, j, prefix, mybank;
 
     sim_struct->announce[pid] = arg;                                                    // sim_struct->announce the operation
+    synchNonTSOFence();
     mybank = TVEC_GET_BANK_OF_BIT(pid, sim_struct->nthreads);
     TVEC_REVERSE_BIT(&th_state->my_bit, pid);
     TVEC_NEGATIVE_BANK(&th_state->toggle, &th_state->toggle, mybank);
@@ -78,12 +79,14 @@ Object SimApplyOp(SimStruct *sim_struct, SimThreadState *th_state, RetVal (*sfun
 
     for (j = 0; j < 2; j++) {
         old_sp = sim_struct->sp;                                                        // read reference to struct ObjectState
+        synchNonTSOFence();
         sp_data = (HalfSimObjectState *)sim_struct->pool[old_sp.struct_data.index];     // read reference of struct ObjectState in a local variable lsim_struct->sp
         TVEC_ATOMIC_COPY_BANKS(diffs, &sp_data->applied, mybank);
         TVEC_XOR_BANKS(diffs, diffs, &th_state->my_bit, mybank);                        // determine the set of active processes
         if (TVEC_IS_SET(diffs, pid))                                                    // if the operation has already been applied return
             break;
         SimStateCopy((SimObjectState *)lsp_data, (SimObjectState *)sp_data);
+        synchNonTSOFence();
         TVEC_COPY(l_toggles, (ToggleVector *)&sim_struct->a_toggles);                   // This is an atomic read, since a_toogles is volatile
         if (old_sp.raw_data != sim_struct->sp.raw_data)
             continue;

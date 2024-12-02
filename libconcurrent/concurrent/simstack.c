@@ -126,6 +126,7 @@ inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState 
 
     for (j = 0; j < 2; j++) {
         old_sp = stack->sp;                                                             // read reference to struct SimStackState
+        synchNonTSOFence();
         sp_data = (HalfSimStackState *)stack->pool[old_sp.struct_data.index];           // read reference of struct SimStackState in a local variable lsp_data
         TVEC_ATOMIC_COPY_BANKS(diffs, &sp_data->applied, mybank);
         TVEC_XOR_BANKS(diffs, diffs, &th_state->my_bit, mybank);                        // determine the set of active processes

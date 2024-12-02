@@ -15,13 +15,16 @@ RetVal CCSynchApplyOp(CCSynchStruct *l, CCSynchThreadState *st_thread, RetVal (*
     next_node = st_thread->next;
     next_node->next = NULL;
     next_node->locked = true;
+    synchNonTSOFence();
     next_node->completed = false;
 
     cur = (CCSynchNode *)synchSWAP(&l->Tail, next_node);
     cur->arg_ret = arg;
     cur->pid = pid;
+    synchNonTSOFence();
     cur->next = (CCSynchNode *)next_node;
     st_thread->next = (CCSynchNode *)cur;
+    synchNonTSOFence();
 
     while (cur->locked) { // spinning
         synchResched();

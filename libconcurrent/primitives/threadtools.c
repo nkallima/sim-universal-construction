@@ -84,7 +84,7 @@ inline uint32_t synchPreferredCoreOfThread(uint32_t pid) {
         preferred_core = pid;
     } else {
 #ifdef SYNCH_NUMA_SUPPORT
-        uint32_t ncpus = numa_num_configured_cpus();
+        uint32_t ncpus = synchGetNCores();
         uint32_t nodes = numa_num_task_nodes();
         uint32_t node_size = ncpus / nodes;
 
@@ -130,7 +130,7 @@ inline uint32_t synchPreferredNumaNodeOfThread(uint32_t pid) {
 
 #ifdef SYNCH_NUMA_SUPPORT
     uint32_t preferred_core = synchPreferredCoreOfThread(pid);
-    uint32_t ncpus = numa_num_configured_cpus();
+    uint32_t ncpus = synchGetNCores();
     uint32_t nodes = numa_num_task_nodes();
     uint32_t node_size = ncpus / nodes;
 

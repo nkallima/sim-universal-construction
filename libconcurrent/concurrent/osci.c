@@ -19,6 +19,7 @@ void OsciThreadStateInit(OsciThreadState *st_thread, OsciStruct *l, int pid) {
         st_thread->next_node[i].toggle = 0;
         st_thread->next_node[i].door = _OSCI_DOOR_INIT;
     }
+    synchFullFence();
 }
 
 RetVal OsciApplyOp(OsciStruct *l, OsciThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
@@ -40,6 +41,7 @@ osci_start:
         cur->rec[offset_id].arg_ret = arg;
         cur->rec[offset_id].pid = pid;
         cur->rec[offset_id].locked = true;
+        synchNonTSOFence();
         cur->rec[offset_id].completed = false;
         cur->next = NULL;
         cur->door = _OSCI_DOOR_OPENED;
@@ -66,8 +68,10 @@ osci_start:
         cur->rec[offset_id].arg_ret = arg;
         cur->rec[offset_id].pid = pid;
         cur->rec[offset_id].locked = true;
+        synchNonTSOFence();
         cur->rec[offset_id].completed = false;
         cur->door = _OSCI_DOOR_OPENED;
+        synchNonTSOFence();
         do {
             synchResched();
         } while (cur->rec[offset_id].locked);
@@ -85,6 +89,7 @@ osci_start:
             if (p->rec[i].completed == false) {
                 p->rec[i].arg_ret = sfunc(state, p->rec[i].arg_ret, p->rec[i].pid);
                 p->rec[i].completed = true;
+                synchNonTSOFence();
                 p->rec[i].locked = false;
 #ifdef DEBUG
                 l->counter += 1;
