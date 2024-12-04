@@ -2,11 +2,13 @@ name: check-build
 
 on:
   push:
-    branches: [ main ]
+    branches: ["*"] # Trigger on push to any branch
+    branches-ignore: ["gh-pages"] # Exclude the gh-pages branch
   pull_request:
-    branches: [ main ]
+    branches: ["*"] # Trigger on pull request to any branch
+    branches-ignore: ["gh-pages"] # Exclude the gh-pages branch
   workflow_dispatch:
-    branches: [ main ]
+    branches: ["*"] # Included ["*"] for consistency
 
 jobs:
   build:
