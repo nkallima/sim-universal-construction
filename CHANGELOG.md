@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+v3.4.0
+------
+- Setting `-flto=auto` in makefiles for better compiling performance
+
 v3.3.0
 ------
 - Bug fixes and improvements for architectures with weak memory models (i.e., non TSO).

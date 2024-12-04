@@ -26,7 +26,8 @@ BUILD_LOG=./build.log
 PRIMITIVES = $(wildcard libconcurrent/primitives/*.c)
 CONCURRENT = $(wildcard libconcurrent/concurrent/*.c)
 BENCHMARKS = $(wildcard benchmarks/*bench.c)
-SRCS       = $(PRIMITIVES) $(CONCURRENT) 
+SERIAL     = $(wildcard libconcurrent/serial/*.c)
+SRCS       = $(PRIMITIVES) $(CONCURRENT) $(SERIAL)
 
 # define the C object files 
 OBJECTS    = $(SRCS:.c=.o)
