@@ -4,7 +4,7 @@ Changelog
 v3.4.0
 ------
 - Setting `-flto=auto` in makefiles for better compiling performance
-- Modified the `check-build` and `validate` workflow triggers from 'main' branch only to all branches except `gh-pages`branch.
+- Modified the `check-build` and `validate` workflow triggers from 'main' branch only to all branches except `gh-pages` branch.
 
 v3.3.0
 ------
