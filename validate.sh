@@ -36,6 +36,7 @@ COLOR_FAIL="[ \e[31mFAIL\e[39m ]"
 declare -a uobjects=(  "ccsynchbench.run"                     "dsmsynchbench.run" "hsynchbench.run" "oscibench.run"      "simbench.run"      "fcbench.run"      "oyamabench.run" "mcsbench.run" "clhbench.run" "pthreadsbench.run" "fadbench.run")
 declare -a queues=(    "ccqueuebench.run" "clhqueuebench.run" "dsmqueuebench.run" "hqueuebench.run" "osciqueuebench.run" "simqueuebench.run" "fcqueuebench.run" "lcrqbench.run")
 declare -a stacks=(    "ccstackbench.run" "clhstackbench.run" "dsmstackbench.run" "hstackbench.run" "oscistackbench.run" "simstackbench.run" "fcstackbench.run")
+declare -a heaps=(     "ccheapbench.run"                      "dsmheapbench.run"  "hheapbench.run")
 declare -a hashtables=("clhhashbench.run" "dsmhashbench.run")
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
@@ -172,6 +173,33 @@ for PTHREADS in "${PTHREADS_ARRAY[@]}"; do
             echo -e $COLOR_FAIL
             echo "Expected state: " $valid_state
             echo "Invalid state: " $state
+            PASS_STATUS=0
+        fi
+    done
+
+    for bench in "${heaps[@]}"; do
+        printf "Validating %-20s \t\t\t\t\t" $bench
+        $BIN_PATH/$bench -t $PTHREADS -r $runs $WORKLOAD $FIBERS $NUMA_NODES > $RES_FILE 2>&1
+        # state counts the actual number of both push and pop operations applied in the concurrent stack
+        state=$(fgrep "Object state: " $RES_FILE)
+        state=${state/#"DEBUG: Object state: "}
+        validation=$(fgrep "DEBUG: Checking heap state: " $RES_FILE)
+        validation=${validation/#"DEBUG: Checking heap state: "}
+        initial_items=$(fgrep "DEBUG: initial_items: " $RES_FILE)
+        initial_items=${initial_items/#"DEBUG: initial_items: "}
+        remained_items=$(fgrep "DEBUG: remained_items: " $RES_FILE)
+        remained_items=${remained_items/#"DEBUG: remained_items: "}
+        valid_state=$(($runs * 2))
+        if [ $state -eq $valid_state ] && [ $initial_items -eq $remained_items ] && [ $validation = "VALID" ]
+        then
+            echo -e $COLOR_PASS
+        else
+            echo -e $COLOR_FAIL
+            echo "Expected state: " $valid_state
+            echo "Invalid state: " $state
+            echo "Remained_items: " $remained_items 
+            echo "Initial_items: " $initial_items
+            echo "Data validation: " $validation
             PASS_STATUS=0
         fi
     done
