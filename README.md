@@ -1,4 +1,6 @@
 [![check-build](https://github.com/nkallima/sim-universal-construction/actions/workflows/check-build.yml/badge.svg)](https://github.com/nkallima/sim-universal-construction/actions/workflows/check-build.yml) [![validate](https://github.com/nkallima/sim-universal-construction/actions/workflows/validate.yml/badge.svg)](https://github.com/nkallima/sim-universal-construction/actions/workflows/validate.yml) [![status](https://joss.theoj.org/papers/07bf35ba1bd72c38cc8076fee6864409/status.svg)](https://joss.theoj.org/papers/07bf35ba1bd72c38cc8076fee6864409)
+![Lines of Code](https://tokei.rs/b1/github/nkallima/Synch-Framework)
+
 
 <p align="center">
     <img src="resources/logo_synch.png" alt="The Synch Framework" width="80%">
