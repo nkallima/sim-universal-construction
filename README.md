@@ -18,6 +18,8 @@ The Synch framework provides a large set of highly efficient concurrent data-str
 In terms of concurrent queues, the Synch framework provides the SimQueue [2,10] wait-free queue implementation that is based on the PSim combining object, the CC-Queue, DSM-Queue and H-Queue [1] blocking queue implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. A blocking queue implementation based on the CLH locks [5,6] and the lock-free implementation presented in [7] are also provided.
 Since v2.4.0, the Synch framework provides the LCRQ [11,12] queue implementation. In terms of concurrent stacks, the Synch framework provides the SimStack [2,10] wait-free stack implementation that is based on the PSim combining object, the CC-Stack, DSM-Stack and H-Stack [1] blocking stack implementations based on the CC-Synch, DSM-Synch and H-Synch combining objects. Moreover, the lock-free stack implementation of [8] and the blocking implementation based on the CLH locks [5,6] are provided. The Synch framework also provides concurrent queue and stacks implementations (i.e. OsciQueue and OsciStack implementations) that achieve very high performance using user-level threads [3]. Since v3.1.0, the Synch framework provides stack and queue implementations (i.e. FC-Stack and FC-Queue) based on the  implementation of flat-combining provided by the Synch framework.
 
+Since version 3.4.0, the Synch framework includes three array-based concurrent heap implementations: CC-Heap, DSM-Heap, and H-Heap. These implementations are based on the CC-Synch, DSM-Synch and H-Synch [1] combining objects, respectively. Currently, the CC-Heap, DSM-Heap and H-Heap do not release any memory when the heap shrinks. However, support for releasing memory during heap shrinking is planned in future releases. 
+
 Furthermore, the Synch framework provides a few scalable lock implementations, i.e. the MCS queue-lock presented in [9] and the CLH queue-lock presented in [5,6]. Finally, the Synch framework provides two example-implementations of concurrent hash-tables. More specifically, it provides a simple implementation based on CLH queue-locks [5,6] and an implementation based on the DSM-Synch [1] combining technique.
 
 The following table presents a summary of the concurrent data-structures offered by the Synch framework.
@@ -28,6 +30,7 @@ The following table presents a summary of the concurrent data-structures offered
 |                       | Osci [3]                                                          |
 |                       | Oyama [4]                                                         |
 |                       | FC: a new implementation of flat-combining [14]                   |
+| Concurrent Heaps      | CC-Heap, DSM-Heap and H-Heap based on the techniques of [1]       | 
 | Concurrent Queues     | CC-Queue, DSM-Queue and H-Queue [1]                               |
 |                       | SimQueue [2,10]                                                   |
 |                       | OsciQueue [3]                                                     |
@@ -98,7 +101,7 @@ Each benchmark reports the time that needs to be completed, the average throughp
 
 The following options are available:
 
-|     Option              |                       Description                                                     |
+|     Option              |                       Description                                                                                                                |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 |  `-t`, `--max_threads`  |  set the maximum number number of POSIX threads to be used in the last set of iterations of the benchmark, default is the number of system cores |
 |  `-s`, `--step`         |  set the step (extra number of threads to be used) in each set of iterations of the benchmark, default is number of processors/8 or 1            |
@@ -109,7 +112,7 @@ The following options are available:
 |  `-l`, `--list`         |  displays the list of the available benchmarks                                                                                                   |
 |  `-n`, `--numa_nodes`   |  set the number of numa nodes (which may differ with the actual hw numa nodes) that hierarchical algorithms should take account                  |
 |  `-b`, `--backoff`, `--backoff_high` |  set an upper backoff bound for lock-free and Sim-based algorithms                                                                  |
-|  `-bl`, `--backoff_low` |  set a lower backoff bound (only for msqueuebench, lfstackbench and lfuobjectbench benchmarks)                                                                  |
+|  `-bl`, `--backoff_low` |  set a lower backoff bound (only for msqueuebench, lfstackbench and lfuobjectbench benchmarks)                                                   |
 |  `-h`, `--help`         |  displays this help and exits                                                                                                                    |
 
 The framework provides the `validate.sh` validation/smoke script. The `validate.sh` script compiles the sources in `DEBUG` mode and runs a big set of benchmarks with various numbers of threads. After running each of the benchmarks, the script evaluates the `DEBUG` output and in case of success it prints `PASS`. In case of a failure, the script simply prints `FAIL`. In order to see all the available options of the validation/smoke script, execute `validate.sh -h`. Given that the `validate.sh` validation/smoke script depends on binaries that are compiled in `DEBUG` mode, it is not installed while using `make install`. The following image shows the execution and the default behavior of `validate.sh`.
@@ -181,7 +184,7 @@ The following table shows the memory reclamation characteristics of the provided
 |                       | CLH-Stack [5,6]                           | Supported                                 |
 |                       | LF-Stack [8]                              | Hazard Pointers (not provided by Synch)   |
 |                       | FC-Stack [14]                             | Supported                                 |
-
+| Concurrent Heaps      | CC-Heap, DSM-Heap and H-Heap              | Not supported yet                         |
 
 ## Memory reclamation limitations
 
