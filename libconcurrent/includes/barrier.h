@@ -29,20 +29,20 @@ typedef struct SynchBarrier {
 ///
 /// @param bar A pointer to an instance of the barrier object.
 /// @param n The number of threads that will use the barrier object.
-inline void synchBarrierSet(SynchBarrier *bar, uint32_t n);
+void synchBarrierSet(SynchBarrier *bar, uint32_t n);
 
 /// @brief Whenever a thread executes this function, it waits without returning 
 /// until all the other n-1 threads also execute the same function.
 /// @param bar A pointer to an instance of the barrier object.
-inline void synchBarrierWait(SynchBarrier *bar);
+void synchBarrierWait(SynchBarrier *bar);
 
 /// @brief Whenever a thread executes this function, it states that it will no use this barrier instance anymore. 
 /// Thus, the system may free some resources.
 /// @param bar A pointer to an instance of the barrier object.
-inline void synchBarrierLeave(SynchBarrier *bar);
+void synchBarrierLeave(SynchBarrier *bar);
 
 /// @brief Deprecated functionality. It is only used in the threadtools.c file.
 /// @param bar A pointer to an instance of the barrier object.
-inline void synchBarrierLastLeave(SynchBarrier *bar);
+void synchBarrierLastLeave(SynchBarrier *bar);
 
 #endif

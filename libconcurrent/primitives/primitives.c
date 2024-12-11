@@ -25,7 +25,7 @@ inline bool __CASPTR(void *A, void *B, void *C) {
     uint64_t prev;
     uint64_t *p = (uint64_t *)A;
 
-    asm volatile("lock;"
+    __asm__ volatile("lock;"
                  "cmpxchgq %1,%2" 
                  : "=a"(prev)
                  : "r"((uint64_t)C), "m"(*p), "0"((uint64_t)B) 
@@ -37,7 +37,7 @@ inline bool __CAS64(volatile uint64_t *A, uint64_t B, uint64_t C) {
     uint64_t prev;
     uint64_t *p = (uint64_t *)A;
 
-    asm volatile("lock;"
+    __asm__ volatile("lock;"
                  "cmpxchgq %1,%2"
                  : "=a"(prev)
                  : "r"(C), "m"(*p), "0"(B)
@@ -49,7 +49,7 @@ inline bool __CAS32(uint32_t *A, uint32_t B, uint32_t C) {
     uint32_t prev;
     uint32_t *p = (uint32_t *)A;
 
-    asm volatile("lock;"
+    __asm__ volatile("lock;"
                  "cmpxchgl %1,%2" 
                  : "=a"(prev) 
                  : "r"(C), "m"(*p), "0"(B) 
@@ -60,7 +60,7 @@ inline bool __CAS32(uint32_t *A, uint32_t B, uint32_t C) {
 inline void *__SWAP(void *A, void *B) {
     int64_t *p = (int64_t *)A;
 
-    asm volatile("lock;"
+    __asm__ volatile("lock;"
                  "xchgq %0, %1"
                  : "=r"(B), "=m"(*p)
                  : "0"(B), "m"(*p)
@@ -69,7 +69,7 @@ inline void *__SWAP(void *A, void *B) {
 }
 
 inline int64_t __FAA64(volatile int64_t *A, int64_t B) {
-    asm volatile("lock;"
+    __asm__ volatile("lock;"
                  "xaddq %0, %1"
                  : "=r"(B), "=m"(*A)
                  : "0"(B), "m"(*A)
@@ -78,7 +78,7 @@ inline int64_t __FAA64(volatile int64_t *A, int64_t B) {
 }
 
 inline int32_t __FAA32(volatile int32_t *A, int32_t B) {
-    asm volatile("lock;"
+    __asm__ volatile("lock;"
                  "xaddl %0, %1"
                  : "=r"(B), "=m"(*A)
                  : "0"(B), "m"(*A)
@@ -89,7 +89,7 @@ inline int32_t __FAA32(volatile int32_t *A, int32_t B) {
 inline uint64_t __BitTAS64(volatile uint64_t *A, unsigned char B) {
     int64_t *p = (int64_t *)A;
     int64_t bit = B;
-    asm volatile("lock;" 
+    __asm__ volatile("lock;" 
                  "btsq %0, %1"
                  : "=r"(bit), "=m"(*p)
                  : "0"(bit), "m"(*p)
@@ -101,7 +101,7 @@ inline uint64_t __BitTAS64(volatile uint64_t *A, unsigned char B) {
 inline int synchBitSearchFirst(uint64_t B) {
     uint64_t A;
 
-    asm("bsfq %0, %1;" : "=d"(A) : "d"(B));
+    __asm__("bsfq %0, %1;" : "=d"(A) : "d"(B));
 
     return (int)A;
 }
@@ -122,7 +122,7 @@ inline bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t
 #if defined(__OLD_GCC_X86__) || defined(__amd64__) || defined(__x86_64__)
     uint64_t dummy;
 
-    asm volatile("lock;"
+    __asm__ volatile("lock;"
                  "cmpxchg16b %2; setz %1"
                  : "=d" (dummy), "=a" (res), "+m" (*A)
                  : "b" (C0), "c" (C1), "a" (B0),  "d" (B1));
@@ -199,7 +199,7 @@ inline uint64_t synchGetMachineModel(void) {
 #if defined(__amd64__) || defined(__x86_64__)
     char cpu_model[MAX_VENDOR_STR_SIZE] = {'\0'};
 
-    asm volatile("movl $0, %%eax\n"
+    __asm__ volatile("movl $0, %%eax\n"
                  "cpuid\n"
                  "movl %%ebx, %0\n"
                  "movl %%edx, %1\n"
