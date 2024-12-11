@@ -61,18 +61,18 @@ The following table presents a summary of the concurrent data-structures offered
 - Building requires the following development packages:
     - `libatomic`
     - `libnuma`
-    - `libpapi` in case that the `SYNCH_TRACK_CPU_COUNTERS` flag is enabled in `libconcurrent/config.h`.
+    - `libpapi` in case that the `SYNCH_TRACK_CPU_COUNTERS` flag is enabled in `libconcurrent/includes/config.h`.
 - For building the documentation (i.e. man-pages), `doxygen` is required.
 
 
 # Configuring, compiling and installing the framework
 
-In the `libconcurrent/config.h` file, the user can configure some basic options for the framework, such as:
+In the `libconcurrent/includes/config.h` file, the user can configure some basic options for the framework, such as:
 - Enable/disable debug mode.
 - Support for Numa machines.
 - Enable performance statistics, etc.
 
-The provided default configuration should work well in many cases. However, the default configuration may not provide the best performance. For getting the best performance, modifying the `libconcurrent/config.h` may be needed (see more on [Performance/Optimizations](#performanceoptimizations) Section).
+The provided default configuration should work well in many cases. However, the default configuration may not provide the best performance. For getting the best performance, modifying the `libconcurrent/includes/config.h` may be needed (see more on [Performance/Optimizations](#performanceoptimizations) Section).
 
 In case that you want to compile the library that provides all the implemented concurrent algorithms just execute `make` in the root directory of the source files. This step is necessary in case that you want to run benchmarks. However, some extra make options are provided in case the user wants to compile the framework with other than system's default compiler, clean the binary files, etc. The following table provides the list with all the available make options.
 
@@ -127,10 +127,10 @@ The framework provides another simple fast smoke test: `./run_all.sh`. This will
 
 # Performance/Optimizations
 
-Getting the best performance from the provided benchmarks is not always an easy task. For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `libconcurrent/config.h` file. A useful guide to consider in order to get better performance in a modern multiprocessor follows.
+Getting the best performance from the provided benchmarks is not always an easy task. For getting the best performance, some modifications in Makefiles may be needed (compiler flags, etc.). Important parameters for the benchmarks and/or library are placed in the `libconcurrent/includes/config.h` file. A useful guide to consider in order to get better performance in a modern multiprocessor follows.
 
-- In case that the target machine is a NUMA machine make sure `SYNCH_NUMA_SUPPORT` is enabled in `libconcurrent/config.h`. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.
-- Check the performance impact of the `SYNCH_COMPACT_ALLOCATION` option in `libconcurrent/config.h`. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.
+- In case that the target machine is a NUMA machine make sure `SYNCH_NUMA_SUPPORT` is enabled in `libconcurrent/includes/config.h`. Usually, when this option is enabled, it gives much better performance in NUMA machines. However, in some older machines this option may induce performance overheads.
+- Check the performance impact of the `SYNCH_COMPACT_ALLOCATION` option in `libconcurrent/includes/config.h`. In modern AMD multiprocessors (i.e., equipped with EPYC processors) this option gives tremendous performance boost. In contrast to AMD processors, this option introduces serious performance overheads in Intel Xeon processors. Thus, a careful experimental analysis is needed in order to show the possible benefits of this option.
 - Check if you have selected the optimal thread placement policy (see more in [Thread placement policies](#thread-placement-policies)).
 - Check the cache line size (`CACHE_LINE_SIZE` and `S_CACHE_LINE` options in includes/system.h). These options greatly affect the performance in all modern processors. Most Intel machines behave better with `CACHE_LINE_SIZE` equal or greater than `128`, while most modern AMD machine achieve better performance with a value equal to `64`. Notice that `CACHE_LINE_SIZE` and `S_CACHE_LINE` depend on the `SYNCH_COMPACT_ALLOCATION` option (see `includes/system.h`).
 - Use backoff if it is available. Many of the provided algorithms could use backoff in order to provide better performance (e.g., sim, LF-Stack, MS-Queue, SimQueue, SimStack, etc.). In this case, it is of crucial importance to use `-b` (and in some cases `-bl` arguments) in order to get the best performance. 
@@ -168,7 +168,7 @@ The Synch framework provides a pool mechanism (see `includes/pool.h`) that effic
 
 Note that de-allocating and thus recycling memory in lock-free and wait-free objects is not an easy task. Since v2.4.0, SimStack supports memory reclamation using the functionality of `pool.h` and a technique that is similar to that presented by Blelloch and Weiin in [13]. Notice that the MS-Queue [7], LCRQ [11,12] queue implementations and the LF-Stack [8] stack implementation support memory reclamation through hazard-pointers. However, the current version of the Synch framework does not provide any implementation of hazard-pointers. In case that a user wants to use memory reclamation in these objects, a custom hazard-pointers implementation should be integrated in the environment.
 
-By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the `SYNCH_POOL_NODE_RECYCLING_DISABLE` option should be enabled in `config.h`.
+By default, memory-reclamation is enabled. In case that there is need to disable memory reclamation, the `SYNCH_POOL_NODE_RECYCLING_DISABLE` option should be enabled in `libconcurrent/includes/config.h`.
 
 The following table shows the memory reclamation characteristics of the provided stack and queues implementations.
 
