@@ -4,7 +4,7 @@
 static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
 static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 
-static __thread SynchPoolStruct pool_node CACHE_ALIGN;
+static _Thread_local SynchPoolStruct pool_node CACHE_ALIGN;
 
 void DSMQueueStructInit(DSMQueueStruct *queue_object_struct, uint32_t nthreads) {
     DSMSynchStructInit(&queue_object_struct->enqueue_struct, nthreads);

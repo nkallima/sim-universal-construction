@@ -11,109 +11,13 @@
 
 #define MAX_VENDOR_STR_SIZE 64
 
-static __thread uint32_t __machine_model = UNINITIALIZED_MACHINE_MODEL;
+static _Thread_local uint32_t __machine_model = UNINITIALIZED_MACHINE_MODEL;
 
 #ifdef DEBUG
-extern __thread int64_t __failed_cas;
-extern __thread int64_t __executed_cas;
-extern __thread int64_t __executed_swap;
-extern __thread int64_t __executed_faa;
-#endif
-
-#ifdef __OLD_GCC_X86__
-bool __CASPTR(void *A, void *B, void *C) {
-    uint64_t prev;
-    uint64_t *p = (uint64_t *)A;
-
-    __asm__ volatile("lock;"
-                 "cmpxchgq %1,%2" 
-                 : "=a"(prev)
-                 : "r"((uint64_t)C), "m"(*p), "0"((uint64_t)B) 
-                 : "memory");
-    return (prev == (uint64_t)B);
-}
-
-bool __CAS64(volatile uint64_t *A, uint64_t B, uint64_t C) {
-    uint64_t prev;
-    uint64_t *p = (uint64_t *)A;
-
-    __asm__ volatile("lock;"
-                 "cmpxchgq %1,%2"
-                 : "=a"(prev)
-                 : "r"(C), "m"(*p), "0"(B)
-                 : "memory");
-    return (prev == B);
-}
-
-bool __CAS32(uint32_t *A, uint32_t B, uint32_t C) {
-    uint32_t prev;
-    uint32_t *p = (uint32_t *)A;
-
-    __asm__ volatile("lock;"
-                 "cmpxchgl %1,%2" 
-                 : "=a"(prev) 
-                 : "r"(C), "m"(*p), "0"(B) 
-                 : "memory");
-    return (prev == B);
-}
-
-void *__SWAP(void *A, void *B) {
-    int64_t *p = (int64_t *)A;
-
-    __asm__ volatile("lock;"
-                 "xchgq %0, %1"
-                 : "=r"(B), "=m"(*p)
-                 : "0"(B), "m"(*p)
-                 : "memory");
-    return B;
-}
-
-int64_t __FAA64(volatile int64_t *A, int64_t B) {
-    __asm__ volatile("lock;"
-                 "xaddq %0, %1"
-                 : "=r"(B), "=m"(*A)
-                 : "0"(B), "m"(*A)
-                 : "memory");
-    return B;
-}
-
-int32_t __FAA32(volatile int32_t *A, int32_t B) {
-    __asm__ volatile("lock;"
-                 "xaddl %0, %1"
-                 : "=r"(B), "=m"(*A)
-                 : "0"(B), "m"(*A)
-                 : "memory");
-    return B;
-}
-
-uint64_t __BitTAS64(volatile uint64_t *A, unsigned char B) {
-    int64_t *p = (int64_t *)A;
-    int64_t bit = B;
-    __asm__ volatile("lock;" 
-                 "btsq %0, %1"
-                 : "=r"(bit), "=m"(*p)
-                 : "0"(bit), "m"(*p)
-                 : "memory");
-
-    return bit;
-}
-
-int synchBitSearchFirst(uint64_t B) {
-    uint64_t A;
-
-    __asm__("bsfq %0, %1;" : "=d"(A) : "d"(B));
-
-    return (int)A;
-}
-
-uint64_t synchNonZeroBits(uint64_t v) {
-    uint64_t c;
-
-    for (c = 0; v; v >>= 1)
-        c += v & 1;
-
-    return c;
-}
+extern _Thread_local int64_t __failed_cas;
+extern _Thread_local int64_t __executed_cas;
+extern _Thread_local int64_t __executed_swap;
+extern _Thread_local int64_t __executed_faa;
 #endif
 
 bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t C1) {

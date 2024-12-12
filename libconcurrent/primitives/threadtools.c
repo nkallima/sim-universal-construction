@@ -17,11 +17,11 @@
 static void *uthreadWrapper(void *arg);
 static void *kthreadWrapper(void *arg);
 
-static __thread pthread_t *__threads;
-static __thread int32_t __thread_id = 0;
-static __thread int32_t __preferred_numa_node = 0;
-static __thread int32_t __preferred_core = 0;
-static __thread int32_t __unjoined_threads = 0;
+static _Thread_local pthread_t *_Thread_locals;
+static _Thread_local int32_t _Thread_local_id = 0;
+static _Thread_local int32_t __preferred_numa_node = 0;
+static _Thread_local int32_t __preferred_core = 0;
+static _Thread_local int32_t __unjoined_threads = 0;
 
 static void *(*__func)(void *) CACHE_ALIGN = NULL;
 static uint32_t __uthreads = 0;
@@ -46,7 +46,7 @@ uint32_t synchGetThreadPlacementPolicy(void) {
 }
 
 void setThreadId(int32_t id) {
-    __thread_id = id;
+    _Thread_local_id = id;
 }
 
 int32_t synchGetPreferredCore(void) {
@@ -204,7 +204,7 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
     synchInitCPUCounters();
     __ncores = sysconf(_SC_NPROCESSORS_ONLN);
     __nthreads = nthreads;
-    __threads = synchGetMemory(nthreads * sizeof(pthread_t));
+    _Thread_locals = synchGetMemory(nthreads * sizeof(pthread_t));
     __func = func;
     synchStoreFence();
     if (uthreads != SYNCH_DONT_USE_UTHREADS && uthreads > 1) {
@@ -213,7 +213,7 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
         __system_oversubscription = true;
         synchBarrierSet(&bar, nthreads / uthreads + 1);
         for (i = 0; i < (nthreads / uthreads) - 1; i++) {
-            last_thread_id = pthread_create(&__threads[i], NULL, uthreadWrapper, (void *)(i * uthreads));
+            last_thread_id = pthread_create(&_Thread_locals[i], NULL, uthreadWrapper, (void *)(i * uthreads));
             if (last_thread_id != 0) {
                 perror("pthread_create");
                 exit(EXIT_FAILURE);
@@ -229,7 +229,7 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
             __noop_resched = true;
         synchBarrierSet(&bar, nthreads + 1);
         for (i = 0; i < nthreads - 1; i++) {
-            last_thread_id = pthread_create(&__threads[i], NULL, kthreadWrapper, (void *)i);
+            last_thread_id = pthread_create(&_Thread_locals[i], NULL, kthreadWrapper, (void *)i);
             if (last_thread_id != 0) {
                 perror("pthread_create");
                 exit(EXIT_FAILURE);
@@ -243,15 +243,15 @@ int synchStartThreadsN(uint32_t nthreads, void *(*func)(void *), uint32_t uthrea
 
 void synchJoinThreadsN(uint32_t nthreads) {
     synchBarrierLastLeave(&bar);
-    synchFreeMemory(__threads, nthreads * sizeof(pthread_t));
+    synchFreeMemory(_Thread_locals, nthreads * sizeof(pthread_t));
 }
 
 int32_t synchGetThreadId(void) {
-    return __thread_id + synchCurrentFiberIndex();
+    return _Thread_local_id + synchCurrentFiberIndex();
 }
 
 int32_t synchGetPosixThreadId(void) {
-    return __thread_id;
+    return _Thread_local_id;
 }
 
 void synchResched(void) {

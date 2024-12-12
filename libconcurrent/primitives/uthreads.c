@@ -18,11 +18,11 @@ typedef struct FiberData {
 static void switch_to_fiber(Fiber *prev, Fiber *cur);
 static void fiber_start_func(FiberData *context);
 
-static volatile __thread int N_FIBERS = 1;
-static __thread Fiber *FIBER_LIST = NULL;
-static __thread Fiber *FIBER_RECYCLE = NULL;
-static __thread int MAX_FIBERS = 1;
-static __thread int currentFiber = 0;
+static volatile _Thread_local int N_FIBERS = 1;
+static _Thread_local Fiber *FIBER_LIST = NULL;
+static _Thread_local Fiber *FIBER_RECYCLE = NULL;
+static _Thread_local int MAX_FIBERS = 1;
+static _Thread_local int currentFiber = 0;
 
 void synchInitFibers(int max) {
     int i;

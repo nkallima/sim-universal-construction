@@ -10,7 +10,7 @@
 #define HSYNCH_HELP_FACTOR            10
 #define HSYNCH_DEFAULT_NUMA_NODE_SIZE 8
 
-static __thread int node_of_thread = 0;
+static _Thread_local int node_of_thread = 0;
 
 RetVal HSynchApplyOp(HSynchStruct *l, HSynchThreadState *st_thread, RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, int pid) {
     volatile HSynchNode *p;

@@ -27,7 +27,15 @@
 /// @brief This is return whenever the system is not initialized.
 #define UNINITIALIZED_MACHINE_MODEL 0xFFFFFFFF
 
-#if defined(__GNUC__) && (__GNUC__ * 10000 + __GNUC_MINOR__ * 100) >= 40100
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L && !defined(__STDC_NO_ATOMICS__)
+#    if !defined(__STDC_NO_THREADS__)
+#        // Thread storage is supported
+#    elif !defined(__STDC_NO_THREADS__) && defined(__GNUC__)
+#        define _Thread_local           __thread
+#    else 
+#        error Current compiler does not support standard thread-local storage
+#    endif
+
 #    define __CAS128(A, B0, B1, C0, C1) _CAS128(A, B0, B1, C0, C1)
 #    define __CASPTR(A, B, C)           __sync_bool_compare_and_swap((long *)A, (long)B, (long)C)
 #    define __CAS64(A, B, C)            __sync_bool_compare_and_swap(A, B, C)
@@ -43,6 +51,7 @@
 #    define synchLikely(A)              __builtin_expect(!!(A), 1)
 #    define synchUnlikely(A)            __builtin_expect(!!(A), 0)
 #    define UNUSED_ARG                  __attribute__((unused))
+
 #    if defined(__amd64__) || defined(__x86_64__)
 #        define synchLoadFence()  __asm__ volatile("lfence" ::: "memory")
 #        define synchStoreFence() __asm__ volatile("sfence" ::: "memory")
@@ -54,27 +63,11 @@
 #        define synchFullFence()   __sync_synchronize()
 #        define synchNonTSOFence() __sync_synchronize()
 #    endif
-#elif defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
-#    warning You may lose performance!
-#    warning A newer version of GCC compiler is recommended!
-#    define synchLoadFence()      __asm__ volatile("lfence" ::: "memory")
-#    define synchStoreFence()     __asm__ volatile("sfence" ::: "memory")
-#    define synchFullFence()      __asm__ volatile("mfence" ::: "memory")
-#    define synchReadPrefetch(A)  __asm__ volatile("prefetchnta %0" ::"m"(*((const int *)A)))
-#    define synchStorePrefetch(A) __asm__ volatile("prefetchnta %0" ::"m"(*((const int *)A)))
-#    define synchNonTSOFence()
-#    define synchLikely(A)   (A)
-#    define synchUnlikely(A) (A)
-#    define UNUSED_ARG       __attribute__((unused))
-//   in this case where gcc is too old, implement atomic primitives in primitives.c
-#    define __OLD_GCC_X86__
-int synchBitSearchFirst(uint64_t B);
-uint64_t synchNonZeroBits(uint64_t v);
 #else
 #    error Current machine architecture and compiler are not supported yet!
 #endif
 
-#if defined(__GNUC__) && (defined(__amd64__) || defined(__x86_64__))
+#if defined(__amd64__) || defined(__x86_64__)
 /// @brief This macro is designed to emit a pause instruction specifically for Intel X86 processors.
 /// The inclusion of a pause instruction in spinning loops can significantly improve performance
 /// on Intel X86 machines by reducing the execution resource requirements and improving the performance
@@ -89,10 +82,10 @@ uint64_t synchNonZeroBits(uint64_t v);
             if (synchGetMachineModel() != INTEL_X86_MACHINE)                                                                                                                                           \
                 return;                                                                                                                                                                                \
             for (__i = 0; __i < 16; __i++) {                                                                                                                                                           \
-                __asm__ volatile("pause");                                                                                                                                                                 \
-                __asm__ volatile("pause");                                                                                                                                                                 \
-                __asm__ volatile("pause");                                                                                                                                                                 \
-                __asm__ volatile("pause");                                                                                                                                                                 \
+                __asm__ volatile("pause");                                                                                                                                                             \
+                __asm__ volatile("pause");                                                                                                                                                             \
+                __asm__ volatile("pause");                                                                                                                                                             \
+                __asm__ volatile("pause");                                                                                                                                                             \
             }                                                                                                                                                                                          \
         }
 #else
