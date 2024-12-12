@@ -13,13 +13,13 @@
 
 static const uint64_t POP = LLONG_MIN;
 
-inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_state, ArgVal arg);
-inline static bool serialPop(HalfSimStackState *st, int pid);
-inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid);
-static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src);
-inline static void recycleList(SynchPoolStruct *pool, Node *head, uint32_t items);
+static void serialPush(HalfSimStackState *st, SimStackThreadState *th_state, ArgVal arg);
+static bool serialPop(HalfSimStackState *st, int pid);
+static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid);
+static void SimStackStateCopy(SimStackState *dest, SimStackState *src);
+static void recycleList(SynchPoolStruct *pool, Node *head, uint32_t items);
 
-static inline void SimStackStateCopy(SimStackState *dest, SimStackState *src) {
+static void SimStackStateCopy(SimStackState *dest, SimStackState *src) {
     // copy everything except 'applied' and 'ret' fields
     memcpy(&dest->head, &src->head, SimStackStateSize(dest->applied.nthreads) - sizeof(ToggleVector) - sizeof(Object *));
 }
@@ -65,7 +65,7 @@ void SimStackThreadStateInit(SimStackThreadState *th_state, uint32_t nthreads, i
     synchInitPool(&th_state->pool, sizeof(Node));
 }
 
-inline static void recycleList(SynchPoolStruct *pool, Node *head, uint32_t items) {
+static void recycleList(SynchPoolStruct *pool, Node *head, uint32_t items) {
     while (items > 0) {
         Node *node = head;
         head = (Node *)head->next;
@@ -74,7 +74,7 @@ inline static void recycleList(SynchPoolStruct *pool, Node *head, uint32_t items
     }
 }
 
-inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_state, ArgVal arg) {
+static void serialPush(HalfSimStackState *st, SimStackThreadState *th_state, ArgVal arg) {
 #ifdef DEBUG
     st->counter += 1;
 #endif
@@ -85,7 +85,7 @@ inline static void serialPush(HalfSimStackState *st, SimStackThreadState *th_sta
     st->head = n;
 }
 
-inline static bool serialPop(HalfSimStackState *st, int pid) {
+static bool serialPop(HalfSimStackState *st, int pid) {
 #ifdef DEBUG
     st->counter += 1;
 #endif
@@ -99,7 +99,7 @@ inline static bool serialPop(HalfSimStackState *st, int pid) {
     }
 }
 
-inline static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid) {
+static RetVal SimStackApplyOp(SimStackStruct *stack, SimStackThreadState *th_state, ArgVal arg, int pid) {
     ToggleVector *diffs = &th_state->diffs, *l_toggles = &th_state->l_toggles, *pops = &th_state->pops;
     pointer_t new_sp, old_sp;
     HalfSimStackState *lsp_data, *sp_data;

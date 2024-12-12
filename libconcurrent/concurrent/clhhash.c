@@ -2,12 +2,12 @@
 #include <stdbool.h>
 #include <limits.h>
 
-static inline int64_t hash_func(CLHHash *hash, int64_t key);
-static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid);
+static int64_t hash_func(CLHHash *hash, int64_t key);
+static RetVal serialOperations(void *h, ArgVal dummy_arg, int pid);
 
 static const int HT_INSERT = 0, HT_DELETE = 1, HT_SEARCH = 2;
 
-inline void CLHHashStructInit(CLHHash *hash, int num_cells, int nthreads) {
+void CLHHashStructInit(CLHHash *hash, int num_cells, int nthreads) {
     int i;
 
     hash->size = num_cells;
@@ -20,15 +20,15 @@ inline void CLHHashStructInit(CLHHash *hash, int num_cells, int nthreads) {
     }
 }
 
-inline void CLHHashThreadStateInit(CLHHash *hash, CLHHashThreadState *th_state, int num_cells, int pid) {
+void CLHHashThreadStateInit(CLHHash *hash, CLHHashThreadState *th_state, int num_cells, int pid) {
     synchInitPool(&th_state->pool, sizeof(HashNode));
 }
 
-static inline int64_t hash_func(CLHHash *hash, int64_t key) {
+static int64_t hash_func(CLHHash *hash, int64_t key) {
     return key % hash->size;
 }
 
-static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
+static RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
     HashOperations arg;
     int64_t key;
     int64_t value;
@@ -95,7 +95,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
     }
 }
 
-inline bool CLHHashInsert(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int64_t value, int pid) {
+bool CLHHashInsert(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int64_t value, int pid) {
     HashOperations args;
     RetVal ret;
 
@@ -113,7 +113,7 @@ inline bool CLHHashInsert(CLHHash *hash, CLHHashThreadState *th_state, int64_t k
     return ret;
 }
 
-inline RetVal CLHHashSearch(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int pid) {
+RetVal CLHHashSearch(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int pid) {
     HashOperations args;
     RetVal ret;
 
@@ -131,7 +131,7 @@ inline RetVal CLHHashSearch(CLHHash *hash, CLHHashThreadState *th_state, int64_t
     return ret;
 }
 
-inline void CLHHashDelete(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int pid) {
+void CLHHashDelete(CLHHash *hash, CLHHashThreadState *th_state, int64_t key, int pid) {
     HashOperations args;
 
     args.op = HT_DELETE;

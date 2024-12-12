@@ -2,9 +2,9 @@
 #include <limits.h>
 #include <math.h>
 
-static __thread long __fast_random_next = 1;
-static __thread uint32_t __fast_random_next_z = 2;
-static __thread uint32_t __fast_random_next_w = 2;
+static _Thread_local long __fast_random_next = 1;
+static _Thread_local uint32_t __fast_random_next_z = 2;
+static _Thread_local uint32_t __fast_random_next_w = 2;
 
 long synchFastRandom(void) {
     __fast_random_next = __fast_random_next * 1103515245 + 12345;

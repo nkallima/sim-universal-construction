@@ -3,6 +3,7 @@ Changelog
 
 v3.4.0
 ------
+- Switched C standard from `gnu89` to `C11` for improved compatibility, modern features, and better code maintainability.
 - Setting `-flto=auto` in makefiles for better compiling performance
 - Modified the `check-build` and `validate` workflow triggers from 'main' branch only to all branches except `gh-pages` branch.
 

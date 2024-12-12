@@ -1,7 +1,7 @@
 #include <oyama.h>
 #include <threadtools.h>
 
-inline static void OyamaWait(void);
+static void OyamaWait(void);
 
 const int LOCKED = 1;
 const int UNLOCKED = 0;

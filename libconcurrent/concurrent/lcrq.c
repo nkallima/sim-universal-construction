@@ -43,30 +43,30 @@
 #include <primitives.h>
 #include <lcrq.h>
 
-inline static int is_empty(uint64_t v) __attribute__ ((pure));
-inline static uint64_t node_index(uint64_t i) __attribute__ ((pure));
-inline static uint64_t set_unsafe(uint64_t i) __attribute__ ((pure));
-inline static uint64_t node_unsafe(uint64_t i) __attribute__ ((pure));
-inline static uint64_t tail_index(uint64_t t) __attribute__ ((pure));
-inline static int crq_is_closed(uint64_t t) __attribute__ ((pure));
-inline static void fix_state(RingQueue *rq);
+static int is_empty(uint64_t v) __attribute__ ((pure));
+static uint64_t node_index(uint64_t i) __attribute__ ((pure));
+static uint64_t set_unsafe(uint64_t i) __attribute__ ((pure));
+static uint64_t node_unsafe(uint64_t i) __attribute__ ((pure));
+static uint64_t tail_index(uint64_t t) __attribute__ ((pure));
+static int crq_is_closed(uint64_t t) __attribute__ ((pure));
+static void fix_state(RingQueue *rq);
 
 #ifdef DEBUG
-inline static void count_closed_crq(LCRQThreadState *thread_state) {
+static void count_closed_crq(LCRQThreadState *thread_state) {
     thread_state->mycloses++;
 }
 
-inline static void count_unsafe_node(LCRQThreadState *thread_state) {
+static void count_unsafe_node(LCRQThreadState *thread_state) {
     thread_state->myunsafes++;
 }
 #else
-inline static void count_closed_crq(LCRQThreadState *thread_state) {
+static void count_closed_crq(LCRQThreadState *thread_state) {
 }
-inline static void count_unsafe_node(LCRQThreadState *thread_state) {
+static void count_unsafe_node(LCRQThreadState *thread_state) {
 }
 #endif
 
-inline static void init_ring(RingQueue *r) {
+static void init_ring(RingQueue *r) {
     int i;
 
     for (i = 0; i < RING_SIZE; i++) {
@@ -78,31 +78,31 @@ inline static void init_ring(RingQueue *r) {
     r->next = NULL;
 }
 
-inline static int is_empty(uint64_t v)  {
+static int is_empty(uint64_t v)  {
     return (v == (uint64_t)-1);
 }
 
-inline static uint64_t node_index(uint64_t i) {
+static uint64_t node_index(uint64_t i) {
     return (i & ~(1ull << 63));
 }
 
-inline static uint64_t set_unsafe(uint64_t i) {
+static uint64_t set_unsafe(uint64_t i) {
     return (i | (1ull << 63));
 }
 
-inline static uint64_t node_unsafe(uint64_t i) {
+static uint64_t node_unsafe(uint64_t i) {
     return (i & (1ull << 63));
 }
 
-inline static uint64_t tail_index(uint64_t t) {
+static uint64_t tail_index(uint64_t t) {
     return (t & ~(1ull << 63));
 }
 
-inline static int crq_is_closed(uint64_t t) {
+static int crq_is_closed(uint64_t t) {
     return (t & (1ull << 63)) != 0;
 }
 
-inline static void fix_state(RingQueue *rq) {
+static void fix_state(RingQueue *rq) {
     while (true) {
         uint64_t t = synchFAA64(&rq->tail, 0);
         uint64_t h = synchFAA64(&rq->head, 0);
@@ -117,7 +117,7 @@ inline static void fix_state(RingQueue *rq) {
     }
 }
 
-inline static int close_crq(RingQueue *rq, const uint64_t t, const int tries) {
+static int close_crq(RingQueue *rq, const uint64_t t, const int tries) {
     if (tries < 10)
         return synchCAS64(&rq->tail, t + 1, set_unsafe(t + 1));
     else

@@ -96,38 +96,38 @@ uint32_t synchGetThreadPlacementPolicy(void);
 /// should be a unique integer in {0, ..., N-1}, where N is the amount of available processing cores.
 int synchThreadPin(int32_t cpu_id);
 
-inline uint32_t synchPreferredNumaNodeOfThread(uint32_t pid);
+uint32_t synchPreferredNumaNodeOfThread(uint32_t pid);
 
 /// @brief This function returns the id of the running thread (posix or fiber). More specifically, it returns
 /// a unique integer in {0, ..., N-1}, where N is the amount of the running threads. For example, if 3 Posix threads
 /// are running, and 4 fiber threads are running inside each Posix thread, this function will return an integer
 /// in the interval of {0, ...., 11}.
-inline int32_t synchGetThreadId(void);
+int32_t synchGetThreadId(void);
 
-inline int32_t synchGetPreferredNumaNode(void);
+int32_t synchGetPreferredNumaNode(void);
 
 /// @brief This fuction returns the id of the current posix thread. 
 /// This function should return an identical value for any fiber running in the same posix thread.
-inline int32_t synchGetPosixThreadId(void);
+int32_t synchGetPosixThreadId(void);
 
 /// @brief This function returns the core-id of the current posix thread or fiber. The core-id is a
 /// unique integer in {0, ..., N-1}, where N is the amount of available processing cores.
-inline int32_t synchGetPreferredCore(void);
+int32_t synchGetPreferredCore(void);
 
 /// @brief This function returns the core-id of the posix thread or fiber with id equal to pid. 
 /// The core-id is a unique integer in {0, ..., N-1}, where N is the amount of available processing cores.
-inline uint32_t synchPreferredCoreOfThread(uint32_t pid);
+uint32_t synchPreferredCoreOfThread(uint32_t pid);
 
 /// @brief This function returns the number of system's processing cores.
-inline uint32_t synchGetNCores(void);
+uint32_t synchGetNCores(void);
 
 /// @brief In case that this function is called by a posix thread, it hints OS to give the CPU to
 /// some other thread. In case that this function is called by a fiber, it gives the CPU control 
 /// to the next fiber (if any) running in the same posix thread.
-inline void synchResched(void);
+void synchResched(void);
 
 /// @brief This function returns true if the number of spawned threads is greater than the number of 
 /// system's available processing cores; otherwise, this function returns false.
-inline bool synchIsSystemOversubscribed(void);
+bool synchIsSystemOversubscribed(void);
 
 #endif

@@ -31,9 +31,9 @@ int64_t d1 CACHE_ALIGN, d2;
 SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 
-__thread SynchPoolStruct pool_node;
+_Thread_local SynchPoolStruct pool_node;
 
-inline static void enqueue(Object arg, int pid) {
+static void enqueue(Object arg, int pid) {
     Node *n = synchAllocObj(&pool_node);
 
     n->val = (Object)arg;
@@ -48,7 +48,7 @@ inline static void enqueue(Object arg, int pid) {
     CLHUnlock(ltail, pid);
 }
 
-inline static Object dequeue(int pid) {
+static Object dequeue(int pid) {
     Object result;
     Node *node = NULL;
 
@@ -75,7 +75,7 @@ inline static Object dequeue(int pid) {
     return result;
 }
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     long i;
     long rnum;
     int id = synchGetThreadId();

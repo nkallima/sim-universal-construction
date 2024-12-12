@@ -1,10 +1,10 @@
 #include <dsmqueue.h>
 #include <pool.h>
 
-inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
-inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
+static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
+static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 
-static __thread SynchPoolStruct pool_node CACHE_ALIGN;
+static _Thread_local SynchPoolStruct pool_node CACHE_ALIGN;
 
 void DSMQueueStructInit(DSMQueueStruct *queue_object_struct, uint32_t nthreads) {
     DSMSynchStructInit(&queue_object_struct->enqueue_struct, nthreads);
@@ -21,7 +21,7 @@ void DSMQueueThreadStateInit(DSMQueueStruct *object_struct, DSMQueueThreadState 
     synchInitPool(&pool_node, sizeof(Node));
 }
 
-inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
+static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     DSMQueueStruct *st = (DSMQueueStruct *)state;
     Node *node;
 
@@ -34,7 +34,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     return ENQUEUE_SUCCESS;
 }
 
-inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
+static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     DSMQueueStruct *st = (DSMQueueStruct *)state;
     volatile Node *node, *prev;
 

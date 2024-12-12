@@ -20,7 +20,7 @@ int MIN_BAK, MAX_BAK;
 SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     LFUObjectThreadState *th_state;
     long i, rnum;
     volatile long j;

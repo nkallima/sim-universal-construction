@@ -1,8 +1,8 @@
 #include <osciqueue.h>
 #include <threadtools.h>
 
-inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
-inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
+static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
+static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 
 void OsciQueueInit(OsciQueueStruct *queue_object_struct, uint32_t nthreads, uint32_t fibers_per_thread) {
     OsciInit(&(queue_object_struct->enqueue_struct), nthreads, fibers_per_thread);
@@ -20,7 +20,7 @@ void OsciQueueThreadStateInit(OsciQueueStruct *object_struct, OsciQueueThreadSta
     synchInitPool(&(object_struct->pool_node[synchGetThreadId()]), sizeof(Node));
 }
 
-inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
+static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     OsciQueueStruct *st = (OsciQueueStruct *)state;
     Node *node;
 
@@ -32,7 +32,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     return ENQUEUE_SUCCESS;
 }
 
-inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
+static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     OsciQueueStruct *st = (OsciQueueStruct *)state;
     volatile Node *node, *prev;
 

@@ -1,10 +1,10 @@
 #include <dsmstack.h>
 #include <pool.h>
 
-inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
+static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
 static const int POP_OP = INT_MIN;
-static __thread SynchPoolStruct pool_node CACHE_ALIGN;
+static _Thread_local SynchPoolStruct pool_node CACHE_ALIGN;
 
 void DSMSStackInit(DSMStackStruct *stack_object_struct, uint32_t nthreads) {
     DSMSynchStructInit(&stack_object_struct->object_struct, nthreads);
@@ -17,7 +17,7 @@ void DSMStackThreadStateInit(DSMStackStruct *object_struct, DSMStackThreadState 
     synchInitPool(&pool_node, sizeof(Node));
 }
 
-inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
+static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile DSMStackStruct *st = (DSMStackStruct *)state;
         volatile Node *node = st->top;

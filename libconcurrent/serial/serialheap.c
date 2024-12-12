@@ -1,13 +1,13 @@
 #include <serialheap.h>
 
-inline static SynchHeapElement serialHeapDeleteMinMax(SerialHeapStruct *heap_state);
-inline static SynchHeapElement serialHeapInsert(SerialHeapStruct *heap_state, SynchHeapElement el);
-inline static SynchHeapElement serialHeapGetMinMax(SerialHeapStruct *heap_state);
-inline static void serialHeapCorrectDown(SerialHeapStruct *heap_state, uint32_t level, uint32_t pos);
-inline static void serialHeapCorrectUp(SerialHeapStruct *heap_state);
-inline static bool serialHeapGrow(SerialHeapStruct *heap_state);
+static SynchHeapElement serialHeapDeleteMinMax(SerialHeapStruct *heap_state);
+static SynchHeapElement serialHeapInsert(SerialHeapStruct *heap_state, SynchHeapElement el);
+static SynchHeapElement serialHeapGetMinMax(SerialHeapStruct *heap_state);
+static void serialHeapCorrectDown(SerialHeapStruct *heap_state, uint32_t level, uint32_t pos);
+static void serialHeapCorrectUp(SerialHeapStruct *heap_state);
+static bool serialHeapGrow(SerialHeapStruct *heap_state);
 
-inline void serialHeapInit(SerialHeapStruct *heap_state, uint32_t type) {
+void serialHeapInit(SerialHeapStruct *heap_state, uint32_t type) {
     uint64_t i;
 
     heap_state->items = 0;
@@ -23,7 +23,7 @@ inline void serialHeapInit(SerialHeapStruct *heap_state, uint32_t type) {
         heap_state->heap_arrays[i] = &heap_state->bulk[(1ULL << i) - 1];
 }
 
-inline static void serialHeapCorrectDown(SerialHeapStruct *heap_state, uint32_t level, uint32_t pos) {
+static void serialHeapCorrectDown(SerialHeapStruct *heap_state, uint32_t level, uint32_t pos) {
     while (level > 0) {
         uint32_t pos_div_2 = pos / 2;
         if (heap_state->type == SYNCH_HEAP_TYPE_MIN) {
@@ -48,7 +48,7 @@ inline static void serialHeapCorrectDown(SerialHeapStruct *heap_state, uint32_t 
     }
 }
 
-inline static void serialHeapCorrectUp(SerialHeapStruct *heap_state) {
+static void serialHeapCorrectUp(SerialHeapStruct *heap_state) {
     uint32_t level = 0;
     uint32_t pos = 0;
 
@@ -93,7 +93,7 @@ inline static void serialHeapCorrectUp(SerialHeapStruct *heap_state) {
     }
 }
 
-inline static SynchHeapElement serialHeapDeleteMinMax(SerialHeapStruct *heap_state) {
+static SynchHeapElement serialHeapDeleteMinMax(SerialHeapStruct *heap_state) {
     SynchHeapElement ret = serialHeapGetMinMax(heap_state);
 
     if (ret != SYNCH_HEAP_EMPTY) {
@@ -122,7 +122,7 @@ inline static SynchHeapElement serialHeapDeleteMinMax(SerialHeapStruct *heap_sta
     return ret;
 }
 
-inline static bool serialHeapGrow(SerialHeapStruct *heap_state) {
+static bool serialHeapGrow(SerialHeapStruct *heap_state) {
     SynchHeapElement *expanded_bulk = NULL;
     uint64_t i;
 
@@ -142,7 +142,7 @@ inline static bool serialHeapGrow(SerialHeapStruct *heap_state) {
     return true;
 }
 
-inline static SynchHeapElement serialHeapInsert(SerialHeapStruct *heap_state, SynchHeapElement el) {
+static SynchHeapElement serialHeapInsert(SerialHeapStruct *heap_state, SynchHeapElement el) {
     // Check if there is enough space inside the last level
     if (heap_state->last_used_level_pos < heap_state->last_used_level_size) {
         heap_state->heap_arrays[heap_state->last_used_level][heap_state->last_used_level_pos] = el;
@@ -176,13 +176,13 @@ inline static SynchHeapElement serialHeapInsert(SerialHeapStruct *heap_state, Sy
     }
 }
 
-inline static SynchHeapElement serialHeapGetMinMax(SerialHeapStruct *heap_state) {
+static SynchHeapElement serialHeapGetMinMax(SerialHeapStruct *heap_state) {
     if (heap_state->last_used_level != 0 && heap_state->last_used_level_pos != 0) return heap_state->heap_arrays[0][0];
     return SYNCH_HEAP_EMPTY;
 }
 
 #ifdef DEBUG
-inline static void serialDisplay(SerialHeapStruct *heap_state) {
+static void serialDisplay(SerialHeapStruct *heap_state) {
     int i, j;
 
     for (i = 0; i < heap_state->last_used_level; i++) {
@@ -199,7 +199,7 @@ inline static void serialDisplay(SerialHeapStruct *heap_state) {
 }
 #endif
 
-inline bool serialHeapClearAndValidation(SerialHeapStruct *heap_state) {
+bool serialHeapClearAndValidation(SerialHeapStruct *heap_state) {
     SynchHeapElement elmnt, prev;
     uint64_t i = 0;
 #ifdef DEBUG
@@ -217,7 +217,7 @@ inline bool serialHeapClearAndValidation(SerialHeapStruct *heap_state) {
     return true;
 }
 
-inline RetVal serialHeapApplyOperation(void *state, ArgVal arg, int pid) {
+RetVal serialHeapApplyOperation(void *state, ArgVal arg, int pid) {
     SynchHeapElement ret = SYNCH_HEAP_EMPTY;
     uint64_t op = arg & SYNCH_HEAP_OP_MASK;
     uint64_t val = arg & SYNCH_HEAP_VAL_MASK;

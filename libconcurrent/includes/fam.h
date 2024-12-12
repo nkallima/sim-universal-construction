@@ -22,7 +22,7 @@ typedef union ObjectState {
 /// @param arg The argument of the operation.
 /// @param pid The pid of the calling thread.
 /// @return The result of the serial Fetch&Multiply operation.
-inline static RetVal fetchAndMultiply(void *state, ArgVal arg, int pid) {
+static inline RetVal fetchAndMultiply(void *state, ArgVal arg, int pid) {
     ObjectState *obj = (ObjectState *)state;
     ObjectState res;
 

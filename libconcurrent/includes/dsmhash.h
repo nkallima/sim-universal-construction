@@ -74,7 +74,7 @@ typedef struct DSMHashThreadState {
 /// @param hash A pointer to the hash-table instance.
 /// @param num_cells The number of cells that the hash-table object is going to use.
 /// @param nthreads The number of threads that will use the DSM-Hash object.
-inline void DSMHashInit(DSMHash *hash, int num_cells, int nthreads);
+void DSMHashInit(DSMHash *hash, int num_cells, int nthreads);
 
 /// @brief This function should be called once before the thread applies any operation to the DSM-Hash combining object.
 ///
@@ -82,7 +82,7 @@ inline void DSMHashInit(DSMHash *hash, int num_cells, int nthreads);
 /// @param th_state A pointer to thread's local state of DSM-Hash.
 /// @param num_cells The number of cells that the hash-table object is going to use.
 /// @param pid The pid of the calling thread.
-inline void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, int num_cells, int pid);
+void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, int num_cells, int pid);
 
 /// @brief This function tries to insert a <key,value> into the hash-table if there is enough space in the
 /// corresponding cell. If the key already exists in the hash-table, DSMHashInsert updates the corresponding value.
@@ -93,7 +93,7 @@ inline void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, 
 /// @param value The value of the <key,value> pair that DSMHashInsert will try to insert into the hash-table.
 /// @param pid The pid of the calling thread.
 /// @return In case of success true is returned. In case that there is not enough space in the corresponding cell.
-inline bool DSMHashInsert(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int64_t value, int pid);
+bool DSMHashInsert(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int64_t value, int pid);
 
 /// @brief This function searches for a specific key in the hash-table. In case that DSMHashSearch finds the key,
 /// it returns true. Otherwise, it returns false.
@@ -103,7 +103,7 @@ inline bool DSMHashInsert(DSMHash *hash, DSMHashThreadState *th_state, int64_t k
 /// @param key The key of the <key,value> pair that DSMHashSearch will search for.
 /// @param pid The pid of the calling thread.
 /// @return DSMHashSearch returns the value of the <key,value> pair in case that the key exists in the hash-table.
-inline RetVal DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid);
+RetVal DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid);
 
 /// @brief This function searches for a specific key in the hash-table. In case that DSMHashDelete finds the key,
 /// it deletes the corresponding <key,value>.
@@ -112,6 +112,6 @@ inline RetVal DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t
 /// @param th_state A pointer to thread's local state of DSM-Hash.
 /// @param key The key of the <key,value> pair that DSMHashDelete will try to delete it.
 /// @param pid The pid of the calling thread.
-inline void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid);
+void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid);
 
 #endif

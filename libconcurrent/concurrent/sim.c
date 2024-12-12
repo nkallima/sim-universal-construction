@@ -2,9 +2,9 @@
 #include <fastrand.h>
 #include <threadtools.h>
 
-static inline void SimStateCopy(SimObjectState *dest, SimObjectState *src);
+static void SimStateCopy(SimObjectState *dest, SimObjectState *src);
 
-static inline void SimStateCopy(SimObjectState *dest, SimObjectState *src) {
+static void SimStateCopy(SimObjectState *dest, SimObjectState *src) {
     // copy everything except 'applied' and 'ret' fields
     memcpy(&dest->state, &src->state, SimObjectStateSize(dest->applied.nthreads) - CACHE_LINE_SIZE);
 }
