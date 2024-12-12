@@ -19,7 +19,7 @@ int MIN_BAK, MAX_BAK;
 SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     MSQueueThreadState *th_state;
     long i;
     int id = synchGetThreadId();

@@ -15,8 +15,8 @@ typedef struct FiberData {
     long arg;
 } FiberData;
 
-inline static void switch_to_fiber(Fiber *prev, Fiber *cur);
-inline static void fiber_start_func(FiberData *context);
+static void switch_to_fiber(Fiber *prev, Fiber *cur);
+static void fiber_start_func(FiberData *context);
 
 static volatile __thread int N_FIBERS = 1;
 static __thread Fiber *FIBER_LIST = NULL;
@@ -36,7 +36,7 @@ void synchInitFibers(int max) {
         FIBER_LIST[i].active = false;
 }
 
-inline static void switch_to_fiber(Fiber *prev, Fiber *cur) {
+static void switch_to_fiber(Fiber *prev, Fiber *cur) {
     if (_setjmp(prev->jmp) == 0) {
         _longjmp(cur->jmp, 1);
     }

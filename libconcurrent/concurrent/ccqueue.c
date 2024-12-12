@@ -1,8 +1,8 @@
 #include <ccqueue.h>
 #include <pool.h>
 
-inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
-inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
+static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
+static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 
 static __thread SynchPoolStruct pool_node CACHE_ALIGN;
 
@@ -21,7 +21,7 @@ void CCQueueThreadStateInit(CCQueueStruct *object_struct, CCQueueThreadState *lo
     synchInitPool(&pool_node, sizeof(Node));
 }
 
-inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
+static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     CCQueueStruct *st = (CCQueueStruct *)state;
     Node *node;
 
@@ -34,7 +34,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     return ENQUEUE_SUCCESS;
 }
 
-inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
+static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     CCQueueStruct *st = (CCQueueStruct *)state;
     volatile Node *node, *prev;
 

@@ -23,7 +23,7 @@ SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 
 
-inline void apply_op(RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, MCSThreadState *thread_state, int pid) {
+void apply_op(RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal arg, MCSThreadState *thread_state, int pid) {
     MCSLock(object_lock, thread_state, pid);
     sfunc(state, arg, pid);
 #ifdef DEBUG
@@ -32,7 +32,7 @@ inline void apply_op(RetVal (*sfunc)(void *, ArgVal, int), void *state, ArgVal a
     MCSUnlock(object_lock, thread_state, pid);
 }
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     long i, rnum;
     volatile long j;
     int id = synchGetThreadId();

@@ -28,7 +28,7 @@ SynchBenchArgs bench_args CACHE_ALIGN;
 
 __thread SynchPoolStruct pool_node;
 
-inline static void push(Object arg, int pid) {
+static void push(Object arg, int pid) {
     volatile Node *n = synchAllocObj(&pool_node);
     n->val = (Object)arg;
     CLHLock(lock, pid);  // Critical section
@@ -41,7 +41,7 @@ inline static void push(Object arg, int pid) {
     CLHUnlock(lock, pid);
 }
 
-inline static Object pop(int pid) {
+static Object pop(int pid) {
     Object result;
     Node *n = NULL;
 
@@ -63,7 +63,7 @@ inline static Object pop(int pid) {
     return result;
 }
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     long i;
     long rnum;
     int id = synchGetThreadId();

@@ -1,7 +1,7 @@
 #include <oscistack.h>
 #include <threadtools.h>
 
-inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
+static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
 static const int POP_OP = INT_MIN;
 
@@ -16,7 +16,7 @@ void OsciStackThreadStateInit(OsciStackStruct *object_struct, OsciStackThreadSta
     synchInitPool(&(object_struct->pool_node[synchGetThreadId()]), sizeof(Node));
 }
 
-inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
+static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile OsciStackStruct *st = (OsciStackStruct *)state;
         volatile Node *node = st->top;

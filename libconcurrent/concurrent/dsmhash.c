@@ -1,12 +1,12 @@
 #include <dsmhash.h>
 #include <limits.h>
 
-static inline int64_t hash_func(DSMHash *hash, int64_t key);
-static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid);
+static int64_t hash_func(DSMHash *hash, int64_t key);
+static RetVal serialOperations(void *h, ArgVal dummy_arg, int pid);
 
 static const int HT_INSERT = 0, HT_DELETE = 1, HT_SEARCH = 2;
 
-inline void DSMHashInit(DSMHash *hash, int num_cells, int nthreads) {
+void DSMHashInit(DSMHash *hash, int num_cells, int nthreads) {
     int i;
 
     hash->size = num_cells;
@@ -19,7 +19,7 @@ inline void DSMHashInit(DSMHash *hash, int num_cells, int nthreads) {
     }
 }
 
-inline void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, int num_cells, int pid) {
+void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, int num_cells, int pid) {
     int i;
 
     th_state->th_state = synchGetMemory(num_cells * sizeof(DSMSynchThreadState));
@@ -28,11 +28,11 @@ inline void DSMHashThreadStateInit(DSMHash *hash, DSMHashThreadState *th_state, 
         DSMSynchThreadStateInit(&hash->synch[i], &th_state->th_state[i], pid);
 }
 
-static inline int64_t hash_func(DSMHash *hash, int64_t key) {
+static int64_t hash_func(DSMHash *hash, int64_t key) {
     return key % hash->size;
 }
 
-static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
+static RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
     HashOperations arg;
     int64_t key;
     int64_t value;
@@ -98,7 +98,7 @@ static inline RetVal serialOperations(void *h, ArgVal dummy_arg, int pid) {
     }
 }
 
-inline bool DSMHashInsert(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int64_t value, int pid) {
+bool DSMHashInsert(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int64_t value, int pid) {
     HashOperations args;
 
     args.op = HT_INSERT;
@@ -110,7 +110,7 @@ inline bool DSMHashInsert(DSMHash *hash, DSMHashThreadState *th_state, int64_t k
     return DSMSynchApplyOp(&hash->synch[args.cell], &th_state->th_state[args.cell], serialOperations, (void *)hash, 0, pid);
 }
 
-inline RetVal DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid) {
+RetVal DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid) {
     HashOperations args;
     RetVal ret;
 
@@ -125,7 +125,7 @@ inline RetVal DSMHashSearch(DSMHash *hash, DSMHashThreadState *th_state, int64_t
     return ret;
 }
 
-inline void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid) {
+void DSMHashDelete(DSMHash *hash, DSMHashThreadState *th_state, int64_t key, int pid) {
     HashOperations args;
 
     args.op = HT_DELETE;

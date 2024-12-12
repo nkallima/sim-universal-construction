@@ -25,7 +25,7 @@ int64_t d1 CACHE_ALIGN, d2;
 SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     int64_t key, value;
     CLHHashThreadState *th_state;
     long i, rnum;

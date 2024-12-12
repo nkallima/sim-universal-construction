@@ -1,7 +1,7 @@
 #include <hstack.h>
 #include <pool.h>
 
-inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
+static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
 static const int POP_OP = INT_MIN;
 static __thread SynchPoolStruct pool_node CACHE_ALIGN;
@@ -16,7 +16,7 @@ void HStackThreadStateInit(HStackStruct *object_struct, HStackThreadState *lobje
     synchInitPool(&pool_node, sizeof(Node));
 }
 
-inline RetVal serialPushPop(void *state, ArgVal arg, int pid) {
+RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile HStackStruct *st = (HStackStruct *)state;
         volatile Node *node = st->top;

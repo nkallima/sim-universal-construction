@@ -16,7 +16,7 @@ SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 int MAX_BACK CACHE_ALIGN;
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     SimThreadState th_state;
     long i, rnum;
     int id = synchGetThreadId();

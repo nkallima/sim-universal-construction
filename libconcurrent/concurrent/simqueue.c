@@ -4,18 +4,18 @@
 
 static const int LOCAL_POOL_SIZE = _SIM_LOCAL_POOL_SIZE_;
 
-static inline void EnqStateCopy(EnqState *dest, EnqState *src);
-static inline void DeqStateCopy(DeqState *dest, DeqState *src);
-static inline void EnqLinkQueue(SimQueueStruct *queue, EnqState *pst);
-static inline void DeqLinkQueue(SimQueueStruct *queue, DeqState *pst);
+static void EnqStateCopy(EnqState *dest, EnqState *src);
+static void DeqStateCopy(DeqState *dest, DeqState *src);
+static void EnqLinkQueue(SimQueueStruct *queue, EnqState *pst);
+static void DeqLinkQueue(SimQueueStruct *queue, DeqState *pst);
 
-inline static void EnqLinkQueue(SimQueueStruct *queue, EnqState *pst) {
+static void EnqLinkQueue(SimQueueStruct *queue, EnqState *pst) {
     if (pst->first != NULL) {
         synchCASPTR(&pst->first->next, NULL, pst->last);
     }
 }
 
-inline static void DeqLinkQueue(SimQueueStruct *queue, DeqState *pst) {
+static void DeqLinkQueue(SimQueueStruct *queue, DeqState *pst) {
     pointer_t enq_sp;
     EnqState *enq_pst;
 
@@ -30,13 +30,13 @@ inline static void DeqLinkQueue(SimQueueStruct *queue, DeqState *pst) {
     }
 }
 
-static inline void EnqStateCopy(EnqState *dest, EnqState *src) {
+static void EnqStateCopy(EnqState *dest, EnqState *src) {
     // copy everything except 'applied'
     memcpy(&dest->copy_point, &src->copy_point,
            EnqStateSize(src->applied.nthreads) - sizeof(ToggleVector));
 }
 
-static inline void DeqStateCopy(DeqState *dest, DeqState *src) {
+static void DeqStateCopy(DeqState *dest, DeqState *src) {
     // copy everything except 'applied' and 'ret' fields
     memcpy(&dest->copy_point, &src->copy_point,
            DeqStateSize(src->applied.nthreads)- sizeof(ToggleVector) - sizeof(RetVal *));

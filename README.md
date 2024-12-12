@@ -217,7 +217,7 @@ volatile int64_t object CACHE_ALIGN;
 int64_t d1 CACHE_ALIGN, d2;
 SynchBarrier bar CACHE_ALIGN;
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     long i, id;
 
     id = synchGetThreadId();

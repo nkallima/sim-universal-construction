@@ -14,8 +14,8 @@
 #    include <numa.h>
 #endif
 
-inline static void *uthreadWrapper(void *arg);
-inline static void *kthreadWrapper(void *arg);
+static void *uthreadWrapper(void *arg);
+static void *kthreadWrapper(void *arg);
 
 static __thread pthread_t *__threads;
 static __thread int32_t __thread_id = 0;
@@ -49,21 +49,21 @@ void setThreadId(int32_t id) {
     __thread_id = id;
 }
 
-inline int32_t synchGetPreferredCore(void) {
+int32_t synchGetPreferredCore(void) {
     return __preferred_core;
 }
 
-inline int32_t synchGetPreferredNumaNode(void) {
+int32_t synchGetPreferredNumaNode(void) {
     return __preferred_numa_node;
 }
 
-inline uint32_t synchGetNCores(void) {
+uint32_t synchGetNCores(void) {
     if (__ncores == 0)
         __ncores = sysconf(_SC_NPROCESSORS_ONLN);
     return __ncores;
 }
 
-inline static void *kthreadWrapper(void *arg) {
+static void *kthreadWrapper(void *arg) {
     int cpu_id;
     long pid = (long)arg;
 
@@ -77,7 +77,7 @@ inline static void *kthreadWrapper(void *arg) {
     return NULL;
 }
 
-inline uint32_t synchPreferredCoreOfThread(uint32_t pid) {
+uint32_t synchPreferredCoreOfThread(uint32_t pid) {
     uint32_t preferred_core = 0;
 
     if (__schedule_policy == SYNCH_THREAD_PLACEMENT_FLAT) {
@@ -125,7 +125,7 @@ inline uint32_t synchPreferredCoreOfThread(uint32_t pid) {
     return preferred_core;
 }
 
-inline uint32_t synchPreferredNumaNodeOfThread(uint32_t pid) {
+uint32_t synchPreferredNumaNodeOfThread(uint32_t pid) {
     uint32_t preferred_node = 0;
 
 #ifdef SYNCH_NUMA_SUPPORT
@@ -171,7 +171,7 @@ int synchThreadPin(int32_t cpu_id) {
     return ret;
 }
 
-inline static void *uthreadWrapper(void *arg) {
+static void *uthreadWrapper(void *arg) {
     int i, kernel_id;
     long pid = (long)arg;
 
@@ -246,15 +246,15 @@ void synchJoinThreadsN(uint32_t nthreads) {
     synchFreeMemory(__threads, nthreads * sizeof(pthread_t));
 }
 
-inline int32_t synchGetThreadId(void) {
+int32_t synchGetThreadId(void) {
     return __thread_id + synchCurrentFiberIndex();
 }
 
-inline int32_t synchGetPosixThreadId(void) {
+int32_t synchGetPosixThreadId(void) {
     return __thread_id;
 }
 
-inline void synchResched(void) {
+void synchResched(void) {
     if (__noop_resched) {
         synchPause();
     } else if (__uthread_sched) {
@@ -264,6 +264,6 @@ inline void synchResched(void) {
     }
 }
 
-inline bool synchIsSystemOversubscribed(void) {
+bool synchIsSystemOversubscribed(void) {
     return __system_oversubscription;
 }

@@ -18,7 +18,7 @@ void FCStackThreadStateInit(FCStackStruct *object_struct, FCStackThreadState *lo
     synchInitPool(&pool_node, sizeof(Node));
 }
 
-inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
+static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile FCStackStruct *st = (FCStackStruct *)state;
         volatile Node *node = st->top;

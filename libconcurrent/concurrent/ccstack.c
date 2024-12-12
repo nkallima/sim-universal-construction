@@ -1,7 +1,7 @@
 #include <ccstack.h>
 #include <pool.h>
 
-inline static RetVal serialPushPop(void *state, ArgVal arg, int pid);
+static RetVal serialPushPop(void *state, ArgVal arg, int pid);
 
 static const int POP_OP = INT_MIN;
 static __thread SynchPoolStruct pool_node CACHE_ALIGN;
@@ -17,7 +17,7 @@ void CCStackThreadStateInit(CCStackStruct *object_struct, CCStackThreadState *lo
     synchInitPool(&pool_node, sizeof(Node));
 }
 
-inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
+static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile CCStackStruct *st = (CCStackStruct *)state;
         volatile Node *node = st->top;
