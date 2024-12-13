@@ -23,7 +23,7 @@ extern _Thread_local int64_t __executed_faa;
 bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t C1) {
     bool res;
 
-#if defined(__OLD_GCC_X86__) || defined(__amd64__) || defined(__x86_64__)
+#if defined(__amd64__) || defined(__x86_64__)
     uint64_t dummy;
 
     __asm__ volatile("lock;"
