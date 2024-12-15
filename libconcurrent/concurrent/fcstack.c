@@ -5,7 +5,7 @@
 #include <queue-stack.h>
 
 static const int POP_OP = INT_MIN;
-static __thread SynchPoolStruct pool_node CACHE_ALIGN;
+static _Thread_local SynchPoolStruct pool_node CACHE_ALIGN;
 
 void FCStackInit(FCStackStruct *stack_object_struct, uint32_t nthreads) {
     FCStructInit(&stack_object_struct->object_struct, nthreads);
@@ -18,7 +18,7 @@ void FCStackThreadStateInit(FCStackStruct *object_struct, FCStackThreadState *lo
     synchInitPool(&pool_node, sizeof(Node));
 }
 
-inline static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
+static RetVal serialPushPop(void *state, ArgVal arg, int pid) {
     if (arg == POP_OP) {
         volatile FCStackStruct *st = (FCStackStruct *)state;
         volatile Node *node = st->top;

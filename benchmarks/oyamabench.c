@@ -19,9 +19,9 @@ int64_t d1 CACHE_ALIGN, d2;
 SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 
-inline static RetVal fetchAndMultiply(ArgVal arg, int pid);
+static RetVal fetchAndMultiply(ArgVal arg, int pid);
 
-inline static RetVal fetchAndMultiply(ArgVal arg, int pid) {
+static RetVal fetchAndMultiply(ArgVal arg, int pid) {
     Object old_val;
 
     old_val = object;
@@ -29,7 +29,7 @@ inline static RetVal fetchAndMultiply(ArgVal arg, int pid) {
     return old_val;
 }
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     OyamaThreadState *th_state;
     long i, rnum;
     volatile int j;

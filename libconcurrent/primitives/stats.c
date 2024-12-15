@@ -7,10 +7,10 @@
 #    include <types.h>
 #    include <system.h>
 
-__thread int64_t __failed_cas CACHE_ALIGN = 0;
-__thread int64_t __executed_cas CACHE_ALIGN = 0;
-__thread int64_t __executed_swap CACHE_ALIGN = 0;
-__thread int64_t __executed_faa CACHE_ALIGN = 0;
+_Thread_local int64_t __failed_cas CACHE_ALIGN = 0;
+_Thread_local int64_t __executed_cas CACHE_ALIGN = 0;
+_Thread_local int64_t __executed_swap CACHE_ALIGN = 0;
+_Thread_local int64_t __executed_faa CACHE_ALIGN = 0;
 
 volatile int64_t __total_failed_cas = 0;
 volatile int64_t __total_executed_cas = 0;

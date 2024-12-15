@@ -16,7 +16,7 @@ int64_t d1, d2;
 SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     SimStackThreadState *th_state;
     long i = 0;
     int id = synchGetThreadId();

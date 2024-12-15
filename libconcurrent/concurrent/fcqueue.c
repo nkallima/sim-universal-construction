@@ -4,11 +4,11 @@
 #include <pool.h>
 #include <queue-stack.h>
 
-inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
-inline static RetVal serialDequeue(void *state, ArgVal arg, int pid);
+static RetVal serialEnqueue(void *state, ArgVal arg, int pid);
+static RetVal serialDequeue(void *state, ArgVal arg, int pid);
 
 static const int GUARD = INT_MIN;
-static __thread SynchPoolStruct pool_node CACHE_ALIGN;
+static _Thread_local SynchPoolStruct pool_node CACHE_ALIGN;
 
 void FCQueueStructInit(FCQueueStruct *queue_object_struct, uint32_t nthreads) {
     FCStructInit(&queue_object_struct->enqueue_struct, nthreads);
@@ -25,7 +25,7 @@ void FCQueueThreadStateInit(FCQueueStruct *object_struct, FCQueueThreadState *lo
     synchInitPool(&pool_node, sizeof(Node));
 }
 
-inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
+static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     FCQueueStruct *st = (FCQueueStruct *)state;
     Node *node;
     
@@ -37,7 +37,7 @@ inline static RetVal serialEnqueue(void *state, ArgVal arg, int pid) {
     return -1;
 }
 
-inline static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
+static RetVal serialDequeue(void *state, ArgVal arg, int pid) {
     FCQueueStruct *st = (FCQueueStruct *)state;
     Node *node = (Node *)st->first;
     

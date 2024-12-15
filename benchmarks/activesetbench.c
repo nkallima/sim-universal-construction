@@ -17,7 +17,7 @@ volatile ToggleVector active_set CACHE_ALIGN;
 SynchBarrier bar CACHE_ALIGN;
 SynchBenchArgs bench_args CACHE_ALIGN;
 
-inline static void *Execute(void *Arg) {
+static void *Execute(void *Arg) {
     long i, rnum, mybank;
     volatile long j;
     int id = synchGetThreadId();

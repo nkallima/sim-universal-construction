@@ -11,118 +11,22 @@
 
 #define MAX_VENDOR_STR_SIZE 64
 
-static __thread uint32_t __machine_model = UNINITIALIZED_MACHINE_MODEL;
+static _Thread_local uint32_t __machine_model = UNINITIALIZED_MACHINE_MODEL;
 
 #ifdef DEBUG
-extern __thread int64_t __failed_cas;
-extern __thread int64_t __executed_cas;
-extern __thread int64_t __executed_swap;
-extern __thread int64_t __executed_faa;
+extern _Thread_local int64_t __failed_cas;
+extern _Thread_local int64_t __executed_cas;
+extern _Thread_local int64_t __executed_swap;
+extern _Thread_local int64_t __executed_faa;
 #endif
 
-#ifdef __OLD_GCC_X86__
-inline bool __CASPTR(void *A, void *B, void *C) {
-    uint64_t prev;
-    uint64_t *p = (uint64_t *)A;
-
-    asm volatile("lock;"
-                 "cmpxchgq %1,%2" 
-                 : "=a"(prev)
-                 : "r"((uint64_t)C), "m"(*p), "0"((uint64_t)B) 
-                 : "memory");
-    return (prev == (uint64_t)B);
-}
-
-inline bool __CAS64(volatile uint64_t *A, uint64_t B, uint64_t C) {
-    uint64_t prev;
-    uint64_t *p = (uint64_t *)A;
-
-    asm volatile("lock;"
-                 "cmpxchgq %1,%2"
-                 : "=a"(prev)
-                 : "r"(C), "m"(*p), "0"(B)
-                 : "memory");
-    return (prev == B);
-}
-
-inline bool __CAS32(uint32_t *A, uint32_t B, uint32_t C) {
-    uint32_t prev;
-    uint32_t *p = (uint32_t *)A;
-
-    asm volatile("lock;"
-                 "cmpxchgl %1,%2" 
-                 : "=a"(prev) 
-                 : "r"(C), "m"(*p), "0"(B) 
-                 : "memory");
-    return (prev == B);
-}
-
-inline void *__SWAP(void *A, void *B) {
-    int64_t *p = (int64_t *)A;
-
-    asm volatile("lock;"
-                 "xchgq %0, %1"
-                 : "=r"(B), "=m"(*p)
-                 : "0"(B), "m"(*p)
-                 : "memory");
-    return B;
-}
-
-inline int64_t __FAA64(volatile int64_t *A, int64_t B) {
-    asm volatile("lock;"
-                 "xaddq %0, %1"
-                 : "=r"(B), "=m"(*A)
-                 : "0"(B), "m"(*A)
-                 : "memory");
-    return B;
-}
-
-inline int32_t __FAA32(volatile int32_t *A, int32_t B) {
-    asm volatile("lock;"
-                 "xaddl %0, %1"
-                 : "=r"(B), "=m"(*A)
-                 : "0"(B), "m"(*A)
-                 : "memory");
-    return B;
-}
-
-inline uint64_t __BitTAS64(volatile uint64_t *A, unsigned char B) {
-    int64_t *p = (int64_t *)A;
-    int64_t bit = B;
-    asm volatile("lock;" 
-                 "btsq %0, %1"
-                 : "=r"(bit), "=m"(*p)
-                 : "0"(bit), "m"(*p)
-                 : "memory");
-
-    return bit;
-}
-
-inline int synchBitSearchFirst(uint64_t B) {
-    uint64_t A;
-
-    asm("bsfq %0, %1;" : "=d"(A) : "d"(B));
-
-    return (int)A;
-}
-
-inline uint64_t synchNonZeroBits(uint64_t v) {
-    uint64_t c;
-
-    for (c = 0; v; v >>= 1)
-        c += v & 1;
-
-    return c;
-}
-#endif
-
-inline bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t C1) {
+bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t C1) {
     bool res;
 
-#if defined(__OLD_GCC_X86__) || defined(__amd64__) || defined(__x86_64__)
+#if defined(__amd64__) || defined(__x86_64__)
     uint64_t dummy;
 
-    asm volatile("lock;"
+    __asm__ volatile("lock;"
                  "cmpxchg16b %2; setz %1"
                  : "=d" (dummy), "=a" (res), "+m" (*A)
                  : "b" (C0), "c" (C1), "a" (B0),  "d" (B1));
@@ -140,7 +44,7 @@ inline bool _CAS128(uint64_t *A, uint64_t B0, uint64_t B1, uint64_t C0, uint64_t
     return res;
 }
 
-inline void *synchGetMemory(size_t size) {
+void *synchGetMemory(size_t size) {
     void *p;
 
 #ifdef SYNCH_NUMA_SUPPORT
@@ -155,7 +59,7 @@ inline void *synchGetMemory(size_t size) {
         return p;
 }
 
-inline void *synchGetAlignedMemory(size_t align, size_t size) {
+void *synchGetAlignedMemory(size_t align, size_t size) {
     void *p;
 
 #ifdef SYNCH_NUMA_SUPPORT
@@ -175,7 +79,7 @@ inline void *synchGetAlignedMemory(size_t align, size_t size) {
         return p;
 }
 
-inline void synchFreeMemory(void *ptr, size_t size) {
+void synchFreeMemory(void *ptr, size_t size) {
 #ifdef SYNCH_NUMA_SUPPORT
     numa_free(ptr, size);
 #else
@@ -183,7 +87,7 @@ inline void synchFreeMemory(void *ptr, size_t size) {
 #endif
 }
 
-inline int64_t synchGetTimeMillis(void) {
+int64_t synchGetTimeMillis(void) {
     struct timespec tm;
 
     if (clock_gettime(CLOCK_MONOTONIC, &tm) == -1) {
@@ -192,14 +96,14 @@ inline int64_t synchGetTimeMillis(void) {
     } else return tm.tv_sec*1000LL + tm.tv_nsec/1000000LL;
 }
 
-inline uint64_t synchGetMachineModel(void) {
+uint64_t synchGetMachineModel(void) {
     if (__machine_model != UNINITIALIZED_MACHINE_MODEL)
         return __machine_model;
 
 #if defined(__amd64__) || defined(__x86_64__)
     char cpu_model[MAX_VENDOR_STR_SIZE] = {'\0'};
 
-    asm volatile("movl $0, %%eax\n"
+    __asm__ volatile("movl $0, %%eax\n"
                  "cpuid\n"
                  "movl %%ebx, %0\n"
                  "movl %%edx, %1\n"
@@ -227,7 +131,7 @@ inline uint64_t synchGetMachineModel(void) {
     return __machine_model;
 }
 
-inline bool _CASPTR(void *A, void *B, void *C) {
+bool _CASPTR(void *A, void *B, void *C) {
 #ifdef DEBUG
     int res;
 
@@ -241,7 +145,7 @@ inline bool _CASPTR(void *A, void *B, void *C) {
 #endif
 }
 
-inline bool _CAS64(uint64_t *A, uint64_t B, uint64_t C) {
+bool _CAS64(uint64_t *A, uint64_t B, uint64_t C) {
 #ifdef DEBUG
     int res;
 
@@ -255,7 +159,7 @@ inline bool _CAS64(uint64_t *A, uint64_t B, uint64_t C) {
 #endif
 }
 
-inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {
+bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {
 #ifdef DEBUG
     int res;
 
@@ -269,7 +173,7 @@ inline bool _CAS32(uint32_t *A, uint32_t B, uint32_t C) {
 #endif
 }
 
-inline void *_SWAP(void *A, void *B) {
+void *_SWAP(void *A, void *B) {
 #if defined(SYNCH_EMULATE_SWAP)
 #    warning synchSWAP instructions are simulated!
     void *old_val;
@@ -294,7 +198,7 @@ inline void *_SWAP(void *A, void *B) {
 #endif
 }
 
-inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
+int32_t _FAA32(volatile int32_t *A, int32_t B) {
 #if defined(SYNCH_EMULATE_FAA)
 #    warning Fetch&Add instructions are simulated!
 
@@ -320,7 +224,7 @@ inline int32_t _FAA32(volatile int32_t *A, int32_t B) {
 #endif
 }
 
-inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
+int64_t _FAA64(volatile int64_t *A, int64_t B) {
 #if defined(SYNCH_EMULATE_FAA)
 #    warning Fetch&Add instructions are simulated!
 
@@ -346,6 +250,6 @@ inline int64_t _FAA64(volatile int64_t *A, int64_t B) {
 #endif
 }
 
-inline uint64_t _BitTAS64(volatile uint64_t *A, unsigned char B) {
+uint64_t _BitTAS64(volatile uint64_t *A, unsigned char B) {
     return __BitTAS64(A, B);
 }

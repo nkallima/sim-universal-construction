@@ -59,7 +59,7 @@ typedef struct SerialHeapStruct {
 
 /// @brief This function initializes an instance of the serial heap implementation.
 /// This function should be called before any operation is applied to the heap.
-inline void serialHeapInit(SerialHeapStruct *heap_state, uint32_t type);
+void serialHeapInit(SerialHeapStruct *heap_state, uint32_t type);
 
 /// @brief This function provides all the operations (i.e. insert an element, removing the minimum 
 /// and getting the minimum) provided by this serial heap implementation.
@@ -79,13 +79,13 @@ inline void serialHeapInit(SerialHeapStruct *heap_state, uint32_t type);
 /// otherwise the value of the minimum element is returned.
 /// (iii) Inserting a new element; SYNCH_HEAP_INSERT_FAIL is returned in case that there is 
 /// no space available in the heap, otherwise SYNCH_HEAP_INSERT_SUCCESS nis returned.
-inline RetVal serialHeapApplyOperation(void *state, ArgVal arg, int pid);
+RetVal serialHeapApplyOperation(void *state, ArgVal arg, int pid);
 
 /// @brief This functions empties the heap from data by continuously executing HeapDeleteMinMax
 /// operations. Moreover, if validates the ordering of the removed items.
 /// @param heap_state A pointer to a heap object.
 /// @return In case that the ordering of the removing items is valid, true is returned.
 /// Otherwise, false is returned.
-inline bool serialHeapClearAndValidation(SerialHeapStruct *heap_state);
+bool serialHeapClearAndValidation(SerialHeapStruct *heap_state);
 
 #endif
